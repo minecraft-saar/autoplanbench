@@ -1,0 +1,16 @@
+accelerate @ git+https://github.com/huggingface/accelerate.git@180ef7c41576bc55cb1265fcdeb7da287e95c9b7
+bitsandbytes==0.39.1
+chardet
+diskcache
+fschat
+jupyter
+numpy
+openai
+pddl==0.2.0
+scienceworld
+scipy
+sentencepiece
+sentence-transformers
+tarski==0.7.0
+transformers @ git+https://github.com/huggingface/transformers.git
+pddl_parser @ git+https://github.com/pucrs-automated-planning/pddl-parser.git
