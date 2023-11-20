@@ -1,0 +1,19 @@
+{"prompt": "Your task is to generate templates for natural language descriptions for actions and predicates defined in the PDDL planning language. Tokens starting with '?' are variables and serve as placeholders. They should always be surrounded by curly brackets in your output. For actions, also include the type for each parameter in the brackets if this information is available.\nDo not start your output with a capitalized word and do not include sentence final punctuation.",
+  "examples_pred": [
+    {"input": "(OBJ ?obj)", "output": "{?obj} is an object"},
+    {"input": "(planet ?ob)", "output": "{?ob} is a planet"},
+    {"input": "(in ?obj ?loc)", "output": "{?obj} is in {?loc}"},
+    {"input": "(in-cottage ?obj ?cott)", "output": "{?obj} is in the cottage {?cott}"},
+    {"input": "(undertree ?obj)", "output": "{?obj} is under the tree"},
+    {"input": "(handempty)", "output": "the hand is empty"},
+    {"input": "(washing ?car)", "output": "{?car} is being washed"}
+  ],
+  "examples_act": [
+    {"input": "action: grasp\nparameters: (?obj ?obj2)",
+    "output": "grasp {?obj2} with {?obj}"},
+    {"input": "action: RIDE-HORSE\nparameters: (?h ?fl ?tl)",
+    "output": "ride {horse ?h} from {?fl} to {?tl}"},
+    {"input": "action: put-down\nparameters: (?obj)",
+    "output": "put down {?obj}"}
+  ]
+}
