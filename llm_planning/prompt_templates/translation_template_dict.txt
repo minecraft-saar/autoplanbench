@@ -1,0 +1,43 @@
+{# Template for the prompts for the translation model in the PDDL environment #}
+
+{%- block startinstructions -%}
+Your task is to translate natural language instructions into a schematic planning language.
+{%- endblock startinstructions %}
+
+{% block actioninstruction -%}
+Each of the translated instructions should be converted to a tuple that matches any of the example templates below, where [OBJ] is replaced by the actual object.
+If none of the action templates below matches the original instruction then choose one with a similar meaning if possible. Otherwise, keep the original action.
+{{ actions }}
+{%- endblock actioninstruction %}
+
+{% block objectinstructions -%}
+If one of the following objects matches the objects in the original instruction then replace [OBJ] by the appropriate object.
+You should do this in two steps: First, replace [OBJ] with the name of the object(s) from the instruction. Then replace the name of each object with the corresponding letter abbreviation.
+If none of the objects below matches the instruction, keep the original object name as replacement for [OBJ]:
+{%- for obj in objects %}
+{{ obj }}
+{%- endfor %}
+{% endblock objectinstructions -%}
+
+{% block examples %}
+{% if include_examples -%}
+{% if pos_examples %}
+Here are som examples
+{%- for ex in pos_examples -%}
+{{ prefixes['input'] }} {{ ex['input'] }}
+{{ prefixes['output'] }} {{ ex['output'] }}
+
+{% endfor %}
+{%- endif -%}
+{% if neg_examples %}
+Here are some more examples of translations. '{{ prefixes['wrong'] }}' is NOT a valid translation and '{{ prefixes['output'] }}' is the correct translation.
+Do only include valid translations in your output. This means you should not include '{{ prefixes['wrong'] }}' in any of your translations.
+{%- for ex in neg_examples -%}
+{{ prefixes['input'] }} {{ ex['input'] }}
+{{ prefixes['output'] }} {{ ex['output'] }}
+
+{% endfor %}
+{%- endif %}
+{%- endif %}
+
+{% endblock examples %}
