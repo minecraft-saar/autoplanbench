@@ -41,4 +41,4 @@ if __name__=='__main__':
     if args.dd:
         d['data_dir'] = args.dd
 
-    setup_files_domain(*d)
+    setup_files_domain(**d)
