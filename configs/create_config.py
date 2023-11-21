@@ -198,21 +198,25 @@ if __name__=='__main__':
     parser.add_argument('--ex-id', required=False, default=None, help='ID of instance that gets used as few-shot example and should be excluded from the experiment')
     parser.add_argument('--enc', required=False, default='automatic', help='Encoding: either "automatic" or "planbench", default is "automatic"')
     parser.add_argument('--llm', required=True, help='LLM name to use')
-    parser.add_argument('ms-i', required=False, help='Max number of steps interactive approaches; defaults to 24')
-    parser.add_argument('br-i', required=False, help='Break limit for interactive approaches; defaults to 5')
-    parser.add_argument('ms-ni', required=False, help='Max number of steps noninteractive approaches; defaults to 1')
-    parser.add_argument('br-ni', required=False, help='Break limit for noninteractive approaches; defaults to 1')
+    parser.add_argument('--ms-i', required=False, help='Max number of steps interactive approaches; defaults to 24')
+    parser.add_argument('--br-i', required=False, help='Break limit for interactive approaches; defaults to 5')
+    parser.add_argument('--ms-ni', required=False, help='Max number of steps noninteractive approaches; defaults to 1')
+    parser.add_argument('--br-ni', required=False, help='Break limit for noninteractive approaches; defaults to 1')
 
     args = parser.parse_args()
 
     ex_id = literal_eval(args.ex_id) if isinstance(args.ex_id, str) else None
+    ms_i = literal_eval(args.ms_i) if isinstance(args.ms_i, str) else args.ms_i
+    br_i = literal_eval(args.br_i) if isinstance(args.br_i, str) else args.br_i
+    ms_ni = literal_eval(args.ms_ni) if isinstance(args.ms_ni, str) else args.ms_ni
+    br_ni = literal_eval(args.br_ni) if isinstance(args.br_ni, str) else args.br_ni
 
     generate_configs(domain_name=args.d,
                      domain_dir=args.d_dir,
-                     max_steps_inter=args.ms_i,
-                     break_limit_inter=args.br_i,
-                     max_steps_noninter=args.ms_ni,
-                     break_limit_noninter=args.br_ni,
+                     max_steps_inter=ms_i,
+                     break_limit_inter=br_i,
+                     max_steps_noninter=ms_ni,
+                     break_limit_noninter=br_ni,
                      ex_id=ex_id,
                      encoding=args.enc,
                      model=args.llm)

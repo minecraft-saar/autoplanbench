@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from set_env import set_env_vars
 from llm_planning.game_classes.pddl_game_env import PDDLWorldEnvironment
 from llm_planning.game_classes.pddl_game_env_planbench import PlanBenchEnvironment
+from utils.paths import get_few_shot_dir
 
 
 set_env_vars()
@@ -215,18 +216,8 @@ if __name__=='__main__':
     domain_nl_file = os.path.join(data_dir, 'domain_description.json')
     domain_file = os.path.join(data_dir, 'domain.pddl')
 
-    if planning_approach == 'basic':
-        output_dir = os.path.join(data_dir, 'few_shot_examples_basic')
-    elif planning_approach == 'incremental':
-        output_dir = os.path.join(data_dir, 'few_shot_examples_incre')
-    elif planning_approach == 'state_reasoning':
-        output_dir = os.path.join(data_dir, 'few_shot_examples_state_reasoning')
-    elif planning_approach == 'react':
-        output_dir = os.path.join(data_dir, 'few_shot_examples_react')
-    elif planning_approach == 'cot':
-        output_dir = os.path.join(data_dir, 'few_shot_examples_cot')
-    else:
-        raise ValueError
+    output_dir = get_few_shot_dir(planning_approach=planning_approach,
+                                  data_dir=data_dir)
 
     Path(output_dir).mkdir(exist_ok=True)
 
