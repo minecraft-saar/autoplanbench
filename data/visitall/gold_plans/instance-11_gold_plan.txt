@@ -1,0 +1,4 @@
+(move place_0 place_1)
+(move place_1 place_2)
+(move place_2 place_3)
+; cost = 3 (unit cost)

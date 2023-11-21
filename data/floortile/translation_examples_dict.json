@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_50: o",
+        "star_23: b",
+        "kumquat_8: c_8",
+        "screen: abc",
+        "teddy: td",
+        "roof_11: r_11",
+        "socket: z",
+        "rain: rn",
+        "object_26: o2",
+        "kumquat: k",
+        "fire: f",
+        "kumquat_8_81: c_8_81"
+    ],
+    "pos_examples": [
+        [
+            "Now, paint tile rain down from tile yew with color kumquat_8 using robot star_23.",
+            "[1] (paint-down star_23 rain yew kumquat_8) [2] (paint-down rn yew c_8 b)"
+        ],
+        [
+            "Once your done, please move robot star_23 from tile rain to the right tile tile fire.",
+            "[1] (right star_23 rain fire) [2] (right b rn f)"
+        ],
+        [
+            "First, paint tile teddy above tile yew with color object_26 using robot socket and then change the color of robot star_23 from color kumquat_8 to color kumquat_8_81.",
+            "[1] (paint-up socket teddy yew object_26) [2] (paint-up td yew o2 z)\n[1] (change-color star_23 kumquat_8 kumquat_8_81) [2] (change-color b c_8 c_8_81 r_11)"
+        ],
+        [
+            "The next step is to move robot socket from tile teddy to the left tile tile fire.",
+            "[1] (left socket teddy fire) [2] (left z td f)"
+        ]
+    ]
+}

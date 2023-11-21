@@ -1,0 +1,41 @@
+(define (problem floortile-2-2-2)
+ (:domain floor-tile)
+ (:objects tile_0 tile_1 
+           tile_2 tile_3 
+           tile_4 tile_5 - tile
+           robot_0 robot_1 - robot
+           color_0 color_1 - color
+)
+ (:init 
+   (robot-at robot_0 tile_2)
+   (robot-has robot_0 color_0)
+   (robot-at robot_1 tile_1)
+   (robot-has robot_1 color_1)
+   (available-color color_0)
+   (available-color color_1)
+   (clear tile_0)
+   (clear tile_3)
+   (clear tile_4)
+   (clear tile_5)
+   (up tile_2 tile_0)
+   (up tile_3 tile_1)
+   (up tile_4 tile_2)
+   (up tile_5 tile_3)
+   (down tile_0 tile_2)
+   (down tile_1 tile_3)
+   (down tile_2 tile_4)
+   (down tile_3 tile_5)
+   (right tile_1 tile_0)
+   (right tile_3 tile_2)
+   (right tile_5 tile_4)
+   (left tile_0 tile_1)
+   (left tile_2 tile_3)
+   (left tile_4 tile_5)
+)
+ (:goal (and
+    (painted tile_2 color_0)
+    (painted tile_3 color_1)
+    (painted tile_4 color_1)
+    (painted tile_5 color_0)
+))
+)

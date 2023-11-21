@@ -1,0 +1,5 @@
+(pickup object_7 object_12)
+(move object_7 object_4)
+(move object_4 object_5)
+(pickup-and-loose object_5 object_11 object_12)
+; cost = 4 (unit cost)
