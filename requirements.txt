@@ -5,7 +5,7 @@ diskcache
 fschat
 jupyter
 numpy
-openai
+openai==0.28.0
 pddl==0.2.0
 scienceworld
 scipy

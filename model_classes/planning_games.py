@@ -7,7 +7,7 @@ from typing import Tuple, List, Dict, Union
 from jinja2 import Template
 from abc import ABC, abstractmethod
 from .planning_game_models import TranslationModel, PlanningModel
-from utils.utils import create_log_file_name
+from utils.helpers import create_log_file_name
 
 
 class PlanningGame(ABC):

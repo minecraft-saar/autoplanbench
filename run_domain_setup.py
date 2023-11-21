@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 from ast import literal_eval
 from pddl_processing.setup_domain import setup_pddl_domain
-from utils.utils import create_log_file_name
+from utils.helpers import create_log_file_name
 
 
 
