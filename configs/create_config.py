@@ -73,22 +73,21 @@ def generate_configs(domain_name: str,
     basic_config = generate_basic_config(config=basic_config, domain_name=domain_name, encoding=encoding, max_steps=max_steps_noninter, break_limit=break_limit_noninter)
     cot_config = generate_cot_config(config=cot_config, domain_name=domain_name, encoding=encoding, max_steps=max_steps_noninter, break_limit=break_limit_noninter)
 
-    config_domain_dir = CONFIG_DIR
-    Path(config_domain_dir).mkdir(exist_ok=True)
+    create_config_domain_dir(domain_name=domain_name, config_dir=CONFIG_DIR)
 
-    with open(os.path.join(config_domain_dir, f'config_basic_{model}.json'), 'w') as f:
+    with open(get_config_file(domain_name=domain_name, config_dir=CONFIG_DIR, approach='basic', model=model), 'w') as f:
         json.dump(basic_config, f, indent=4)
 
-    with open(os.path.join(config_domain_dir, f'config_act_{model}.json'), 'w') as f:
+    with open(get_config_file(domain_name=domain_name, config_dir=CONFIG_DIR, approach='act', model=model), 'w') as f:
         json.dump(act_config, f, indent=4)
 
-    with open(os.path.join(config_domain_dir, f'config_react_{model}.json'), 'w') as f:
+    with open(get_config_file(domain_name=domain_name, config_dir=CONFIG_DIR, approach='react', model=model), 'w') as f:
         json.dump(react_config, f, indent=4)
 
-    with open(os.path.join(config_domain_dir, f'config_state_{model}.json'), 'w') as f:
+    with open(get_config_file(domain_name=domain_name, config_dir=CONFIG_DIR, approach='state', model=model), 'w') as f:
         json.dump(state_config, f, indent=4)
 
-    with open(os.path.join(config_domain_dir, f'config_cot_{model}.json'), 'w') as f:
+    with open(get_config_file(domain_name=domain_name, config_dir=CONFIG_DIR, approach='cot', model=model), 'w') as f:
         json.dump(cot_config, f, indent=4)
 
 

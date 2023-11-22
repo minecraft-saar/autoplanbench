@@ -31,12 +31,12 @@ def setup_files_domain(domain_name: str,
     """
     domain_dir = os.path.join(data_dir, domain_name)
 
-    versions = ['basic', 'incremental', 'state_reasoning', 'react']
+    approaches = ['basic', 'incremental', 'state_reasoning', 'react', 'cot']
 
     # Create few-shot examples
     few_shot_script = os.path.join(proj_dir_path, 'llm_planning', 'create_few_shot_examples.py')
     create_few_shot_files(script=few_shot_script, domain_dir=domain_dir,
-                          few_shot_id=few_shot_id, encoding=encoding, react_length=react_length, versions=versions)
+                          few_shot_id=few_shot_id, encoding=encoding, react_length=react_length, versions=approaches)
 
     # Generate thoughts for few-shot examples
     if llm:
@@ -53,7 +53,7 @@ def setup_files_domain(domain_name: str,
 def create_thought_files(domain_dir: str, data_dir: str, few_shot_id, llm: str):
 
     create_thoughts_script = os.path.join(proj_dir_path, 'llm_planning', 'fill_thought_examples.py')
-    few_shot_dir_react = get_few_shot_dir('react', data_dir=domain_dir)
+    few_shot_dir_react = get_few_shot_dir('react', domain_data_dir=domain_dir)
     template_file = os.path.join(few_shot_dir_react, f'react_template_instance-{few_shot_id}.json')
     nl_file = os.path.join(domain_dir, 'domain_description.json')
     output_file = os.path.join(few_shot_dir_react, f'react_example_instance-{few_shot_id}.json')

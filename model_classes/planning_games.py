@@ -8,6 +8,7 @@ from jinja2 import Template
 from abc import ABC, abstractmethod
 from .planning_game_models import TranslationModel, PlanningModel
 from utils.helpers import create_log_file_name
+from utils.paths import OUTPUT_DIR
 
 
 class PlanningGame(ABC):
@@ -333,10 +334,10 @@ class PlanningGame(ABC):
         prompts['translate_prompt'] = self.get_translate_prompt()
 
         if directory == '':
-            log_path = os.path.join('.', 'output_files', filename)
+            log_path = os.path.join(OUTPUT_DIR, filename)
         else:
-            Path(os.path.join('.', 'output_files', directory)).mkdir(exist_ok=True, parents=True)
-            log_path = os.path.join('.', 'output_files', directory, filename)
+            Path(os.path.join(OUTPUT_DIR, directory)).mkdir(exist_ok=True, parents=True)
+            log_path = os.path.join(OUTPUT_DIR, directory, filename)
         with open(log_path, 'w') as log:
             # add all metadata / main information
             json.dump(metadata, log)

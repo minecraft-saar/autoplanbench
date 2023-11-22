@@ -8,7 +8,8 @@ from argparse import ArgumentParser
 from set_env import set_env_vars
 from llm_planning.game_classes.pddl_game_env import PDDLWorldEnvironment
 from llm_planning.game_classes.pddl_game_env_planbench import PlanBenchEnvironment
-from utils.paths import get_few_shot_dir
+from llm_planning.select_few_shot_example import select_few_shot_instance
+from utils.paths import get_few_shot_dir, get_few_shot_ex_file
 
 
 set_env_vars()
@@ -23,7 +24,7 @@ def create_few_shot_examples(plan_dir, instance_dir, domain_nl_file, domain_file
     :param domain_nl_file:
     :param domain_file:
     :param output_dir:
-    :param planning_type: either 'basic', 'incremental', 'state_reasoning'
+    :param planning_type: either 'basic', 'act', 'state_reasoning'
     :param prefixes:
     :return:
     """
@@ -83,15 +84,18 @@ def create_few_shot_examples(plan_dir, instance_dir, domain_nl_file, domain_file
                 example_output_text += f'{inter[0]}\n'
             example_output_text += '[PLAN END]'
 
-        else:
+        elif planning_type == 'act':
             example_input_text = f'{goal_state}\n'
             example_input_text += f'I: {initial_state}\n'
             for inter in interactions:
                 example_input_text += f'You: {inter[0]}\nI: {inter[1]}\n'
             example_input_text += "You: You're finished\nI: Great!"
             example_output_text = ''
+        else:
+            raise ValueError
 
-        with open(os.path.join(output_dir, f'planning_examples_instance-{instance_id}.json'), 'w') as out:
+        few_shot_file = get_few_shot_ex_file(few_shot_dir=output_dir, instance_id=instance_id, approach=planning_type)
+        with open(few_shot_file, 'w') as out:
             # remove last line break to avoid too many line breaks in prompt
             example_input_text = example_input_text.strip()
             example_output_text = example_output_text.strip()
@@ -216,8 +220,7 @@ if __name__=='__main__':
     domain_nl_file = os.path.join(data_dir, 'domain_description.json')
     domain_file = os.path.join(data_dir, 'domain.pddl')
 
-    output_dir = get_few_shot_dir(planning_approach=planning_approach,
-                                  data_dir=data_dir)
+    output_dir = get_few_shot_dir(planning_approach=planning_approach, domain_data_dir=data_dir)
 
     Path(output_dir).mkdir(exist_ok=True)
 
