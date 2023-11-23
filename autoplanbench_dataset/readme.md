@@ -1,0 +1,1 @@
+See the [readme](https://github.com/minecraft-saar/autoplanbench/tree/main/data) of the data repository for information about how to obtain the data.
