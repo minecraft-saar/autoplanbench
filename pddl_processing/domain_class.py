@@ -198,8 +198,3 @@ class Domain:
 
         return domain_annotation, action_annotations
 
-
-if __name__=='__main__':
-
-    d = Domain('../data/toy_domain.pddl')
-    print ('H')

@@ -224,7 +224,7 @@ if __name__=='__main__':
 
     Path(output_dir).mkdir(exist_ok=True)
 
-    if planning_approach == 'react' or 'cot':
+    if planning_approach == 'react' or planning_approach == 'cot':
         plan_file = os.path.join(plan_dir, f'instance-{example_id}_gold_plan.txt')
         instance_file = os.path.join(instance_dir, f'instance-{example_id}.pddl')
         output_file = os.path.join(output_dir, f'react_template_instance-{example_id}.json')

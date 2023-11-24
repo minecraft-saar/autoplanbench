@@ -24,6 +24,7 @@
     "encoding_type": "",
     "translation_neural": true,
     "incremental": false,
+    "thoughts": false,
     "positive_feedback": "full",
     "negative_feedback": "full",
     "subgoal_feedback": false,

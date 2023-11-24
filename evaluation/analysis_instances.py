@@ -3,8 +3,11 @@ from tarski.io import PDDLReader
 from argparse import ArgumentParser
 from utils.paths import DATA_DIR
 
+"""
+Script to generate an overview over the number of objects, plan lengths, goals facts and size of initial states of the problem instances
+"""
 
-def get_analysis_instances(domain_file, instance_dir, gold_plan_dir):
+def get_analysis_instances(domain_file, instance_dir, gold_plan_dir) -> dict:
 
     n_problems = 0
     plan_lengths = []
@@ -104,7 +107,7 @@ def get_problem(instance, domain: str):
 
 def get_analysis_domains(data_dir: str, output_file: str):
 
-    domains_data = []
+    domains_data = dict()
 
     for domain in os.listdir(data_dir):
         if 'demo' in domain:
@@ -127,12 +130,14 @@ def get_analysis_domains(data_dir: str, output_file: str):
                 print(f'Warning: no instances found for domain {domain}')
             else:
                 info_domain_instances['domain'] = domain
-                domains_data.append(info_domain_instances)
+                domains_data[domain] = info_domain_instances
 
         except FileNotFoundError as e:
             print(e)
 
-    ordered_columns = list(domains_data[0].keys())
+    domains = list(domains_data.keys())
+    domains.sort()
+    ordered_columns = list(domains_data[domains[0]].keys())
     ordered_columns.sort()
     # make sure 'domain' is the first column
     ordered_columns.remove('domain')
@@ -141,7 +146,8 @@ def get_analysis_domains(data_dir: str, output_file: str):
     with open(output_file, 'w') as f:
         header = '\t'.join(ordered_columns)
         f.write(f'{header}\n')
-        for domain_d in domains_data:
+        for d in domains:
+            domain_d = domains_data[d]
             row = []
             for col_name in ordered_columns:
                 row.append(str(domain_d[col_name]))

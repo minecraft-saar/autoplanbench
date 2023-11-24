@@ -101,16 +101,3 @@ def create_gold_plan_files(domain_file: str, instance_dir: str, plan_dir: str, p
     if len(kept_plans) > 0:
         print(f'{len(kept_plans)} were already available and not created again.')
 
-
-if __name__=='__main__':
-
-    create_gold_plan_files(domain_file='./data/logistics/domain.pddl',
-                           instance_dir='./data/logistics/adapted_instances',
-                           plan_dir='./data/logistics/gold_plans',
-                           plan_timeout=1200)
-
-    create_gold_plan_files(domain_file='./data/blocksworld/domain.pddl',
-                           instance_dir='./data/blocksworld/adapted_instances',
-                           plan_dir='./data/blocksworld/gold_plans',
-                           plan_timeout=1200)
-

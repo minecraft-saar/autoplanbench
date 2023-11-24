@@ -1,4 +1,4 @@
-{# Template for the Prompts for the planning model, potentially with few shot examples of complete interaction #}
+{# Template for the Prompts for the planning model in interactive planning approaches, potentially with few shot examples of complete interaction #}
 
 {%- block startinstructions -%}
 You are an assistant for giving instructions to successfully complete small tasks.

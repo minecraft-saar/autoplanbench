@@ -3,11 +3,13 @@ import time
 
 import openai
 import json
+from typing import Union, Tuple
 from set_env import set_env_vars
 from llm_planning.game_classes.pddl_planning_game import PDDLPlanningGame
 from llm_planning.game_classes.pddl_planning_game_thoughts import PDDLGameThoughts
 from llm_planning.game_classes.pddl_planning_game_planbench import PDDLGamePlanBench
 from llm_planning.game_classes.pddl_planning_game_planbench_thoughts import PDDLGamePlanbenchThoughts
+from utils.paths import *
 
 set_env_vars()
 openai.api_key = os.environ['OPENAI_API_KEY']
@@ -75,6 +77,8 @@ def create_game(task_num, instance_config, few_shot_path, game_class) -> PDDLPla
         instance_config.pop('domain_dir')
     if 'planning_approach' in instance_config:
         instance_config.pop('planning_approach')
+    if 'thoughts' in instance_config:
+        instance_config.pop('thoughts')
     if 'encoding_type' in instance_config:
         instance_config.pop('encoding_type')
     game = game_class(**instance_config)
@@ -138,7 +142,8 @@ def get_game_class(thoughts: bool, planbench: bool):
 
     return game_class
 
-def set_up_configurations(config_file:str, few_shot_path: str):
+
+def set_up_configurations(config_file:str, few_shot_id: Union[int, None]) -> Tuple[dict, Union[str, None]]:
 
     with open(config_file, 'r') as cf:
         config = json.load(cf)
@@ -153,7 +158,7 @@ def set_up_configurations(config_file:str, few_shot_path: str):
         config['domain_nl_file'] = os.path.join(domain_dir, 'domain_description.json')
     if config.get('instance_dir', '') == '':
         assert domain_dir
-        config['instance_dir'] = os.path.join(domain_dir, 'adapted_instances')
+        config['instance_dir'] = os.path.join(domain_dir, INST_FOLDER)
 
     # If no task IDs provided, select all files in the instance_dir
     if not config.get('task_nums', []):
@@ -165,41 +170,14 @@ def set_up_configurations(config_file:str, few_shot_path: str):
         config['task_nums'].sort()
         config['task_nums'].pop(0)
 
-    # Select appropriate few shot example files if not specified
+    # Select appropriate few shot example files
     approach_type = config['planning_approach']
-    if not few_shot_path:
-        assert domain_dir
-        if approach_type == 'react':
-            if config['incremental']:
-                potential_files = list(os.listdir(os.path.join(domain_dir, 'few_shot_examples_react')))
-                if len(potential_files) == 1:
-                    few_shot_path = os.path.join(domain_dir, 'few_shot_examples_react', potential_files[0])
-                else:
-                    few_shot_path = os.path.join(domain_dir, 'few_shot_examples_react')
-            else:
-                potential_files = list(os.listdir(os.path.join(domain_dir, 'few_shot_examples_cot')))
-                if len(potential_files) == 1:
-                    few_shot_path = os.path.join(domain_dir, 'few_shot_examples_cot', potential_files[0])
-                else:
-                    few_shot_path = os.path.join(domain_dir, 'few_shot_examples_cot')
 
-        elif approach_type == 'state_reasoning':
-            potential_files = list(os.listdir(os.path.join(domain_dir, 'few_shot_examples_state_reasoning')))
-            if len(potential_files) == 1:
-                few_shot_path = os.path.join(domain_dir, 'few_shot_examples_state_reasoning', potential_files[0])
-            else:
-                few_shot_path = os.path.join(domain_dir, 'few_shot_examples_state_reasoning')
-        elif approach_type == 'simple':
-            if config['incremental']:
-                few_shot_path = os.path.join(domain_dir, 'few_shot_examples_incre')
-            else:
-                few_shot_path = os.path.join(domain_dir, 'few_shot_examples_basic')
-        else:
-            raise ValueError
-    elif few_shot_path == 'None':
+    if not few_shot_id:
         few_shot_path = None
     else:
-        few_shot_path = few_shot_path
+        few_shot_dir_path = get_few_shot_dir(planning_approach=approach_type, domain_data_dir=domain_dir)
+        few_shot_path = get_few_shot_ex_file(few_shot_dir=few_shot_dir_path, instance_id=few_shot_id, approach=approach_type)
 
     return config, few_shot_path
 

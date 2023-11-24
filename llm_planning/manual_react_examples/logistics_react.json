@@ -1,0 +1,12 @@
+{
+    "prefixes": {
+        "input": "",
+        "output": ""
+    },
+    "pos_examples": [
+        [
+          "My goal is that in the end object_0 is at object_3.\nI: My current initial situation is as follows:\nThere are 5 entities: object_0, object_1, object_2, object_3, object_4\nCurrently, object_0 is an object, object_0 is at object_1, object_1 is a truck, object_1 is at object_2, object_2 is a location, object_2 is in the city object_4, object_3 is a location, object_3 is in the city object_4, object_4 is a city\nYou:\n\tThink: The object object_0 is currently at the truck object_1 and the truck object_1 is at location object_2 in city object_4. The object object_0 needs to be moved to location object_3 in city object_4.\n\tInstruction: drive truck object_1 from location object_2 in city object_4 to location object_3 in the same city\nI: I drive truck object_1 from location object_2 in city object_4 to location object_3 in the same city\nYou:\n\tThink: Now, the truck object_1 is at location object_3 in city object_4 and the object object_0 is still at the truck object_1.\n\tInstruction: unload object object_0 from truck object_1 at location object_3\nI: I unload object object_0 from truck object_1 at location object_3\nYou:\n\tThink: Now, the object object_0 is at location object_3\n\tInstruction: You are finished.\nI: Great!",
+          ""
+        ]
+    ]
+}

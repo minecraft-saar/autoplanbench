@@ -1,4 +1,3 @@
-from typing import List, Tuple, Union
 from model_classes.planning_game_models import TranslationModel, PlanningModel
 
 class PlanningModelBlocksWorld(PlanningModel):
@@ -15,7 +14,7 @@ class PlanningModelBlocksWorld(PlanningModel):
         super().__init__(model_type=model_type, model_param=model_param, examples_dict=example_dict, init_prompt=init_prompt)
 
 
-    def generate(self, user_message):
+    def generate(self, user_message) -> str:
         assert type(user_message) == str
         if not self.examples_chat:
             user_message = self.create_input_format_example(user_message)

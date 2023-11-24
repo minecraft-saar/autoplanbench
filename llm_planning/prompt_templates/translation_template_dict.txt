@@ -1,4 +1,4 @@
-{# Template for the prompts for the translation model in the PDDL environment #}
+{# Template for the prompts for the translation model in the PDDL environment when using the two step approach for translating object names #}
 
 {%- block startinstructions -%}
 Your task is to translate natural language instructions into a schematic planning language.

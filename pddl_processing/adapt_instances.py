@@ -79,11 +79,6 @@ def adapt_inst_file(file_content: str, inst_file: str):
             replace_term = f'{pre_obj_white_space}{new_object_name}{post_obj_white_space}'
             file_content = file_content.replace(obj_occ, replace_term)
 
-        #temp_placeholder = '[PLACEHOLDER]'
-        #file_content = file_content.replace(f' {object} ', f' {temp_placeholder} ')
-        #file_content = file_content.replace(f' {object})', f' {temp_placeholder})')
-        #file_content = file_content.replace(f'{temp_placeholder}', f'{new_object_name}')
-
     return file_content, object_mappings
 
 

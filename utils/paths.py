@@ -14,8 +14,10 @@ ORIG_INST_FOLDER = 'orig_problems'
 INST_FOLDER = 'adapted_instances'
 GOLD_PLAN_FOLDER = 'gold_plans'
 
+APPROACHES = ['basic', 'act', 'state_reasoning', 'react', 'cot']
 
-#APPROACHES =
+THOUGHT_GEN_EXAMPLE_DOMAIN = os.path.join(PROJ_DIR, 'llm_planning', 'manual_react_examples', 'logistics_domain_description.json')
+THOUGHT_GEN_EXAMPLE_FILE = os.path.join(PROJ_DIR, 'llm_planning', 'manual_react_examples', 'logistics_react.json')
 
 def get_domain_file_path(domain_name, data_dir):
     domain_data_dir = get_domain_data_dir(domain_name=domain_name, data_dir=data_dir)
@@ -28,8 +30,8 @@ def get_few_shot_dir(planning_approach, domain_data_dir):
 
     if planning_approach == 'basic':
         output_dir = os.path.join(domain_data_dir, 'few_shot_examples_basic')
-    elif planning_approach == 'incremental':
-        output_dir = os.path.join(domain_data_dir, 'few_shot_examples_incre')
+    elif planning_approach == 'act':
+        output_dir = os.path.join(domain_data_dir, 'few_shot_examples_act')
     elif planning_approach == 'state_reasoning':
         output_dir = os.path.join(domain_data_dir, 'few_shot_examples_state_reasoning')
     elif planning_approach == 'react':
@@ -40,6 +42,11 @@ def get_few_shot_dir(planning_approach, domain_data_dir):
         raise ValueError
 
     return output_dir
+
+
+def get_few_shot_ex_file(few_shot_dir, instance_id, approach):
+    return os.path.join(few_shot_dir, f'{approach}_examples_instance-{instance_id}.json')
+
 
 def get_gold_plan_dir(domain_name, data_dir):
     return os.path.join(data_dir, domain_name, GOLD_PLAN_FOLDER)
@@ -61,7 +68,4 @@ def get_config_domain_dir(domain_name, config_dir):
 def create_config_domain_dir(domain_name, config_dir):
     config_domain_dir = get_config_domain_dir(domain_name=domain_name, config_dir=config_dir)
     Path(config_domain_dir).mkdir(exist_ok=True)
-
-def get_few_shot_ex_file(few_shot_dir, instance_id, approach):
-    return os.path.join(few_shot_dir, f'{approach}_examples_instance-{instance_id}.json')
 

@@ -7,8 +7,6 @@ from typing import Union
 from ast import literal_eval
 from utils.paths import *
 
-proj_dir_path = Path(__file__).resolve().parent.parent
-
 
 """
 Code to automatically generate the config files for the different 
@@ -16,8 +14,9 @@ planning approaches for a domain with the parameters used for the experiments
 """
 
 
-def get_standard_config(config_template='config_default_template.json'):
-
+def get_standard_config(config_template: Union[str, None]= None):
+    if config_template is None:
+        config_template = os.path.join(CONFIG_DIR, 'config_default_template.json')
     with open(config_template, 'r') as f:
         config = json.load(f)
     return config
@@ -41,6 +40,7 @@ def generate_configs(domain_name: str,
     instance_dir = os.path.join(domain_dir, INST_FOLDER)
 
     config = get_standard_config()
+    config['domain_dir'] = domain_dir
     config['domain_file'] = domain_file
     config['domain_nl_file'] = domain_nl_file
     config['instance_dir'] = instance_dir
@@ -95,10 +95,10 @@ def generate_configs(domain_name: str,
 def get_available_inst_ids(domain_name):
     list_ids = []
     if 'planbench' in domain_name:
-        inst_dir_rel = os.path.join(proj_dir_path, PLANBENCH_DATA_DIR, domain_name, INST_FOLDER)
+        inst_dir_rel = os.path.join(PROJ_DIR, PLANBENCH_DATA_DIR, domain_name, INST_FOLDER)
 
     else:
-        inst_dir_rel = os.path.join(proj_dir_path, DATA_DIR, domain_name, INST_FOLDER)
+        inst_dir_rel = os.path.join(PROJ_DIR, DATA_DIR, domain_name, INST_FOLDER)
 
     for instance_file in os.listdir(inst_dir_rel):
         instance_file = str(instance_file)
@@ -127,8 +127,9 @@ def generate_act_config(config: dict, domain_name: str, encoding: str, max_steps
 
     config = generate_interactive_config(config, encoding, max_steps, break_limit)
 
-    config['planning_approach'] = 'simple'
-    config['run_config']['directory'] = f'{domain_name}_act_1_shot'
+    config['planning_approach'] = 'act'
+    config['thoughts'] = False
+    config['run_config']['directory'] = f'{domain_name}_{config["planning_approach"]}_1_shot'
 
     return config
 
@@ -138,7 +139,8 @@ def generate_react_config(config: dict, domain_name: str, encoding: str, max_ste
     config = generate_interactive_config(config, encoding, max_steps, break_limit)
 
     config['planning_approach'] = 'react'
-    config['run_config']['directory'] = f'{domain_name}_react_1_shot'
+    config['thoughts'] = True
+    config['run_config']['directory'] = f'{domain_name}_{config["planning_approach"]}_1_shot'
 
     return config
 
@@ -148,7 +150,8 @@ def generate_state_react_config(config: dict, domain_name: str, encoding: str, m
     config = generate_interactive_config(config, encoding, max_steps, break_limit)
 
     config['planning_approach'] = 'state_reasoning'
-    config['run_config']['directory'] = f'{domain_name}_state_reason_1_shot'
+    config['thoughts'] = True
+    config['run_config']['directory'] = f'{domain_name}_{config["planning_approach"]}_1_shot'
 
     return config
 
@@ -173,8 +176,9 @@ def generate_basic_config(config: dict, domain_name: str, encoding: str, max_ste
 
     config = generate_non_interactive_config(config, encoding, max_steps, break_limit)
 
-    config['planning_approach'] = 'simple'
-    config['run_config']['directory'] = f'{domain_name}_basic_1_shot'
+    config['planning_approach'] = 'basic'
+    config['thoughts'] = False
+    config['run_config']['directory'] = f'{domain_name}_{config["planning_approach"]}_1_shot'
 
     return config
 
@@ -183,8 +187,9 @@ def generate_cot_config(config: dict, domain_name:str, encoding: str, max_steps:
 
     config = generate_non_interactive_config(config, encoding, max_steps, break_limit)
 
-    config['planning_approach'] = 'react'
-    config['run_config']['directory'] = f'{domain_name}_cot_1_shot'
+    config['planning_approach'] = 'cot'
+    config['thoughts'] = True
+    config['run_config']['directory'] = f'{domain_name}_{config["planning_approach"]}_1_shot'
 
     return config
 

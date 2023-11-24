@@ -243,13 +243,13 @@ if __name__=='__main__':
 
     parser = ArgumentParser()
     parser.add_argument('-c', required=True, help="Path to the original .yaml config file")
-    parser.add_argument('--planbench_dir', required=True)
-    parser.add_argument('--orig_data_dir', required=True)
+    parser.add_argument('--planbench_dir', required=True, help="Path to the folder where the new processed files should be saved to.")
+    parser.add_argument('--orig_data_dir', required=True, help="Path to the folder with the original problem pddl files.")
 
     args = parser.parse_args()
 
     orig_config_path = args.c
-    new_config_path = os.path.join(os.path.split(orig_config_path)[0], 'domain_description.json')
+    new_config_path = os.path.join(args.planbench_dir, 'domain_description.json')
 
     # Transform the natural language descriptions into the required format
     transform_planbench_config(yaml_config_file=orig_config_path,

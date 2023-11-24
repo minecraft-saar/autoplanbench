@@ -1,6 +1,10 @@
 import os
 from argparse import ArgumentParser
 
+"""
+Puts all evaluation results from the specified folder into 
+one table for comparisons
+"""
 
 def create_eval_overview(eval_files: list, overview_file: str):
     """

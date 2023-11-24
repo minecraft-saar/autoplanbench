@@ -165,7 +165,6 @@ class PDDLDescriber:
         mappings_templates = dict()
 
         for name, instance in inputs.items():
-            #print(f'Model input: {instance}')
             model_output = llm_model.generate(user_message=instance)
             model_output = model_output.replace('Output: ', '')
 
@@ -179,8 +178,6 @@ class PDDLDescriber:
 
             mappings[name] = output_formatted
             mappings_templates[name] = output_template
-            #print(f'Model output template: {output_template}')
-            #print(f'Model output formatted: {output_formatted}')
 
         return mappings, mappings_templates
 
@@ -346,7 +343,6 @@ class PDDLDescriber:
         pos_precond_nl = self.get_pred_nl_description_for_prompt(predicates=pos_precond_action)
 
         # add the types as positive preconditions
-        #if self.domain.types.keys():
         for param_name, param_type in self.domain.actions[action_name]['parameters'].items():
             if param_type.startswith('a') or param_type.startswith('e') or param_type.startswith('i') \
                 or param_type.startswith('o') or param_type.startswith('u'):
@@ -444,7 +440,6 @@ class PDDLDescriber:
             object_refs[param_name] = param_id
             self.object_mappings[action_name][param_name] = param_id
 
-        #action_description = self.action_mappings_indef[action_name].format(*object_refs)
         action_description = self.action_nl_templates_indef[action_name].format_map(object_refs)
 
         return action_description
@@ -487,12 +482,3 @@ class PDDLDescriber:
 
         return descriptions
 
-if __name__=='__main__':
-
-    pddl_describer = PDDLDescriber(domain_file='../data/toy_domain.pddl')
-    examples_file = f'./examples/examples_mappings_extended.json'
-    pddl_describer.create_domain_descriptions_from_scratch(prompt_file=examples_file,
-                                                           output_file='../data/toy_description.json',
-                                                           description_version='medium',
-                                                           pddl2text_llm='gpt-3.5-turbo',
-                                                           pddl2text_version='extended')

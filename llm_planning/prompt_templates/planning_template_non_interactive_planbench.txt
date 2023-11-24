@@ -1,4 +1,4 @@
-{# Template for the Prompts for the planning model with planbench descriptions #}
+{# Template for the prompts for the planning model in non-interactive planning approaches, potentially with few shot examples of complete interaction; for the data generated from PlanBench (Valmeekam et al.) data #}
 
 {%- block startinstructions -%}
 You are an assistant for giving instructions to successfully complete small tasks.

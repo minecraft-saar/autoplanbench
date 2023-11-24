@@ -10,6 +10,7 @@ from pddl_processing.create_translation_examples import create_translation_examp
 from pddl_processing.create_gold_plans import create_gold_plan_files
 from pddl_processing.problem_generator_filter import select_problems
 
+
 def setup_pddl_domain(domain_file: str,
                       orig_instances_dir: str,
                       output_dir: str,
@@ -25,7 +26,7 @@ def setup_pddl_domain(domain_file: str,
     :param domain_file:
     :param orig_instances_dir:
     :param output_dir:
-    :param n_instances: if set to None then all instances from the orig_instances_dir are chosen and names kept the same
+    :param n_instances: if set to None / not set then all instances from the orig_instances_dir are chosen and names kept the same
     :param len_constraint:
     :param plan_timeout:
     :param overwrite:

@@ -4,7 +4,6 @@ import re
 from typing import Tuple, List, Dict
 from collections import defaultdict
 from tarski.io import PDDLReader
-from tarski.syntax.terms import Constant, Sort
 import atexit
 
 

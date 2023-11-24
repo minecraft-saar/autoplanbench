@@ -9,9 +9,6 @@ from pddl_processing.PDDL_describer import PDDLDescriber
 
 def create_translation_examples(pddl_describer: PDDLDescriber):
 
-    # For this I need some of the object mappings I think; but it would be good, to set the object ID in the name very high
-    # Or I just take objects that are very unlikely to be part of a domain and put them together with high IDs
-
     example_actions = select_random_actions(pddl_describer=pddl_describer, n=5)
 
     descriptions = []
@@ -235,21 +232,5 @@ def select_random_actions(pddl_describer: PDDLDescriber, n=4):
     example_actions = example_actions[:n]
 
     return example_actions
-
-
-if __name__=='__main__':
-
-    pddl_describer = PDDLDescriber('./data/logistics/domain.pddl')
-    pddl_describer.instantiate_from_file(description_file='./data/logistics/logistics_domain_description.json')
-    output_dir = './data/logistics/'
-
-    print(f'---- Creating Few-shot Examples ----')
-    translation_examples_file = os.path.join(output_dir, 'translation_examples.json')
-    translation_examples_repl_file = os.path.join(output_dir, 'translation_examples_dict.json')
-    example_data, example_data_replace = create_translation_examples(pddl_describer)
-    with open(translation_examples_file, 'w') as f:
-        json.dump(example_data, f, indent=4)
-    with open(translation_examples_repl_file, 'w') as f:
-        json.dump(example_data_replace, f, indent=4)
 
 
