@@ -86,7 +86,7 @@ def create_translation_examples(pddl_describer: PDDLDescriber):
     except ValueError:
         pass
     pos_ex = [example1, example2, example3, example4]
-    pos_examples = [pex for pex in pos_ex if pos_ex != []]
+    pos_examples = [pex for pex in pos_ex if pex != []]
     example_data = {'prefixes': {'input': 'Input:', 'output': 'Output:'},
                     'example_objs': example_objects,
                     'pos_examples': pos_examples}
@@ -104,7 +104,7 @@ def create_translation_examples(pddl_describer: PDDLDescriber):
     example4 = [f'The next step is to {descriptions[4]}.', f'[1] {pddls[4]} [2] {pddls_replaced[4]}'] if len(example_actions) > 4 else []
 
     pos_ex = [example1, example2, example3, example4]
-    pos_examples = [pex for pex in pos_ex if pos_ex != []]
+    pos_examples = [pex for pex in pos_ex if pex != []]
 
     example_data_repl = {'prefixes': {'input': 'Input:', 'output': 'Output:'},
                     'example_objs': example_objects,

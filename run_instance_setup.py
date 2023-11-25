@@ -25,7 +25,7 @@ if __name__=='__main__':
                                  help='Path to the domain.pddl file. Defaults to domain.pddl in the folder specified by -o.')
     argument_parser.add_argument('-i', required=False, default=None,
                                  help='Path to the directory with the original instance pddl files. Defaults to utils.paths.ORIT_INST_FOLDER in the folder specified by -o')
-    argument_parser.add_argument('--nl', required=True, help='Path to the file with the created NL descriptions.')
+    argument_parser.add_argument('--nl', required=False, help='Path to the file with the created NL descriptions. Defaults to domain.description.json in the folder specified by -o')
     argument_parser.add_argument('-n', required=False, default=None, help='Number of instances to select from the original instances. If not set, all are kept')
     argument_parser.add_argument('--len', required=False, default=(2, 20), help='Select only instances for which the length of the optimal plan is within the specified limits (inclusive). Default is (2, 20)')
     argument_parser.add_argument('--timeout', required=False, default=1200, help='Time (in sec) to wait until stopping planning if no plan found so far. Default is 1200, i.e. 20 minutes.')
@@ -34,10 +34,12 @@ if __name__=='__main__':
 
     args = argument_parser.parse_args()
     Path(args.o).mkdir(exist_ok=True, parents=True)
-    pddl_describer = PDDLDescriber(domain_file=args.d)
-    pddl_describer.instantiate_from_file(args.nl)
 
     domain_file = os.path.join(args.o, 'domain.pddl') if args.d is None else args.d
+    nl_domain_file = os.path.join(args.o, 'domain_description.json') if args.nl is None else args.nl
+    pddl_describer = PDDLDescriber(domain_file=domain_file)
+    pddl_describer.instantiate_from_file(nl_domain_file)
+
     orig_inst_dir = os.path.join(args.o, ORIG_INST_FOLDER) if args.i is None else args.i
 
     len_range = literal_eval(args.len) if isinstance(args.len, str) else args.len

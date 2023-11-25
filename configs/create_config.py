@@ -68,7 +68,7 @@ def generate_configs(domain_name: str,
     cot_config = deepcopy(config)
 
     act_config= generate_act_config(config=act_config, domain_name=domain_name, encoding=encoding, max_steps=max_steps_inter, break_limit=break_limit_inter)
-    state_config = generate_act_config(config=state_config, domain_name=domain_name, encoding=encoding, max_steps=max_steps_inter, break_limit=break_limit_inter)
+    state_config = generate_state_react_config(config=state_config, domain_name=domain_name, encoding=encoding, max_steps=max_steps_inter, break_limit=break_limit_inter)
     react_config = generate_react_config(config=react_config, domain_name=domain_name, encoding=encoding, max_steps=max_steps_inter, break_limit=break_limit_inter)
     basic_config = generate_basic_config(config=basic_config, domain_name=domain_name, encoding=encoding, max_steps=max_steps_noninter, break_limit=break_limit_noninter)
     cot_config = generate_cot_config(config=cot_config, domain_name=domain_name, encoding=encoding, max_steps=max_steps_noninter, break_limit=break_limit_noninter)
@@ -84,7 +84,7 @@ def generate_configs(domain_name: str,
     with open(get_config_file(domain_name=domain_name, config_dir=CONFIG_DIR, approach='react', model=model), 'w') as f:
         json.dump(react_config, f, indent=4)
 
-    with open(get_config_file(domain_name=domain_name, config_dir=CONFIG_DIR, approach='state', model=model), 'w') as f:
+    with open(get_config_file(domain_name=domain_name, config_dir=CONFIG_DIR, approach='state_reasoning', model=model), 'w') as f:
         json.dump(state_config, f, indent=4)
 
     with open(get_config_file(domain_name=domain_name, config_dir=CONFIG_DIR, approach='cot', model=model), 'w') as f:

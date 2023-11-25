@@ -2,12 +2,26 @@ import os
 from typing import Tuple, Union
 from collections import defaultdict
 import random
+from argparse import ArgumentParser
+from ast import literal_eval
 
+"""
+Script to randomly select one problem instance as few-shot example given a constraint
+on the number of steps in the optimal gold plan
+"""
 
 def select_few_shot_instance(instance_dir: str,
                              plan_dir: str,
-                             length_criterium: Union[Tuple[int, int], None],
-                             alternative_criterium: str):
+                             length_criterium: Union[Tuple[int, int], None] = None,
+                             alternative_criterium: str  = 'random'):
+    """
+
+    :param instance_dir:
+    :param plan_dir:
+    :param length_criterium:
+    :param alternative_criterium:
+    :return:
+    """
     assert alternative_criterium in ['minimum', 'maximum', 'random']
     length_by_inst = defaultdict(list)
 
@@ -48,3 +62,18 @@ def select_few_shot_instance(instance_dir: str,
     return few_shot_id
 
 
+if __name__=='__main__':
+
+    parser = ArgumentParser()
+    parser.add_argument('-i', required=True, help='Path to the directory with the instances.')
+    parser.add_argument('-p', required=True, help='Path to the directory with the optimal plans.')
+    parser.add_argument('--len', required=False, default=None, help='Tuple (min, max) for the length constraint, i.e. only instances with min <= optimal plan length <= max are considered. Default is None, i.e. all are considered')
+    parser.add_argument('--alt', required=False, default='random', help='Alternative constraint for selecting few-shot example if none matches the length criterium. Can be "random" for selecting any instance, "max" or "min" for selecting the instance with the shortest or longest optimal plan.')
+
+    args = parser.parse_args()
+    length_criterium = literal_eval(args.len) if args.len is not None else args.len
+
+    select_few_shot_instance(instance_dir=args.i,
+                             plan_dir=args.p,
+                             length_criterium=length_criterium,
+                             alternative_criterium=args.alt)
