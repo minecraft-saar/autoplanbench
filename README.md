@@ -81,7 +81,7 @@ This will run the same experiments as reported in the paper with the same parame
 
 ## Running Individual Steps 
 
-### Generating the domain descriptions, adapted instances, gold plans and translation examples
+### 1. Generating the domain descriptions, adapted instances, gold plans and translation examples
 
 `python run_domain_setup.py -o [out_dir] --llm [llm]`
 
@@ -109,16 +109,52 @@ Additional optional arguments:
 * `--nl`: Path to the file with the created NL descriptions. Defaults to domain_description.json in the folder specified by -o
 
 
-### Generate planning few-shot examples and configurations
+### 2. Generate planning few-shot examples and configurations
 
 **Generate few-shot examples and configurations**<br>
+
+In order to generate the few-shot example files and configuration files for all approaches specified by utils.paths.APPROACHES the following command can be used:
+
 `python run_setup_exp_files.py -d [domain_name] --ex-id [example_id] --llm [llm]`
 
+* `domain_name`: name of the domain
+* `example_id`: ID of instance that gets used as few-shot example and should be excluded from the experiment.
+* `llm`:  name of the LLM to use for generating the thoughts and that is used as both the planning and nl-to-pddl translation LLM (to use two different models, the configuration files need to be created / changed manually)
+
+Additional optional arguments:
+* `--thoughts`: Whether thoughts should be generated for react and cot examples. Otherwise only templates with placeholders for the thoughts are generated. Defaults to True
+* `--rl`: Number of steps in the ReAct example. If not set or set to None then the specified example is not shortened. Otherwise the ReAct and CoT few-shot example is shortened to the last --rl steps. 
+* `--react-exd`: Path to the file with the nl description of the example domain. Defaults to utils.paths.THOUGHT_GEN_EXAMPLE_DOMAIN
+* `--react-exf`: Path to the file with the react interaction example. Defaults to utils.paths.THOUGHT_GEN_EXAMPLE_FILE.
+* `--ms-i`: Max number of steps the planning LLM is allowed to predict in the interactive approaches; defaults to 24
+* `--br-i`: Break limit for interactive approaches, i.e. if br-i consecutive predictions are not executable then stop; defaults to 5
+* `--ms-ni`: Max number of steps the planning LLM is allowed to predict in the non-interactive approaches; defaults to 1
+* `--br-ni`: Break limit for non-interactive approaches, i.e. if br-ni consecutive predictions are not executable then stop; defaults to 1
+* `--enc`: Type of the encoding. Should be 'planbench' if LLM planning is run on the domain encodings from [PlanBench](https://github.com/karthikv792/LLMs-Planning/tree/main/plan-bench). Otherwise should be 'automatic'. Defaults to 'automatic'.
+* `--dd`: Path to the directory with the data; defaults to utils.paths.DATA_DIR
+
+
 **Generating few-shot examples**<br>
-`python llm_planning/create_few_shot_examples.py `
+
+In order to generate the few-shot examples for a specific domain and specific approach run:
+
+`python llm_planning/create_few_shot_examples.py --dir [data_dir] --pref [prefixes] --version [approach]`
+
+* `data_dir`: Path to the directory with the files of the specific domain
+* `prefixes`: Tuple of the prefixes that should be added to the beginning of the input and output few-shot examples. First prefix is for the input and second one for the output. Is usuall ("", "") for the interactive approaches and (["STATEMENT"], ["PLAN"]) for the non-interactive ones
+* `approach`: The approach for which the few-shot examples get generated ('basic', 'act', 'cot', 'react' or 'state_reasoning')
+
+Additional optional arguments:
+* `--ex-id`: The ID of the instance that should be converted into a few-shot example. If not set then all instances are converted into a few-shot example.
+* `--enc` and `--rl` as above
+
+**Note**: for the react and cot approach, this function only generates templates, i.e. with placeholders for the thoughts. In order to generate thoughts using an LLM and add them run the llm_planning/fill_thought_examples.py script
 
 
 **Generate planning configurations**<br>
+
+In order to generate the configuration files for all 5 implement approaches for a specific domain the following command can be used:
+
 `python configs/create_config.py -d [domain_name] --llm [llm]`
 
 * `domain_name`: name of the domain
@@ -128,13 +164,10 @@ Additional optional arguments:
 * `--d-dir`: Path domain directory. Defaults to utils.paths.DATA_DIR/domain_name
 * `--ex-id`: ID of instance that gets used as few-shot example and should be excluded from the experiment. If set to None, all instances from --d-dir/adapted_instances are included in the experiments. Defaults to None.
 * `--enc`: Type of the encoding. Should be 'planbench' if LLM planning is run on the domain encodings from [PlanBench](https://github.com/karthikv792/LLMs-Planning/tree/main/plan-bench). Otherwise should be 'automatic'. Defaults to 'automatic'.
-* `--ms-i`: Max number of steps the planning LLM is allowed to predict in the interactive approaches; defaults to 24
-* `--br-i`: Break limit for interactive approaches, i.e. if br-i consecutive predictions are not executable then stop; defaults to 5
-* `--ms-ni`: Max number of steps the planning LLM is allowed to predict in the non-interactive approaches; defaults to 1
-* `--br-ni`: Break limit for non-interactive approaches, i.e. if br-ni consecutive predictions are not executable then stop; defaults to 1
+* `--ms-i`, `--br-i`, `--ms-ni`, `--br-ni`, `--enc` as above
 
 
-### Running LLM planning
+### 3. Running LLM planning
 
 `python run_planning.py --config [config] --few-shot-id [example_id]`
 
@@ -142,5 +175,5 @@ Additional optional arguments:
 * `example_id`: ID fo the few-shot example to use. Will be selected from the few-shot example directory of the specific approach; For example, if the approach is 'basic' and example_id is X then the few-shot example is read from the file DATA_DIR/domain_name/few_shot_examples_basic/basic_examples_instance-X.json
 
 
-### Evaluation
+### 4. Evaluation
 See the [evaluation Readme](https://github.com/minecraft-saar/autoplanbench/blob/main/evaluation/README.md#evaluation).
