@@ -41,6 +41,17 @@ def set_env_vars():
 ## Running the complete Pipeline
 
 
-## Running step-by-step 
 
+
+## Running Individual Steps 
+
+### Generating the domain descriptions
+
+### Generating adapted instances, gold plans and translation examples
+
+### Generating planning few-shot examples
+
+### Generating planning configurations 
+
+### Running LLM planning
 
