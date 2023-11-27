@@ -10,11 +10,8 @@ This Readme contains the information needed to run the main parts of the project
 
 Readme:
 * [Requirements](https://github.com/minecraft-saar/LLM-planning-PDDL-domains/blob/main/README.md#requirements)
-* [Converting PDDL to NL](https://github.com/minecraft-saar/LLM-planning-PDDL-domains/blob/main/README.md#converting-pddl-to-natural-language)
-* [LLM Planning](https://github.com/minecraft-saar/LLM-planning-PDDL-domains/blob/main/README.md#llm-planning)
-    * [Planning Configs](https://github.com/minecraft-saar/LLM-planning-PDDL-domains/blob/main/README.md#config-file)
-    * [LLM Configs](https://github.com/minecraft-saar/LLM-planning-PDDL-domains/blob/main/README.md#llm-config)
-    * [Few Shot examples](https://github.com/minecraft-saar/LLM-planning-PDDL-domains/blob/main/README.md#few-shot-examples)
+* [AutoPlanBench Overview](https://github.com/minecraft-saar/autoplanbench#autoplanbench-overview)
+* [Running the Pipeline]([https://github.com/minecraft-saar/LLM-planning-PDDL-domains/blob/main/README.md#llm-planning](https://github.com/minecraft-saar/autoplanbench#running-the-complete-pipeline))
 
 ## Requirements
 * `conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia`
@@ -25,12 +22,7 @@ Readme:
 
 If running vicuna with bitsandbytes it might be necessary to manually install the transformers library from source.
 
-the following environment variables need to be set
-* 'OPENAI_API_KEY'
-* 'FAST_DOWNWARD', 'VAL'
-* 'TOKENIZERS_PARALLELISM' = 'false'
-
-Create a file `set_env.py` in the main directory that looks like this:
+Create a file `set_env.py` in the main directory and specify the environment variables for openai and the planning tools like this:
 ```
 import os
 def set_env_vars():
@@ -43,7 +35,7 @@ def set_env_vars():
 
 ## AutoPlanBench Overview
 <center>
-    <img src="images/autoplanbench.svg" width="60%" />
+    <img src="images/autoplanbench.svg" width="40%" />
 </center>
 
 ## Running the complete Pipeline
