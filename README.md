@@ -12,6 +12,13 @@ Readme:
 * [Requirements](https://github.com/minecraft-saar/LLM-planning-PDDL-domains/blob/main/README.md#requirements)
 * [AutoPlanBench Overview](https://github.com/minecraft-saar/autoplanbench#autoplanbench-overview)
 * [Running the Pipeline]([https://github.com/minecraft-saar/LLM-planning-PDDL-domains/blob/main/README.md#llm-planning](https://github.com/minecraft-saar/autoplanbench#running-the-complete-pipeline))
+* [Running individual steps](https://github.com/minecraft-saar/autoplanbench/blob/main/README.md#running-individual-steps)
+    * [Generating domain descriptions](https://github.com/minecraft-saar/autoplanbench#generating-the-domain-descriptions)
+    * [Generating adapted instances, gold plans, translation examples](https://github.com/minecraft-saar/autoplanbench#generating-adapted-instances-gold-plans-and-translation-examples)
+    * [Generating planning few-shot examples](https://github.com/minecraft-saar/autoplanbench#generating-planning-few-shot-examples)
+    * [Generating planning configurations](https://github.com/minecraft-saar/autoplanbench#generating-planning-configurations)
+    * [Running LLM planning](https://github.com/minecraft-saar/autoplanbench#running-llm-planning)
+    * [Evaluation]()
 
 ## Requirements
 * `conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia`
@@ -55,3 +62,4 @@ def set_env_vars():
 
 ### Running LLM planning
 
+### Evaluation
