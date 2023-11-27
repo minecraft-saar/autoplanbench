@@ -43,7 +43,7 @@ def set_env_vars():
 
 ## AutoPlanBench Overview
 <center>
-    <img src="static/images/autoplanbench/autoplanbench.svg" width="60%" />
+    <img src="images/autoplanbench.svg" width="60%" />
 </center>
 
 ## Running the complete Pipeline
