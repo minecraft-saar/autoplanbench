@@ -13,8 +13,7 @@ Readme:
 * [AutoPlanBench Overview](https://github.com/minecraft-saar/autoplanbench#autoplanbench-overview)
 * [Running the Pipeline](https://github.com/minecraft-saar/autoplanbench#running-the-complete-pipeline)
 * [Running individual steps](https://github.com/minecraft-saar/autoplanbench/blob/main/README.md#running-individual-steps)
-    * [Generating domain descriptions](https://github.com/minecraft-saar/autoplanbench#generating-the-domain-descriptions)
-    * [Generating adapted instances, gold plans, translation examples](https://github.com/minecraft-saar/autoplanbench#generating-adapted-instances-gold-plans-and-translation-examples)
+    * [Generating domain descriptions, instances, etc.](https://github.com/minecraft-saar/autoplanbench#generating-the-domain-descriptions)
     * [Generating planning few-shot examples](https://github.com/minecraft-saar/autoplanbench#generating-planning-few-shot-examples)
     * [Generating planning configurations](https://github.com/minecraft-saar/autoplanbench#generating-planning-configurations)
     * [Running LLM planning](https://github.com/minecraft-saar/autoplanbench#running-llm-planning)
@@ -83,9 +82,33 @@ This will run the same experiments as reported in the paper with the same parame
 
 ## Running Individual Steps 
 
-### Generating the domain descriptions
+### Generating the domain descriptions, adapted instances, gold plans and translation examples
 
-### Generating adapted instances, gold plans and translation examples
+`python run_domain_setup.py -o [out_dir] --llm [llm]`
+
+* `out_dir`: Path to the directory where all files for the specific domain are located 
+* `llm`: Name of the LLM to use
+
+Additional optional arguments:
+* `-d`: Path to the domain.pddl file. Defaults to domain.pddl in the folder specified by -o.
+* `-i`: Path to the directory with the original instance pddl files. Defaults to utils.paths.ORIT_INST_FOLDER in the folder specified by -o
+* `-n`: number of instances that should be preprocessed and selected; If not set, then all instances from -i directory that are solvable and fulfill the length criterium are selected
+* `--len`: Select only instances for which the length of the optimal plan is within the specified limits (inclusive). Default is (2, 20)
+* `--timeout`: Time (in sec) to let fast downward try to find an optimal gold plan. If no plan is found within this time limit the problem is treated as unsolvable, i.e. not considered. Default is 1200, i.e. 20 minutes. 
+* `--overwrite`: Whether to re-run the adaption and plan generation for instances for which they already exist. Default is False
+* `--desc`: Approach to create the precondition and effect descriptions: 'medium', 'long' or 'short'. Defaults to 'medium'. (see [here](https://github.com/minecraft-saar/autoplanbench/wiki/Generating-Natural-Language-Descriptions#composing-domain-descriptions-from-fragments) for mor details)
+* `--to-text`: Type of few-shot examples to use for creating the natural language domain descriptions: 'extended', 'annotated', 'full', 'simple; Defaults to 'extended' (see [here](https://github.com/minecraft-saar/autoplanbench/wiki/Generating-Natural-Language-Descriptions#prompts-and-examples-for-generating-the-natural-language-fragments) for more details)
+
+**Generate only domain descriptions**<br>
+Set `-n 0` in the command from above
+
+**Generate adapted instances, gold plans and translation examples based on existing domain description**<br>
+`python run_instance_setup.py -o [out_dir]`
+
+Additional optional arguments:
+* `-d`, `-n`, `--len`, `--timeout`, `--overwrite` as described above 
+* `--nl`: Path to the file with the created NL descriptions. Defaults to domain_description.json in the folder specified by -o
+
 
 ### Generating planning few-shot examples
 
