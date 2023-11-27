@@ -75,8 +75,8 @@ This will run the same experiments as reported in the paper with the same parame
   * `--to-text`: Type of few-shot examples to use for creating the natural language domain descriptions: 'extended', 'annotated', 'full', 'simple; Defaults to 'extended' (see [here](https://github.com/minecraft-saar/autoplanbench/wiki/Generating-Natural-Language-Descriptions#prompts-and-examples-for-generating-the-natural-language-fragments) for more details)
   * `--ms-i`: Max number of steps the planning LLM is allowed to predict in the interactive approaches; defaults to 24
   * `--br-i`: Break limit for interactive approaches, i.e. if br-i consecutive predictions are not executable then stop; defaults to 5
-  * `--ms-ni`: Max number of steps the planning LLM is allowed to predict in the non-interactive approaches; defaults to 24
-  * `--br-ni`: Break limit for non-interactive approaches, i.e. if br-ni consecutive predictions are not executable then stop; defaults to 5
+  * `--ms-ni`: Max number of steps the planning LLM is allowed to predict in the non-interactive approaches; defaults to 1
+  * `--br-ni`: Break limit for non-interactive approaches, i.e. if br-ni consecutive predictions are not executable then stop; defaults to 1
   
 
 ## Running Individual Steps 
@@ -109,15 +109,30 @@ Additional optional arguments:
 * `--nl`: Path to the file with the created NL descriptions. Defaults to domain_description.json in the folder specified by -o
 
 
-### Generating planning few-shot examples and configurations
+### Generate planning few-shot examples and configurations
 
-**Generating few-shot examples and configurations**<br>
+**Generate few-shot examples and configurations**<br>
 `python run_setup_exp_files.py -d [domain_name] --ex-id [example_id] --llm [llm]`
 
 **Generating few-shot examples**<br>
+`python llm_planning/create_few_shot_examples.py `
 
 
-**Generating planning configurations**<br>
+**Generate planning configurations**<br>
+`python configs/create_config.py -d [domain_name] --llm [llm]`
+
+* `domain_name`: name of the domain
+* `llm`: name of the LLM to use as both the planning and nl-to-pddl translation LLM (to use two different models, the configuration files need to be created / changed manually)
+
+Additional optional arguments:
+* `--d-dir`: Path domain directory. Defaults to utils.paths.DATA_DIR/domain_name
+* `--ex-id`: ID of instance that gets used as few-shot example and should be excluded from the experiment. If set to None, all instances from --d-dir/adapted_instances are included in the experiments. Defaults to None.
+* `--enc`: Type of the encoding. Should be 'planbench' if LLM planning is run on the domain encodings from [PlanBench](https://github.com/karthikv792/LLMs-Planning/tree/main/plan-bench). Otherwise should be 'automatic'. Defaults to 'automatic'.
+* `--ms-i`: Max number of steps the planning LLM is allowed to predict in the interactive approaches; defaults to 24
+* `--br-i`: Break limit for interactive approaches, i.e. if br-i consecutive predictions are not executable then stop; defaults to 5
+* `--ms-ni`: Max number of steps the planning LLM is allowed to predict in the non-interactive approaches; defaults to 1
+* `--br-ni`: Break limit for non-interactive approaches, i.e. if br-ni consecutive predictions are not executable then stop; defaults to 1
+
 
 ### Running LLM planning
 
