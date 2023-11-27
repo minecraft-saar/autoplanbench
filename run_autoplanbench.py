@@ -9,7 +9,8 @@ from llm_planning.select_few_shot_example import select_few_shot_instance
 
 def run_auto_planbench(domain_name: str,
                        n_instances: int,
-                       llm: str,
+                       p_llm: str,
+                       nl_llm: str,
                        data_dir: str = DATA_DIR,
                        orig_inst_dir: Union[str, None] = None,
                        len_criterium_inst: tuple = (2, 20),
@@ -36,7 +37,7 @@ def run_auto_planbench(domain_name: str,
                             'len': f'"{len_criterium_inst}"',
                             'timeout': timeout,
                             'overwrite': overwrite,
-                            'llm': llm,
+                            'llm': nl_llm,
                             'desc': description_version,
                             'to_text': pddl2text_version}
     cmd_domain = 'python run_domain_setup.py -d {d} -i {i} -o {o} -n {n} --len {len} --timeout {timeout} ' \
@@ -53,7 +54,7 @@ def run_auto_planbench(domain_name: str,
     # set up the experiment files
     params_exp_file_set_up = {'domain_name': domain_name,
                               'few_shot_id': ex_id,
-                              'llm': llm,
+                              'llm': nl_llm,
                               'react_length': react_length,
                               'max_steps_inter': max_steps_inter,
                               'break_inter': break_inter,
@@ -73,7 +74,7 @@ def run_auto_planbench(domain_name: str,
 
     for appr in approaches:
         # run planning
-        config_file = get_config_file(domain_name=domain_name, config_dir=CONFIG_DIR, approach=appr, model=llm)
+        config_file = get_config_file(domain_name=domain_name, config_dir=CONFIG_DIR, approach=appr, model=p_llm)
         few_shot_id = ex_id
         params_plan = {"config": config_file, "few-shot-id": few_shot_id}
         cmd_plan = cmd_run_planning.format(**params_plan)
@@ -105,9 +106,10 @@ if __name__=='__main__':
     parser = ArgumentParser()
     parser.add_argument('-d', required=True, help='Name of the domain')
     parser.add_argument('-n', required=True, help='Number of instances to select')
-    parser.add_argument('--llm', required=True, help='Name of the LLM to use')
+    parser.add_argument('--p-llm', required=True, help='Name of the LLM to use for planning and translating pddl to text')
+    parser.add_argument('--nl-llm', required=True, help='Name of the LLM to use for generating the natural language domain descriptions')
     parser.add_argument('--data', required=False, help='Path to the directory containing all data. Defaults to utils.paths.DATA_DIR')
-    parser.add_argument('--orig', required=False, help='Path to the directory with the original instances. Defaulst to utils.paths.ORIG_INST_FOLDER')
+    parser.add_argument('--orig', required=False, help='Path to the directory with the original instances. Defaults to utils.paths.ORIG_INST_FOLDER')
     parser.add_argument('--len-i', required=False, help='Select only instances for which the length of the optimal plan is within the specified limits (inclusive). Default is (2, 20)')
     parser.add_argument('--len-e', required=False, help='Select the few-shot example by selecting randomly one of the instances with an optimal plan within the specified limits (inclusive). Default is (2, 5)')
     parser.add_argument('--len-react', required=False, help='Number of steps in the ReAct example; Default is 3')
@@ -132,7 +134,8 @@ if __name__=='__main__':
     apb_params = dict()
     apb_params['domain_name'] = args.d
     apb_params['n_instances'] = args.n
-    apb_params['llm'] = args.llm
+    apb_params['p_llm'] = args.p_llm
+    apb_params['nl_llm'] = args.nl_llm
     if args.data:
         apb_params['data_dir'] = args.data
     if args.orig:
