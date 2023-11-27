@@ -14,8 +14,7 @@ Readme:
 * [Running the Pipeline](https://github.com/minecraft-saar/autoplanbench#running-the-complete-pipeline)
 * [Running individual steps](https://github.com/minecraft-saar/autoplanbench/blob/main/README.md#running-individual-steps)
     * [Generating domain descriptions, instances, etc.](https://github.com/minecraft-saar/autoplanbench#generating-the-domain-descriptions)
-    * [Generating planning few-shot examples](https://github.com/minecraft-saar/autoplanbench#generating-planning-few-shot-examples)
-    * [Generating planning configurations](https://github.com/minecraft-saar/autoplanbench#generating-planning-configurations)
+    * [Generating planning few-shot examples and configurations](https://github.com/minecraft-saar/autoplanbench#generating-planning-few-shot-examples)
     * [Running LLM planning](https://github.com/minecraft-saar/autoplanbench#running-llm-planning)
     * [Evaluation](https://github.com/minecraft-saar/autoplanbench#evaluation)
 
@@ -110,10 +109,23 @@ Additional optional arguments:
 * `--nl`: Path to the file with the created NL descriptions. Defaults to domain_description.json in the folder specified by -o
 
 
-### Generating planning few-shot examples
+### Generating planning few-shot examples and configurations
 
-### Generating planning configurations 
+**Generating few-shot examples and configurations**<br>
+`python run_setup_exp_files.py -d [domain_name] --ex-id [example_id] --llm [llm]`
+
+**Generating few-shot examples**<br>
+
+
+**Generating planning configurations**<br>
 
 ### Running LLM planning
 
+`python run_planning.py --config [config] --few-shot-id [example_id]`
+
+* `config`: Path to the planning configuration file
+* `example_id`: ID fo the few-shot example to use. Will be selected from the few-shot example directory of the specific approach; For example, if the approach is 'basic' and example_id is X then the few-shot example is read from the file DATA_DIR/domain_name/few_shot_examples_basic/basic_examples_instance-X.json
+
+
 ### Evaluation
+See the [evaluation Readme](https://github.com/minecraft-saar/autoplanbench/blob/main/evaluation/README.md#evaluation).
