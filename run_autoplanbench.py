@@ -5,6 +5,7 @@ from typing import Union
 from argparse import ArgumentParser
 from ast import literal_eval
 from llm_planning.select_few_shot_example import select_few_shot_instance
+from utils.clean_output_files import clean_incomplete_runs
 
 
 def run_auto_planbench(domain_name: str,
@@ -92,6 +93,11 @@ def run_auto_planbench(domain_name: str,
             d['is_complete_plan'] = False if conf['incremental'] else True
         data_to_eval.append(d)
 
+    # Move all outputfiles from incomplete runs to a separate directoy
+    clean_incomplete_runs(delete=False,
+                          out_dir=OUTPUT_DIR,
+                          new_dir='./incomplete_outputs')
+
     # run evaluation
     domains_2_eval_file = os.path.join(f'./evaluation/{domain_name}_files_to_eval.json')
     main_dict = {'data_to_eval': data_to_eval}
@@ -109,7 +115,7 @@ if __name__=='__main__':
     parser.add_argument('--p-llm', required=True, help='Name of the LLM to use for planning and translating pddl to text')
     parser.add_argument('--nl-llm', required=True, help='Name of the LLM to use for generating the natural language domain descriptions')
     parser.add_argument('--data', required=False, help='Path to the directory containing all data. Defaults to utils.paths.DATA_DIR')
-    parser.add_argument('--orig', required=False, help='Path to the directory with the original instances. Defaults to utils.paths.ORIG_INST_FOLDER')
+    parser.add_argument('--orig', required=False, help='Path to the directory with the original instances. Defaults to utils.paths.DATA_DIR/domain_name/ORIG_INST_FOLDER')
     parser.add_argument('--len-i', required=False, help='Select only instances for which the length of the optimal plan is within the specified limits (inclusive). Default is (2, 20)')
     parser.add_argument('--len-e', required=False, help='Select the few-shot example by selecting randomly one of the instances with an optimal plan within the specified limits (inclusive). Default is (2, 5)')
     parser.add_argument('--len-react', required=False, help='Number of steps in the ReAct example; Default is 3')
