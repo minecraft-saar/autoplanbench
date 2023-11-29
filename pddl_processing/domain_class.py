@@ -1,11 +1,10 @@
 import re
 from typing import Dict, List, Tuple, Union
 from collections import OrderedDict, defaultdict
-from pddl_parser.PDDL import PDDL_Parser
-from pddl_parser.action import Action
+from tarski.io import PDDLReader
+from tarski.fstrips import Action, AddEffect, DelEffect
+from tarski.syntax import Atom, CompoundFormula, VariableBinding, Variable, Constant, Predicate
 
-
-# TODO replace PDDL_Parser with tarski.io PDDL reader
 class Domain:
 
     def __init__(self, domain_file):
@@ -21,10 +20,7 @@ class Domain:
                 value: list of child types
                 e.g. {'object': ['city', 'location', 'thing'], 'thing': ['package', 'vehicle'], ...}
                 empty if no types
-        const_objs: dictionary;
-                key: name of the constant
-                value: type of the constant
-                e.g. {'small': 'apartsize', 'large': 'apartsize', ...}
+        constant_objs:
         actions: Dict[str, Dict]
                 one entry for each action
                 key = action name; lower-cased
@@ -43,67 +39,42 @@ class Domain:
 
         :param domain_file:
         """
-        self.parser = PDDL_Parser()
-        self.parser.parse_domain(domain_file)
+
+        self.reader = PDDLReader(raise_on_error=True)
+        self.reader.parse_domain(domain_file)
+        self.problem = self.reader.problem
 
         self.predicates: Dict[str, OrderedDict] = self.parse_ordered_predicates(domain_file=domain_file)
-        self.types: Dict[str, list] = self.parser.types
+        self.types: Dict[str, list] = self.parse_types()
         self.const_objs: Dict[str, str] = self.parse_constants()
         self.actions: Dict[str, dict] = self.parse_actions()
         self.domain_annotation, self.action_annotations = self.parse_action_annotations(domain_file=domain_file)
 
 
-    def parse_constants(self):
-        constants_w_types = dict()
-        for const_type, const_list in self.parser.objects.items():
-            for const in const_list:
-                constants_w_types[const] = const_type
-        return constants_w_types
-
-
-    def parse_actions(self) -> Dict[str, Union[dict, list]]:
-        """
-
-        :return:
-        """
-        actions: List[Action] = self.parser.actions
-        actions_dict = dict()
-        for a in actions:
-            a_name: str = a.name
-            pos_preconditions: frozenset = a.positive_preconditions
-            neg_preconditions: frozenset = a.negative_preconditions
-            del_effects: frozenset = a.del_effects
-            add_effects: frozenset = a.add_effects
-            parameters: Tuple[List] = a.parameters
-
-            actions_dict[a_name] = dict()
-            actions_dict[a_name]['parameters'] = self.convert_params_to_dict(list(parameters))
-            actions_dict[a_name]['pos_preconditions'] = list(pos_preconditions)
-            actions_dict[a_name]['neg_preconditions'] = list(neg_preconditions)
-            actions_dict[a_name]['add_effects'] = list(add_effects)
-            actions_dict[a_name]['del_effects'] = list(del_effects)
-
-        return actions_dict
-
-    def convert_params_to_dict(self, parameters_list: List[List]) -> OrderedDict:
-        """
-        e.g. [['?ob', 'object'], ['?underob', 'object']]
-        :param parameters_list: list of parameters for one action
-                                one sublist per parameter, where first element is parameter name and second element is parameter type
-        :return:
-        """
-        new_param_list = []
-        for param_list in parameters_list:
-            param_tup = (param_list[0], param_list[1])
-            new_param_list.append(param_tup)
-        params_dict = OrderedDict(new_param_list)
-        return params_dict
-
-
     def parse_ordered_predicates(self, domain_file) -> Dict[str, OrderedDict]:
+
+        predicate_dict = dict()
+        predicates: List[Predicate] = self.problem.language.predicates
+        predicates = [pred for pred in predicates if not pred.builtin]
+        predicate_var_names = self.get_predicate_variable_names(domain_file=domain_file)
+        for pred in predicates:
+            pred_signature = []
+            predicate_name = pred.name
+            predicate_vars = predicate_var_names[predicate_name]
+            predicate_arg_sorts = list(pred.sort)
+            predicate_arg_types = [s.name for s in predicate_arg_sorts]
+            assert len(predicate_vars) == len(predicate_arg_types)
+            for var_name, var_type in zip(predicate_vars, predicate_arg_types):
+                pred_signature.append((var_name, var_type))
+            predicate_dict[predicate_name] = OrderedDict(pred_signature)
+
+        return predicate_dict
+
+
+    def get_predicate_variable_names(self, domain_file) -> Dict[str, List[str]]:
         """
-        {'at': OrderedDict([('?x', 'locatable'), ('?y': 'place')]),
-         'on': OrderedDict([('?x': 'crate'), ('?y': 'surface')]),
+        {'at': ['?x', '?y'],
+         'on': ['?x', '?y'],
          ...}
         :param domain_file:
         :return: dictionary with one item for each predicate
@@ -129,47 +100,124 @@ class Domain:
 
         preds_list = only_preds.split(') (')
 
-        # remove everything between the end of the predicates specification and the next '(:' start as well as the outer brackets
-        while only_preds[-1] != ')':
-            only_preds = only_preds[:-1]
-        closing_found, opening_found = 0, 0
-        while opening_found < 2:
-            if only_preds[0] == '(':
-                opening_found += 1
-            only_preds = only_preds[1:]
-        while closing_found < 2:
-            if only_preds[-1] == ')':
-                closing_found += 1
-            only_preds = only_preds[:-1]
+        predicate_vars = dict()
+        for pred in preds_list:
+            while pred.startswith('('):
+                pred = pred[1:]
+            while pred.endswith(')'):
+                pred = pred[:-1]
+            pred_parts = pred.split(' ')
+            pred_name = pred_parts[0]
+            pred_arg_names = []
+            for part in pred_parts:
+                if part.startswith('?'):
+                    pred_arg_names.append(part)
 
-        type_specs = re.findall(r'- .*? ', only_preds)
-        for t_spec in type_specs:
-            t_spec = t_spec.strip()
-            t_spec = t_spec.replace(')', '')
-            only_preds = only_preds.replace(t_spec, '', 1)
-        type_specs = re.findall(f'- .*?$', only_preds)
-        for t_spec in type_specs:
-            only_preds = only_preds.replace(t_spec, '')
-        only_preds = only_preds.lower()     # PDDL is case insensitive -> the parser converts everything in lower case
-        only_preds = only_preds[:-1] if only_preds[-1] == ')' else only_preds
-        preds_list = only_preds.split(') (')
+            predicate_vars[pred_name] = pred_arg_names
 
-        parsed_predicates = self.parser.predicates
+        return predicate_vars
 
-        assert len(preds_list) == len(parsed_predicates.keys())
 
-        all_predicates_dict = dict()
-        for predicate in preds_list:
-            pred_dict = OrderedDict()
-            pred_args = predicate.split()[1:]
-            pred_name = predicate.split()[0]
-            for pred_arg in pred_args:
-                pred_type = parsed_predicates[pred_name][pred_arg]
-                pred_dict[pred_arg] = pred_type
+    def parse_constants(self) -> Dict[str, str]:
 
-            all_predicates_dict[pred_name] = pred_dict
+        constant_dict = dict()
+        constants: List[Constant] = self.problem.language.constants()
+        for c in constants:
+            constant_name = c.name
+            constant_sort = c.sort
+            constant_type = constant_sort.name
+            constant_dict[constant_name] = constant_type
 
-        return all_predicates_dict
+        return constant_dict
+
+
+    def parse_types(self) -> Dict[str, list]:
+        """
+        Return  dictionary with the type hierarchy
+            one key for each type with subtypes, value is the list of direct subtypes
+        :return:
+        """
+        all_sorts = self.problem.language.sorts
+        type_hierarchy = defaultdict(list)
+        for sort in all_sorts:
+            parent_sort = self.problem.language.immediate_parent[sort]
+            if not parent_sort is None:
+                type_hierarchy[parent_sort.name].append(sort.name)
+
+        return type_hierarchy
+
+
+    def parse_actions(self) -> Dict[str, Union[dict, list]]:
+        """
+        one entry for each action
+                key = action name; lower-cased
+                value = dictionary with all parameters (OrderedDict), preconditions (List) and effects (List)
+                e.g. {'stack': {'parameters': {'?ob': 'object', '?underob': 'object'},
+                                'pos_preconditions': [('clear', '?underob')],
+                                'neg_preconditions': [],
+                                'add_effects': [('on', '?ob', '?underob')]}}
+                e.g. {'drive': {'parameters': {'?t': '?truck', '?from': 'location', ...},
+                                'pos_preconditions': [('at', '?t', '?from'), ...], ...}}
+        :return:
+        """
+        actions: OrderedDict[str, Action] = self.problem.actions
+        actions_dict = dict()
+
+        for a in actions.values():
+            a_name: str = a.name
+            parameter_variable: VariableBinding = a.parameters
+            parameter_dict = parameter_variable.variables
+
+            parameter_list_str_type = []
+            for var_name, variable in parameter_dict.items():
+                parameter_list_str_type.append((variable.symbol, variable.sort.name))
+            parameter_dict_str_type = OrderedDict(parameter_list_str_type)
+
+            effects = a.effects
+            del_effects: List[Atom] = []
+            add_effects: List[Atom] = []
+            for eff in effects:
+                if isinstance(eff, AddEffect):
+                    add_effects.append(eff.atom)
+                elif isinstance(eff, DelEffect):
+                    del_effects.append(eff.atom)
+                else:
+                    print('Unknown type of effect')
+
+            preconditions = a.precondition
+            pos_preconditions: List[Atom] = []
+            negative_preconditions: List[Atom] = []
+            for subform in preconditions.subformulas:
+                if isinstance(subform, Atom):
+                    pos_preconditions.append(subform)
+                elif isinstance(subform, CompoundFormula) and subform.connective.name == 'Not':
+                    assert len(subform.subformulas) == 1 and isinstance(subform.subformulas[0], Atom)    # otherwise not clear what happens in current implementation
+                    negative_preconditions.append(subform.subformulas[0])
+
+            actions_dict[a_name] = dict()
+            actions_dict[a_name]['parameters'] = parameter_dict_str_type
+            actions_dict[a_name]['pos_preconditions'] = self.convert_atom2tup(pos_preconditions)
+            actions_dict[a_name]['neg_preconditions'] = self.convert_atom2tup(negative_preconditions)
+            actions_dict[a_name]['add_effects'] = self.convert_atom2tup(add_effects)
+            actions_dict[a_name]['del_effects'] = self.convert_atom2tup(del_effects)
+
+        return actions_dict
+
+
+    def convert_atom2tup(self, atoms: List[Atom]) -> List[Tuple[str]]:
+
+        predicate_tuples = []
+        for atom in atoms:
+            predicate_name = atom.predicate.symbol
+            predicate_list = [predicate_name]
+            predicate_args: Tuple[Variable] = atom.subterms
+            for arg_var in predicate_args:
+                predicate_list.append(arg_var.symbol)
+
+            predicate_tup = tuple(predicate_list)
+            predicate_tuples.append(predicate_tup)
+        return predicate_tuples
+
 
     def parse_action_annotations(self, domain_file) -> Tuple[str, Dict[str, str]]:
         """
@@ -197,4 +245,12 @@ class Domain:
                         action_annotations[action_name] = action_descr
 
         return domain_annotation, action_annotations
+
+
+if __name__=='__main__':
+
+    domain_old = Domain('../data/toy_domain.pddl')
+    print('H')
+
+
 
