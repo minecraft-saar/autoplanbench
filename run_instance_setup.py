@@ -25,7 +25,7 @@ if __name__=='__main__':
                                  help='Path to the domain.pddl file. Defaults to domain.pddl in the folder specified by -o.')
     argument_parser.add_argument('-i', required=False, default=None,
                                  help='Path to the directory with the original instance pddl files. Defaults to utils.paths.ORIT_INST_FOLDER in the folder specified by -o')
-    argument_parser.add_argument('--nl', required=False, help='Path to the file with the created NL descriptions. Defaults to domain.description.json in the folder specified by -o')
+    argument_parser.add_argument('--nl', required=False, help='Path to the file with the created NL descriptions. Defaults to domain_description.json in the folder specified by -o')
     argument_parser.add_argument('-n', required=False, default=None, help='Number of instances to select from the original instances. If not set, all are kept')
     argument_parser.add_argument('--len', required=False, default=(2, 20), help='Select only instances for which the length of the optimal plan is within the specified limits (inclusive). Default is (2, 20)')
     argument_parser.add_argument('--timeout', required=False, default=1200, help='Time (in sec) to wait until stopping planning if no plan found so far. Default is 1200, i.e. 20 minutes.')

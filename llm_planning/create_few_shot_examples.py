@@ -202,18 +202,18 @@ if __name__=='__main__':
     parser.add_argument('--dir', required=True, help='Path to directory with all needed files')
     parser.add_argument('--ex-id', required=False, default=None, help="If version is react then specify the ID of the instance that should be converted into a few-shot example")
     parser.add_argument('--pref', required=True, default=False, help='Tuple of the prefixes that should be added to the beginning of the input and output few-shot examples. First prefix is for the input and second one for the output.')
-    parser.add_argument('--version', required=True, help='For which approach to create the few-shot examples. Can be: "incremental", "basic", "state_reasoning", "react".')
-    parser.add_argument('--is-pb', required=False, default=False, help='Set to True if the input is from the Planbench Repo')
-    parser.add_argument('--react-len', required=False, default=None, help='The length to which the few-shot example for react should be shortened to.')
+    parser.add_argument('--version', required=True, help='For which approach to create the few-shot examples. Can be: "basic", "cot", "act" "state_reasoning", "react".')
+    parser.add_argument('--enc', required=False, default='automatic', help=' "planbench" if the domain description is from the PlanBench repo, otherwise "automatic". Defaults to "automatic".')
+    parser.add_argument('--rl', required=False, default=None, help='The length to which the few-shot example for react should be shortened to.')
     
     
     args = parser.parse_args()
     prefixes = literal_eval(args.pref)
-    is_planbench = literal_eval(args.is_pb) if isinstance(args.is_pb, str) else args.is_pb
+    is_planbench = True if args.enc == 'planbench' else False
     example_id = literal_eval(args.ex_id) if isinstance(args.ex_id, str) else None
     data_dir = args.dir
     planning_approach = args.version
-    react_length = literal_eval(args.react_len) if isinstance(args.react_len, str) else args.react_len
+    react_length = literal_eval(args.rl) if isinstance(args.rl, str) else args.rl
 
     plan_dir = os.path.join(data_dir, 'gold_plans')
     instance_dir = os.path.join(data_dir, 'adapted_instances')

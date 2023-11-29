@@ -198,7 +198,7 @@ if __name__=='__main__':
 
     parser = ArgumentParser()
     parser.add_argument('-d', required=True, help='domain name')
-    parser.add_argument('--d-dir', required=False, help='path domain directory. detauls to utils.paths.DATA_DIR/domain_name')
+    parser.add_argument('--d-dir', required=False, help='path domain directory. defaults to utils.paths.DATA_DIR/domain_name')
     parser.add_argument('--ex-id', required=False, default=None, help='ID of instance that gets used as few-shot example and should be excluded from the experiment')
     parser.add_argument('--enc', required=False, default='automatic', help='Encoding: either "automatic" or "planbench", default is "automatic"')
     parser.add_argument('--llm', required=True, help='LLM name to use')
