@@ -90,8 +90,10 @@ def create_instance_game_config(task_num, instance_config, few_shot_path):
     if not few_shot_path is None:
         if os.path.isfile(few_shot_path):
             few_shot_file = few_shot_path
-        else:
+        elif os.path.isdir(few_shot_path):
             few_shot_file = os.path.join(few_shot_path, f'planning_examples_instance-{task_num - 1}.json')
+        else:
+            raise FileNotFoundError(f'{few_shot_path} does not exist')
         instance_config['llm_config']['plan']['examples_file'] = few_shot_file
         print(f'{task_num}: {few_shot_file}')
 
