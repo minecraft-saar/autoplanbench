@@ -31,5 +31,10 @@ def change_determiners(action_str: str):
     return action_str
 
 
-
+def get_llm_type(llm_name: str):
+    if llm_name.startswith('gpt-4') or llm_name.startswith('gpt-3.5-turbo'):
+        llm_type = 'openai_chat'
+    else:
+        raise ValueError(f'The model {llm_name} could not be mapped to a model type / class. Please specify the type of the model using as "--llm-type", e.g. openai_chat for chat models, openai_comp for text completion models.')
+    return llm_type
 

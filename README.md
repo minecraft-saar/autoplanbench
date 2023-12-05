@@ -58,7 +58,7 @@ In order to run the complete AutoPlanBench pipeline including the generation of 
 * `domain_name`: name of the domain; needs to match the name of the subfolder in the data folder where the domain file is located
 * `n_instances`: number of instances that should be processed (set to number of instances to run planning on + 1 for few-shot example)
 * `planning-llm`: the name of the LLM to use for the LLM planning and for translating the natural language output back to PDDL (in order to use two different models for planning and translation follow the individual steps approach below); e.g. 'gpt-4' or 'gpt-3.5-turbo'
-* `nl-llm`: the name of the LLM to use for the generation of the natural language domain descriptions and the ReAct and CoT few-shot examples (currently only 
+* `nl-llm`: the name of the LLM to use for the generation of the natural language domain descriptions and the ReAct and CoT few-shot examples (currently only chat OpenAI models are supported here; to run different models the steps of the pipeline need to be run individually)
 
 This will run the same experiments as reported in the paper with the same parameters. In order to change the parameters, the following additional arguments can be specified.
 
@@ -89,6 +89,7 @@ This will run the same experiments as reported in the paper with the same parame
 * `llm`: Name of the LLM to use
 
 Additional optional arguments:
+* `--llm-type`: type of the llm to use, e.g. 'openai_chat'; if not specified, it is determined based on the llm name (see utils.helpers.get_llm_type)
 * `-d`: Path to the domain.pddl file. Defaults to domain.pddl in the folder specified by -o.
 * `-i`: Path to the directory with the original instance pddl files. Defaults to utils.paths.ORIT_INST_FOLDER in the folder specified by -o
 * `-n`: number of instances that should be preprocessed and selected; If not set, then all instances from -i directory that are solvable and fulfill the length criterium are selected

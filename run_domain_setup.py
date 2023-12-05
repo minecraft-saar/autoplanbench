@@ -3,6 +3,7 @@ from argparse import ArgumentParser
 from ast import literal_eval
 from pddl_processing.setup_domain import setup_pddl_domain
 from utils.paths import ORIG_INST_FOLDER
+from utils.helpers import get_llm_type
 
 """
 Runs the set-up of all files for a specific PDDL domain
@@ -25,6 +26,7 @@ if __name__=='__main__':
     argument_parser.add_argument('--timeout', required=False, default=1200, help='Time (in sec) to wait until stopping planning if no plan found so far. Default is 1200, i.e. 20 minutes.')
     argument_parser.add_argument('--overwrite', required=False, default=False, help='Whether to re-run the adaption and plan generation for instances for which they already exist. Default is False')
     argument_parser.add_argument('--llm', required=True, help='Name of the llm to use.')
+    argument_parser.add_argument('--llm-type', required=False, default=None, help='Type of the llm to use')
     argument_parser.add_argument('--desc', required=False, default='medium')
     argument_parser.add_argument('--to-text', required=False, default='extended')
 
@@ -36,6 +38,7 @@ if __name__=='__main__':
     n_inst = literal_eval(args.n) if isinstance(args.n, str) else args.n
     timeout = literal_eval(args.timeout) if isinstance(args.timeout, str) else args.timeout
     overwrite = literal_eval(args.overwrite) if isinstance(args.overwrite, str) else args.overwrite
+    model_type = args.llm_type if args.llm_type is not None else get_llm_type(args.llm)
 
     setup_pddl_domain(domain_file=domain_file,
                       orig_instances_dir=orig_inst_dir,
@@ -45,6 +48,7 @@ if __name__=='__main__':
                       plan_timeout=timeout,
                       overwrite=overwrite,
                       llm=args.llm,
+                      llm_type=model_type,
                       description_version=args.desc,
                       pddl2text_version=args.to_text)
 

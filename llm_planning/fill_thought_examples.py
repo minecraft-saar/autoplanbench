@@ -2,7 +2,7 @@ import os
 import json
 import openai
 import re
-from typing import Union
+from model_classes.planning_game_models import create_llm_model
 from set_env import set_env_vars
 from pathlib import Path
 from argparse import ArgumentParser
@@ -10,7 +10,7 @@ set_env_vars()
 openai.api_key = os.environ['OPENAI_API_KEY']
 
 
-def generate_reasoning_thoughts(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, llm: str):
+def generate_reasoning_thoughts(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, llm: str, llm_type: str):
     """
 
     :param template_file:
@@ -18,6 +18,7 @@ def generate_reasoning_thoughts(template_file: str, nl_domain_file: str, example
     :param example_nl_domain_file:
     :param react_example:
     :param llm:
+    :param llm_type:
     :return:
     """
 
@@ -62,14 +63,19 @@ Additionally, you will see one interaction between the instruction giver and the
 
 Your task is to come up with an appropriate and good reasoning thought with which [TODO: ADD REASONING THOUGHT] should be replaced. """
 
+    model_param = {'model_path': llm,
+                   'max_tokens': 300,
+                   'temp': 0.0,
+                   'max_history': 0}
+    llm_model = create_llm_model(model_type=llm_type, model_param=model_param)
+    llm_model.init_model(init_prompt=system_prompt)
+    llm_model.add_examples(
+        examples=[
+            {"role": "user", "content": input_example},
+            {"role": "assistant", "content": output_example}
+        ])
 
-    model_history = [{"role": "system", "content": system_prompt}]
-    model_history.append({"role": "user", "content": input_example})
-    model_history.append({"role": "assistant", "content": output_example})
-    model_history.append({"role": "user", "content": model_input})
-
-    output = openai.ChatCompletion.create(model=llm, messages=model_history, temperature=0.0, max_tokens=300)
-    response = output['choices'][0]['message']['content']
+    response = llm_model.generate(user_message=model_input)
 
     response_parts = response.split('\n')
     relevant_responses = []

@@ -83,14 +83,15 @@ class PDDLDescriber:
                                                 output_file: str,
                                                 description_version: str = 'medium',
                                                 pddl2text_llm: str = 'gpt-4',
+                                                pddl2text_model_type: str = 'openai_chat',
                                                 pddl2text_version: str = 'full'):
 
         # create mappings
         self.predicate_mappings, self.predicate_nl_templates = self.create_predicate_mapping(prompt_file=prompt_file, pddl2text_llm=pddl2text_llm,
-                                                                pddl2text_version=pddl2text_version)
+                                                                pddl2text_version=pddl2text_version, pddl2text_model_type=pddl2text_model_type)
 
         self.action_mappings, self.action_nl_templates = self.create_action_mapping(prompt_file=prompt_file, pddl2text_llm=pddl2text_llm,
-                                                          pddl2text_version=pddl2text_version)
+                                                          pddl2text_version=pddl2text_version, pddl2text_model_type=pddl2text_model_type)
 
         self.create_domain_descriptions_from_mappings(output_file=output_file, description_version=description_version)
 
@@ -120,9 +121,9 @@ class PDDLDescriber:
             json.dump(domain_description_dict, out, indent=4)
 
 
-    def create_action_mapping(self, prompt_file, pddl2text_llm, pddl2text_version) -> Tuple[Dict[str, str], Dict[str, str]]:
+    def create_action_mapping(self, prompt_file, pddl2text_llm, pddl2text_version, pddl2text_model_type) -> Tuple[Dict[str, str], Dict[str, str]]:
 
-        llm_model = self.create_model(llm_name=pddl2text_llm)
+        llm_model = self.create_model(llm_name=pddl2text_llm, model_type=pddl2text_model_type)
 
         if pddl2text_version == 'simple' or pddl2text_version == 'annotated':
             prompt = self.create_prompt(prompt_file=prompt_file, example_keys=['examples_pred', 'examples_act'])
@@ -137,9 +138,9 @@ class PDDLDescriber:
         return mappings, mappings_templates
 
 
-    def create_predicate_mapping(self, prompt_file, pddl2text_llm, pddl2text_version) -> Tuple[Dict[str, str], Dict[str, str]]:
+    def create_predicate_mapping(self, prompt_file, pddl2text_llm, pddl2text_version, pddl2text_model_type) -> Tuple[Dict[str, str], Dict[str, str]]:
 
-        llm_model = self.create_model(llm_name=pddl2text_llm)
+        llm_model = self.create_model(llm_name=pddl2text_llm, model_type=pddl2text_model_type)
 
         if pddl2text_version == 'simple' or pddl2text_version == 'annotated':
             prompt = self.create_prompt(prompt_file=prompt_file, example_keys = ['examples_pred', 'examples_act'])
@@ -253,12 +254,12 @@ class PDDLDescriber:
         return nl_description_indef, nl_description_indef_templates
 
 
-    def create_model(self, llm_name: str) -> LLMModel:
+    def create_model(self, llm_name: str, model_type, max_tokens=50, temperature=0.0) -> LLMModel:
         model_param = {'model_path': llm_name,
-                       'max_tokens': 50,
-                       'temp': 0.0,
+                       'max_tokens': max_tokens,
+                       'temp': temperature,
                        'max_history': 0}
-        llm_model = create_llm_model(model_type='openai_chat', model_param=model_param)
+        llm_model = create_llm_model(model_type=model_type, model_param=model_param)
         return llm_model
 
 

@@ -127,7 +127,7 @@ class LLMModel(ABC):
         - adding the user_message to the dialogue history
         - generating a reply by calling self._generate()
         - adding response to the dialogue history
-        - updating dialogue history to not exceed max_history by calling self.updat_history_length
+        - updating dialogue history to not exceed max_history by calling self.update_history_length
         :param user_message:
         :return:
         """

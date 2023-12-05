@@ -15,6 +15,7 @@ def setup_pddl_domain(domain_file: str,
                       orig_instances_dir: str,
                       output_dir: str,
                       llm: str,
+                      llm_type: str,
                       n_instances: Union[None, int] = None,
                       len_constraint: Tuple[int, int] = (2, 20),
                       plan_timeout: int = 1200,
@@ -31,6 +32,7 @@ def setup_pddl_domain(domain_file: str,
     :param plan_timeout:
     :param overwrite:
     :param llm:
+    :param llm_type:
     :param description_version:
     :param pddl2text_version:
     :return:
@@ -46,11 +48,14 @@ def setup_pddl_domain(domain_file: str,
     domain_file_name = domain_file.split(os.path.sep)[-1]
     nl_descrip_file = f'{domain_file_name.split(".")[0]}_description_{description_version}.json' if description_version != 'medium' else f'{domain_file_name.split(".")[0]}_description.json'
     examples_file = f'./pddl_processing/examples/examples_mappings_{pddl2text_version}.json'
-    pddl_describer.create_domain_descriptions_from_scratch(prompt_file=examples_file,
-                                                           output_file=os.path.join(output_dir, nl_descrip_file),
-                                                           description_version=description_version,
-                                                           pddl2text_llm=llm,
-                                                           pddl2text_version=pddl2text_version)
+    pddl_describer.create_domain_descriptions_from_scratch(
+        prompt_file=examples_file,
+        output_file=os.path.join(output_dir, nl_descrip_file),
+        description_version=description_version,
+        pddl2text_llm=llm,
+        pddl2text_version=pddl2text_version,
+        pddl2text_model_type=llm_type
+    )
 
     if n_instances != 0:
         set_up_instance_files(domain_file=domain_file, orig_instances_dir=orig_instances_dir, output_dir=output_dir,
