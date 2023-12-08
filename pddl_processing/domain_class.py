@@ -187,12 +187,15 @@ class Domain:
             preconditions = a.precondition
             pos_preconditions: List[Atom] = []
             negative_preconditions: List[Atom] = []
-            for subform in preconditions.subformulas:
-                if isinstance(subform, Atom):
-                    pos_preconditions.append(subform)
-                elif isinstance(subform, CompoundFormula) and subform.connective.name == 'Not':
-                    assert len(subform.subformulas) == 1 and isinstance(subform.subformulas[0], Atom)    # otherwise not clear what happens in current implementation
-                    negative_preconditions.append(subform.subformulas[0])
+            try:
+                for subform in preconditions.subformulas:
+                    if isinstance(subform, Atom):
+                        pos_preconditions.append(subform)
+                    elif isinstance(subform, CompoundFormula) and subform.connective.name == 'Not':
+                        assert len(subform.subformulas) == 1 and isinstance(subform.subformulas[0], Atom)    # otherwise not clear what happens in current implementation
+                        negative_preconditions.append(subform.subformulas[0])
+            except AttributeError:
+                pos_preconditions.append(preconditions)
 
             actions_dict[a_name] = dict()
             actions_dict[a_name]['parameters'] = parameter_dict_str_type
@@ -246,11 +249,6 @@ class Domain:
 
         return domain_annotation, action_annotations
 
-
-if __name__=='__main__':
-
-    domain_old = Domain('../data/toy_domain.pddl')
-    print('H')
 
 
 
