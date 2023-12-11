@@ -182,6 +182,11 @@ Additional optional arguments:
 * `config`: Path to the planning configuration file
 * `example_id`: ID fo the few-shot example to use. Will be selected from the few-shot example directory of the specific approach; For example, if the approach is 'basic' and example_id is X then the few-shot example is read from the file DATA_DIR/domain_name/few_shot_examples_basic/basic_examples_instance-X.json
 
+**Saving the prompts**<br>
+In order to save the P-LLM and T-LLM prompt for a specific problem instance in a separate file run: <br>
+`python save_prompts.py --config [config] --few-shot-id [example_id] --pl-out --tr-out`<br>
+where `config` and `few-shot-id` are as described above and `pl-out` and `tr_out` are the paths to the file where the P-LLM and the T-LLM prompt gets saved respectively.
+
 
 ### 4. Evaluation
 See the [evaluation Readme](https://github.com/minecraft-saar/autoplanbench/blob/main/evaluation/README.md#evaluation).
