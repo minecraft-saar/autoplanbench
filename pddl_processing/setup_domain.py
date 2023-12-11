@@ -9,6 +9,7 @@ from pddl_processing.adapt_instances import adapt_instance_files
 from pddl_processing.create_translation_examples import create_translation_examples
 from pddl_processing.create_gold_plans import create_gold_plan_files
 from pddl_processing.problem_generator_filter import select_problems
+from pddl_processing.create_domain_description import create_domain_nl_description
 
 
 def setup_pddl_domain(domain_file: str,
@@ -56,6 +57,8 @@ def setup_pddl_domain(domain_file: str,
         pddl2text_version=pddl2text_version,
         pddl2text_model_type=llm_type
     )
+
+    create_domain_nl_description(domain_nl_file=nl_descrip_file)
 
     if n_instances != 0:
         set_up_instance_files(domain_file=domain_file, orig_instances_dir=orig_instances_dir, output_dir=output_dir,

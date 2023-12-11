@@ -6,6 +6,8 @@ from model_classes.planning_game_models import create_llm_model
 from set_env import set_env_vars
 from pathlib import Path
 from argparse import ArgumentParser
+from utils.paths import THOUGHT_GEN_EXAMPLE_FILE, THOUGHT_GEN_EXAMPLE_DOMAIN
+from utils.helpers import get_llm_type
 set_env_vars()
 openai.api_key = os.environ['OPENAI_API_KEY']
 
@@ -76,6 +78,11 @@ Your task is to come up with an appropriate and good reasoning thought with whic
         ])
 
     response = llm_model.generate(user_message=model_input)
+    print(f'{llm_model.get_initial_prompt()}')
+    print(input_example)
+    print(output_example)
+    print(f'{model_input}')
+    print(f'{response}')
 
     response_parts = response.split('\n')
     relevant_responses = []
@@ -97,7 +104,7 @@ Your task is to come up with an appropriate and good reasoning thought with whic
     return final_few_shot_example
 
 
-def create_react_few_shot_file(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, output_file: str, llm: str):
+def create_react_few_shot_file(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, output_file: str, llm: str, llm_type: str):
     """
 
     :param template_file:
@@ -106,13 +113,14 @@ def create_react_few_shot_file(template_file: str, nl_domain_file: str, example_
     :param react_example:
     :param output_file:
     :param llm:
+    :param llm_type:
     :return:
     """
     output_dir = os.path.split(output_file)[0]
     Path(output_dir).mkdir(exist_ok=True)
 
     react_few_shot = generate_reasoning_thoughts(template_file=template_file, nl_domain_file=nl_domain_file,
-                                example_nl_domain_file=example_nl_domain_file, react_example=react_example, llm=llm)
+                                example_nl_domain_file=example_nl_domain_file, react_example=react_example, llm=llm, llm_type=llm_type)
 
     with open(output_file, 'w') as f:
         example_dict = {
@@ -122,7 +130,7 @@ def create_react_few_shot_file(template_file: str, nl_domain_file: str, example_
         json.dump(example_dict, f, indent=4)
 
 
-def create_cot_few_shot_file(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, output_file: str, llm: str):
+def create_cot_few_shot_file(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, output_file: str, llm: str, llm_type: str):
     """
 
     :param template_file:
@@ -131,6 +139,7 @@ def create_cot_few_shot_file(template_file: str, nl_domain_file: str, example_nl
     :param react_example:
     :param output_file:
     :param llm:
+    :param llm_type:
     :return:
     """
     output_dir = os.path.split(output_file)[0]
@@ -138,7 +147,7 @@ def create_cot_few_shot_file(template_file: str, nl_domain_file: str, example_nl
 
     filled_react_example = generate_reasoning_thoughts(template_file=template_file, nl_domain_file=nl_domain_file,
                                                        example_nl_domain_file=example_nl_domain_file,
-                                                       react_example=react_example, llm=llm)
+                                                       react_example=react_example, llm=llm, llm_type=llm_type)
 
     create_cot_from_react(output_file=output_file, final_react_example=filled_react_example)
 
@@ -168,7 +177,7 @@ def create_cot_from_react(output_file: str, final_react_example: str):
         elif not plan_begin:
             line = line.replace('I: ', '')
             filled_cot_example_input.append(line)
-        # lines containin only 'You'
+        # lines containing only 'You'
         # remove observations from environment
         elif line.startswith('I: '):
             continue
@@ -204,7 +213,8 @@ def create_domain_intro(nl_domain_file: str):
         prec_descrp = 'I have the following restrictions on my actions:\n'
         effect_descr = 'The actions have the following effects on the state:\n'
         for action, action_dict in domain_nl['actions'].items():
-            action_descrp += action_dict['description']
+            action_d = action_dict['description']
+            action_descrp += f'{action_d}\n'
             for pr in action_dict['preconditions']:
                 prec_descrp += f'{pr}\n'
             for ef in action_dict['effects']:
@@ -216,7 +226,7 @@ def create_domain_intro(nl_domain_file: str):
 
 
 
-def create_react_and_cot(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, react_output_file: str, llm: str):
+def create_react_and_cot(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, react_output_file: str, llm: str, llm_type: str):
     """
 
     :param template_file:
@@ -225,6 +235,7 @@ def create_react_and_cot(template_file: str, nl_domain_file: str, example_nl_dom
     :param react_example:
     :param react_output_file:
     :param llm:
+    :param llm_type:
     :return:
     """
     output_dir = os.path.split(react_output_file)[0]
@@ -233,7 +244,7 @@ def create_react_and_cot(template_file: str, nl_domain_file: str, example_nl_dom
     create_react_few_shot_file(template_file=template_file, nl_domain_file=nl_domain_file,
                                example_nl_domain_file=example_nl_domain_file,
                                react_example=react_example, llm=llm,
-                               output_file=react_output_file)
+                               output_file=react_output_file, llm_type=llm_type)
 
 
     with open(react_output_file, 'r') as f:
@@ -251,12 +262,13 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--template', required=True, help="path to the template file")
     parser.add_argument('--nl-domain', required=True, help="path to the file with the nl domain description")
-    parser.add_argument('--ex-domain', required=True, help="path to the file with the nl description of the example domain")
-    parser.add_argument('--ex-react', required=True, help="path to the file with the react interaction example")
+    parser.add_argument('--ex-domain', required=False, default=THOUGHT_GEN_EXAMPLE_DOMAIN, help="path to the file with the nl description of the example domain; defaults to utils.paths.THOUGHT_GEN_EXAMPLE_DOMAIN")
+    parser.add_argument('--ex-react', required=False, default=THOUGHT_GEN_EXAMPLE_FILE, help="path to the file with the react interaction example; defaults to utils.paths.THOUGHT_GEN_EXAMPLE_FILE")
     parser.add_argument('--out', required=True, help="path to the output file for the react example; the path to the output file for the "
                                                      "cot example is derived by replacing 'react' by 'cot'")
 
     parser.add_argument('--llm', required=True, help="name of the llm to use (currently only chat gpt models possible)")
+    parser.add_argument('--llm_type', required=False, default=None, help='type of the llm to use')
 
     args = parser.parse_args()
 
@@ -266,9 +278,11 @@ if __name__ == '__main__':
     react_interaction_example = args.ex_react
     out_file = args.out
     llm = args.llm
+    model_type = args.llm_type if args.llm_type is not None else get_llm_type(args.llm)
+
 
     create_react_and_cot(template_file=template, nl_domain_file=nl_domain,
                          example_nl_domain_file= example_domain, react_example=react_interaction_example,
-                         react_output_file=out_file, llm=llm)
+                         react_output_file=out_file, llm=llm, llm_type=model_type)
 
 
