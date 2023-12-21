@@ -49,6 +49,9 @@ A .pddl domain description and .pddl problem files for the domain are required a
 
 The `DATA_DIR` and `ORIG_INST_FOLDER` variables in [utils/paths.py](https://github.com/minecraft-saar/autoplanbench/blob/main/utils/paths.py) can be changed if another data directory or another name for the subfolder with the problem instances is used. Alternatively different directories can be specified when running run_autoplanbench.py
 
+**Requirements for PDDL**<br>
+The current version of AutoPlanBench covers STRIPS PDDL definitions containing the operators "AND" and "NOT" and that can include *typing* and *negative_preconditions* as requirements. 
+
 ## Running the complete Pipeline
 
 In order to run the complete AutoPlanBench pipeline including the generation of the natural language domain descriptions, all required files and running LLM planning and evaluation run:
