@@ -62,7 +62,10 @@ In order to run the complete AutoPlanBench pipeline including the generation of 
 
 This will run the same experiments as reported in the paper with the same parameters. In order to change the parameters, the following additional arguments can be specified.
 
-  Additional optional arguments:
+<details>
+   
+   <summary>Additional optional arguments:</summary>
+   
   * `--app`: Tuple with the names of all planning approaches to run and evaluate. Defaults to ("basic", "cot", "react", "act")
   * `--data`: Path to the directory containing all data. Defaults to utils.paths.DATA_DIR
   * `--orig`: Path to the directory with the original instances. Defaults to utils.paths.DATA_DIR/domain_name/ORIG_INST_FOLDER
@@ -77,7 +80,8 @@ This will run the same experiments as reported in the paper with the same parame
   * `--br-i`: Break limit for interactive approaches, i.e. if br-i consecutive predictions are not executable then stop; defaults to 5
   * `--ms-ni`: Max number of steps the planning LLM is allowed to predict in the non-interactive approaches; defaults to 1
   * `--br-ni`: Break limit for non-interactive approaches, i.e. if br-ni consecutive predictions are not executable then stop; defaults to 1
-  
+   
+  </details>
 
 ## Running Individual Steps 
 
@@ -88,7 +92,10 @@ This will run the same experiments as reported in the paper with the same parame
 * `out_dir`: Path to the directory where all files for the specific domain are located 
 * `llm`: Name of the LLM to use
 
-Additional optional arguments:
+<details>
+   
+   <summary>Additional optional arguments:</summary>
+   
 * `--llm-type`: type of the llm to use, e.g. 'openai_chat'; if not specified, it is determined based on the llm name (see utils.helpers.get_llm_type)
 * `-d`: Path to the domain.pddl file. Defaults to domain.pddl in the folder specified by -o.
 * `-i`: Path to the directory with the original instance pddl files. Defaults to utils.paths.ORIT_INST_FOLDER in the folder specified by -o
@@ -99,16 +106,22 @@ Additional optional arguments:
 * `--desc`: Approach to create the precondition and effect descriptions: 'medium', 'long' or 'short'. Defaults to 'medium'. (see [here](https://github.com/minecraft-saar/autoplanbench/wiki/Generating-Natural-Language-Descriptions#composing-domain-descriptions-from-fragments) for mor details)
 * `--to-text`: Type of few-shot examples to use for creating the natural language domain descriptions: 'extended', 'annotated', 'full', 'simple; Defaults to 'extended' (see [here](https://github.com/minecraft-saar/autoplanbench/wiki/Generating-Natural-Language-Descriptions#prompts-and-examples-for-generating-the-natural-language-fragments) for more details)
 
+</details>
+
 **Generate only domain descriptions**<br>
 Set `-n 0` in the command from above
 
 **Generate adapted instances, gold plans and translation examples based on existing domain description**<br>
 `python run_instance_setup.py -o [out_dir]`
 
-Additional optional arguments:
+<details>
+   
+   <summary>Additional optional arguments:</summary>
+   
 * `-d`, `-n`, `--len`, `--timeout`, `--overwrite` as described above 
 * `--nl`: Path to the file with the created NL descriptions. Defaults to domain_description.json in the folder specified by -o
 
+</details>
 
 ### 2. Generate planning few-shot examples and configurations
 
@@ -122,7 +135,10 @@ In order to generate the few-shot example files and configuration files for all 
 * `example_id`: ID of instance that gets used as few-shot example and should be excluded from the experiment.
 * `llm`:  name of the LLM to use for generating the thoughts and that is used as both the planning and nl-to-pddl translation LLM (to use two different models, the configuration files need to be created / changed manually)
 
-Additional optional arguments:
+<details>
+   
+   <summary>Additional optional arguments:</summary>
+   
 * `--thoughts`: Whether thoughts should be generated for react and cot examples. Otherwise only templates with placeholders for the thoughts are generated. Defaults to True
 * `--rl`: Number of steps in the ReAct example. If not set or set to None then the specified example is not shortened. Otherwise the ReAct and CoT few-shot example is shortened to the last --rl steps. 
 * `--react-exd`: Path to the file with the nl description of the example domain. Defaults to utils.paths.THOUGHT_GEN_EXAMPLE_DOMAIN
@@ -134,6 +150,7 @@ Additional optional arguments:
 * `--enc`: Type of the encoding. Should be 'planbench' if LLM planning is run on the domain encodings from [PlanBench](https://github.com/karthikv792/LLMs-Planning/tree/main/plan-bench). Otherwise should be 'automatic'. Defaults to 'automatic'.
 * `--dd`: Path to the directory with the data; defaults to utils.paths.DATA_DIR
 
+</details>
 
 **Generating few-shot examples**<br>
 
@@ -145,9 +162,14 @@ In order to generate the few-shot examples for a specific domain and specific ap
 * `prefixes`: Tuple of the prefixes that should be added to the beginning of the input and output few-shot examples. First prefix is for the input and second one for the output. Is usuall ("", "") for the interactive approaches and (["STATEMENT"], ["PLAN"]) for the non-interactive ones
 * `approach`: The approach for which the few-shot examples get generated ('basic', 'act', 'cot', 'react' or 'state_reasoning')
 
-Additional optional arguments:
+<details>
+   
+   <summary>Additional optional arguments:</summary>
+   
 * `--ex-id`: The ID of the instance that should be converted into a few-shot example. If not set then all instances are converted into a few-shot example.
 * `--enc` and `--rl` as above
+
+</details>
 
 **Note**: for the react and cot approach, this function only generates templates, i.e. with placeholders for the thoughts. In order to generate thoughts using an LLM and add them run the llm_planning/fill_thought_examples.py script
 
@@ -168,12 +190,16 @@ In order to generate the configuration files for all 5 implemented approaches fo
 * `domain_name`: name of the domain
 * `llm`: name of the LLM to use as both the planning and nl-to-pddl translation LLM (to use two different models, the configuration files need to be created / changed manually)
 
-Additional optional arguments:
+<details>
+   
+   <summary>Additional optional arguments:</summary>
+   
 * `--d-dir`: Path domain directory. Defaults to utils.paths.DATA_DIR/domain_name
 * `--ex-id`: ID of instance that gets used as few-shot example and should be excluded from the experiment. If set to None, all instances from --d-dir/adapted_instances are included in the experiments. Defaults to None.
 * `--enc`: Type of the encoding. Should be 'planbench' if LLM planning is run on the domain encodings from [PlanBench](https://github.com/karthikv792/LLMs-Planning/tree/main/plan-bench). Otherwise should be 'automatic'. Defaults to 'automatic'.
 * `--ms-i`, `--br-i`, `--ms-ni`, `--br-ni`, `--enc` as above
 
+</details>
 
 ### 3. Running LLM planning
 
