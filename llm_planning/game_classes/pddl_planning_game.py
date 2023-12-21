@@ -1,6 +1,5 @@
 import json
 from typing import Tuple
-from collections import defaultdict
 
 from llm_planning.game_classes.pddl_game_env import PDDLWorldEnvironment
 from llm_planning.game_classes.llm_models_pddl_planning import TranslationModelBlocksWorld, PlanningModelBlocksWorld
@@ -223,11 +222,18 @@ class PDDLPlanningGame(PlanningGame):
         :return:
         """
         goal_facts_status = dict()
-        for goal_fact in self.env.facts_goal_state:
-            if goal_fact in self.env.facts_current_state:
-                goal_facts_status[goal_fact] = (True, '', 'mandatory')
+        for pos_goal_fact in self.env.conditions_goal_state['pos_conditions']:
+            if pos_goal_fact in self.env.facts_current_state:
+                goal_facts_status[pos_goal_fact] = (True, '', 'mandatory')
             else:
-                goal_facts_status[goal_fact] = (False, '', 'mandatory')
+                goal_facts_status[pos_goal_fact] = (False, '', 'mandatory')
+
+        for neg_goal_fact in self.env.conditions_goal_state['neg_conditions']:
+            negated_goal_fact_str = f'not {neg_goal_fact}'
+            if neg_goal_fact in self.env.facts_current_state:
+                goal_facts_status[negated_goal_fact_str] = (False, '', 'mandatory')
+            else:
+                goal_facts_status[negated_goal_fact_str] = (True, '', 'mandatory')
 
         return goal_facts_status
 

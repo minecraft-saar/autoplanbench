@@ -8,7 +8,6 @@ from argparse import ArgumentParser
 from set_env import set_env_vars
 from llm_planning.game_classes.pddl_game_env import PDDLWorldEnvironment
 from llm_planning.game_classes.pddl_game_env_planbench import PlanBenchEnvironment
-from llm_planning.select_few_shot_example import select_few_shot_instance
 from utils.paths import get_few_shot_dir, get_few_shot_ex_file
 
 
@@ -72,7 +71,7 @@ def create_few_shot_examples(plan_dir, instance_dir, domain_nl_file, domain_file
 
             for inter in interactions:
                 example_input_text += f'You:\n\tThink: {inter[2]}\n\tInstruction: {inter[0]}\nI: {inter[1]}\n'
-            goal_state_description = domain_env.get_description_state(domain_env.facts_goal_state)
+            goal_state_description = domain_env.get_description_goal_state_basic()
             example_input_text += f'You:\n\tThink: {goal_state_description}\n\tInstruction: You are finished.\nI: Great!'
             example_output_text = ''
 
@@ -173,7 +172,7 @@ def create_react_few_shot_example_template(example_inst_plan: str,
     domain_env.facts_initial_state = facts_new_initial_state
     #print(domain_env.facts_initial_state == orig_initial_state)
     new_initial_state = domain_env.get_description_initial_state()
-    new_goal_state = domain_env.get_description_state_basic(domain_env.facts_goal_state)
+    new_goal_state = domain_env.get_description_goal_state_basic()
 
     example = f'{domain_env.get_description_goal_state()}\n'
     example += f'I: {new_initial_state}\n'
@@ -205,8 +204,8 @@ if __name__=='__main__':
     parser.add_argument('--version', required=True, help='For which approach to create the few-shot examples. Can be: "basic", "cot", "act" "state_reasoning", "react".')
     parser.add_argument('--enc', required=False, default='automatic', help=' "planbench" if the domain description is from the PlanBench repo, otherwise "automatic". Defaults to "automatic".')
     parser.add_argument('--rl', required=False, default=None, help='The length to which the few-shot example for react should be shortened to.')
-    
-    
+
+
     args = parser.parse_args()
     prefixes = literal_eval(args.pref)
     is_planbench = True if args.enc == 'planbench' else False

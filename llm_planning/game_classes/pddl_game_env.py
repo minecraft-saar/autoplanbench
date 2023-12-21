@@ -1,9 +1,11 @@
+import json
 import os
 import random
 import re
-from typing import Tuple, List, Dict
+from typing import Tuple, List, Dict, Union
 from collections import defaultdict
 from tarski.io import PDDLReader
+from tarski.syntax import Atom, CompoundFormula
 import atexit
 
 
@@ -52,11 +54,8 @@ class PDDLWorldEnvironment:
 
         self.facts_initial_state = [self.convert_pre2in(initial) for initial in list(self.problem.init.as_atoms())]
         self.facts_current_state = self.facts_initial_state.copy()
-        # if only one goal fact, then AttributeError: 'Atom' object has no attribute 'subformulas'
-        try:
-            self.facts_goal_state = [self.convert_pre2in(goal) for goal in list(self.problem.goal.subformulas)]
-        except AttributeError:
-            self.facts_goal_state = [self.convert_pre2in(goal) for goal in [self.problem.goal]]
+        # keys: 'pos_conditions', 'neg_conditions'
+        self.conditions_goal_state: dict = self.process_goal_conditions()
 
         self.completed = False
         self.goal_feedback = ''
@@ -103,7 +102,43 @@ class PDDLWorldEnvironment:
             else:
                 print(f'Warning: unknown type of effect action {effect_type}')
 
-    def convert_pre2in(self, action: str):
+    # TODO: recursive function would be better suited
+    def process_goal_conditions(self) -> Dict[str, list]:
+
+        pos_goal_conditions = []
+        neg_goal_conditions = []
+
+        if isinstance(self.problem.goal, CompoundFormula):
+            operator = self.problem.goal.connective
+            if operator.name == 'And':
+                for sub in self.problem.goal.subformulas:
+                    if isinstance(sub, Atom):
+                        pos_goal_conditions.append(self.convert_pre2in(sub))
+                    elif sub.connective.name == 'Not':
+                        assert len(sub.subformulas) == 1
+                        pred_str = self.convert_pre2in(sub.subformulas[0])
+                        neg_goal_conditions.append(pred_str)
+            elif operator.name == 'Not':
+                assert len(self.problem.goal.subformulas) == 1
+                pred_str = self.convert_pre2in(self.problem.goal.subformulas[0])
+                neg_goal_conditions.append(pred_str)
+            else:
+                raise ValueError
+
+        elif isinstance(self.problem.goal, Atom):
+            pos_goal_conditions.append(self.convert_pre2in(self.problem.goal))
+
+        else:
+            raise ValueError
+
+        goal_conditions = {'pos_conditions': pos_goal_conditions,
+                           'neg_conditions': neg_goal_conditions}
+
+        return goal_conditions
+
+
+
+    def convert_pre2in(self, action: Union[str, Atom, CompoundFormula]):
         """
         Converts actions and predicates in the format that the PDDLReader outputs into the format that VAL
         expects
@@ -482,19 +517,33 @@ class PDDLWorldEnvironment:
         return state_description
 
 
-    def get_description_current_state(self):
+    def get_description_current_state(self) -> str:
         state_description = self.get_description_state(self.facts_current_state)
         current_state_descr = f'My current situation is as follows: \n{state_description}'
         return current_state_descr
 
-    def get_description_initial_state(self):
+    def get_description_initial_state(self) -> str:
         state_description = self.get_description_state(self.facts_initial_state)
         initial_state_descr = f'My current initial situation is as follows: \n{state_description}'
         return initial_state_descr
 
-    def get_description_goal_state(self):
-        state_description = self.get_description_state_basic(self.facts_goal_state)
-        goal_state_descr = f'My goal is that in the end {state_description}'
+    def get_description_goal_state(self) -> str:
+
+        basic_goal_description = self.get_description_goal_state_basic()
+        goal_state_descr = f'My goal is that in the end {basic_goal_description}'
+
+        return goal_state_descr
+
+    def get_description_goal_state_basic(self):
+        """
+        Same as get_description_goal_state but without 'My goal is that in the end'
+        :return:
+        """
+        pos_facts_description = self.get_description_state_basic(self.conditions_goal_state['pos_conditions'])
+        neg_facts_description = self.get_description_state_basic(self.conditions_goal_state['neg_conditions'])
+        goal_state_descr = f'{pos_facts_description}'
+        if len(self.conditions_goal_state['neg_conditions']) != 0:
+            goal_state_descr += f' and that it is not the case that {neg_facts_description}'
         return goal_state_descr
 
 
