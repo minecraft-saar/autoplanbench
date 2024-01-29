@@ -5,6 +5,9 @@ This repository contains the code for AutoPlanBench, a tool to convert PDDL doma
 Corresponding Paper: [AutoPlanBench: Automatically generating benchmarks for LLM planners from PDDL](https://arxiv.org/abs/2311.09830) <br>
 Corresponding [Website](https://coli-saar.github.io/autoplanbench) 
 
+The code in this repository is made available under the Apache 2.0 license. <br>
+The [dataset](https://github.com/minecraft-saar/autoplanbench/tree/main/data) is composed of domain files from different original sources and problems are generated using the corresponding generators (see [data readme](https://github.com/minecraft-saar/autoplanbench/blob/main/data/readme.md)). For the individual licenses check the respective licenses of the original software/data. 
+
 ### Overview
 This Readme contains the information needed to run the main parts of the project. More detailed information about the different options and configurations, the prompts, evaluation and additional scripts can be found in the [Wiki](https://github.com/minecraft-saar/LLM-planning-PDDL-domains/wiki).
 
@@ -162,7 +165,7 @@ In order to generate the few-shot examples for a specific domain and specific ap
 `python llm_planning/create_few_shot_examples.py --dir [data_dir] --pref [prefixes] --version [approach]`
 
 * `data_dir`: Path to the directory with the files of the specific domain
-* `prefixes`: Tuple of the prefixes that should be added to the beginning of the input and output few-shot examples. First prefix is for the input and second one for the output. Is usuall ("", "") for the interactive approaches and (["STATEMENT"], ["PLAN"]) for the non-interactive ones
+* `prefixes`: Tuple of the prefixes that should be added to the beginning of the input and output few-shot examples. First prefix is for the input and second one for the output. Is usually "('', '')" for the interactive approaches and "(['STATEMENT'], ['PLAN'])" for the non-interactive ones
 * `approach`: The approach for which the few-shot examples get generated ('basic', 'act', 'cot', 'react' or 'state_reasoning')
 
 <details>
