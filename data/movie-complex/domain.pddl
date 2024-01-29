@@ -1,3 +1,6 @@
+;; original version taken from here: https://github.com/AI-Planning/pddl-generators/tree/main/movie
+;; adapted to restrict the preconditions of buying snacks
+
 (define (domain movie-strips-complex)
   (:predicates (movie-rewound)
 	           (counter-at-other-than-zero)
