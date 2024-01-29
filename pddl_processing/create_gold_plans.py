@@ -6,7 +6,7 @@ from set_env import set_env_vars
 set_env_vars()
 
 
-def compute_plan(domain_file: str, instance_file: str, plan_file: str, plan_timeout: int) -> bool:
+def compute_plan(domain_file: str, instance_file: str, plan_file: str, plan_timeout: int, logging=True) -> bool:
     """
     Run fastdownward with A* search to find a plan for the problem in instance_file and save it
     :param domain_file: path to the pddl domain file
@@ -18,8 +18,6 @@ def compute_plan(domain_file: str, instance_file: str, plan_file: str, plan_time
     created_plan = False
     timed_out = False
     failed = False
-    log_dir = './pddl_processing/planner_logs'
-    Path(log_dir).mkdir(exist_ok=True)
 
     fast_downward_path = os.getenv("FAST_DOWNWARD")
     assert os.path.exists(f"{fast_downward_path}/fast-downward.py")
@@ -31,14 +29,18 @@ def compute_plan(domain_file: str, instance_file: str, plan_file: str, plan_time
     instance_name = instance_name.replace(os.path.sep, '_')
     if instance_name.startswith('.'):
         instance_name = instance_name[1:]
-    log_file = os.path.join(log_dir, f'{instance_name}.txt')
+
+    if logging:
+        log_dir = './pddl_processing/planner_logs'
+        Path(log_dir).mkdir(exist_ok=True)
+        log_file = os.path.join(log_dir, f'{instance_name}.txt')
 
     try:
         run_result = subprocess.run(args=cmd_tokens, timeout=plan_timeout, check=True, capture_output=True)
         console_output = str(run_result.stdout)
-
-        with open(log_file, 'w') as log:
-            log.write(console_output)
+        if logging:
+            with open(log_file, 'w') as log:
+                log.write(console_output)
 
     except subprocess.TimeoutExpired as e:
         timed_out = True
@@ -54,8 +56,9 @@ def compute_plan(domain_file: str, instance_file: str, plan_file: str, plan_time
         elif failed:
             print(f'Something went wrong with solving problem in file {instance_file}. No plan was generated.')
         else:
-            with open(log_file, 'r') as plan_log:
-                log = plan_log.read()
+            if logging:
+                with open(log_file, 'r') as plan_log:
+                    log = plan_log.read()
             if 'stopped without finding a solution' in log:
                 print(f'Problem instance in file {instance_file} is not solvable and will be skipped')
             else:

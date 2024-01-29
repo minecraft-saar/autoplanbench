@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Union
 from collections import Counter
 from argparse import ArgumentParser
+from evaluation.output_file_reader import PlannerOutputReader, read_gold_plan, check_completeness_run
 
 
 class PlanEvaluator:
@@ -176,43 +177,16 @@ class PlanEvaluator:
         :param generated_plan_file:
         :return:
         """
-        instance_data = []
-        with open(generated_plan_file, 'r') as f:
-            for line in f:
-                instance_data.append(json.loads(line))
 
-        for entry in instance_data:
+        tested_inst_data = PlannerOutputReader(generated_plan_path=generated_plan_file,
+                                               is_complete_plan=True)
 
-            if 'task' in entry.keys():
-                config_data = entry
-                task_num = config_data['task']['task_num']
-                self.instance_results['task_ids'].append(task_num)
+        successful = tested_inst_data.successful
+        reached_goal = tested_inst_data.reached_goal
+        executable = tested_inst_data.executable
+        steps = tested_inst_data.steps
 
-            if 'incremental' in entry.keys():
-                assert not entry['incremental']
-
-            if 'type' in entry.keys():
-                if entry['type'] == 'Plan Model':
-                    predicted_plan_str = entry['text']
-                    predicted_plan = predicted_plan_str.split('\n')
-                    try:
-                        predicted_plan.remove('[PLAN END]')
-                    except ValueError:
-                        print(f'Plan without "[PLAN END]" ending tag in file {generated_plan_file}.')
-
-                else:
-                    if isinstance(entry['text'], list):
-                        all_translations = entry['text']
-                        for trans in all_translations:
-                            if not trans.startswith('('):
-                                print(f"Check file {generated_plan_file} for missing translations")
-
-        last_line = instance_data[-1]
-
-        successful = last_line['success']
-        reached_goal = last_line['reached_goal']
-        executable = last_line['executable']
-        steps = last_line['attempts']
+        self.instance_results['task_ids'].append(tested_inst_data.task_num)
 
         self.instance_results['solved_successfully'].append(successful)
         self.instance_results['interaction_length'].append(steps)
@@ -234,9 +208,9 @@ class PlanEvaluator:
         else:
             self.instance_results['unsuccessful_bec_not_executable'].append(False)
 
-        optimal_plan = self.get_gold_plan(task_num=task_num)
+        optimal_plan = read_gold_plan(gold_plan_dir=self.gold_plan_dir, task_num=tested_inst_data.task_num)
         len_optimal_plan = len(optimal_plan)
-        len_predicted_plan = len(predicted_plan)
+        len_predicted_plan = len(tested_inst_data.predicted_plan)
 
         self.instance_results['optimal_plan_length'].append(len_optimal_plan)
 
@@ -259,69 +233,21 @@ class PlanEvaluator:
         :param generated_plan_file:
         :return:
         """
-        interaction_data = []
-        with open(generated_plan_file, 'r') as f:
-            for line in f:
-                interaction_data.append(json.loads(line))
 
-        mistakes = 0
-        look_arounds = 0
-        look_arounds_after_mistakes = 0
-        prev_entry_mistake = False
-        first_mistake_execution = False
-        wrong_finished_prediction = 0
-        executable_actions = 0
+        tested_inst_data = PlannerOutputReader(generated_plan_path=generated_plan_file,
+                                               is_complete_plan=False)
 
-        last_line = interaction_data[-1]
+        mistakes = tested_inst_data.incremental_data['mistakes']
+        reached_goal = tested_inst_data.reached_goal
+        successful = tested_inst_data.successful
+        executable_actions = tested_inst_data.executable_actions
+        steps = tested_inst_data.steps
 
-        completed_run = True if 'success' in last_line.keys() else False
-        if not completed_run:
-            return
+        self.instance_results['task_ids'].append(tested_inst_data.task_num)
 
-        for entry in interaction_data:
-
-            if 'type' in entry.keys():
-                entry_type = entry['type']
-
-                if entry_type == 'Plan Model' and 'look around' in entry['text'].lower():
-                    look_arounds += 1
-                    if prev_entry_mistake:
-                        look_arounds_after_mistakes += 1
-                    prev_entry_mistake = False
-
-                if entry_type == 'Env Feedback' and ('not' in entry['text'] or 'cannot' in entry['text']):
-
-                    if 'not finished' in entry['text']:
-                        wrong_finished_prediction += 1
-                    elif mistakes == 0:
-                        first_mistake_execution = True
-
-                    mistakes += 1
-
-                elif entry_type == 'Env Feedback':
-                    prev_entry_mistake = False
-
-                elif entry_type == 'Translation Model':
-                    executable = entry.get('executable', False)
-                    if executable and not 'look' in entry['text']:
-                        executable_actions += 1
-
-            elif 'task' in entry.keys():
-                task_num = entry['task']['task_num']
-                self.instance_results['task_ids'].append(task_num)
-                step_limit = entry['max_steps']
-
-            if 'incremental' in entry.keys():
-                assert entry['incremental']
-
-
-        self.instance_results['look_arounds'].append(look_arounds)
-        self.instance_results['look_arounds_after_mistake'].append(look_arounds_after_mistakes)
+        self.instance_results['look_arounds'].append(tested_inst_data.incremental_data['look_arounds'])
+        self.instance_results['look_arounds_after_mistake'].append(tested_inst_data.incremental_data['look_arounds_after_mistake'])
         self.instance_results['n_mistakes'].append(mistakes)
-
-        successful = last_line['success']
-        reached_goal = last_line['reached_goal']
-        steps = last_line['n_steps']
 
         self.instance_results['solved_successfully'].append(successful)
         self.instance_results['interaction_length'].append(steps)
@@ -346,27 +272,26 @@ class PlanEvaluator:
         else:
             self.instance_results['unsuccessful_bec_not_reached_goal'].append(False)
 
-        if first_mistake_execution:
+        if tested_inst_data.incremental_data['first_mistake_execution']:
             self.instance_results['unsuccessful_bec_not_executable'].append(True)
         else:
             self.instance_results['unsuccessful_bec_not_executable'].append(False)
 
-        if wrong_finished_prediction:
+        if tested_inst_data.incremental_data['wrong_finished_prediction']:
             self.instance_results['predicted_goal_erroneously'].append(True)
         else:
             self.instance_results['predicted_goal_erroneously'].append(False)
 
-        gold_plan = self.get_gold_plan(task_num=task_num)
+        gold_plan = read_gold_plan(gold_plan_dir=self.gold_plan_dir, task_num=tested_inst_data.task_num)
         optimal_plan_length = len(gold_plan)
 
         self.instance_results['optimal_plan_length'].append(optimal_plan_length)
 
-
         if successful:
             self.instance_results['successful_interaction_length'].append(steps)
-            factor_length = executable_actions / optimal_plan_length
+            factor_length = len(executable_actions) / optimal_plan_length
             self.instance_results['factor_plan_length'].append(round(factor_length, 6))
-            self.instance_results['successful_plan_length'].append(executable_actions)
+            self.instance_results['successful_plan_length'].append(len(executable_actions))
         else:
             self.instance_results['successful_interaction_length'].append(-1)
             self.instance_results['factor_plan_length'].append(-1)
@@ -376,24 +301,10 @@ class PlanEvaluator:
             self.instance_results['reached_step_limit_wo_mistake'].append(True)
         else:
             self.instance_results['reached_step_limit_wo_mistake'].append(False)
-        if not successful and steps < step_limit:
+        if not successful and steps < tested_inst_data.step_limit:
             self.instance_results['reached_break_limit_earlier'].append(True)
         else:
             self.instance_results['reached_break_limit_earlier'].append(False)
-
-
-
-    def get_gold_plan(self, task_num):
-
-        gold_plan_file = os.path.join(self.gold_plan_dir, f'instance-{task_num}_gold_plan.txt')
-
-        gold_actions = []
-        with open(gold_plan_file, 'r') as f:
-            for line in f.readlines():
-                if line.startswith('('):
-                    gold_actions.append(line.strip())
-
-        return gold_actions
 
 
     def evaluate_all_outputs(self):
@@ -402,18 +313,28 @@ class PlanEvaluator:
         :return:
         """
         if os.path.isfile(self.generated_plans_path):
+
+            if not check_completeness_run(generated_plan_file=self.generated_plans_path):
+                return
+
             if self.is_complete_plan:
                 self.evaluate_basic_instance(os.path.join(self.generated_plans_path))
             else:
                 self.evaluate_incremental_instance(self.generated_plans_path)
         else:
             for file in os.listdir(self.generated_plans_path):
-                if not os.path.isfile(os.path.join(self.generated_plans_path, file)):
+                generated_plan_file = os.path.join(self.generated_plans_path, file)
+                if not os.path.isfile(generated_plan_file):
                     continue
 
+                if not check_completeness_run(generated_plan_file):
+                    return
+
                 if self.is_complete_plan:
-                    self.evaluate_basic_instance(os.path.join(self.generated_plans_path, file))
+                    self.evaluate_basic_instance(generated_plan_file)
                 else:
-                    self.evaluate_incremental_instance(os.path.join(self.generated_plans_path, file))
+                    self.evaluate_incremental_instance(generated_plan_file)
+
+
 
 

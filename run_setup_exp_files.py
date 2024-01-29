@@ -6,7 +6,7 @@ from llm_planning.setup_experiments_files import setup_files_domain
 Set-up the files for running planning experiments
 - creates few-shot examples for all approaches in utils.paths.APPROACHES
 - generates thoughts for the ReAct and CoT approaches
-- generates teh config files 
+- generates the config files 
 """
 
 
@@ -35,7 +35,7 @@ if __name__=='__main__':
     br_i = literal_eval(args.br_i) if isinstance(args.br_i, str) else args.br_i
     ms_ni = literal_eval(args.ms_ni) if isinstance(args.ms_ni, str) else args.ms_ni
     br_ni = literal_eval(args.br_ni) if isinstance(args.br_ni, str) else args.br_ni
-    react_length = literal_eval(args.rl)
+    react_length = literal_eval(args.rl) if isinstance(args.rl, str) else args.rl
 
     d = {'domain_name': args.d,
          'few_shot_id': ex_id,

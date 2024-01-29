@@ -95,7 +95,6 @@ class PDDLDescriber:
 
         self.create_domain_descriptions_from_mappings(output_file=output_file, description_version=description_version)
 
-        pass
 
     def create_domain_descriptions_from_mappings(self, output_file: str, description_version: str):
 

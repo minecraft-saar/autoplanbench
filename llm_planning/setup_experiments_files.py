@@ -79,7 +79,7 @@ def create_few_shot_files(script, domain_dir, few_shot_id: int, encoding: str, r
         pref = get_example_prefix_mappings(planning_version)
         is_pb = False if encoding == 'automatic' else True
         cmd = f'python {script} --dir {domain_dir} --ex-id {few_shot_id} ' \
-              f'--pref \"{pref}\" --version {planning_version} --is-pb {is_pb} --react-len {react_length}'
+              f'--pref \"{pref}\" --version {planning_version} --enc {encoding} --rl {react_length}'
         print(cmd)
         os.system(cmd)
 
