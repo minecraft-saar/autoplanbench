@@ -3,10 +3,19 @@ import json
 from jinja2 import Template
 from pathlib import Path
 from typing import Union
+from argparse import ArgumentParser
+
 
 def create_domain_nl_description(domain_nl_file,
                                  output_file: Union[str, None] = None,
-                                 template_file: str = 'pddl_processing/template_domain_description.txt'):
+                                 template_file: str = './template_domain_description.txt'):
+    """
+    Creates the NL encoding of a domain in the format specified in the template file and saves it to an output file
+    :param domain_nl_file: path to the domain nl .json file
+    :param output_file: path to the text file for the output
+    :param template_file: path to a jinja template file
+    :return:
+    """
 
     with open(template_file, 'r') as f:
         template = Template(f.read())
@@ -43,4 +52,21 @@ def create_domain_nl_description(domain_nl_file,
 
     with open(output_file, 'w') as file:
         file.write(domain_description)
+
+
+
+if __name__ == '__main__':
+    parser = ArgumentParser()
+    parser.add_argument('-d', required=True, help='Path to the domain description file')
+    parser.add_argument('-t', required=False, default=None, help='Path to the jinja template file')
+    parser.add_argument('-o', required=True, help='Path to the file where the domain encoding is saved to')
+    args = parser.parse_args()
+
+    if args.t:
+        create_domain_nl_description(domain_nl_file=args.d,
+                                     output_file=args.o,
+                                     template_file=args.t)
+    else:
+        create_domain_nl_description(domain_nl_file=args.d,
+                                     output_file=args.o)
 

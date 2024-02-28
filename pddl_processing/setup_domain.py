@@ -76,7 +76,8 @@ def set_up_instance_files(domain_file: str,
                          n_instances: Union[None, int] = None,
                          len_constraint: Tuple[int, int] = (2, 20),
                          plan_timeout: int = 1200,
-                         overwrite: bool = False):
+                         overwrite: bool = False,
+                         reselect: bool = True):
     """
 
     :param domain_file:
@@ -87,21 +88,33 @@ def set_up_instance_files(domain_file: str,
     :param len_constraint:
     :param plan_timeout:
     :param overwrite: whether to do the adaption and planning step for files that are already there
+    :param reselect: if there is already a file "not_selected_by_filter" the problems
+                      listed there are not selected if reselect=False
+                      i.e. can be used to add problems to previously selected problems
+                           instead of re-selecting all problems newly again
+                    Should be used with caution, i.e. need to make sure that the filtering constraints were the same and files with the same name still contain exactly the same problems as originally
     :return:
     """
+
+    if not reselect:
+        print(f'WARNING: reselect was set to False. All files whose name is in the file [output_dir]/not_selected_by_filter/reason_non_selection.tsv will not be considered.\nThis should not be done if 1) the constraints have changed since the last selection, or 2) files with the same name do not contain the same problem anymore, or 3) the number instances to select is larger than the previously selected instances and no new instances were added. If one of this is the case reselect=False might lead to unexpected behavior.')
 
     # adapt the instance files, i.e. adapt the object names
     print(f'---- Adapting Instance Files for {domain_file} ----')
     new_inst_dir = os.path.join(output_dir, 'adapted_instances')
     instance_mappings_file = os.path.join(output_dir, f'instance_object_mappings.json')
-    instances_object_mappings = adapt_instance_files(instances_path=orig_instances_dir, adapted_inst_dir=new_inst_dir, overwrite=overwrite, instance_mappings_file=instance_mappings_file)
+    instances_object_mappings, adapted_file_names = adapt_instance_files(instances_path=orig_instances_dir, adapted_inst_dir=new_inst_dir, overwrite=overwrite, instance_mappings_file=instance_mappings_file)
     with open(instance_mappings_file, 'w') as f:
         json.dump(instances_object_mappings, f, indent=4)
 
     # get gold plans for adapted instances
     print(f'---- Creating Gold Plans ----')
     gold_plan_dir = os.path.join(output_dir, 'gold_plans')
-    create_gold_plan_files(domain_file=domain_file, instance_dir=new_inst_dir, plan_dir=gold_plan_dir, plan_timeout=plan_timeout, overwrite_plans=overwrite)
+
+    # create the gold plans for new instances for which no plan is available yet
+    create_gold_plan_files(domain_file=domain_file, instance_dir=new_inst_dir, plan_dir=gold_plan_dir,
+                           plan_timeout=plan_timeout, new_files_names=adapted_file_names,
+                           inst_obj_mappings=instances_object_mappings, overwrite_plans=overwrite)
 
 
     print(f'---- Selecting Instance Files ----')
@@ -111,8 +124,8 @@ def set_up_instance_files(domain_file: str,
                     problem_dir=new_inst_dir,
                     gold_plan_dir=gold_plan_dir,
                     not_selected_problem_dir=not_matching_instance_dir,
-                    len_constraint=list(len_constraint))
-
+                    len_constraint=list(len_constraint),
+                    reselect=reselect)
 
     # create few-shot examples
     print(f'---- Creating Few-shot Examples ----')

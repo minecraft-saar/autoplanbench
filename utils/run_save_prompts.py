@@ -10,6 +10,10 @@ from set_env import set_env_vars
 set_env_vars()
 openai.api_key = os.environ['OPENAI_API_KEY']
 
+"""
+Script to save the P-LLM and T-LLM prompt without running the actual planning
+"""
+
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--config', required=True, help='Path to the planning config file')

@@ -6,7 +6,7 @@ from collections import Counter, defaultdict
 from utils.paths import OUTPUT_DIR
 
 """
-(Re)move all model output files from runs that aborted or aborted with an openAI error 
+(Re)move all model output files from runs that were aborted or aborted with an openAI error 
 """
 
 

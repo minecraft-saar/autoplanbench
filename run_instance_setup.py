@@ -31,6 +31,7 @@ if __name__=='__main__':
     argument_parser.add_argument('--timeout', required=False, default=1200, help='Time (in sec) to wait until stopping planning if no plan found so far. Default is 1200, i.e. 20 minutes.')
     argument_parser.add_argument('--overwrite', required=False, default=False,
                                  help='Whether to re-run the adaption and plan generation for instances for which they already exist.')
+    argument_parser.add_argument('--reselect', required=False, default=True, help='if there is already a file "not_selected_by_filter" the problems listed there are not selected if reselect=False, i.e. can be used to add problems to previously selected problems instead of re-selecting all problems newly again. Should be used with caution, i.e. need to make sure that the filtering constraints were the same and files with the same name still contain exactly the same problems as originally')
 
     args = argument_parser.parse_args()
     Path(args.o).mkdir(exist_ok=True, parents=True)
@@ -46,6 +47,7 @@ if __name__=='__main__':
     n_inst = literal_eval(args.n) if isinstance(args.n, str) else args.n
     timeout = literal_eval(args.timeout) if isinstance(args.timeout, str) else args.timeout
     overwrite = literal_eval(args.overwrite) if isinstance(args.overwrite, str) else args.overwrite
+    reselect = literal_eval(args.reselect) if isinstance(args.reselect, str) else args.reselect
 
     set_up_instance_files(domain_file=domain_file,
                           orig_instances_dir=orig_inst_dir,
@@ -53,4 +55,5 @@ if __name__=='__main__':
                           pddl_describer=pddl_describer,
                           n_instances=n_inst, len_constraint=len_range,
                           plan_timeout=timeout,
-                          overwrite=overwrite)
+                          overwrite=overwrite,
+                          reselect=reselect)

@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from typing import Union
-from utils.paths import DATA_DIR, get_few_shot_dir, APPROACHES, THOUGHT_GEN_EXAMPLE_DOMAIN, THOUGHT_GEN_EXAMPLE_FILE
+from utils.paths import DATA_DIR, get_few_shot_dir, APPROACHES, THOUGHT_GEN_EXAMPLE_DOMAIN, THOUGHT_GEN_EXAMPLE_FILE, get_few_shot_ex_file
 
 proj_dir_path = Path(__file__).resolve().parent.parent
 
@@ -64,7 +64,8 @@ def create_thought_files(domain_dir: str, few_shot_id, llm: str, example_domain_
     few_shot_dir_react = get_few_shot_dir('react', domain_data_dir=domain_dir)
     template_file = os.path.join(few_shot_dir_react, f'react_template_instance-{few_shot_id}.json')
     nl_file = os.path.join(domain_dir, 'domain_description.json')
-    output_file = os.path.join(few_shot_dir_react, f'react_example_instance-{few_shot_id}.json')
+    few_shot_file_react = get_few_shot_ex_file(few_shot_dir=few_shot_dir_react, instance_id=few_shot_id, approach='react')
+    output_file = os.path.join(few_shot_dir_react, few_shot_file_react)
 
     cmd = f'python {create_thoughts_script} --template {template_file} --nl-domain {nl_file} ' \
           f'--ex-domain {example_domain_nl} --ex-react {example_react} --out {output_file} --llm {llm}'
