@@ -165,7 +165,7 @@ In order to generate the few-shot examples for a specific domain and specific ap
 `python llm_planning/create_few_shot_examples.py --dir [data_dir] --pref [prefixes] --version [approach]`
 
 * `data_dir`: Path to the directory with the files of the specific domain
-* `prefixes`: Tuple of the prefixes that should be added to the beginning of the input and output few-shot examples. First prefix is for the input and second one for the output. Is usually "('', '')" for the interactive approaches and "(['STATEMENT'], ['PLAN'])" for the non-interactive ones
+* `prefixes`: Tuple of the prefixes that should be added to the beginning of the input and output few-shot examples. First prefix is for the input and second one for the output. We used "('', '')" for the interactive approaches and "('[STATEMENT]', '[PLAN]')" for the non-interactive ones
 * `approach`: The approach for which the few-shot examples get generated ('basic', 'act', 'cot', 'react' or 'state_reasoning')
 
 <details>
