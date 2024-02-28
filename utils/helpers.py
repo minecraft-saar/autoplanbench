@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from collections import defaultdict
 
 def get_timestamp_for_log():
     now = str(datetime.now())
@@ -37,4 +37,22 @@ def get_llm_type(llm_name: str):
     else:
         raise ValueError(f'The model {llm_name} could not be mapped to a model type / class. Please specify the type of the model using as "--llm-type", e.g. openai_chat for chat models, openai_comp for text completion models.')
     return llm_type
+
+
+def find_duplicates(file_paths: list) -> list:
+    """
+    Finds exact duplicates
+    :param file_paths:
+    :return: list of lists: each sublist contains the names of all files with the same content
+    """
+    problem_texts = defaultdict(list)
+
+    for prob_file in file_paths:
+
+        with open(prob_file, 'r') as f:
+            problem_text = f.read()
+            problem_texts[problem_text].append(prob_file)
+
+    duplicates_list = [pr for pr in problem_texts.values()]
+    return duplicates_list
 
