@@ -36,13 +36,14 @@ class PDDLGamePlanBench(PDDLPlanningGame):
 
 
 
-    def create_blocks_world_env(self, domain_file, instance_file):
+    def create_world_env(self, env_dict: dict):
         """
 
-        :param domain_file:
-        :param instance_file:
+        :param env_dict: dictionary with the domain file and the instance file path
         :return:
         """
+        domain_file = env_dict['domain_file']
+        instance_file = env_dict['instance_file']
         bw_env = PlanBenchEnvironment(domain_nl=self.domain_nl,
                                         instance_file=instance_file,
                                         domain_file=domain_file)

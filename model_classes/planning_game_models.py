@@ -2,7 +2,7 @@ import openai
 from typing import List, Tuple, Union
 from abc import ABC, abstractmethod
 from pathlib import Path
-from utils.paths import CACHE_DIR
+from utils.paths import get_cache_dir
 from .llm_models import LLMModel
 from .vicuna_models import VicunaModel
 from .openai_models import OpenAIComplModel, OpenAIChatModel
@@ -212,8 +212,17 @@ def create_llm_model(model_type: str, model_param: dict) -> LLMModel:
     temp = model_param.get('temp', 1.0)
     max_history = model_param.get('max_history', None)
 
+    cache_sub_dir = model_param.get('caching', 'default')
+    if cache_sub_dir is None:
+        cache_dir = get_cache_dir(None, None)
+    elif cache_sub_dir == 'default':
+        cache_dir = get_cache_dir(model_subdir_name=f'{model_type}_{model_path}',
+                                  exp_subdir_name=None)
+    else:
+        cache_dir = get_cache_dir(model_subdir_name=f'{model_type}_{model_path}',
+                                  exp_subdir_name=cache_sub_dir)
+
     if model_type == 'openai_chat':
-        cache_dir = CACHE_DIR / Path(f'../llm_caches/openai_chat_{model_path}')
         model = OpenAIChatModel(model_name=model_type,
                                 model_path=model_path,
                                 max_tokens=max_tokens,
@@ -222,7 +231,6 @@ def create_llm_model(model_type: str, model_param: dict) -> LLMModel:
                                 cache_directory=cache_dir)
 
     elif model_type == 'openai_comp':
-        cache_dir = CACHE_DIR / Path(f'../llm_caches/openai_comp_{model_path}')
         model = OpenAIComplModel(model_name=model_type,
                                 model_path=model_path,
                                 max_tokens=max_tokens,
@@ -231,7 +239,6 @@ def create_llm_model(model_type: str, model_param: dict) -> LLMModel:
                                 cache_directory=cache_dir)
 
     elif model_type in ['vicuna', 'vicuna-x-gpt']:
-        cache_dir = CACHE_DIR / Path(f'../llm_caches/{model_type}_{model_path}')
         model = VicunaModel(model_name=model_type,
                             model_path=model_path,
                             cuda_n=model_param['cuda_n'],
@@ -244,4 +251,6 @@ def create_llm_model(model_type: str, model_param: dict) -> LLMModel:
         raise NotImplementedError
 
     return model
+
+
 

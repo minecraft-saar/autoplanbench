@@ -1,3 +1,6 @@
+import copy
+
+import math
 import os
 import time
 
@@ -10,9 +13,19 @@ from llm_planning.game_classes.pddl_planning_game_thoughts import PDDLGameThough
 from llm_planning.game_classes.pddl_planning_game_planbench import PDDLGamePlanBench
 from llm_planning.game_classes.pddl_planning_game_planbench_thoughts import PDDLGamePlanbenchThoughts
 from utils.paths import *
+from utils.helpers import read_gold_plan
 
 set_env_vars()
 openai.api_key = os.environ['OPENAI_API_KEY']
+
+
+def get_gold_based_steps(domain_dir, task_num, factor=2.0) -> int:
+    gold_plan_dir = os.path.join(domain_dir, GOLD_PLAN_FOLDER)
+    gold_plan = read_gold_plan(gold_plan_dir=gold_plan_dir, task_num=task_num)
+
+    steps = factor * len(gold_plan)
+    steps = math.floor(steps)
+    return steps
 
 
 def play_games(config, few_shot_path, game_class):
@@ -20,8 +33,13 @@ def play_games(config, few_shot_path, game_class):
     for task_num in config["task_nums"]:
         attempt = 0
         while attempt < 5:
-            instance_config = config.copy()
+            instance_config = copy.deepcopy(config)
             run_config = instance_config.pop('run_config')
+
+            if run_config['steps'] is None:
+                steps = get_gold_based_steps(domain_dir=instance_config['domain_dir'],
+                                             task_num=task_num)
+                run_config['steps'] = steps
 
             game = create_game(task_num=task_num, instance_config=instance_config, few_shot_path=few_shot_path,
                                game_class=game_class)
@@ -32,7 +50,11 @@ def play_games(config, few_shot_path, game_class):
 
             except openai.error.ServiceUnavailableError as e:
                 print('Warning: Server was unavailable. Will try again in a few seconds')
+                game.summary_planning['stopping_reason'] = 'error'
+                game.log_planning_summary()
+                game.log_time_and_token(measured_time=0)
                 with open(game.log, 'a') as log:
+                    log.write('\n')
                     json.dump({'Failed': True, 'Error_type': 'openai.error.ServiceUnavailableError', 'Error_message': str(e)}, log)
                     log.write('\n')
                 time.sleep(10)
@@ -41,30 +63,43 @@ def play_games(config, few_shot_path, game_class):
 
             except openai.error.Timeout as e:
                 print('Warning: Timout error. Will try again in a few seconds')
+                game.summary_planning['stopping_reason'] = 'error'
+                game.log_planning_summary()
+                game.log_time_and_token(measured_time=0)
                 with open(game.log, 'a') as log:
+                    log.write('\n')
                     json.dump({'Failed': True, 'Error_type': 'openai.error.Timeout', 'Error_message': str(e)}, log)
                     log.write('\n')
                 time.sleep(10)
                 attempt += 1
                 continue
 
-            except openai.error.InvalidRequestError as e:
-                print('Warning: Invalid Request. Will skip instance and continue with next one.')
-
-                with open(game.log, 'a') as log:
-                    json.dump({'Failed': True, 'Error_type': 'openai.error.InvalidRequestError', 'Error_message': str(e)}, log)
-                    log.write('\n')
-                time.sleep(10)
-                break
-
             except openai.error.RateLimitError as e:
                 print('Warning: RateLimitError. Will try again in a few seconds')
-
+                game.summary_planning['stopping_reason'] = 'error'
+                game.log_planning_summary()
+                game.log_time_and_token(measured_time=0)
                 with open(game.log, 'a') as log:
+                    log.write('\n')
                     json.dump({'Failed': True, 'Error_type': 'openai.error.InvalidRequestError', 'Error_message': str(e)}, log)
                 time.sleep(40)
                 attempt += 1
                 continue
+
+            except openai.error.InvalidRequestError as e:
+                print('Warning: Invalid Request. Will skip instance and continue with next one.')
+                if 'maximum context length' in str(e):
+                    game.summary_planning['stopping_reason'] = 'reached_token_limit'
+                else:
+                    game.summary_planning['stopping_reason'] = 'error'
+                game.log_planning_summary()
+                game.log_time_and_token(measured_time=0)
+                with open(game.log, 'a') as log:
+                    log.write('\n')
+                    json.dump({'Failed': True, 'Error_type': 'openai.error.InvalidRequestError', 'Error_message': str(e)}, log)
+                    log.write('\n')
+                time.sleep(10)
+                break
 
 
 def create_game(task_num, instance_config, few_shot_path, game_class) -> PDDLPlanningGame:
@@ -90,10 +125,8 @@ def create_instance_game_config(task_num, instance_config, few_shot_path):
     if not few_shot_path is None:
         if os.path.isfile(few_shot_path):
             few_shot_file = few_shot_path
-        elif os.path.isdir(few_shot_path):
-            few_shot_file = os.path.join(few_shot_path, f'planning_examples_instance-{task_num - 1}.json')
         else:
-            raise FileNotFoundError(f'{few_shot_path} does not exist')
+            raise FileNotFoundError(f'{few_shot_path} does not exist or is not a file.')
         instance_config['llm_config']['plan']['examples_file'] = few_shot_file
         print(f'{task_num}: {few_shot_file}')
 
@@ -175,7 +208,7 @@ def set_up_configurations(config_file:str, few_shot_id: Union[int, None]) -> Tup
     # Select appropriate few shot example files
     approach_type = config['planning_approach']
 
-    if not few_shot_id:
+    if few_shot_id is None:
         few_shot_path = None
     else:
         few_shot_dir_path = get_few_shot_dir(planning_approach=approach_type, domain_data_dir=domain_dir)

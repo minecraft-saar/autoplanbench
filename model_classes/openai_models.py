@@ -78,8 +78,22 @@ class OpenAIChatModel(LLMModel):
         output = openai.ChatCompletion.create(model=self.model_path, messages=self.history, temperature=self.temp, max_tokens=self.max_tokens)
 
         response = output['choices'][0]['message']['content']
+        self.update_token_counts(output['usage'])
 
         return response
+
+    def update_token_counts(self, usage_dict: dict):
+        """
+        Update the processed token counts based on the information returned by the Chat model
+        :param usage_dict:
+        :return:
+        """
+        self.total_input_tokens += usage_dict['prompt_tokens']
+        self.total_output_tokens += usage_dict['completion_tokens']
+        self.total_tokens += usage_dict['total_tokens']
+        self.max_input_tokens = usage_dict['prompt_tokens'] if usage_dict['prompt_tokens'] > self.max_input_tokens else self.max_input_tokens
+        self.max_output_tokens = usage_dict['completion_tokens']  if usage_dict['completion_tokens'] > self.max_output_tokens else self.max_output_tokens
+        self.max_total_tokens = usage_dict['total_tokens'] if usage_dict['total_tokens'] > self.max_total_tokens else self.max_total_tokens
 
     def create_cache_query(self, prompt: str):
         # put together everything that is in the chat history (this already includes the prompt)

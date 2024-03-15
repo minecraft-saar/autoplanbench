@@ -59,6 +59,7 @@ class PDDLWorldEnvironment:
 
         self.completed = False
         self.goal_feedback = ''
+        self.last_val_response = ''
 
         atexit.register(self.remove_temp_files)
 
@@ -296,11 +297,11 @@ class PDDLWorldEnvironment:
         val = os.environ.get('VAL')
         #val = '/localfast/kstein/LLMs-Planning/planner_tools/VAL'
         cmd = f'{val}/validate -v {self.domain_file} {self.tmp_instance_file} {self.tmp_action_file}'
-        response = os.popen(cmd).read()
+        self.last_val_response = os.popen(cmd).read()
 
 
         # store output somehow and parse it
-        reached_goal, executable, effects, advice_goal, advice_precond = self.parse_val_output(response)
+        reached_goal, executable, effects, advice_goal, advice_precond = self.parse_val_output(self.last_val_response)
 
         if reached_goal:
             self.completed = True
@@ -324,7 +325,7 @@ class PDDLWorldEnvironment:
         action_feedback = f'I {action_description}.'
         return action_feedback
 
-    def get_feedback_unsat(self, advice: List[str]) -> str:
+    def parse_feedback_unsat(self, advice: List[str]) -> Tuple[str, str, list, list]:
         """
         input looks like ['The goal is not satisfied',
                           '(Set (on c b) to true)']
@@ -368,6 +369,12 @@ class PDDLWorldEnvironment:
                 should_be_true.append(fact)
             elif 'false' in line:   # facts that are true but should be false
                 should_be_false.append(fact)
+
+        return feedback_type, failed_action, should_be_true, should_be_false
+
+    def get_feedback_unsat(self, advice: List[str]) -> str:
+
+        feedback_type, failed_action, should_be_true, should_be_false = self.parse_feedback_unsat(advice=advice)
 
         if feedback_type == 'precondition':
             feedback = f'I cannot {self.get_description_action(failed_action)} because '

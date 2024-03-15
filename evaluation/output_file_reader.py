@@ -23,8 +23,11 @@ class PlannerOutputReader:
         self.executable = None
         # TODO steps vs. attempts
         self.steps = None
-        self.attempts = None
         self.step_limit = None
+        self.step_reached_goal = None
+        self.stopping_reason = 'NA'
+        self.time_token_data = dict()
+
         self.predicted_plan = []
         self.executable_actions = []
         self.incremental_data = dict()
@@ -36,8 +39,6 @@ class PlannerOutputReader:
 
 
     def read_basic_instance(self):
-
-        last_line = self.instance_data[-1]
 
         for entry in self.instance_data:
 
@@ -52,31 +53,39 @@ class PlannerOutputReader:
             if 'type' in entry.keys():
                 if entry['type'] == 'Plan Model':
                     predicted_plan_str = entry['text']
-                    self.predicted_plan = predicted_plan_str.split('\n')
+                    predicted_plan_split = predicted_plan_str.split('\n')
                     try:
-                        self.predicted_plan.remove('[PLAN END]')
+                        predicted_plan_split.remove('[PLAN END]')
                     except ValueError:
                         print(f'Plan without "[PLAN END]" ending tag in file {self.generated_plan_path}.')
 
                 elif entry['type'] == 'Translation Model':
                     if isinstance(entry['text'], list):
-                        all_translations = entry['text']
-                        for trans in all_translations:
+                        predicted_plan = entry['text']
+                        self.predicted_plan = predicted_plan
+                        for trans in predicted_plan:
                             if not trans.startswith('('):
                                 print(f"Check file {self.generated_plan_path} for missing translations")
                     else:
                         if entry['executable']:
                             self.executable_actions.append(entry['text'])
 
-        self.successful = last_line['success']
-        self.reached_goal = last_line['reached_goal']
-        self.executable = last_line['executable']
-        self.steps = last_line['attempts']
+            if 'success' in entry.keys():
+                self.successful = entry['success']
+                self.reached_goal = entry['reached_goal']
+                self.executable = entry['executable']
+                self.stopping_reason = entry.get('stopping_reason', 'NA')
+                self.step_reached_goal = entry.get('step_reached_goal_first', 'NA')
+                try:
+                    self.steps = entry['n_steps']
+                except KeyError:
+                    self.steps = entry['attempts']
 
+            if 'total_time' in entry.keys():
+                self.time_token_data['total_time'] = entry
 
 
     def read_incremental_instance(self):
-        last_line = self.instance_data[-1]
 
         prev_entry_mistake = False
         incremental_data = {'mistakes': 0,
@@ -86,6 +95,9 @@ class PlannerOutputReader:
                           'wrong_finished_prediction': 0}
 
         for entry in self.instance_data:
+
+            if 'incremental' in entry.keys():
+                assert entry['incremental']
 
             if 'type' in entry.keys():
                 entry_type = entry['type']
@@ -115,48 +127,42 @@ class PlannerOutputReader:
                     if executable and not 'look' in entry['text']:
                         self.executable_actions.append(entry['text'])
 
-            elif 'task' in entry.keys():
+            if 'task' in entry.keys():
                 self.task_num = entry['task']['task_num']
                 self.step_limit = entry['max_steps']
                 self.example_file = entry['model_config']['plan']['examples_file']
 
-            if 'incremental' in entry.keys():
-                assert entry['incremental']
+            if 'success' in entry.keys():
+                self.successful = entry['success']
+                self.reached_goal = entry['reached_goal']
+                self.executable = entry['executable']
+                self.steps = entry['n_steps']
+                self.stopping_reason = entry.get('stopping_reason', 'NA')
+                self.step_reached_goal = entry.get('step_reached_goal_first', 'NA')
 
-        self.successful = last_line['success']
-        self.reached_goal = last_line['reached_goal']
-        self.steps = last_line['n_steps']
+            if 'total_time' in entry.keys():
+                self.time_token_data = entry
 
         self.incremental_data = incremental_data
 
 
-def read_gold_plan(gold_plan_dir: str, task_num: int) -> list:
-
-    gold_plan_file = os.path.join(gold_plan_dir, f'instance-{task_num}_gold_plan.txt')
-
-    gold_actions = read_plan_from_file(pddl_plan_file=gold_plan_file)
-
-    return gold_actions
-
-def read_plan_from_file(pddl_plan_file: str) -> list:
-
-    actions = []
-    with open(pddl_plan_file, 'r') as f:
-        for line in f.readlines():
-            if line.startswith('('):
-                actions.append(line.strip())
-
-    return actions
-
 def check_completeness_run(generated_plan_file: str) -> bool:
 
-    interaction_data = []
+    logged_summary = False
+    openai_error = False
     with open(generated_plan_file, 'r') as f:
         for line in f:
-            interaction_data.append(json.loads(line))
+            entry = json.loads(line)
+            if 'success' in entry.keys():
+                logged_summary = True
+            if 'Failed' in entry.keys():
+                openai_error = True
 
-    last_line = interaction_data[-1]
-    completed_run = True if 'success' in last_line.keys() else False
+    if logged_summary and not openai_error:
+        completed_run = True
+    else:
+        completed_run = False
+
     if not completed_run:
         print(f'Not complete: {generated_plan_file}')
         return False

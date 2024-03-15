@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+import time
 import json
 import time
 from pathlib import Path
@@ -15,7 +16,8 @@ class PlanningGame(ABC):
 
     def __init__(self,
                  llm_config: dict,
-                 task_num: int,
+                 env_config: dict,
+                 task_num: Union[int, str],
                  task_name: str,
                  translation_neural: bool,
                  incremental: bool,
@@ -63,6 +65,10 @@ class PlanningGame(ABC):
         self.provide_state = provide_state
         self.task_num = task_num
         self.count_successive_fails = 0
+
+        print("Initializing world state")
+        self.env_config = env_config
+        self.env = self.create_world_env(env_config)
         self.subgoals = self.get_goal_status()
         self.log_history = log_history
         self.incremental = incremental
@@ -87,9 +93,32 @@ class PlanningGame(ABC):
                          'not_finished_feedback': self.not_finished_feedback
                          }
 
+        self.summary_planning = self.reset_summary_planning()
+
         print("Getting LLMs")
         self.llm_plan = self.create_plan_llm(llm_config['plan'])
         self.llm_translate = self.create_trans_llm(llm_config['translate'])
+
+
+    def reset_summary_planning(self):
+
+        summary_planning = {'success': False,
+                            'reached_goal': False,
+                            'executable': 'NA',
+                            'n_steps': 0,
+                            'step_reached_goal_first': 'NA',
+                            'stopping_reason': 'NA'}
+        return summary_planning
+
+
+    @abstractmethod
+    def create_world_env(self, env_dict: dict):
+        """
+        Create an environment to simulate the world
+        :param env_dict:
+        :return:
+        """
+        pass
 
 
     @abstractmethod
@@ -296,26 +325,28 @@ class PlanningGame(ABC):
         """
         pass
 
-    def resume_log(self, max_steps):
+    def resume_log(self, max_steps: int, break_limit: int):
         """
 
         :param max_steps:
+        :param break_limit:
         :return:
         """
         now = str(datetime.now())
         day_now = now.split(' ')[0]
         print(f'Continuing to use {self.log} for saving conversation')
         with open(self.log, 'a') as log:
-            json.dump({'continued': 'true', 'max_steps': max_steps, 'date': day_now}, log)
+            json.dump({'continued': 'true', 'max_steps': max_steps, 'break_limit': break_limit , 'date': day_now}, log)
             log.write('\n')
 
         return None
 
 
-    def create_log(self, max_steps, directory='') -> str:
+    def create_log(self, max_steps: int, break_limit: int, directory='') -> str:
         """
 
         :param max_steps:
+        :param break_limit:
         :param directory:
         :return:
         """
@@ -328,6 +359,7 @@ class PlanningGame(ABC):
         day_now = now.split(' ')[0]
         metadata['date'] = day_now
         metadata['max_steps'] = max_steps
+        metadata['break_limit'] = break_limit
 
         prompts = dict()
         prompts['plan_prompt'] = self.get_plan_prompt()
@@ -518,6 +550,12 @@ class PlanningGame(ABC):
                                                               auto_state_feedback=auto_state_feedback)
             self.observation = complete_feedback
 
+            if not executable or trans_output == '(look-around)':
+                self.count_successive_fails += 1
+            else:
+                self.count_successive_fails = 0
+
+
             print(f'$SWorld: {self.observation} SWorld$')
             observations.append(self.observation)
             if not executable:
@@ -529,8 +567,8 @@ class PlanningGame(ABC):
     def create_complete_feedback(self, executable: bool, negative_feedback: str, positive_feedback: str,
                           subgoal_feedback: str, auto_state_feedback: str) -> str:
         """
-
-        :param executable:
+        Creates the feedback, i.e. the observation, for an individual action
+        :param executable: whether feedback is for an executable or a not executable action
         :param negative_feedback:
         :param positive_feedback:
         :param subgoal_feedback:
@@ -546,7 +584,6 @@ class PlanningGame(ABC):
                 complete_feedback = 'Next.'
             else:
                 raise NotImplementedError
-            self.count_successive_fails += 1
 
         else:
             if self.positive_feedback == 'full':
@@ -557,7 +594,6 @@ class PlanningGame(ABC):
                 complete_feedback = 'Next.'
             else:
                 raise NotImplementedError
-            self.count_successive_fails = 0
 
             if self.subgoal_feedback:
                 complete_feedback += f'\n\n{subgoal_feedback}'
@@ -567,41 +603,129 @@ class PlanningGame(ABC):
         return complete_feedback
 
 
-    def run_instructions_all(self, steps: int, break_limit: Union[None, int] = None, directory: str = '') -> bool:
+    def create_feedback_complete_plan(self,
+                                      predicted_plan: list,
+                                      translated_plan: list,
+                                      failed_step: int,
+                                      failed_feedback: str) -> str:
+        """
+        Generate feedback for a complete plan that is not executable
+        :param predicted_plan: the complete predicted plan
+        :param translated_plan: the complete translated plan
+        :param failed_step: the position of the first action that is not executable
+        :param failed_feedback: the observation / feedback from trying to execute the action that is not executable
+        :return:
+        """
+        failed_action = predicted_plan[failed_step]
+        feedback_plan = f'This plan is not a valid plan for my task because ' \
+                                f'the action {failed_action} in step {failed_step} cannot be executed:\n' \
+                                f'{failed_feedback}\n Please provide the complete corrected plan.'
+
+        return feedback_plan
+
+
+    def create_feedback_complete_executable_plan(self,
+                                                 reached_goal: bool) -> str:
+        """
+        Generate feedback for a complete plan that is executable and
+        1) reaches the goal
+        or
+        2) does not reach the goal
+        :param reached_goal:
+        :return:
+        """
+        if reached_goal:
+            feedback = 'Great, the plan is correct and I successfully reached the goal.'
+
+        else:
+            feedback = f'This plan is not correct. I successfully executed all steps but have not reached my goal. \n{self.get_diff_to_goal_feedback()} \nPlease provide the complete corrected plan.'
+
+        return feedback
+
+
+    def run_instructions_all(self, steps: int, break_limit: Union[None, int] = None, break_limit_reached_goal: Union[None, int]=None, directory: str = '') -> bool:
         """
 
         :return:
         """
         if self.log == '':  # create new log file
-            self.log = self.create_log(max_steps=steps, directory=directory)
+            self.log = self.create_log(max_steps=steps, break_limit=break_limit, directory=directory)
         else:
-            self.resume_log(max_steps=steps)  # write in previously created log file
+            self.resume_log(max_steps=steps, break_limit=break_limit)  # write in previously created log file
 
         if self.log_history:
             with open('./temp_log_history.txt', 'w') as f:
                 f.write(f'')
+        start_time = time.time()
 
         if self.incremental:
-            success = self.run_instructions_all_incremental(steps=steps, break_limit=break_limit)
+            success = self.run_instructions_all_incremental(steps=steps, break_limit=break_limit, break_limit_reached_goal=break_limit_reached_goal)
         else:
             success = self.run_instructions_all_complete(attempts=break_limit)
 
+        end_time = time.time()
+        total_time = end_time - start_time
+
+        self.log_planning_summary()
+        self.log_time_and_token(measured_time=total_time)
+
         return success
 
+    def log_planning_summary(self):
 
-    def run_instructions_all_incremental(self, steps=30, break_limit=None) -> bool:
-        reached_goal = False    # becomes True if goal state is reached at any time
+        for key, value in self.subgoals.items():
+            self.summary_planning[key] = value
+
+        with open(self.log, 'a') as log:
+            json.dump(self.summary_planning, log)
+
+
+    def log_time_and_token(self, measured_time):
+
+        log_data = {'total_time': measured_time,
+                    'total_input_tokens': self.llm_plan.model.total_input_tokens if self.llm_plan.model.total_input_tokens != 0 else None,
+                    'total_output_tokens': self.llm_plan.model.total_output_tokens if self.llm_plan.model.total_output_tokens != 0 else None,
+                    'total_tokens': self.llm_plan.model.total_tokens if self.llm_plan.model.total_tokens != 0 else None,
+                    'max_input_tokens': self.llm_plan.model.max_input_tokens if self.llm_plan.model.max_input_tokens != 0 else None,
+                    'max_output_tokens': self.llm_plan.model.max_output_tokens if self.llm_plan.model.max_output_tokens != 0 else None,
+                    'max_tokens': self.llm_plan.model.max_total_tokens if self.llm_plan.model.max_total_tokens != 0 else None}
+
+        with open(self.log, 'a') as log:
+            log.write('\n')
+            json.dump(log_data, log)
+
+
+    def run_instructions_all_incremental(self, steps=30, break_limit=None, break_limit_reached_goal=1) -> bool:
+        """
+
+        :param steps:
+        :param break_limit:
+        :param break_limit_reached_goal:
+        :return:
+        """
+        steps_reached_goal = []
         success = False
+        self.summary_planning['stopping_reason'] = 'step_limit'
         for i in range(steps):
             is_completed, is_aware = self.get_next_instruction()
             if is_completed:
-                reached_goal = True
+                self.summary_planning['reached_goal'] = True
+                if not steps_reached_goal:
+                    self.summary_planning['step_reached_goal_first'] = i+1
+                steps_reached_goal.append(i + 1)
+
+            # Stopping Criteria
             if is_aware:    # is_aware is only True if the model predicts to be in the goal state when this is the case
                 success = True
+                self.summary_planning['success'] = True
+                self.summary_planning['stopping_reason'] = 'success'
                 break
-
+            if break_limit_reached_goal and len(steps_reached_goal) > break_limit_reached_goal:
+                self.summary_planning['stopping_reason'] = 'limit_reached_goal'
+                break
             # Then it very likely got stuck and will not recover
             if self.count_successive_fails and self.count_successive_fails > break_limit:
+                self.summary_planning['stopping_reason'] = 'limit_not_executable'
                 break
 
             # needed when running using openai API due to limit of requests per minute
@@ -609,15 +733,7 @@ class PlanningGame(ABC):
                 'model_name'].startswith('openai'):
                 time.sleep(2)
 
-        summary = {'success': success,
-                   'reached_goal': reached_goal,
-                   'executable': 'NA',
-                   'n_steps': i + 1}
-        for key, value in self.subgoals.items():
-            summary[key] = value
-
-        with open(self.log, 'a') as log:
-            json.dump(summary, log)
+            self.summary_planning['n_steps'] = i + 1
 
         return success
 
@@ -626,37 +742,17 @@ class PlanningGame(ABC):
 
     def run_instructions_all_complete(self, attempts: int):
 
-        attempt = 0
-        reached_goal = False
-        reached_goal_any_time = False
         success = False
-        executable = False
-        failing_step = None
-        failed_action = None
-        failing_message = None
 
         if attempts > 1:
             assert self.llm_plan.model.max_history > 0
 
-        while attempt < attempts:
+        for attempt in range(attempts):
             if attempt == 0:
                 # generate initial state description
                 self.observation = self.get_description_current_state()
                 print(f'$SWorld: {self.observation} SWorld$')
                 self.write_log(self.observation, 'auto_state')
-
-            else:
-                # generate the replanning prompt
-                # two possible scenarios: either not executable or did not reach goal state
-                if executable:
-                    replanning_prompt = f'This plan is not a valid plan for my task because ' \
-                                        f'the action {failed_action} in step {failing_step} cannot be executed:\n' \
-                                        f'{failing_message}\n Please provide the complete corrected plan.'
-                else:
-                    replanning_prompt = 'This plan is not a correct plan for my task because ' \
-                                        'I have not reached my goal after executing all the actions.\n' \
-                                        'Please provide me the complete corrected plan.'
-                self.observation = replanning_prompt
 
             # pass as input to planning model
             plan = self.llm_plan.generate(self.observation)
@@ -677,45 +773,69 @@ class PlanningGame(ABC):
                     translated_step = self.text_to_plan(step)
                 translated_steps += translated_step.split('\n')
 
-
             print(f'$Translated: {translated_steps} Translated$')
             self.write_log(translated_steps, 'translate_model')
 
-            # try to execute translated plan step by step
-            for t_ind, t_step in enumerate(translated_steps):
-                observations, executable = self.try_execution(translation_output_list = [t_step],
-                                                              current_world_state='')
-                if executable and self.check_goal_completion():
-                    reached_goal_any_time = True
-                elif not executable:
-                    failing_step = t_ind
-                    failed_action = t_step
-                    failing_message = observations[0]
-                    break
+            reached_goal_any_time, step_reached_goal_first, success, executable, observation = self.process_complete_pred_plan(
+                predicted_plan=steps,
+                translated_plan=translated_steps)
+            self.observation = observation
 
-            if executable and self.check_goal_completion():
-                reached_goal = True
+            self.summary_planning['reached_goal'] = reached_goal_any_time
+            self.summary_planning['success'] = success
+            self.summary_planning['executable'] = executable
+            self.summary_planning['n_steps'] = attempt + 1
+            self.summary_planning['step_reached_goal_first'] = step_reached_goal_first
 
-            success = True if reached_goal else False
-            attempt += 1
-
-            if reached_goal:
+            if success:
                 break
 
+            # else the environment needs to be reset to the initial world state
+            self.env = self.create_world_env(self.env_config)
+            self.reset_summary_planning()
+            self.summary_planning['n_steps'] = attempt + 1
 
+        return success
 
-        summary = {'success': success,
-                   'reached_goal': reached_goal_any_time,
-                   'executable': executable,
-                   'attempts': attempt}
+    def process_complete_pred_plan(self, predicted_plan: list, translated_plan: list):
+        """
 
-        for key, value in self.subgoals.items():
-            summary[key] = value
+        :param predicted_plan:
+        :param translated_plan:
+        :return:
+        """
+        reached_goal_any_time = False
+        step_reached_goal = []
+        executable_plan = True
+        reached_goal = False
+        observation = ''
 
-        with open(self.log, 'a') as log:
-            json.dump(summary, log)
+        # try to execute translated plan step by step
+        for step, action in enumerate(translated_plan):
+            observation, executable = self.try_execution(translation_output_list=[action],
+                                                         current_world_state='')
+            if executable and self.check_goal_completion():
+                reached_goal_any_time = True
+                step_reached_goal.append(step + 1)
 
-        return reached_goal
+            elif not executable:
+                executable_plan = False
+                observation = self.create_feedback_complete_plan(predicted_plan=predicted_plan,
+                                                                 translated_plan=translated_plan,
+                                                                 failed_step=step,
+                                                                 failed_feedback=observation[0])
+                break
+
+        if executable_plan and self.check_goal_completion():
+            reached_goal = True
+        if executable_plan:
+            observation = self.create_feedback_complete_executable_plan(reached_goal=reached_goal)
+
+        if step_reached_goal:
+            step_reached_goal_first = step_reached_goal[0]
+        else:
+            step_reached_goal_first = 'NA'
+        return reached_goal_any_time, step_reached_goal_first, reached_goal, executable_plan, observation
 
 
     def replay_from_log(self, log_file):

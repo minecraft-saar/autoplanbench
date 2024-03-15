@@ -1,5 +1,5 @@
 import json
-from typing import Tuple
+from typing import Tuple, Union
 
 from llm_planning.game_classes.pddl_planning_game import PDDLPlanningGame
 
@@ -8,7 +8,7 @@ class PDDLGameThoughts(PDDLPlanningGame):
 
     def __init__(self,
                  llm_config: dict,
-                 task_num: int,
+                 task_num: Union[int, str],
                  domain_file: str,
                  domain_nl_file: str,
                  instance_file: str,

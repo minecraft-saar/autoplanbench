@@ -46,6 +46,15 @@ class LLMModel(ABC):
         self.role_user = ''         # user role for specific model template, e.g. 'user', 'HUMAN'
         self.role_assistant = ''    # user role for specific model template, e.g. 'ASSISTANT'
 
+        # Keep track of the total number of tokens that get processed during one run
+        self.total_tokens = 0           # self.total_input_tokens + self.total_output_tokens
+        self.total_input_tokens = 0
+        self.total_output_tokens = 0
+        # Keep track of the maximum number of tokens that get processed per call to the LLM
+        self.max_input_tokens = 0
+        self.max_output_tokens = 0
+        self.max_total_tokens = 0
+
     @abstractmethod
     def init_model(self, init_prompt: str):
         """

@@ -18,8 +18,13 @@ if __name__=='__main__':
 
     for d2eval in data_to_eval:
         try:
+            summarized = d2eval.pop('summarized')
+        except KeyError:
+            summarized = True
+
+        try:
             evaluator = PlanEvaluator(**d2eval)
-            evaluator.run_evaluation()
+            evaluator.run_evaluation(summarized=summarized)
 
         except FileNotFoundError as e:
             print(e)

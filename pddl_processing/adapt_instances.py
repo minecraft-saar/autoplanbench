@@ -3,16 +3,21 @@ from pathlib import Path
 import re
 from collections import defaultdict
 import json
+from typing import Tuple
 
 
-def adapt_instance_files(instances_path, adapted_inst_dir, overwrite: bool, instance_mappings_file):
+def adapt_instance_files(instances_path,
+                         adapted_inst_dir,
+                         overwrite: bool,
+                         instance_mappings_file) -> Tuple[dict, list]:
     """
 
     :param instances_path:
     :param adapted_inst_dir:
     :param overwrite:
     :param instance_mappings_file:
-    :return:
+    :return: dict with the mappings of the original and adapted object names
+             list of all instances that got adapted
     """
     Path(adapted_inst_dir).mkdir(exist_ok=True, parents=True)
     if os.path.isfile(instances_path):
@@ -23,6 +28,7 @@ def adapt_instance_files(instances_path, adapted_inst_dir, overwrite: bool, inst
         instance_files = [file for file in instance_files if file.endswith('.pddl')]
 
     instances_mappings = dict()
+    adapted_files = []
     if os.path.exists(instance_mappings_file):
         with open(instance_mappings_file, 'r') as f:
             instances_mappings = json.load(f)
@@ -41,11 +47,12 @@ def adapt_instance_files(instances_path, adapted_inst_dir, overwrite: bool, inst
 
             adapted_file, mappings = adapt_inst_file(content, inst_file)
             instances_mappings[file_name] = mappings
+            adapted_files.append(file_name)
 
             with open(os.path.join(adapted_inst_dir, file_name), 'w') as o:
                 o.write(adapted_file)
 
-    return instances_mappings
+    return instances_mappings, adapted_files
 
 
 def adapt_inst_file(file_content: str, inst_file: str):
@@ -124,3 +131,4 @@ def parse_objs_inst(object_def: str):
         objects_by_type['object'].append(obj)
 
     return objects_by_type
+

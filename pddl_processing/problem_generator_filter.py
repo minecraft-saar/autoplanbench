@@ -32,7 +32,7 @@ def select_problems(n_instances: int,
     Path(not_selected_problem_dir).mkdir(exist_ok=True, parents=True)
 
     if len_constraint is None:
-        possible_lengths = [0, 1000]
+        possible_lengths = [0, 10000]
     else:
         possible_lengths = len_constraint
         assert len(possible_lengths) == 2

@@ -1,5 +1,5 @@
 import json
-from typing import Tuple
+from typing import Tuple, Union
 
 from llm_planning.game_classes.pddl_game_env import PDDLWorldEnvironment
 from llm_planning.game_classes.llm_models_pddl_planning import TranslationModelBlocksWorld, PlanningModelBlocksWorld
@@ -10,7 +10,7 @@ class PDDLPlanningGame(PlanningGame):
 
     def __init__(self,
                  llm_config: dict,
-                 task_num: int,
+                 task_num: Union[int, str],
                  domain_file: str,
                  domain_nl_file: str,
                  instance_file: str,
@@ -29,13 +29,12 @@ class PDDLPlanningGame(PlanningGame):
         with open(domain_nl_file, 'r') as nl_file:
             self.domain_nl = json.load(nl_file)
 
-        print("Initializing world state")
-        self.env = self.create_blocks_world_env(domain_file=domain_file,
-                                                instance_file=instance_file)
-
-        super().__init__(llm_config=llm_config, task_num=task_num,
+        super().__init__(llm_config=llm_config,
+                         env_config={'domain_file':domain_file, 'instance_file': instance_file},
+                         task_num=task_num,
                          subgoal_feedback=subgoal_feedback, provide_state=provide_state,
-                         log_history=log_history, task_name=f'instance-{task_num}',
+                         log_history=log_history,
+                         task_name=f'instance-{task_num}',
                          incremental=incremental, positive_feedback=positive_feedback,
                          negative_feedback=negative_feedback,
                          not_finished_feedback=not_finished_feedback,
@@ -43,13 +42,14 @@ class PDDLPlanningGame(PlanningGame):
 
         self.metadata['by_action'] = by_action
 
-    def create_blocks_world_env(self, domain_file, instance_file):
+    def create_world_env(self, env_dict: dict):
         """
 
-        :param domain_file:
-        :param instance_file:
+        :param env_dict: dictionary with the domain file and the instance file path
         :return:
         """
+        domain_file = env_dict['domain_file']
+        instance_file = env_dict['instance_file']
         bw_env = PDDLWorldEnvironment(domain_nl=self.domain_nl,
                                       instance_file=instance_file,
                                       domain_file=domain_file)
@@ -287,4 +287,29 @@ class PDDLPlanningGame(PlanningGame):
 
         return observation, executable, is_completed
 
+    # TODO
+    def create_feedback_complete_executable_plan(self,
+                                                 reached_goal: bool) -> str:
+        pass
 
+    # TODO
+    def create_feedback_complete_plan(self,
+                                      predicted_plan: list,
+                                      translated_plan: list,
+                                      failed_step: int,
+                                      failed_feedback: str) -> str:
+        failed_action = predicted_plan[failed_step]
+        missing_precond = failed_feedback.split(' because ')[-1]
+        missing_preconditions_nl = missing_precond.split(', ')
+        missing_precond_conj = ' and '.join(missing_preconditions_nl)
+        feedback = f'This plan does not work. \nI cannot execute your instruction "{failed_action}" in step {failed_step} because {missing_precond_conj}'
+
+        _, _, _, _, advice_precond = self.env.parse_val_output(self.env.last_val_response)
+        feedback_type, failed_action, should_be_true, should_be_false = self.env.parse_feedback_unsat(advice=advice_precond)
+        assert feedback_type == 'precondition'
+
+
+
+        feedback += '\nPlease provide a corrected plan.'
+
+        return feedback

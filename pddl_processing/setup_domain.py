@@ -9,7 +9,7 @@ from pddl_processing.adapt_instances import adapt_instance_files
 from pddl_processing.create_translation_examples import create_translation_examples
 from pddl_processing.create_gold_plans import create_gold_plan_files
 from pddl_processing.problem_generator_filter import select_problems
-from pddl_processing.create_domain_description import create_domain_nl_description
+from utils.run_save_descriptions import create_domain_nl_description
 
 
 def setup_pddl_domain(domain_file: str,
@@ -18,7 +18,7 @@ def setup_pddl_domain(domain_file: str,
                       llm: str,
                       llm_type: str,
                       n_instances: Union[None, int] = None,
-                      len_constraint: Tuple[int, int] = (2, 20),
+                      len_constraint: Union[Tuple[int, int], None] = (2, 20),
                       plan_timeout: int = 1200,
                       overwrite: bool = False,
                       description_version: str = 'medium',
@@ -74,7 +74,7 @@ def set_up_instance_files(domain_file: str,
                          output_dir: str,
                          pddl_describer: PDDLDescriber,
                          n_instances: Union[None, int] = None,
-                         len_constraint: Tuple[int, int] = (2, 20),
+                         len_constraint: Union[Tuple[int, int], None] = (2, 20),
                          plan_timeout: int = 1200,
                          overwrite: bool = False,
                          reselect: bool = True):
@@ -119,12 +119,13 @@ def set_up_instance_files(domain_file: str,
 
     print(f'---- Selecting Instance Files ----')
     not_matching_instance_dir = os.path.join(output_dir, 'not_selected_by_filter')
-
+    if len_constraint is not None:
+        len_constraint = list(len_constraint)
     select_problems(n_instances=n_instances,
                     problem_dir=new_inst_dir,
                     gold_plan_dir=gold_plan_dir,
                     not_selected_problem_dir=not_matching_instance_dir,
-                    len_constraint=list(len_constraint),
+                    len_constraint=len_constraint,
                     reselect=reselect)
 
     # create few-shot examples
@@ -139,7 +140,8 @@ def set_up_instance_files(domain_file: str,
             json.dump(example_data, f, indent=4)
         with open(translation_examples_repl_file, 'w') as f:
             json.dump(example_data_replace, f, indent=4)
-
+    else:
+        print('Translation few-shot examples were already available and not created again.')
 
 
 

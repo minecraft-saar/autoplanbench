@@ -4,7 +4,8 @@ from pathlib import Path
 from typing import Union
 from collections import Counter
 from argparse import ArgumentParser
-from evaluation.output_file_reader import PlannerOutputReader, read_gold_plan, check_completeness_run
+from evaluation.output_file_reader import PlannerOutputReader, check_completeness_run
+from utils.helpers import read_gold_plan
 
 
 class PlanEvaluator:
@@ -13,28 +14,30 @@ class PlanEvaluator:
                  generated_plans_path: str,
                  evaluation_results_file: str,
                  gold_plan_dir: Union[str, None],
-                 is_complete_plan: bool = False
+                 is_complete_plan: bool = False,
+                 n_decimals: int = 6
                  ):
 
         self.generated_plans_path = generated_plans_path
         self.evaluation_results_file = evaluation_results_file
         self.gold_plan_dir = gold_plan_dir
         self.is_complete_plan = is_complete_plan
+        self.n_decimals = n_decimals
 
         eval_res_dir, eval_file = os.path.split(evaluation_results_file)
         Path(eval_res_dir).mkdir(exist_ok=True, parents=True)
 
         # Information extracted for all instances
         self.instance_results = {
-            'task_ids': [],                         # int
+            'task_ids': [],                         # int or str
             'solved_successfully': [],              # bool
             'n_mistakes': [],                       # int
             'solved_without_mistake': [],           # bool
             'reached_goal_without_stopping': [],    # bool
             'predicted_goal_erroneously': [],       # bool
-            'unsuccessful_bec_not_reached_goal': [],# bool
-            'unsuccessful_bec_not_executable': [],  # bool
-            'unsuccessful_bec_not_recog_goal': [],    # bool
+            'unsuccessful_bec_not_reached_goal': [],    # bool
+            'unsuccessful_bec_not_executable': [],      # bool
+            'unsuccessful_bec_not_recog_goal': [],  # bool
             'look_arounds': [],                     # int
             'look_arounds_after_mistake': [],       # int
             'interaction_length': [],               # int
@@ -43,7 +46,16 @@ class PlanEvaluator:
             'optimal_plan_length': [],              # int
             'factor_plan_length': [],               # float
             'reached_step_limit_wo_mistake': [],    # bool
-            'reached_break_limit_earlier': [],      # bool
+            'reached_step_limit': [],               # bool
+            'stopping_reason': [],                  # int
+            'step_reached_goal': [],                # int
+            'total_time': [],                       # float
+            'total_input_tokens': [],               # int
+            'total_output_tokens': [],              # int
+            'total_tokens': [],                     # int
+            'max_input_tokens': [],                 # int
+            'max_output_tokens': [],                # int
+            'max_tokens': []                        # int
         }
         # Results taken together from all instances
         self.eval_results = {
@@ -65,7 +77,7 @@ class PlanEvaluator:
             'avg_length_successful_interactions': 0.0,
             'avg_length_unsuccessful_interactions': 0.0,
             'n_reached_step_limit_wo_mistake': 0,
-            'n_reached_break_limit_earlier': 0,
+            'n_reached_step_limit': 0,
             'avg_length_executable_plans': 0.0,
             'successful_tasks': [],
             'successful_tasks_without_mistakes': [],
@@ -73,7 +85,7 @@ class PlanEvaluator:
             'successful_tasks_with_mistakes': []
         }
 
-    def run_evaluation(self):
+    def run_evaluation(self, summarized: bool = True):
 
         self.evaluate_all_outputs()
 
@@ -81,17 +93,42 @@ class PlanEvaluator:
         for value in self.instance_results.values():
             assert len(value) == n_tasks or len(value) == 0
 
-        return self.create_evaluation_overview()
-
+        if summarized:
+            return self.create_evaluation_summary()
+        else:
+            self.create_evaluation_overview()
+            return 'Finished evaluation'
 
     def create_evaluation_overview(self):
+        task_ids = self.instance_results['task_ids']
+
+        header = list(self.instance_results.keys())
+        header.remove('task_ids')
+        header.insert(0, 'task_ids')
+
+        all_rows = []
+        for task_index, task_id in enumerate(task_ids):
+            row = []
+            for col_name in header:
+                value = self.instance_results[col_name][task_index]
+                row.append(str(value))
+            all_rows.append(row)
+
+        with open(self.evaluation_results_file, 'w') as f:
+            header_line = '\t'.join(header)
+            f.write(f'{header_line}\n')
+            for row in all_rows:
+                line = '\t'.join(row)
+                f.write(f'{line}\n')
+
+    def create_evaluation_summary(self):
         n_instances = len(self.instance_results['task_ids'])
         self.eval_results['n_instances'] = n_instances
         self.eval_results['n_solved_successfully'] = self.instance_results['solved_successfully'].count(True)
         self.eval_results['n_solved_without_mistake'] = self.instance_results['n_mistakes'].count(0)
 
-        self.eval_results['accuracy'] = self.eval_results['n_solved_successfully'] / self.eval_results['n_instances']
-        self.eval_results['accuracy_no_mistakes'] = self.eval_results['n_solved_without_mistake'] / self.eval_results['n_instances']
+        self.eval_results['accuracy'] = round(self.eval_results['n_solved_successfully'] / self.eval_results['n_instances'], self.n_decimals)
+        self.eval_results['accuracy_no_mistakes'] = round(self.eval_results['n_solved_without_mistake'] / self.eval_results['n_instances'], self.n_decimals)
 
         self.eval_results['n_reached_goal_without_stopping'] = self.instance_results['reached_goal_without_stopping'].count(True)
         self.eval_results['unsuccessful_bec_not_reached_goal'] = self.instance_results['unsuccessful_bec_not_reached_goal'].count(True)
@@ -103,24 +140,24 @@ class PlanEvaluator:
         self.eval_results['n_look_arounds'] = sum(self.instance_results['look_arounds']) if not self.is_complete_plan else 'NA'
         self.eval_results['n_look_arounds_after_mistakes'] = sum(self.instance_results['look_arounds_after_mistake']) if not self.is_complete_plan else 'NA'
         self.eval_results['n_reached_step_limit_wo_mistake'] = sum(self.instance_results['reached_step_limit_wo_mistake']) if not self.is_complete_plan else 'NA'
-        self.eval_results['n_reached_break_limit_earlier'] = sum(self.instance_results['reached_break_limit_earlier']) if not self.is_complete_plan else 'NA'
+        self.eval_results['n_reached_step_limit'] = sum(self.instance_results['reached_step_limit']) if not self.is_complete_plan else 'NA'
 
-        self.eval_results['avg_optimal_plan_length'] = sum(self.instance_results['optimal_plan_length']) / n_instances
-        self.eval_results['avg_interaction_length'] = sum(self.instance_results['interaction_length']) / n_instances
+        self.eval_results['avg_optimal_plan_length'] = round(sum(self.instance_results['optimal_plan_length']) / n_instances, self.n_decimals)
+        self.eval_results['avg_interaction_length'] = round(sum(self.instance_results['interaction_length']) / n_instances, self.n_decimals)
 
         successful_plan_lengths = [pl for pl in self.instance_results['successful_plan_length'] if pl != -1]
         successful_interaction_lengths = [pl for pl in self.instance_results['successful_interaction_length'] if pl != -1]
         factor_plan_lengths = [f_pl for f_pl in self.instance_results['factor_plan_length'] if f_pl != -1]
         try:
-            self.eval_results['avg_length_executable_plans'] = sum(successful_plan_lengths) / len(successful_plan_lengths)
+            self.eval_results['avg_length_executable_plans'] = round(sum(successful_plan_lengths) / len(successful_plan_lengths), self.n_decimals)
         except ZeroDivisionError:
             self.eval_results['avg_length_executable_plans'] = 0
         try:
-            self.eval_results['avg_factor_plan_length'] = sum(factor_plan_lengths) / len(factor_plan_lengths)
+            self.eval_results['avg_factor_plan_length'] = round(sum(factor_plan_lengths) / len(factor_plan_lengths), self.n_decimals)
         except ZeroDivisionError:
             self.eval_results['avg_factor_plan_length'] = 0
         try:
-            self.eval_results['avg_length_successful_interactions'] = sum(successful_interaction_lengths) / len(successful_interaction_lengths)
+            self.eval_results['avg_length_successful_interactions'] = round(sum(successful_interaction_lengths) / len(successful_interaction_lengths), self.n_decimals)
         except ZeroDivisionError:
             self.eval_results['avg_length_successful_interactions'] = 0
 
@@ -141,12 +178,12 @@ class PlanEvaluator:
             else:
                 lengths_unsuccessful_tasks.append(self.instance_results['interaction_length'][instance_index])
         try:
-            checking_length_comp = sum(lengths_successful_tasks) / len(lengths_successful_tasks)
+            checking_length_comp = round(sum(lengths_successful_tasks) / len(lengths_successful_tasks), self.n_decimals)
         except ZeroDivisionError:
             checking_length_comp = 0
         assert self.eval_results['avg_length_successful_interactions'] == checking_length_comp
         try:
-            self.eval_results['avg_length_unsuccessful_interactions'] = sum(lengths_unsuccessful_tasks) / len(lengths_unsuccessful_tasks)
+            self.eval_results['avg_length_unsuccessful_interactions'] = round(sum(lengths_unsuccessful_tasks) / len(lengths_unsuccessful_tasks), self.n_decimals)
         except ZeroDivisionError:
             self.eval_results['avg_length_unsuccessful_interactions'] = 0
 
@@ -167,7 +204,7 @@ class PlanEvaluator:
             print(f'{key}: {value}')
         print(f'\n')
 
-        return self.eval_results['n_reached_step_limit_wo_mistake'], self.eval_results['n_reached_break_limit_earlier']
+        return self.eval_results['n_reached_step_limit_wo_mistake'], self.eval_results['n_reached_step_limit']
 
 
 
@@ -180,16 +217,13 @@ class PlanEvaluator:
 
         tested_inst_data = PlannerOutputReader(generated_plan_path=generated_plan_file,
                                                is_complete_plan=True)
+        self.evaluate_shared_criteria(tested_inst_data=tested_inst_data)
 
         successful = tested_inst_data.successful
         reached_goal = tested_inst_data.reached_goal
         executable = tested_inst_data.executable
         steps = tested_inst_data.steps
 
-        self.instance_results['task_ids'].append(tested_inst_data.task_num)
-
-        self.instance_results['solved_successfully'].append(successful)
-        self.instance_results['interaction_length'].append(steps)
 
         if reached_goal and not successful and executable:
             self.instance_results['unsuccessful_bec_not_recog_goal'].append(True)
@@ -236,6 +270,7 @@ class PlanEvaluator:
 
         tested_inst_data = PlannerOutputReader(generated_plan_path=generated_plan_file,
                                                is_complete_plan=False)
+        self.evaluate_shared_criteria(tested_inst_data=tested_inst_data)
 
         mistakes = tested_inst_data.incremental_data['mistakes']
         reached_goal = tested_inst_data.reached_goal
@@ -243,14 +278,11 @@ class PlanEvaluator:
         executable_actions = tested_inst_data.executable_actions
         steps = tested_inst_data.steps
 
-        self.instance_results['task_ids'].append(tested_inst_data.task_num)
 
         self.instance_results['look_arounds'].append(tested_inst_data.incremental_data['look_arounds'])
         self.instance_results['look_arounds_after_mistake'].append(tested_inst_data.incremental_data['look_arounds_after_mistake'])
         self.instance_results['n_mistakes'].append(mistakes)
 
-        self.instance_results['solved_successfully'].append(successful)
-        self.instance_results['interaction_length'].append(steps)
 
         if reached_goal and not successful and mistakes == 0:
             self.instance_results['unsuccessful_bec_not_recog_goal'].append(True)
@@ -301,10 +333,36 @@ class PlanEvaluator:
             self.instance_results['reached_step_limit_wo_mistake'].append(True)
         else:
             self.instance_results['reached_step_limit_wo_mistake'].append(False)
+
         if not successful and steps < tested_inst_data.step_limit:
-            self.instance_results['reached_break_limit_earlier'].append(True)
+            self.instance_results['reached_step_limit'].append(True)
         else:
-            self.instance_results['reached_break_limit_earlier'].append(False)
+            self.instance_results['reached_step_limit'].append(False)
+
+
+    def evaluate_shared_criteria(self, tested_inst_data: PlannerOutputReader):
+
+        successful = tested_inst_data.successful
+        steps = tested_inst_data.steps
+        step_reached_goal = tested_inst_data.step_reached_goal
+
+        self.instance_results['task_ids'].append(tested_inst_data.task_num)
+        self.instance_results['solved_successfully'].append(successful)
+        self.instance_results['interaction_length'].append(steps)
+        self.instance_results['step_reached_goal'].append(step_reached_goal)
+
+        self.instance_results['stopping_reason'].append(tested_inst_data.stopping_reason)
+
+        self.instance_results['total_time'].append(tested_inst_data.time_token_data.get('total_time', 'NA'))
+        self.instance_results['total_input_tokens'].append(
+            tested_inst_data.time_token_data.get('total_input_tokens', 'NA'))
+        self.instance_results['total_output_tokens'].append(
+            tested_inst_data.time_token_data.get('total_output_tokens', 'NA'))
+        self.instance_results['total_tokens'].append(tested_inst_data.time_token_data.get('total_tokens', 'NA'))
+        self.instance_results['max_input_tokens'].append(tested_inst_data.time_token_data.get('max_input_tokens', 'NA'))
+        self.instance_results['max_output_tokens'].append(
+            tested_inst_data.time_token_data.get('max_output_tokens', 'NA'))
+        self.instance_results['max_tokens'].append(tested_inst_data.time_token_data.get('max_tokens', 'NA'))
 
 
     def evaluate_all_outputs(self):
@@ -328,7 +386,7 @@ class PlanEvaluator:
                     continue
 
                 if not check_completeness_run(generated_plan_file):
-                    return
+                    continue
 
                 if self.is_complete_plan:
                     self.evaluate_basic_instance(generated_plan_file)

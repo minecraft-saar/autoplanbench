@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Union
 
 PROJ_DIR = Path(__file__).resolve().parent.parent
 
@@ -18,6 +19,20 @@ APPROACHES = ['basic', 'act', 'state_reasoning', 'react', 'cot']
 
 THOUGHT_GEN_EXAMPLE_DOMAIN = os.path.join(PROJ_DIR, 'llm_planning', 'manual_react_examples', 'logistics_domain_description.json')
 THOUGHT_GEN_EXAMPLE_FILE = os.path.join(PROJ_DIR, 'llm_planning', 'manual_react_examples', 'logistics_react.json')
+
+def get_cache_dir(model_subdir_name: Union[str, None], exp_subdir_name: Union[str, None]):
+
+    if model_subdir_name is None:
+        assert exp_subdir_name is None
+        cache_dir = None
+    else:
+        cache_dir = CACHE_DIR / Path(model_subdir_name)
+        if exp_subdir_name is not None:
+            cache_dir = cache_dir / Path(exp_subdir_name)
+    if cache_dir is not None:
+        Path(cache_dir).mkdir(exist_ok=True, parents=True)
+    return cache_dir
+
 
 def get_domain_file_path(domain_name, data_dir):
     domain_data_dir = get_domain_data_dir(domain_name=domain_name, data_dir=data_dir)

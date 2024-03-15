@@ -69,13 +69,21 @@ def compute_plan(domain_file: str, instance_file: str, plan_file: str, plan_time
     return created_plan
 
 
-def create_gold_plan_files(domain_file: str, instance_dir: str, plan_dir: str, plan_timeout: int, overwrite_plans: bool = False):
+def create_gold_plan_files(domain_file: str,
+                           instance_dir: str,
+                           plan_dir: str,
+                           plan_timeout: int,
+                           new_files_names: list,
+                           inst_obj_mappings: dict,
+                           overwrite_plans: bool = False):
     """
     Run fastdownward with A* search to find all plans for the problems in the instance_dir and save them
     :param domain_file: path to the pddl domain file
     :param instance_dir: path to the directory with the problem instance files
     :param plan_dir: path to the directory where the files with the gold plans get saved
     :param plan_timeout: time in seconds after which the planning for a specific problem gets aborted if no plan found so far
+    :param new_files_names: names of the files where the object names got adapted
+    :param inst_obj_mappings: mappings of the original to adapted object names
     :param overwrite_plans: whether to recompute plans that are already available
     :return:
     """
@@ -85,13 +93,14 @@ def create_gold_plan_files(domain_file: str, instance_dir: str, plan_dir: str, p
     for instance_file in os.listdir(instance_dir):
         instance_file_path = os.path.join(instance_dir, instance_file)
 
-        instance_file_name = instance_file.split('.')[:-1]
-        instance_file_name = '.'.join(instance_file_name)
-        plan_file = f'{instance_file_name}_gold_plan.txt'
-        plan_file_path = os.path.join(plan_dir, plan_file)
+        plan_file_path = get_plan_file_name(instance_file_name=instance_file,
+                                       plan_dir=plan_dir)
 
         # if plan already exists and should not be overwritten then skip planning
         if not overwrite_plans and os.path.exists(plan_file_path):
+            # if there are already plans available for instances that have not been yet adapted then adapt the plan files accordingly
+            if instance_file in new_files_names:
+                adapt_gold_plan(instance_file=instance_file, inst_obj_mappings=inst_obj_mappings, plan_file_path=plan_file_path)
             kept_plans.append(True)
         else:
             plan_created = compute_plan(domain_file=domain_file, instance_file=instance_file_path,
@@ -103,4 +112,58 @@ def create_gold_plan_files(domain_file: str, instance_dir: str, plan_dir: str, p
         print(f'For {skipped_problems} out of {len(generated_plans)} problem instances no plans were generated.) ')
     if len(kept_plans) > 0:
         print(f'{len(kept_plans)} were already available and not created again.')
+
+
+def get_plan_file_name(instance_file_name: str, plan_dir):
+    """
+
+    :param instance_file_name:
+    :param plan_dir:
+    :return:
+    """
+    instance_name = instance_file_name.split('.')[:-1]
+    instance_name = '.'.join(instance_name)
+    plan_file = f'{instance_name}_gold_plan.txt'
+    plan_file_path = os.path.join(plan_dir, plan_file)
+    return plan_file_path
+
+
+def adapt_gold_plan(instance_file: str, inst_obj_mappings: dict, plan_file_path:str):
+    """
+
+    :param instance_file:
+    :param inst_obj_mappings:
+    :param plan_file_path:
+    :return:
+    """
+    obj_mappings = inst_obj_mappings[instance_file]
+
+    with open(plan_file_path, 'r') as pf:
+        actions = []
+        for line in pf.readlines():
+            actions.append(line.strip())
+
+        actions_adapted = []
+        for action_str in actions:
+            if not action_str.startswith('('):
+                actions_adapted.append(action_str)
+
+            else:
+                no_brackets = action_str.replace('(', '').replace(')', '')
+                no_brackets = no_brackets.strip()
+                action_name = no_brackets.split(' ')[0]
+                action_args = no_brackets.split(' ')[1:]
+
+                new_args = []
+                for action_arg in action_args:
+                    new_arg_name = obj_mappings[action_arg]
+                    new_args.append(new_arg_name)
+
+                new_action_args = ' '.join(new_args)
+                new_action = f'({action_name} {new_action_args})'
+                actions_adapted.append(new_action)
+
+    with open(plan_file_path, 'w') as pf:
+        for ac in actions_adapted:
+            pf.write(f'{ac}\n')
 

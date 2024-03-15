@@ -6,7 +6,8 @@
                 "prompt_file": "",
                 "temp": 0,
                 "max_tokens": null,
-                "max_history": null},
+                "max_history": null,
+                "caching": "default"},
             "translate": {"model_name": "openai_chat",
                 "model_path": "",
                 "examples_chat": false,
@@ -14,7 +15,8 @@
                 "examples_file": "",
                 "temp": 0,
                 "max_tokens": 256,
-                "max_history": 0}},
+                "max_history": 0,
+                "caching": "default"}},
     "task_nums": [],
     "domain_dir": "",
     "domain_file": "",
@@ -34,5 +36,6 @@
     "run_config":
         {"steps": null,
         "break_limit": null,
+        "break_limit_reached_goal": null,
         "directory": ""}
     }

@@ -12,5 +12,6 @@ scipy
 sentencepiece
 sentence-transformers
 tarski==0.7.0
+tiktoken
 transformers @ git+https://github.com/huggingface/transformers.git
 pddl_parser @ git+https://github.com/pucrs-automated-planning/pddl-parser.git
