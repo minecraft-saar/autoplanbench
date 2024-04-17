@@ -12,6 +12,7 @@ from llm_planning.game_classes.pddl_planning_game import PDDLPlanningGame
 from llm_planning.game_classes.pddl_planning_game_thoughts import PDDLGameThoughts
 from llm_planning.game_classes.pddl_planning_game_planbench import PDDLGamePlanBench
 from llm_planning.game_classes.pddl_planning_game_planbench_thoughts import PDDLGamePlanbenchThoughts
+from llm_planning.raw_pddl_input.raw_pddl_planning_game import RawPDDLPlanningGame
 from utils.paths import *
 from utils.helpers import read_gold_plan
 
@@ -87,7 +88,7 @@ def play_games(config, few_shot_path, game_class):
                 continue
 
             except openai.error.InvalidRequestError as e:
-                print('Warning: Invalid Request. Will skip instance and continue with next one.')
+                print(f'Warning: Invalid Request. Will skip instance and continue with next one. {str(e)}')
                 if 'maximum context length' in str(e):
                     game.summary_planning['stopping_reason'] = 'reached_token_limit'
                 else:
@@ -99,6 +100,14 @@ def play_games(config, few_shot_path, game_class):
                     json.dump({'Failed': True, 'Error_type': 'openai.error.InvalidRequestError', 'Error_message': str(e)}, log)
                     log.write('\n')
                 time.sleep(10)
+                break
+
+            except Exception as e:
+                game.log_planning_summary()
+                game.log_time_and_token(measured_time=0)
+                with open(game.log, 'a') as log:
+                    log.write('\n')
+                    json.dump({'Failed': True, 'Error_type': str(type(e)), 'Error_message': str(e)}, log)
                 break
 
 
@@ -164,9 +173,11 @@ def show_prompt(config, few_shot_path, game_class):
     print(initial_state)
 
 
-def get_game_class(thoughts: bool, planbench: bool):
+def get_game_class(thoughts: bool, planbench: bool, pddl: bool = False):
 
-    if thoughts and planbench:
+    if pddl:
+        game_class = RawPDDLPlanningGame
+    elif thoughts and planbench:
         game_class = PDDLGamePlanbenchThoughts
     elif thoughts:
         game_class = PDDLGameThoughts

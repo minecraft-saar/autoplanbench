@@ -11,11 +11,13 @@ CONFIG_DIR = PROJ_DIR / Path('configs')
 OUTPUT_DIR = PROJ_DIR / Path('output_files')
 EVALUATION_RES_DIR = PROJ_DIR / Path('evaluation_results')
 
+DOMAIN_DESCRIPTION_TEMPLATE = PROJ_DIR / Path('utils') / Path('template_domain_description.txt')
+
 ORIG_INST_FOLDER = 'orig_problems'
 INST_FOLDER = 'adapted_instances'
 GOLD_PLAN_FOLDER = 'gold_plans'
 
-APPROACHES = ['basic', 'act', 'state_reasoning', 'react', 'cot']
+APPROACHES = ['basic', 'act', 'state_reasoning', 'react', 'cot', 'act_pddl', 'basic_pddl']
 
 THOUGHT_GEN_EXAMPLE_DOMAIN = os.path.join(PROJ_DIR, 'llm_planning', 'manual_react_examples', 'logistics_domain_description.json')
 THOUGHT_GEN_EXAMPLE_FILE = os.path.join(PROJ_DIR, 'llm_planning', 'manual_react_examples', 'logistics_react.json')
@@ -53,6 +55,10 @@ def get_few_shot_dir(planning_approach, domain_data_dir):
         output_dir = os.path.join(domain_data_dir, 'few_shot_examples_react')
     elif planning_approach == 'cot':
         output_dir = os.path.join(domain_data_dir, 'few_shot_examples_cot')
+    elif planning_approach == 'act_pddl':
+        output_dir = os.path.join(domain_data_dir, 'few_shot_examples_act_pddl')
+    elif planning_approach == 'basic_pddl':
+        output_dir = os.path.join(domain_data_dir, 'few_shot_examples_basic_pddl')
     else:
         raise ValueError
 

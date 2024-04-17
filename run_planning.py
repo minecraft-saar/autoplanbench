@@ -26,6 +26,11 @@ if __name__=='__main__':
     thoughts = config['thoughts']
     planbench = True if encoding_type == 'planbench' else False
 
-    game_class = get_game_class(thoughts=thoughts, planbench=planbench)
+    if 'pddl' in config['planning_approach']:
+        pddl = True
+    else:
+        pddl = False
+
+    game_class = get_game_class(thoughts=thoughts, planbench=planbench, pddl=pddl)
     play_games(config=config, few_shot_path=few_shot_path, game_class=game_class)
 

@@ -5,11 +5,12 @@ from pathlib import Path
 from typing import Union
 from argparse import ArgumentParser
 from llm_planning.game_classes.pddl_game_env import PDDLWorldEnvironment
+from utils.paths import DOMAIN_DESCRIPTION_TEMPLATE
 
 
 def create_domain_nl_description(domain_nl_file: str,
                                  output_file: Union[str, None] = None,
-                                 template_file: str = './template_domain_description.txt'):
+                                 template_file: str = DOMAIN_DESCRIPTION_TEMPLATE):
     """
     Creates the NL encoding of a domain in the format specified in the template file and saves it to an output file
     :param domain_nl_file: path to the domain nl .json file

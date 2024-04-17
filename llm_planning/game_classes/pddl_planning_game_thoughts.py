@@ -86,7 +86,7 @@ class PDDLGameThoughts(PDDLPlanningGame):
                 translation_output = self.text_to_plan(text=instruction)
 
             # output of the translation model can consist of several actions theoretically
-            translation_output_list = translation_output.split('\n')
+            translation_output_list = self.process_multi_action_translations(translation_output=translation_output)
             assert len(translation_output_list) > 0
 
             observations, _ = self.try_execution(translation_output_list, current_world)

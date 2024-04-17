@@ -10,10 +10,6 @@ from set_env import set_env_vars
 set_env_vars()
 openai.api_key = os.environ['OPENAI_API_KEY']
 
-"""
-Script to save the P-LLM and T-LLM prompt without running the actual planning
-"""
-
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--config', required=True, help='Path to the planning config file')
@@ -28,9 +24,8 @@ if __name__ == '__main__':
     encoding_type = config.get('encoding_type', 'automatic')
     thoughts = config['thoughts']
     planbench = True if encoding_type == 'planbench' else False
-    pddl = True if 'pddl' in config['planning_approach'] else False
 
-    game_class = get_game_class(thoughts=thoughts, planbench=planbench, pddl=pddl)
+    game_class = get_game_class(thoughts=thoughts, planbench=planbench)
     plan_prompt, translate_prompt, _ = get_prompts(config=config, few_shot_path=few_shot_path, game_class=game_class)
 
     output_dir1 = os.path.split(args.pl_out)[0]

@@ -313,3 +313,7 @@ class PDDLPlanningGame(PlanningGame):
         feedback += '\nPlease provide a corrected plan.'
 
         return feedback
+
+
+    def text_to_plan(self, text: str) -> str:
+        raise NotImplementedError

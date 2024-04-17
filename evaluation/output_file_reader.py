@@ -21,7 +21,6 @@ class PlannerOutputReader:
         self.successful = None
         self.reached_goal = None
         self.executable = None
-        # TODO steps vs. attempts
         self.steps = None
         self.step_limit = None
         self.step_reached_goal = None
@@ -30,6 +29,7 @@ class PlannerOutputReader:
 
         self.predicted_plan = []
         self.executable_actions = []
+        self.executable_actions_to_goal = []
         self.incremental_data = dict()
 
         if self.is_complete_plan:
@@ -39,7 +39,7 @@ class PlannerOutputReader:
 
 
     def read_basic_instance(self):
-
+        executable_actions = []
         for entry in self.instance_data:
 
             if 'task' in entry.keys():
@@ -59,7 +59,7 @@ class PlannerOutputReader:
                     except ValueError:
                         print(f'Plan without "[PLAN END]" ending tag in file {self.generated_plan_path}.')
 
-                elif entry['type'] == 'Translation Model':
+                elif entry['type'] == 'Translation Model' or entry['type'] == 'RuleBased':
                     if isinstance(entry['text'], list):
                         predicted_plan = entry['text']
                         self.predicted_plan = predicted_plan
@@ -68,7 +68,11 @@ class PlannerOutputReader:
                                 print(f"Check file {self.generated_plan_path} for missing translations")
                     else:
                         if entry['executable']:
-                            self.executable_actions.append(entry['text'])
+                            executable_actions.append(entry['text'])
+                        else:
+                            executable_actions.append('NOTEXEC')
+                            if not entry['text'].startswith('('):
+                                print(f'not PDDL action in {self.generated_plan_path}')
 
             if 'success' in entry.keys():
                 self.successful = entry['success']
@@ -81,8 +85,16 @@ class PlannerOutputReader:
                 except KeyError:
                     self.steps = entry['attempts']
 
+                #self.steps = len(executable_actions)
+
             if 'total_time' in entry.keys():
                 self.time_token_data['total_time'] = entry
+
+        if self.step_reached_goal != 'NA' and self.step_reached_goal is not None:
+            steps_until_goal = executable_actions[:self.step_reached_goal]
+            self.executable_actions_to_goal = [ac for ac in steps_until_goal if ac != 'NOTEXEC']
+
+        self.executable_actions = [ac for ac in executable_actions if ac != 'NOTEXEC']
 
 
     def read_incremental_instance(self):
@@ -93,6 +105,7 @@ class PlannerOutputReader:
                           'look_arounds_after_mistake': 0,
                           'first_mistake_execution': False,
                           'wrong_finished_prediction': 0}
+        executable_actions = []
 
         for entry in self.instance_data:
 
@@ -120,12 +133,16 @@ class PlannerOutputReader:
                 elif entry_type == 'Env Feedback':
                     prev_entry_mistake = False
 
-                elif entry_type == 'Translation Model':
+                elif entry_type == 'Translation Model' or entry_type == 'RuleBased':
                     executable = entry.get('executable', False)
                     if not 'look' in entry['text']:
                         self.predicted_plan.append(entry['text'])
                     if executable and not 'look' in entry['text']:
-                        self.executable_actions.append(entry['text'])
+                        executable_actions.append(entry['text'])
+                    else:
+                        executable_actions.append('NOTEXEC')
+                        if not entry['text'].startswith('('):
+                            print(f'not PDDL action in {self.generated_plan_path}')
 
             if 'task' in entry.keys():
                 self.task_num = entry['task']['task_num']
@@ -143,6 +160,12 @@ class PlannerOutputReader:
             if 'total_time' in entry.keys():
                 self.time_token_data = entry
 
+        if self.step_reached_goal != 'NA' and self.step_reached_goal is not None:
+            steps_until_goal = executable_actions[:self.step_reached_goal]
+            self.executable_actions_to_goal = [ac for ac in steps_until_goal if ac != 'NOTEXEC']
+
+        self.executable_actions = [ac for ac in executable_actions if ac != 'NOTEXEC']
+
         self.incremental_data = incremental_data
 
 
@@ -150,15 +173,19 @@ def check_completeness_run(generated_plan_file: str) -> bool:
 
     logged_summary = False
     openai_error = False
+    stopping_reason = None
     with open(generated_plan_file, 'r') as f:
         for line in f:
             entry = json.loads(line)
             if 'success' in entry.keys():
                 logged_summary = True
+                stopping_reason = entry.get('stopping_reason', None)
             if 'Failed' in entry.keys():
                 openai_error = True
 
     if logged_summary and not openai_error:
+        completed_run = True
+    elif stopping_reason is not None and stopping_reason == 'reached_token_limit':
         completed_run = True
     else:
         completed_run = False
