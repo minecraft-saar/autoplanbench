@@ -165,7 +165,7 @@ In order to generate the few-shot examples for a specific domain and specific ap
 `python llm_planning/create_few_shot_examples.py --dir [data_dir] --pref [prefixes] --version [approach]`
 
 * `data_dir`: Path to the directory with the files of the specific domain
-* `prefixes`: Tuple of the prefixes that should be added to the beginning of the input and output few-shot examples. First prefix is for the input and second one for the output. We used "('', '')" for the interactive approaches and "('[STATEMENT]', '[PLAN]')" for the non-interactive ones
+* `prefixes`: Tuple of the prefixes that should be added to the beginning of the input and output few-shot examples. First prefix is for the input and second one for the output. Is usually set to "('', '')" for the interactive approaches and "(['STATEMENT'], ['PLAN'])" for the non-interactive ones
 * `approach`: The approach for which the few-shot examples get generated ('basic', 'act', 'cot', 'react' or 'state_reasoning')
 
 <details>
@@ -202,7 +202,7 @@ In order to generate the configuration files for all 5 implemented approaches fo
    
 * `--d-dir`: Path domain directory. Defaults to utils.paths.DATA_DIR/domain_name
 * `--ex-id`: ID of instance that gets used as few-shot example and should be excluded from the experiment. If set to None, all instances from --d-dir/adapted_instances are included in the experiments. Defaults to None.
-* `--enc`: Type of the encoding. Should be 'planbench' if LLM planning is run on the domain encodings from [PlanBench](https://github.com/karthikv792/LLMs-Planning/tree/main/plan-bench). Otherwise should be 'automatic'. Defaults to 'automatic'.
+* `--enc`: Type of the encoding. Should be 'planbench' if LLM planning is run on the domain encodings from [PlanBench](https://github.com/karthikv792/LLMs-Planning/tree/main/plan-bench). Otherwise, should be 'automatic'. Defaults to 'automatic'.
 * `--ms-i`, `--br-i`, `--ms-ni`, `--br-ni`, `--enc` as above
 
 </details>
@@ -214,11 +214,49 @@ In order to generate the configuration files for all 5 implemented approaches fo
 * `config`: Path to the planning configuration file
 * `example_id`: ID fo the few-shot example to use. Will be selected from the few-shot example directory of the specific approach; For example, if the approach is 'basic' and example_id is X then the few-shot example is read from the file DATA_DIR/domain_name/few_shot_examples_basic/basic_examples_instance-X.json
 
+The format of the generated output files is explained in the [Wiki: Output File (Log) Format](https://github.com/minecraft-saar/autoplanbench/wiki/Output-File-(Log)-Format)
+
+
+### 4. Evaluation
+See the [evaluation Readme](https://github.com/minecraft-saar/autoplanbench/blob/main/evaluation/README.md#evaluation).
+
+
+### 5. Additional Functionalities
+
+**Saving NL descriptions**<br>
+
+Functions to save human readable versions of the NL domain description, a specific few-shot example or a NL description of a specific PDDL problem
+
+`python utils/run_save_descriptions.py --type domain -o [output_path] --d-nl [nl_domain] -t [template_file]`
+
+`python utils/run_save_descriptions.py --type example -o [output_path] -e [example_path]`
+
+`python utils/run_save_descriptions.py --type instance -o [output_path] --d-nl [nl_domain] -d [pddl_domain] -p [pddl_problem]`
+
+* `output_path`: path to the output file
+* `nl_domain`: path to the .json file with the generated nl descriptions
+* `template_file`: file to the jinja template for the domain description, defaults to utils.paths.DOMAIN_DESCRIPTION_TEMPLATE
+* `example_path`: path to the few-shot example file 
+* `pddl_domain`: path to the pddl domain file
+* `pddl_problem`: path to the pddl problem file for which the NL descriptions is generated
+
 **Saving the prompts**<br>
 In order to save the P-LLM and T-LLM prompt for a specific problem instance in a separate file run: <br>
 `python save_prompts.py --config [config] --few-shot-id [example_id] --pl-out --tr-out`<br>
 where `config` and `few-shot-id` are as described above and `pl-out` and `tr_out` are the paths to the file where the P-LLM and the T-LLM prompt gets saved respectively.
 
+Note that there is not target initial state (P-LLM) or target NL action (T-LLM) included at the end of the generated prompts as only the parts that are independent of the specific target problem are generated. 
 
-### 4. Evaluation
-See the [evaluation Readme](https://github.com/minecraft-saar/autoplanbench/blob/main/evaluation/README.md#evaluation).
+**Continuing a previous interactive run**<br>
+
+`python utils/run_replay_from_log --config [config_path] --steps [total_steps] --few-shot-id [few_shot_id] --log-file [log_file_previous_run] --new-log-dir [dir_for_new_log_file]`
+
+* `config_path`: path to the config file that had been used for the original run (the specified task_ids will be ignored)
+* `total_steps`: total number of steps; i.e. number of new steps to be run will be determined by total_steps - previously_run_steps
+* `few_shot_id`: id of the few-shot examp[openai_chat_instance-8_2024-04-17-20-22-34.jsonlines](output_files%2Fsatellite_fixed_react%2Fopenai_chat_instance-8_2024-04-17-20-22-34.jsonlines)le to use
+* `log_file_previous_run`: path to the results file form the previous run that should be continued
+* `dir_for_new_log_file`: path to the subdirectory of the OUTPUT_DIR where the new results file gets saved (overwrites the specified directory in the run_confing in the config file)
+
+**Note:** the new log file will include everything from the previous log file except for the final information saved at the end of a run (i.e. success, number of tokens etc.). After the last entry (which should be a feedback from the simulator) the line shown below is added, then followed by all interaction logs from the P-LLM, T-LLM and simulator as usual. Note that the time and number of tokens only refers to the new time and tokens whereas the number of steps and step_reached_goal_first in the output take into account all (previous + new) steps
+
+`{"continued": true, "max_steps": [max_number_of_new_steps], "break_limit": [original_break_limi], "date": [date_of_new_run]}`

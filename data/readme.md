@@ -1,8 +1,8 @@
 # Dataset
 
-**Please note**: the data included in this directory is not the complete dataset. All few-shot examples are removed in order to avoid that the few-shot examples might get into the training data of LLMs. 
+Please note: the data included in this directory is not the complete dataset. All few-shot examples are removed in order to avoid that the few-shot examples might get into the training data of LLMs. 
 
-The **complete dataset** can be found [here](https://github.com/minecraft-saar/autoplanbench/tree/main/autoplanbench_dataset) and **can be opened with "benchplanauto"**. Additional details about the format of the files can also be found in there.
+The complete dataset can be found [here](https://github.com/minecraft-saar/autoplanbench/tree/main/autoplanbench_dataset) and **can be opened with "benchplanauto"**. Additional details about the format of the files can also be found in the readme there.
 
 ## Domains 
 
