@@ -5,12 +5,13 @@ diskcache
 fschat
 jupyter
 numpy
-openai==0.28.0
+openai
 pddl==0.2.0
 scienceworld
 scipy
 sentencepiece
 sentence-transformers
+stanza
 tarski==0.7.0
 tiktoken
 transformers @ git+https://github.com/huggingface/transformers.git

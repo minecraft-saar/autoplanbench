@@ -1,9 +1,7 @@
 import copy
 
 import math
-import os
 import time
-
 import openai
 import json
 from typing import Union, Tuple
@@ -49,45 +47,45 @@ def play_games(config, few_shot_path, game_class):
                 game.run_instructions_all(**run_config)
                 break
 
-            except openai.error.ServiceUnavailableError as e:
+            except openai.APIConnectionError as e:
                 print('Warning: Server was unavailable. Will try again in a few seconds')
                 game.summary_planning['stopping_reason'] = 'error'
                 game.log_planning_summary()
                 game.log_time_and_token(measured_time=0)
                 with open(game.log, 'a') as log:
                     log.write('\n')
-                    json.dump({'Failed': True, 'Error_type': 'openai.error.ServiceUnavailableError', 'Error_message': str(e)}, log)
+                    json.dump({'Failed': True, 'Error_type': 'openai.APIConnectionError', 'Error_message': str(e)}, log)
                     log.write('\n')
                 time.sleep(10)
                 attempt += 1
                 continue
 
-            except openai.error.Timeout as e:
+            except openai.Timeout as e:
                 print('Warning: Timout error. Will try again in a few seconds')
                 game.summary_planning['stopping_reason'] = 'error'
                 game.log_planning_summary()
                 game.log_time_and_token(measured_time=0)
                 with open(game.log, 'a') as log:
                     log.write('\n')
-                    json.dump({'Failed': True, 'Error_type': 'openai.error.Timeout', 'Error_message': str(e)}, log)
+                    json.dump({'Failed': True, 'Error_type': 'openai.Timeout', 'Error_message': str(e)}, log)
                     log.write('\n')
                 time.sleep(10)
                 attempt += 1
                 continue
 
-            except openai.error.RateLimitError as e:
+            except openai.RateLimitError as e:
                 print('Warning: RateLimitError. Will try again in a few seconds')
                 game.summary_planning['stopping_reason'] = 'error'
                 game.log_planning_summary()
                 game.log_time_and_token(measured_time=0)
                 with open(game.log, 'a') as log:
                     log.write('\n')
-                    json.dump({'Failed': True, 'Error_type': 'openai.error.InvalidRequestError', 'Error_message': str(e)}, log)
+                    json.dump({'Failed': True, 'Error_type': 'openai.RateLimitError', 'Error_message': str(e)}, log)
                 time.sleep(40)
                 attempt += 1
                 continue
 
-            except openai.error.InvalidRequestError as e:
+            except openai.BadRequestError as e:
                 print(f'Warning: Invalid Request. Will skip instance and continue with next one. {str(e)}')
                 if 'maximum context length' in str(e):
                     game.summary_planning['stopping_reason'] = 'reached_token_limit'
@@ -97,10 +95,23 @@ def play_games(config, few_shot_path, game_class):
                 game.log_time_and_token(measured_time=0)
                 with open(game.log, 'a') as log:
                     log.write('\n')
-                    json.dump({'Failed': True, 'Error_type': 'openai.error.InvalidRequestError', 'Error_message': str(e)}, log)
+                    json.dump({'Failed': True, 'Error_type': 'openai.BadRequestError', 'Error_message': str(e)}, log)
                     log.write('\n')
                 time.sleep(10)
                 break
+
+            except openai.APIStatusError as e:
+                print('Warning: API Status Error. Will try again in a few seconds')
+                game.summary_planning['stopping_reason'] = 'error'
+                game.log_planning_summary()
+                game.log_time_and_token(measured_time=0)
+                with open(game.log, 'a') as log:
+                    log.write('\n')
+                    json.dump({'Failed': True, 'Error_type': 'openai.APIStatusError', 'Error_message': str(e)}, log)
+                    log.write('\n')
+                time.sleep(10)
+                attempt += 1
+                continue
 
             except Exception as e:
                 game.log_planning_summary()

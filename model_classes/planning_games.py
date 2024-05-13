@@ -91,6 +91,7 @@ class PlanningGame(ABC):
                          'task': {'task_num': self.task_num},
                          'translation_neural': self.translation_neural,
                          'positive_feedback': positive_feedback,
+                         'negative_feedback': negative_feedback,
                          'subgoal_feedback': subgoal_feedback,
                          'provide_state': provide_state,
                          'incremental': self.incremental,
@@ -391,17 +392,18 @@ class PlanningGame(ABC):
         day_now = now.split(' ')[0]
         print(f'Continuing to use {self.log} for saving conversation')
         with open(self.log, 'a') as log:
-            json.dump({'continued': 'true', 'max_steps': max_steps, 'break_limit': break_limit , 'date': day_now}, log)
+            json.dump({'continued': True, 'max_steps': max_steps, 'break_limit': break_limit , 'date': day_now}, log)
             log.write('\n')
 
         return None
 
 
-    def create_log(self, max_steps: int, break_limit: int, directory='') -> str:
+    def create_log(self, max_steps: int, break_limit: int, break_limit_reached_goal: int, directory='') -> str:
         """
 
         :param max_steps:
         :param break_limit:
+        :param break_limit_reached_goal:
         :param directory:
         :return:
         """
@@ -415,6 +417,7 @@ class PlanningGame(ABC):
         metadata['date'] = day_now
         metadata['max_steps'] = max_steps
         metadata['break_limit'] = break_limit
+        metadata['break_limit_reached_goal'] = break_limit_reached_goal
 
         prompts = dict()
         prompts['plan_prompt'] = self.get_plan_prompt()
@@ -740,7 +743,7 @@ class PlanningGame(ABC):
         :return:
         """
         if self.log == '':  # create new log file
-            self.log = self.create_log(max_steps=steps, break_limit=break_limit, directory=directory)
+            self.log = self.create_log(max_steps=steps, break_limit=break_limit, break_limit_reached_goal=break_limit_reached_goal, directory=directory)
         else:
             self.resume_log(max_steps=steps, break_limit=break_limit)  # write in previously created log file
 
@@ -798,12 +801,14 @@ class PlanningGame(ABC):
         success = False
         self.summary_planning['stopping_reason'] = 'step_limit'
         for i in range(steps):
+
             is_completed, is_aware = self.get_next_instruction()
+            self.summary_planning['n_steps'] += 1
             if is_completed:
                 self.summary_planning['reached_goal'] = True
                 if not steps_reached_goal:
-                    self.summary_planning['step_reached_goal_first'] = i+1
-                steps_reached_goal.append(i + 1)
+                    self.summary_planning['step_reached_goal_first'] = self.summary_planning['n_steps']
+                steps_reached_goal.append(self.summary_planning['n_steps'])
 
             # Stopping Criteria
             if is_aware:    # is_aware is only True if the model predicts to be in the goal state when this is the case
@@ -824,7 +829,6 @@ class PlanningGame(ABC):
                 'model_name'].startswith('openai'):
                 time.sleep(2)
 
-            self.summary_planning['n_steps'] = i + 1
 
         return success
 
@@ -931,14 +935,25 @@ class PlanningGame(ABC):
 
 
     def replay_from_log(self, log_file):
-
+        """
+        Overwrite if log output format changes
+        :param log_file:
+        :return:
+        """
         actions_to_execute = []
         plan_output = []
         feedback = []
         first_auto_state_found = False
+        translate_prompt = None
+        plan_prompt = None
         with open(log_file, 'r') as log:
             for line in log:
                 line_log = json.loads(line)
+
+                if 'plan_prompt' in line_log.keys():
+                    plan_prompt = line_log['plan_prompt']
+                    translate_prompt = line_log['translate_prompt']
+
                 if 'text' in line_log.keys():
                     if line_log['type'] == 'Translation Model' or \
                             line_log['type'] == 'RuleBased' or line_log['type'] == 'Most Similar Action':
@@ -952,13 +967,20 @@ class PlanningGame(ABC):
                         feedback.append(line_log['text'])
                         first_auto_state_found = True
 
+        assert translate_prompt is not None
+        assert plan_prompt is not None
+
+        self.llm_plan.update_initial_prompt(new_init_prompt=plan_prompt)
+        self.llm_translate.update_initial_prompt(new_init_prompt=translate_prompt)
+
         # get all translation outputs and pass them one after the other to the execution function
-        for action_to_exec in actions_to_execute:
+        for (model_out, action_to_exec) in zip(plan_output, actions_to_execute):
+            print(f'$Model Output: {model_out} Model Output$')
             print(f'$Executed Action: {action_to_exec} Executed Action$')
             self.observation, executable, is_completed = self._execute(action_to_exec)
             print(f'$Observation {self.observation} Observation$')
 
-        assert len(plan_output) + 1 == len(feedback)
+        assert len(plan_output) == len(feedback)
         # create the history for the planning llm
         plan_history = self.llm_plan.get_history()
         for interaction_id in range(len(plan_output)):
@@ -969,6 +991,8 @@ class PlanningGame(ABC):
 
         self.llm_plan.model.update_history(plan_history)
         self.llm_plan.model.update_history_length()
+
+        self.summary_planning['n_steps'] = len(plan_output)
 
         if self.llm_translate.model.max_history > 0:
             print('Warning: Replay is not implemented for max_history > 0. max_hist of translation model will be treated as 0.')

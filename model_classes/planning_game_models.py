@@ -205,12 +205,14 @@ def create_llm_model(model_type: str, model_param: dict) -> LLMModel:
     :param model_param: dictionary with the parameters for the model
                         required keys: 'model_path', 'max_tokens', 'temp', 'max_history'
                         if vicuna model additionally: 'cuda_n', 'load_method'
+                        optional_keys: "caching", "seed"
     :return:
     """
     model_path = model_param['model_path']
     max_tokens = model_param.get('max_tokens', 512)
     temp = model_param.get('temp', 1.0)
     max_history = model_param.get('max_history', None)
+    seed = model_param.get('seed', None)
 
     cache_sub_dir = model_param.get('caching', 'default')
     if cache_sub_dir is None:
@@ -228,7 +230,8 @@ def create_llm_model(model_type: str, model_param: dict) -> LLMModel:
                                 max_tokens=max_tokens,
                                 temp=temp,
                                 max_history=max_history,
-                                cache_directory=cache_dir)
+                                cache_directory=cache_dir,
+                                seed=seed)
 
     elif model_type == 'openai_comp':
         model = OpenAIComplModel(model_name=model_type,
@@ -236,7 +239,8 @@ def create_llm_model(model_type: str, model_param: dict) -> LLMModel:
                                 max_tokens=max_tokens,
                                 temp=temp,
                                 max_history=max_history,
-                                cache_directory=cache_dir)
+                                cache_directory=cache_dir,
+                                seed=seed)
 
     elif model_type in ['vicuna', 'vicuna-x-gpt']:
         model = VicunaModel(model_name=model_type,

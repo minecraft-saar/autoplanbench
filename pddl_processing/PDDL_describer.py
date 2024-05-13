@@ -339,8 +339,10 @@ class PDDLDescriber:
 
     def create_precond_descriptions_for_prompt(self, action_name) -> str:
         pos_precond_action = self.domain.actions[action_name]['pos_preconditions']
+        neg_precond_action = self.domain.actions[action_name]['neg_preconditions']
 
         pos_precond_nl = self.get_pred_nl_description_for_prompt(predicates=pos_precond_action)
+        neg_precond_nl = self.get_pred_nl_description_for_prompt(predicates=neg_precond_action)
 
         # add the types as positive preconditions
         for param_name, param_type in self.domain.actions[action_name]['parameters'].items():
@@ -350,7 +352,13 @@ class PDDLDescriber:
             else:
                 pos_precond_nl.append(f'{param_name} is a {param_type}')
 
-        description = f'{" and ".join(pos_precond_nl)}' if pos_precond_nl else ''
+        positive_description = f'{" and ".join(pos_precond_nl)}' if pos_precond_nl else ''
+        negative_description = f'it is not the case that {" and ".join(neg_precond_nl)}' if neg_precond_nl else ''
+
+        if pos_precond_nl and neg_precond_nl:
+            description = ''.join([positive_description, " and ", negative_description])
+        else:
+            description = ''.join([positive_description, negative_description])
 
         return description
 
