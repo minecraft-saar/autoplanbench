@@ -1,0 +1,28 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_50",
+        "rain"
+    ],
+    "pos_examples": [
+        [
+            "Now, rewind the movie.",
+            "(rewind-movie )"
+        ],
+        [
+            "Once you are done, please get object rain cheese.",
+            "(get-cheese rain)"
+        ],
+        [
+            "First, start the movie and then get dip for object object_50.",
+            "(start-movie )\n(get-dip object_50)"
+        ],
+        [
+            "The next step is to reset the counter.",
+            "(reset-counter )"
+        ]
+    ]
+}

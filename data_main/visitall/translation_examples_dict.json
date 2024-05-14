@@ -1,0 +1,25 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_50: o",
+        "star_23: b",
+        "kumquat_8: c_8",
+        "screen: abc",
+        "teddy: td",
+        "roof_11: r_11",
+        "socket: z",
+        "rain: rn",
+        "object_26: o2",
+        "kumquat: k",
+        "fire: f"
+    ],
+    "pos_examples": [
+        [
+            "Now, move from place object_26 to place fire.",
+            "[1] (move object_26 fire) [2] (move o2 f)"
+        ]
+    ]
+}

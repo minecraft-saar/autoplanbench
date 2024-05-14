@@ -1,0 +1,12 @@
+I can carry out the following actions:
+move from a place A to a place B
+
+I have the following restrictions on my actions:
+I can only move from a place A to a place B if it is the case that the robot is at A and A is connected to B
+
+The actions have the following effects on the state:
+Once I move from a place A to a place B, it is the case that B has been visited and the robot is at B
+Once I move from a place A to a place B, it is not the case anymore that the robot is at A
+
+
+Everything that is a place is also a object

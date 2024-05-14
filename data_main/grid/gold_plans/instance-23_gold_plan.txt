@@ -1,0 +1,7 @@
+(move object_0 object_1)
+(pickup object_1 object_8)
+(move object_1 object_0)
+(unlock object_0 object_3 object_8 object_6)
+(move object_0 object_3)
+(putdown object_3 object_8)
+; cost = 6 (unit cost)

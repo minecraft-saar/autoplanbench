@@ -1,0 +1,4 @@
+(paint-up robot_0 tile_3 tile_1 color_1)
+(down robot_1 tile_2 tile_0)
+(paint-up robot_1 tile_2 tile_0 color_0)
+; cost = 8 (unit cost)

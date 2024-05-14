@@ -1,0 +1,34 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "socket",
+        "screen",
+        "kumquat",
+        "socket_49",
+        "teddy",
+        "object_50",
+        "rain",
+        "roof_11"
+    ],
+    "pos_examples": [
+        [
+            "Now, communicate image data of objective rain in mode kumquat from rover roof_11 at waypoint socket to lander screen at waypoint socket_49.",
+            "(communicate_image_data roof_11 screen rain kumquat socket socket_49)"
+        ],
+        [
+            "Once you are done, please sample rock at waypoint object_50 with rover roof_11 and store in store yew.",
+            "(sample_rock roof_11 yew object_50)"
+        ],
+        [
+            "First, drop from store yew of rover roof_11 and then calibrate camera teddy on rover roof_11 for objective rain at waypoint socket.",
+            "(drop roof_11 yew)\n(calibrate roof_11 teddy rain socket)"
+        ],
+        [
+            "The next step is to take an image of objective rain in mode kumquat using camera teddy on rover roof_11 from waypoint socket.",
+            "(take_image roof_11 socket rain teddy kumquat)"
+        ]
+    ]
+}

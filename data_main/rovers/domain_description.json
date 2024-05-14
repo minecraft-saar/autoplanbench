@@ -1,0 +1,434 @@
+{
+    "action_mappings": {
+        "navigate": "navigate with rover {} from waypoint {} to waypoint {}",
+        "sample_soil": "sample soil at waypoint {} with rover {} and store in store {}",
+        "sample_rock": "sample rock at waypoint {} with rover {} and store in store {}",
+        "drop": "drop from store {} of rover {}",
+        "calibrate": "calibrate camera {} on rover {} for objective {} at waypoint {}",
+        "take_image": "take an image of objective {} in mode {} using camera {} on rover {} from waypoint {}",
+        "communicate_soil_data": "communicate soil data from rover {} at waypoint {} with soil analysis of waypoint {} to lander {} at waypoint {}",
+        "communicate_rock_data": "communicate rock data from rover {} at waypoint {} to lander {} at waypoint {} via waypoint {}",
+        "communicate_image_data": "communicate image data of objective {} in mode {} from rover {} at waypoint {} to lander {} at waypoint {}"
+    },
+    "action_mappings_indef": {
+        "navigate": "navigate with a rover {} from a waypoint {} to a waypoint {}",
+        "sample_soil": "sample soil at a waypoint {} with a rover {} and store in a store {}",
+        "sample_rock": "sample rock at a waypoint {} with a rover {} and store in a store {}",
+        "drop": "drop from a store {} of a rover {}",
+        "calibrate": "calibrate a camera {} on a rover {} for an objective {} at a waypoint {}",
+        "take_image": "take an image of an objective {} in a mode {} using a camera {} on a rover {} from a waypoint {}",
+        "communicate_soil_data": "communicate soil data from a rover {} at a waypoint {} with soil analysis of a waypoint {} to a lander {} at a waypoint {}",
+        "communicate_rock_data": "communicate rock data from a rover {} at a waypoint {} to a lander {} at a waypoint {} via a waypoint {}",
+        "communicate_image_data": "communicate image data of an objective {} in a mode {} from a rover {} at a waypoint {} to a lander {} at a waypoint {}"
+    },
+    "predicate_mappings": {
+        "at": "{} is at {}",
+        "at_lander": "{} is at the lander {}",
+        "can_traverse": "{} can traverse from {} to {}",
+        "equipped_for_soil_analysis": "{} is equipped for soil analysis",
+        "equipped_for_rock_analysis": "{} is equipped for rock analysis",
+        "equipped_for_imaging": "{} is equipped for imaging",
+        "empty": "{} is empty",
+        "have_rock_analysis": "{} has a rock analysis of {}",
+        "have_soil_analysis": "{} has a soil analysis of {}",
+        "full": "{} is full",
+        "calibrated": "{} is calibrated to {}",
+        "supports": "{} supports {}",
+        "available": "{} is available",
+        "visible": "{} is visible from {}",
+        "have_image": "{} has an image of {} in {}",
+        "communicated_soil_data": "{} has communicated soil data",
+        "communicated_rock_data": "{} has communicated rock data",
+        "communicated_image_data": "{} has communicated image data to {}",
+        "at_soil_sample": "{} is at the soil sample",
+        "at_rock_sample": "{} is at the rock sample",
+        "visible_from": "{} is visible from {}",
+        "store_of": "{} is a store of {}",
+        "calibration_target": "{} is a calibration target for {}",
+        "on_board": "{} is on board {}",
+        "channel_free": "{} is a free channel"
+    },
+    "actions": {
+        "navigate": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "rover",
+                "?y": "waypoint",
+                "?z": "waypoint"
+            },
+            "pddl": "(navigate ?x ?y ?z)",
+            "description": "navigate with a rover A from a waypoint B to a waypoint C",
+            "preconditions": [
+                "I can only navigate with a rover A from a waypoint B to a waypoint C if it is the case that A is at B and A can traverse from B to C and A is available and B is visible from C"
+            ],
+            "effects": [
+                "Once I navigate with a rover A from a waypoint B to a waypoint C, it is the case that A is at C",
+                "Once I navigate with a rover A from a waypoint B to a waypoint C, it is not the case anymore that A is at B"
+            ]
+        },
+        "sample_soil": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "rover",
+                "?s": "store",
+                "?p": "waypoint"
+            },
+            "pddl": "(sample_soil ?x ?s ?p)",
+            "description": "sample soil at a waypoint C with a rover A and store in a store B",
+            "preconditions": [
+                "I can only sample soil at a waypoint C with a rover A and store in a store B if it is the case that A is at C and A is equipped for soil analysis and C is at the soil sample and B is a store of A and B is empty"
+            ],
+            "effects": [
+                "Once I sample soil at a waypoint C with a rover A and store in a store B, it is the case that A has a soil analysis of C and B is full",
+                "Once I sample soil at a waypoint C with a rover A and store in a store B, it is not the case anymore that C is at the soil sample and it is not the case anymore that B is empty"
+            ]
+        },
+        "sample_rock": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "rover",
+                "?s": "store",
+                "?p": "waypoint"
+            },
+            "pddl": "(sample_rock ?x ?s ?p)",
+            "description": "sample rock at a waypoint C with a rover A and store in a store B",
+            "preconditions": [
+                "I can only sample rock at a waypoint C with a rover A and store in a store B if it is the case that C is at the rock sample and A is equipped for rock analysis and A is at C and B is a store of A and B is empty"
+            ],
+            "effects": [
+                "Once I sample rock at a waypoint C with a rover A and store in a store B, it is the case that A has a rock analysis of C and B is full",
+                "Once I sample rock at a waypoint C with a rover A and store in a store B, it is not the case anymore that C is at the rock sample and it is not the case anymore that B is empty"
+            ]
+        },
+        "drop": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "rover",
+                "?y": "store"
+            },
+            "pddl": "(drop ?x ?y)",
+            "description": "drop from a store B of a rover A",
+            "preconditions": [
+                "I can only drop from a store B of a rover A if it is the case that B is a store of A and B is full"
+            ],
+            "effects": [
+                "Once I drop from a store B of a rover A, it is the case that B is empty",
+                "Once I drop from a store B of a rover A, it is not the case anymore that B is full"
+            ]
+        },
+        "calibrate": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "rover",
+                "?i": "camera",
+                "?t": "objective",
+                "?w": "waypoint"
+            },
+            "pddl": "(calibrate ?r ?i ?t ?w)",
+            "description": "calibrate a camera B on a rover A for an objective C at a waypoint D",
+            "preconditions": [
+                "I can only calibrate a camera B on a rover A for an objective C at a waypoint D if it is the case that A is equipped for imaging and B is a calibration target for C and C is visible from D and A is at D and B is on board A"
+            ],
+            "effects": [
+                "Once I calibrate a camera B on a rover A for an objective C at a waypoint D, it is the case that B is calibrated to A"
+            ]
+        },
+        "take_image": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "rover",
+                "?p": "waypoint",
+                "?o": "objective",
+                "?i": "camera",
+                "?m": "mode"
+            },
+            "pddl": "(take_image ?r ?p ?o ?i ?m)",
+            "description": "take an image of an objective C in a mode E using a camera D on a rover A from a waypoint B",
+            "preconditions": [
+                "I can only take an image of an objective C in a mode E using a camera D on a rover A from a waypoint B if it is the case that A is equipped for imaging and D is calibrated to A and D is on board A and C is visible from B and A is at B and D supports E"
+            ],
+            "effects": [
+                "Once I take an image of an objective C in a mode E using a camera D on a rover A from a waypoint B, it is the case that A has an image of C in E",
+                "Once I take an image of an objective C in a mode E using a camera D on a rover A from a waypoint B, it is not the case anymore that D is calibrated to A"
+            ]
+        },
+        "communicate_soil_data": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "rover",
+                "?l": "lander",
+                "?p": "waypoint",
+                "?x": "waypoint",
+                "?y": "waypoint"
+            },
+            "pddl": "(communicate_soil_data ?r ?l ?p ?x ?y)",
+            "description": "communicate soil data from a rover A at a waypoint D with soil analysis of a waypoint C to a lander B at a waypoint E",
+            "preconditions": [
+                "I can only communicate soil data from a rover A at a waypoint D with soil analysis of a waypoint C to a lander B at a waypoint E if it is the case that A is at D and A has a soil analysis of C and B is at the lander E and D is visible from E and B is a free channel and A is available"
+            ],
+            "effects": [
+                "Once I communicate soil data from a rover A at a waypoint D with soil analysis of a waypoint C to a lander B at a waypoint E, it is the case that B is a free channel and A is available and C has communicated soil data",
+                "Once I communicate soil data from a rover A at a waypoint D with soil analysis of a waypoint C to a lander B at a waypoint E, it is not the case anymore that B is a free channel and it is not the case anymore that A is available"
+            ]
+        },
+        "communicate_rock_data": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "rover",
+                "?l": "lander",
+                "?p": "waypoint",
+                "?x": "waypoint",
+                "?y": "waypoint"
+            },
+            "pddl": "(communicate_rock_data ?r ?l ?p ?x ?y)",
+            "description": "communicate rock data from a rover A at a waypoint D to a lander B at a waypoint E via a waypoint C",
+            "preconditions": [
+                "I can only communicate rock data from a rover A at a waypoint D to a lander B at a waypoint E via a waypoint C if it is the case that A is at D and B is at the lander E and A has a rock analysis of C and D is visible from E and B is a free channel and A is available"
+            ],
+            "effects": [
+                "Once I communicate rock data from a rover A at a waypoint D to a lander B at a waypoint E via a waypoint C, it is the case that B is a free channel and C has communicated rock data and A is available",
+                "Once I communicate rock data from a rover A at a waypoint D to a lander B at a waypoint E via a waypoint C, it is not the case anymore that B is a free channel and it is not the case anymore that A is available"
+            ]
+        },
+        "communicate_image_data": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "rover",
+                "?l": "lander",
+                "?o": "objective",
+                "?m": "mode",
+                "?x": "waypoint",
+                "?y": "waypoint"
+            },
+            "pddl": "(communicate_image_data ?r ?l ?o ?m ?x ?y)",
+            "description": "communicate image data of an objective C in a mode D from a rover A at a waypoint E to a lander B at a waypoint F",
+            "preconditions": [
+                "I can only communicate image data of an objective C in a mode D from a rover A at a waypoint E to a lander B at a waypoint F if it is the case that A is at E and B is at the lander F and E is visible from F and A has an image of C in D and B is a free channel and A is available"
+            ],
+            "effects": [
+                "Once I communicate image data of an objective C in a mode D from a rover A at a waypoint E to a lander B at a waypoint F, it is the case that B is a free channel and A is available and C has communicated image data to D",
+                "Once I communicate image data of an objective C in a mode D from a rover A at a waypoint E to a lander B at a waypoint F, it is not the case anymore that B is a free channel and it is not the case anymore that A is available"
+            ]
+        }
+    },
+    "predicates": {
+        "at": {
+            "parameter_types": {
+                "?x": "rover",
+                "?y": "waypoint"
+            },
+            "pddl": "(at ?x ?y)"
+        },
+        "at_lander": {
+            "parameter_types": {
+                "?x": "lander",
+                "?y": "waypoint"
+            },
+            "pddl": "(at_lander ?x ?y)"
+        },
+        "can_traverse": {
+            "parameter_types": {
+                "?r": "rover",
+                "?x": "waypoint",
+                "?y": "waypoint"
+            },
+            "pddl": "(can_traverse ?r ?x ?y)"
+        },
+        "equipped_for_soil_analysis": {
+            "parameter_types": {
+                "?r": "rover"
+            },
+            "pddl": "(equipped_for_soil_analysis ?r)"
+        },
+        "equipped_for_rock_analysis": {
+            "parameter_types": {
+                "?r": "rover"
+            },
+            "pddl": "(equipped_for_rock_analysis ?r)"
+        },
+        "equipped_for_imaging": {
+            "parameter_types": {
+                "?r": "rover"
+            },
+            "pddl": "(equipped_for_imaging ?r)"
+        },
+        "empty": {
+            "parameter_types": {
+                "?s": "store"
+            },
+            "pddl": "(empty ?s)"
+        },
+        "have_rock_analysis": {
+            "parameter_types": {
+                "?r": "rover",
+                "?w": "waypoint"
+            },
+            "pddl": "(have_rock_analysis ?r ?w)"
+        },
+        "have_soil_analysis": {
+            "parameter_types": {
+                "?r": "rover",
+                "?w": "waypoint"
+            },
+            "pddl": "(have_soil_analysis ?r ?w)"
+        },
+        "full": {
+            "parameter_types": {
+                "?s": "store"
+            },
+            "pddl": "(full ?s)"
+        },
+        "calibrated": {
+            "parameter_types": {
+                "?c": "camera",
+                "?r": "rover"
+            },
+            "pddl": "(calibrated ?c ?r)"
+        },
+        "supports": {
+            "parameter_types": {
+                "?c": "camera",
+                "?m": "mode"
+            },
+            "pddl": "(supports ?c ?m)"
+        },
+        "available": {
+            "parameter_types": {
+                "?r": "rover"
+            },
+            "pddl": "(available ?r)"
+        },
+        "visible": {
+            "parameter_types": {
+                "?w": "waypoint",
+                "?p": "waypoint"
+            },
+            "pddl": "(visible ?w ?p)"
+        },
+        "have_image": {
+            "parameter_types": {
+                "?r": "rover",
+                "?o": "objective",
+                "?m": "mode"
+            },
+            "pddl": "(have_image ?r ?o ?m)"
+        },
+        "communicated_soil_data": {
+            "parameter_types": {
+                "?w": "waypoint"
+            },
+            "pddl": "(communicated_soil_data ?w)"
+        },
+        "communicated_rock_data": {
+            "parameter_types": {
+                "?w": "waypoint"
+            },
+            "pddl": "(communicated_rock_data ?w)"
+        },
+        "communicated_image_data": {
+            "parameter_types": {
+                "?o": "objective",
+                "?m": "mode"
+            },
+            "pddl": "(communicated_image_data ?o ?m)"
+        },
+        "at_soil_sample": {
+            "parameter_types": {
+                "?w": "waypoint"
+            },
+            "pddl": "(at_soil_sample ?w)"
+        },
+        "at_rock_sample": {
+            "parameter_types": {
+                "?w": "waypoint"
+            },
+            "pddl": "(at_rock_sample ?w)"
+        },
+        "visible_from": {
+            "parameter_types": {
+                "?o": "objective",
+                "?w": "waypoint"
+            },
+            "pddl": "(visible_from ?o ?w)"
+        },
+        "store_of": {
+            "parameter_types": {
+                "?s": "store",
+                "?r": "rover"
+            },
+            "pddl": "(store_of ?s ?r)"
+        },
+        "calibration_target": {
+            "parameter_types": {
+                "?i": "camera",
+                "?o": "objective"
+            },
+            "pddl": "(calibration_target ?i ?o)"
+        },
+        "on_board": {
+            "parameter_types": {
+                "?i": "camera",
+                "?r": "rover"
+            },
+            "pddl": "(on_board ?i ?r)"
+        },
+        "channel_free": {
+            "parameter_types": {
+                "?l": "lander"
+            },
+            "pddl": "(channel_free ?l)"
+        }
+    },
+    "action_nl_templates": {
+        "navigate": "navigate with rover {?x} from waypoint {?y} to waypoint {?z}",
+        "sample_soil": "sample soil at waypoint {?p} with rover {?x} and store in store {?s}",
+        "sample_rock": "sample rock at waypoint {?p} with rover {?x} and store in store {?s}",
+        "drop": "drop from store {?y} of rover {?x}",
+        "calibrate": "calibrate camera {?i} on rover {?r} for objective {?t} at waypoint {?w}",
+        "take_image": "take an image of objective {?o} in mode {?m} using camera {?i} on rover {?r} from waypoint {?p}",
+        "communicate_soil_data": "communicate soil data from rover {?r} at waypoint {?x} with soil analysis of waypoint {?p} to lander {?l} at waypoint {?y}",
+        "communicate_rock_data": "communicate rock data from rover {?r} at waypoint {?x} to lander {?l} at waypoint {?y} via waypoint {?p}",
+        "communicate_image_data": "communicate image data of objective {?o} in mode {?m} from rover {?r} at waypoint {?x} to lander {?l} at waypoint {?y}"
+    },
+    "predicate_nl_templates": {
+        "at": "{?x} is at {?y}",
+        "at_lander": "{?x} is at the lander {?y}",
+        "can_traverse": "{?r} can traverse from {?x} to {?y}",
+        "equipped_for_soil_analysis": "{?r} is equipped for soil analysis",
+        "equipped_for_rock_analysis": "{?r} is equipped for rock analysis",
+        "equipped_for_imaging": "{?r} is equipped for imaging",
+        "empty": "{?s} is empty",
+        "have_rock_analysis": "{?r} has a rock analysis of {?w}",
+        "have_soil_analysis": "{?r} has a soil analysis of {?w}",
+        "full": "{?s} is full",
+        "calibrated": "{?c} is calibrated to {?r}",
+        "supports": "{?c} supports {?m}",
+        "available": "{?r} is available",
+        "visible": "{?w} is visible from {?p}",
+        "have_image": "{?r} has an image of {?o} in {?m}",
+        "communicated_soil_data": "{?w} has communicated soil data",
+        "communicated_rock_data": "{?w} has communicated rock data",
+        "communicated_image_data": "{?o} has communicated image data to {?m}",
+        "at_soil_sample": "{?w} is at the soil sample",
+        "at_rock_sample": "{?w} is at the rock sample",
+        "visible_from": "{?o} is visible from {?w}",
+        "store_of": "{?s} is a store of {?r}",
+        "calibration_target": "{?i} is a calibration target for {?o}",
+        "on_board": "{?i} is on board {?r}",
+        "channel_free": "{?l} is a free channel"
+    },
+    "action_nl_templates_indef": {
+        "navigate": "navigate with a rover {?x} from a waypoint {?y} to a waypoint {?z}",
+        "sample_soil": "sample soil at a waypoint {?p} with a rover {?x} and store in a store {?s}",
+        "sample_rock": "sample rock at a waypoint {?p} with a rover {?x} and store in a store {?s}",
+        "drop": "drop from a store {?y} of a rover {?x}",
+        "calibrate": "calibrate a camera {?i} on a rover {?r} for an objective {?t} at a waypoint {?w}",
+        "take_image": "take an image of an objective {?o} in a mode {?m} using a camera {?i} on a rover {?r} from a waypoint {?p}",
+        "communicate_soil_data": "communicate soil data from a rover {?r} at a waypoint {?x} with soil analysis of a waypoint {?p} to a lander {?l} at a waypoint {?y}",
+        "communicate_rock_data": "communicate rock data from a rover {?r} at a waypoint {?x} to a lander {?l} at a waypoint {?y} via a waypoint {?p}",
+        "communicate_image_data": "communicate image data of an objective {?o} in a mode {?m} from a rover {?r} at a waypoint {?x} to a lander {?l} at a waypoint {?y}"
+    },
+    "type_hierarchy": [
+        "Everything that is a rover or a waypoint or a store or a camera or a mode or a lander or a objective is also a object"
+    ]
+}

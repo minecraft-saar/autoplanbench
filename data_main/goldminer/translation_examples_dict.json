@@ -1,0 +1,37 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_50: o",
+        "star_23: b",
+        "kumquat_8: c_8",
+        "screen: abc",
+        "teddy: td",
+        "roof_11: r_11",
+        "socket: z",
+        "rain: rn",
+        "object_26: o2",
+        "kumquat: k",
+        "fire: f"
+    ],
+    "pos_examples": [
+        [
+            "Now, fire laser from loc roof_11 to loc object_26.",
+            "[1] (fire-laser roof_11 object_26) [2] (fire-laser r_11 o2)"
+        ],
+        [
+            "Once your done, please pick up gold at loc object_50.",
+            "[1] (pick-gold object_50) [2] (pick-gold o)"
+        ],
+        [
+            "First, detonate bomb at loc object_50 connected to loc fire and then pick up laser at loc rain.",
+            "[1] (detonate-bomb object_50 fire) [2] (detonate-bomb o f)\n[1] (pickup-laser rain) [2] (pickup-laser rn)"
+        ],
+        [
+            "The next step is to move from loc kumquat_8 to loc socket.",
+            "[1] (move kumquat_8 socket) [2] (move c_8 z)"
+        ]
+    ]
+}
