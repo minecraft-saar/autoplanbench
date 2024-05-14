@@ -1,0 +1,37 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_50: o",
+        "star_23: b",
+        "kumquat_8: c_8",
+        "screen: abc",
+        "teddy: td",
+        "roof_11: r_11",
+        "socket: z",
+        "rain: rn",
+        "object_26: o2",
+        "kumquat: k",
+        "fire: f"
+    ],
+    "pos_examples": [
+        [
+            "Now, stack object screen on top of object fire.",
+            "[1] (stack screen fire) [2] (stack abc f)"
+        ],
+        [
+            "Once your done, please put down object fire.",
+            "[1] (put-down fire) [2] (put-down f)"
+        ],
+        [
+            "First, unstack object rain from object object_50 and then pick up object kumquat_8 from the table.",
+            "[1] (unstack rain object_50) [2] (unstack rn o)\n[1] (pick-up kumquat_8) [2] (pick-up c_8)"
+        ],
+        [
+            "The next step is to stack object kumquat_8 on top of object screen.",
+            "[1] (stack kumquat_8 screen) [2] (stack c_8 abc)"
+        ]
+    ]
+}

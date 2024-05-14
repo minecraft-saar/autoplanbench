@@ -1,0 +1,7 @@
+(unstack object_2 object_1)
+(put-down object_2)
+(unstack object_3 object_0)
+(put-down object_3)
+(pick-up object_0)
+(stack object_0 object_1)
+; cost = 6 (unit cost)
