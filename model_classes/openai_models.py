@@ -197,9 +197,9 @@ class OpenAIComplModel(LLMModel):
 
     def _generate(self, prompt: str):
         if self.seed:
-            output = self.client.chat.completions.create(model=self.model_path, prompt=prompt, temperature=self.temp, max_tokens=self.max_tokens, seed=self.seed)
+            output = self.client.chat.completions.create(model=self.model_path, messages=prompt, temperature=self.temp, max_tokens=self.max_tokens, seed=self.seed)
         else:
-            output = self.client.chat.completions.create(model=self.model_path, prompt=prompt, temperature=self.temp,
+            output = self.client.chat.completions.create(model=self.model_path, messages=prompt, temperature=self.temp,
                                               max_tokens=self.max_tokens)
         response = output['choices'][0]['text']
         return response
