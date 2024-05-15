@@ -86,7 +86,7 @@ class PlannerOutputReader:
                 #self.steps = len(executable_actions)
 
             if 'total_time' in entry.keys():
-                self.time_token_data['total_time'] = entry
+                self.time_token_data = entry
 
         if self.step_reached_goal != 'NA' and self.step_reached_goal is not None:
             steps_until_goal = executable_actions[:self.step_reached_goal]
