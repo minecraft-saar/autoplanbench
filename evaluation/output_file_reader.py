@@ -71,8 +71,6 @@ class PlannerOutputReader:
                             executable_actions.append(entry['text'])
                         else:
                             executable_actions.append('NOTEXEC')
-                            if not entry['text'].startswith('('):
-                                print(f'not PDDL action in {self.generated_plan_path}')
 
             if 'success' in entry.keys():
                 self.successful = entry['success']
@@ -141,8 +139,6 @@ class PlannerOutputReader:
                         executable_actions.append(entry['text'])
                     else:
                         executable_actions.append('NOTEXEC')
-                        if not entry['text'].startswith('('):
-                            print(f'not PDDL action in {self.generated_plan_path}')
 
             if 'task' in entry.keys():
                 self.task_num = entry['task']['task_num']

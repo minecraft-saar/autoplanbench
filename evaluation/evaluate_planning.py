@@ -367,7 +367,7 @@ class PlanEvaluator:
         else:
             self.instance_results['unsuccessful_bec_not_reached_goal'].append(False)
 
-        if tested_inst_data.incremental_data['first_mistake_execution']:
+        if (not successful) and tested_inst_data.incremental_data['first_mistake_execution']:
             self.instance_results['unsuccessful_bec_not_executable'].append(True)
         else:
             self.instance_results['unsuccessful_bec_not_executable'].append(False)
@@ -466,6 +466,8 @@ class PlanEvaluator:
                 self.evaluate_incremental_instance(self.generated_plans_path)
         else:
             for file in os.listdir(self.generated_plans_path):
+                if file.startswith('.'):
+                    continue
                 generated_plan_file = os.path.join(self.generated_plans_path, file)
                 if not os.path.isfile(generated_plan_file):
                     continue
