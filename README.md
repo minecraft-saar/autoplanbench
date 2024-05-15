@@ -26,7 +26,7 @@ Readme:
 * `pip install -e .` in the main folder of the repository
 * download [fastdownward](https://www.fast-downward.org/Releases/22.12)
 * get and compile [VAL](https://github.com/KCL-Planning/VAL)
-* an OpenAI account (it is theoretically also possible to run other models such as llama or vicuna. However, we did not test these models on the tasks and cannot tell whether they successfully generate the formats required based on the prompts and few-shot examples from the current repository)
+* an OpenAI account (it is theoretically also possible to run other models such as llama or vicuna. However, we did not test these models on the tasks and cannot tell whether they successfully generate the formats required based on the prompts and few-shot examples from the current repository. See the [Wiki](https://github.com/minecraft-saar/autoplanbench/wiki/Adding-support-for-additional-LLM-types) for details on how to add support for other LLM models)
 
 If running vicuna with bitsandbytes it might be necessary to manually install the transformers library from source.
 
