@@ -1,0 +1,36 @@
+I can carry out the following actions:
+change the color of a robot A from a color B to a color C
+paint a tile B above a tile C with a color D using a robot A
+paint a tile B down from a tile C with a color D using a robot A
+move a robot A up from a tile B to a tile C
+move a robot A down from a tile B to a tile C
+move a robot A from a tile B to the right tile a tile C
+move a robot A from a tile B to the left tile a tile C
+
+I have the following restrictions on my actions:
+I can only change the color of a robot A from a color B to a color C if it is the case that The robot A has B and C is an available color
+I can only paint a tile B above a tile C with a color D using a robot A if it is the case that B is clear and The robot A has D and The robot A is at location C and B is up C
+I can only paint a tile B down from a tile C with a color D using a robot A if it is the case that B is clear and The robot A has D and The robot A is at location C and B is down C
+I can only move a robot A up from a tile B to a tile C if it is the case that C is up B and The robot A is at location B and C is clear
+I can only move a robot A down from a tile B to a tile C if it is the case that C is clear and The robot A is at location B and C is down B
+I can only move a robot A from a tile B to the right tile a tile C if it is the case that The robot A is at location B and C is to the right of B and C is clear
+I can only move a robot A from a tile B to the left tile a tile C if it is the case that C is to the left of B and The robot A is at location B and C is clear
+
+The actions have the following effects on the state:
+Once I change the color of a robot A from a color B to a color C, it is the case that The robot A has C
+Once I change the color of a robot A from a color B to a color C, it is not the case anymore that The robot A has B
+Once I paint a tile B above a tile C with a color D using a robot A, it is the case that B is painted in D
+Once I paint a tile B above a tile C with a color D using a robot A, it is not the case anymore that B is clear
+Once I paint a tile B down from a tile C with a color D using a robot A, it is the case that B is painted in D
+Once I paint a tile B down from a tile C with a color D using a robot A, it is not the case anymore that B is clear
+Once I move a robot A up from a tile B to a tile C, it is the case that B is clear and The robot A is at location C
+Once I move a robot A up from a tile B to a tile C, it is not the case anymore that The robot A is at location B and it is not the case anymore that C is clear
+Once I move a robot A down from a tile B to a tile C, it is the case that B is clear and The robot A is at location C
+Once I move a robot A down from a tile B to a tile C, it is not the case anymore that The robot A is at location B and it is not the case anymore that C is clear
+Once I move a robot A from a tile B to the right tile a tile C, it is the case that B is clear and The robot A is at location C
+Once I move a robot A from a tile B to the right tile a tile C, it is not the case anymore that The robot A is at location B and it is not the case anymore that C is clear
+Once I move a robot A from a tile B to the left tile a tile C, it is the case that B is clear and The robot A is at location C
+Once I move a robot A from a tile B to the left tile a tile C, it is not the case anymore that The robot A is at location B and it is not the case anymore that C is clear
+
+
+Everything that is a robot or a tile or a color is also a object

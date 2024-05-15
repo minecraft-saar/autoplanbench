@@ -18,7 +18,8 @@ class LLMModel(ABC):
                  max_tokens: int,
                  temp: float,
                  max_history: Union[int, None],
-                 cache_directory: Union[str, None] = None):
+                 cache_directory: Union[str, None] = None,
+                 seed: Union[int, None] = None):
         """
 
         :param model_name: the general name of the model to identify the correct LLMModel subclass, e.g. openai_chat
@@ -30,6 +31,7 @@ class LLMModel(ABC):
                             e.g. if max_history = 5 then the dialogue history that the model gets as input always consists
                             of the system prompt + the 5 last interactions, where an interaction is both the input and output
                             i.e. the length of the dialogue history is always 1 + 2 * max_history
+        :param seed: seed value for inference or None
         """
 
         self.model_name = model_name
@@ -39,9 +41,12 @@ class LLMModel(ABC):
         self.max_history = max_history
 
         self.cache = cache_directory
+        self.seed = seed
 
         self.history = []           # the dialogue history (stays empty if model uses a Conversation template that takes care of the history
         self.initial_history = []   # the initial history
+        self.full_history_w_source = [] # history where each element has "source" key with the source of the message as value
+
         self.initial_prompt = ''    # the initial system prompt
         self.role_user = ''         # user role for specific model template, e.g. 'user', 'HUMAN'
         self.role_assistant = ''    # user role for specific model template, e.g. 'ASSISTANT'
@@ -141,13 +146,14 @@ class LLMModel(ABC):
         :return:
         """
         prompt = self.prepare_for_generation(user_message)
-
+        response_source = 'generated'
         if self.temp == 0 and self.cache:
             cache_query = self.create_cache_query(prompt=prompt)
             with Cache(directory=self.cache) as cache:
                 if cache_query in cache:
                     print('Retrieved from cache')
                     response = cache[cache_query]
+                    response_source = 'cache'
                 else:
                     response = self._generate(prompt)
                     cache[cache_query] = response
@@ -155,7 +161,8 @@ class LLMModel(ABC):
         else:
             response = self._generate(prompt)
 
-        actual_response = self.clean_up_from_generation(model_response=response)
+        actual_response = self.clean_up_from_generation(model_response=response,
+                                                        response_source=response_source)
 
         self.update_history_length()  # make sure history is not exceeding the max_history length
 
@@ -182,7 +189,14 @@ class LLMModel(ABC):
         pass
 
     @abstractmethod
-    def clean_up_from_generation(self, model_response) -> str:
+    def clean_up_from_generation(self, model_response, response_source: Union[str, None] = None) -> str:
+        """
+        update the history based on the generated response
+        optionally, update the self.full_history_w_source to include the source of the response (e.g. generated, cache, initial input)
+        :param model_response:
+        :param response_source:
+        :return: the model response
+        """
         pass
 
 

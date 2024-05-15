@@ -28,8 +28,9 @@ if __name__ == '__main__':
     encoding_type = config.get('encoding_type', 'automatic')
     thoughts = config['thoughts']
     planbench = True if encoding_type == 'planbench' else False
+    pddl = True if 'pddl' in config['planning_approach'] else False
 
-    game_class = get_game_class(thoughts=thoughts, planbench=planbench)
+    game_class = get_game_class(thoughts=thoughts, planbench=planbench, pddl=pddl)
     plan_prompt, translate_prompt, _ = get_prompts(config=config, few_shot_path=few_shot_path, game_class=game_class)
 
     output_dir1 = os.path.split(args.pl_out)[0]

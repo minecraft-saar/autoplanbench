@@ -26,7 +26,8 @@ class PlanningGame(ABC):
                  subgoal_feedback: bool,
                  provide_state: bool,
                  not_finished_feedback: bool,
-                 log_history: bool
+                 log_history: bool,
+                 allow_multi_action: Union[None, bool] = True
                  ):
         """
 
@@ -57,6 +58,8 @@ class PlanningGame(ABC):
         :param log_history: whether to log the history at each interaction step in a file './temp_history.txt'
                             gets overwritten at each run
                             only used if incremental=True
+        :param allow_multi_action: whether to allow the model to generate multiple actions at once in the incremental set-up
+                                if set to False, then instructions with several actions will raise a ValueError
         """
         self.translation_neural = translation_neural
         self.subgoal_feedback = subgoal_feedback
@@ -65,6 +68,7 @@ class PlanningGame(ABC):
         self.provide_state = provide_state
         self.task_num = task_num
         self.count_successive_fails = 0
+        self.allow_multi_action = allow_multi_action
 
         print("Initializing world state")
         self.env_config = env_config
@@ -87,6 +91,7 @@ class PlanningGame(ABC):
                          'task': {'task_num': self.task_num},
                          'translation_neural': self.translation_neural,
                          'positive_feedback': positive_feedback,
+                         'negative_feedback': negative_feedback,
                          'subgoal_feedback': subgoal_feedback,
                          'provide_state': provide_state,
                          'incremental': self.incremental,
@@ -185,7 +190,58 @@ class PlanningGame(ABC):
 
         return examples_dict
 
-    def create_plan_task_prompt(self, include_examples: Union[bool, None] = None, examples_dict: Union[dict, None] = None) -> str:
+
+    # TODO: this is not ready to be used!!
+    def create_examples_dict_incre(self, llm_config: dict) -> dict:
+
+        try:
+            with open(llm_config['examples_file'], 'r') as ef:
+                examples_dict = json.load(ef)
+        except KeyError:
+            examples_dict = dict()
+
+        if 'prefixes' not in examples_dict.keys():
+            examples_dict['prefixes'] = {'input': '', 'output': ''}
+
+        if 'pos_examples' not in examples_dict.keys():
+            examples_dict['pos_examples'] = None
+        else:
+            reformatted = []
+            for ex in examples_dict['pos_examples']:
+                current_input = []
+                current_output = []
+                current_type = 'input'
+                for line in ex.split('\n'):
+                    if line.strip().startswith('You:'):
+                        current_type = 'output'
+                        line = line.replace('You:', '')
+                    if line.strip().startswith('I:'):
+                        current_type = 'input'
+                        line = line.replace('I:', '')
+
+                    processed_line = line.strip()
+                    if not processed_line:
+                        continue
+                    if current_type == 'input':
+                        current_input.append(processed_line)
+                    elif current_type == 'output':
+                        current_output.append(processed_line)
+
+                reformatted.append({'input': ex[0], 'output': ex[1]})
+            examples_dict['pos_examples'] = reformatted
+        if 'neg_examples' not in examples_dict.keys():
+            examples_dict['neg_examples'] = None
+        else:
+            reformatted = []
+            for ex in examples_dict['neg_examples']:
+                reformatted.append({'input': ex[0], 'wrong': ex[1], 'output': ex[2]})
+            examples_dict['neg_examples'] = reformatted
+
+
+        return examples_dict
+
+
+    def create_plan_task_prompt(self, include_examples: bool, examples_dict: Union[dict, None] = None) -> str:
         """
         Create the initial / system prompt for the self.llm_plan
         :param include_examples:
@@ -193,7 +249,7 @@ class PlanningGame(ABC):
         :return:
         """
         examples = examples_dict if examples_dict else self.llm_plan.examples_dict
-        include_examples = include_examples if include_examples else not self.llm_plan.examples_chat
+        include_examples = include_examples
         template_args = self.create_plan_template_args(examples_dict=examples)
         template_args['include_examples'] = include_examples
 
@@ -239,7 +295,7 @@ class PlanningGame(ABC):
         return self.llm_plan.get_initial_prompt()
 
 
-
+    @abstractmethod
     def get_all_available_referents_str(self) -> str:
         """
         Create a string with all objects returned by self.get_all_available_referents()
@@ -336,17 +392,18 @@ class PlanningGame(ABC):
         day_now = now.split(' ')[0]
         print(f'Continuing to use {self.log} for saving conversation')
         with open(self.log, 'a') as log:
-            json.dump({'continued': 'true', 'max_steps': max_steps, 'break_limit': break_limit , 'date': day_now}, log)
+            json.dump({'continued': True, 'max_steps': max_steps, 'break_limit': break_limit , 'date': day_now}, log)
             log.write('\n')
 
         return None
 
 
-    def create_log(self, max_steps: int, break_limit: int, directory='') -> str:
+    def create_log(self, max_steps: int, break_limit: int, break_limit_reached_goal: int, directory='') -> str:
         """
 
         :param max_steps:
         :param break_limit:
+        :param break_limit_reached_goal:
         :param directory:
         :return:
         """
@@ -360,10 +417,15 @@ class PlanningGame(ABC):
         metadata['date'] = day_now
         metadata['max_steps'] = max_steps
         metadata['break_limit'] = break_limit
+        metadata['break_limit_reached_goal'] = break_limit_reached_goal
 
         prompts = dict()
         prompts['plan_prompt'] = self.get_plan_prompt()
+        if self.llm_plan.examples_chat:
+            prompts['plan_example_hist'] = self.llm_plan.get_list_examples()
         prompts['translate_prompt'] = self.get_translate_prompt()
+        if self.llm_translate.examples_chat:
+            prompts['trans_example_hist'] = self.llm_translate.get_list_examples()
 
         if directory == '':
             log_path = os.path.join(OUTPUT_DIR, filename)
@@ -461,7 +523,8 @@ class PlanningGame(ABC):
             translation_output = self.text_to_plan(text=instruction)
 
         # output of the translation model can consist of several actions theoretically
-        translation_output_list = translation_output.split('\n')
+        translation_output_list = self.process_multi_action_translations(translation_output=translation_output)
+
         # avoid problems is model adds empty lines between two steps
         translation_output_list = [tr_out for tr_out in translation_output_list if tr_out]
         assert len(translation_output_list) > 0
@@ -471,6 +534,33 @@ class PlanningGame(ABC):
         self.write_log(self.observation, 'env_feedback')
 
         return self.is_completed, False
+
+
+    def process_multi_action_translations(self, translation_output: str) -> List[str]:
+        """
+        Instructions, and hence translations, can theoretically consist of several steps at once
+        -> need to be split into the individual actions for executing them
+        :param translation_output:
+        :return:
+        """
+        n_actions = translation_output.count('(')
+        sep_chars = '\n'
+        # check whether translation resulted in several actions
+        if n_actions > 1 and not self.allow_multi_action:
+            raise ValueError('LLM generated instructions consisting of several steps.')
+        elif n_actions > 1: # find the chars, that are used to separate several outputs
+            char_index = translation_output.index(')')
+            char = ')'
+            sep_chars = ''
+            while char != '(':
+                char_index += 1
+                char = translation_output[char_index]
+                sep_chars += char
+
+            translation_output_list = translation_output.split(sep_chars)
+        else:
+            translation_output_list = [translation_output]
+        return translation_output_list
 
 
     def process_finished_message(self):
@@ -582,6 +672,8 @@ class PlanningGame(ABC):
                 complete_feedback = 'This does not work.'
             elif self.negative_feedback == 'next':
                 complete_feedback = 'Next.'
+            elif self.negative_feedback == 'pddl':
+                complete_feedback = 'The action is not applicable in the current state.'
             else:
                 raise NotImplementedError
 
@@ -592,6 +684,8 @@ class PlanningGame(ABC):
                 complete_feedback = 'Done.'
             elif self.positive_feedback == 'next':
                 complete_feedback = 'Next.'
+            elif self.positive_feedback == 'pddl':
+                complete_feedback = 'Action was successfully executed.'
             else:
                 raise NotImplementedError
 
@@ -649,7 +743,7 @@ class PlanningGame(ABC):
         :return:
         """
         if self.log == '':  # create new log file
-            self.log = self.create_log(max_steps=steps, break_limit=break_limit, directory=directory)
+            self.log = self.create_log(max_steps=steps, break_limit=break_limit, break_limit_reached_goal=break_limit_reached_goal, directory=directory)
         else:
             self.resume_log(max_steps=steps, break_limit=break_limit)  # write in previously created log file
 
@@ -707,12 +801,14 @@ class PlanningGame(ABC):
         success = False
         self.summary_planning['stopping_reason'] = 'step_limit'
         for i in range(steps):
+
             is_completed, is_aware = self.get_next_instruction()
+            self.summary_planning['n_steps'] += 1
             if is_completed:
                 self.summary_planning['reached_goal'] = True
                 if not steps_reached_goal:
-                    self.summary_planning['step_reached_goal_first'] = i+1
-                steps_reached_goal.append(i + 1)
+                    self.summary_planning['step_reached_goal_first'] = self.summary_planning['n_steps']
+                steps_reached_goal.append(self.summary_planning['n_steps'])
 
             # Stopping Criteria
             if is_aware:    # is_aware is only True if the model predicts to be in the goal state when this is the case
@@ -733,12 +829,12 @@ class PlanningGame(ABC):
                 'model_name'].startswith('openai'):
                 time.sleep(2)
 
-            self.summary_planning['n_steps'] = i + 1
 
         return success
 
+    @abstractmethod
     def text_to_plan(self, text: str) -> str:
-        raise NotImplementedError
+        pass
 
     def run_instructions_all_complete(self, attempts: int):
 
@@ -839,14 +935,25 @@ class PlanningGame(ABC):
 
 
     def replay_from_log(self, log_file):
-
+        """
+        Overwrite if log output format changes
+        :param log_file:
+        :return:
+        """
         actions_to_execute = []
         plan_output = []
         feedback = []
         first_auto_state_found = False
+        translate_prompt = None
+        plan_prompt = None
         with open(log_file, 'r') as log:
             for line in log:
                 line_log = json.loads(line)
+
+                if 'plan_prompt' in line_log.keys():
+                    plan_prompt = line_log['plan_prompt']
+                    translate_prompt = line_log['translate_prompt']
+
                 if 'text' in line_log.keys():
                     if line_log['type'] == 'Translation Model' or \
                             line_log['type'] == 'RuleBased' or line_log['type'] == 'Most Similar Action':
@@ -860,13 +967,20 @@ class PlanningGame(ABC):
                         feedback.append(line_log['text'])
                         first_auto_state_found = True
 
+        assert translate_prompt is not None
+        assert plan_prompt is not None
+
+        self.llm_plan.update_initial_prompt(new_init_prompt=plan_prompt)
+        self.llm_translate.update_initial_prompt(new_init_prompt=translate_prompt)
+
         # get all translation outputs and pass them one after the other to the execution function
-        for action_to_exec in actions_to_execute:
+        for (model_out, action_to_exec) in zip(plan_output, actions_to_execute):
+            print(f'$Model Output: {model_out} Model Output$')
             print(f'$Executed Action: {action_to_exec} Executed Action$')
             self.observation, executable, is_completed = self._execute(action_to_exec)
             print(f'$Observation {self.observation} Observation$')
 
-        assert len(plan_output) + 1 == len(feedback)
+        assert len(plan_output) == len(feedback)
         # create the history for the planning llm
         plan_history = self.llm_plan.get_history()
         for interaction_id in range(len(plan_output)):
@@ -877,6 +991,8 @@ class PlanningGame(ABC):
 
         self.llm_plan.model.update_history(plan_history)
         self.llm_plan.model.update_history_length()
+
+        self.summary_planning['n_steps'] = len(plan_output)
 
         if self.llm_translate.model.max_history > 0:
             print('Warning: Replay is not implemented for max_history > 0. max_hist of translation model will be treated as 0.')

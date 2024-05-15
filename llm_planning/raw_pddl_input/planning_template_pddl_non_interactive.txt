@@ -1,0 +1,34 @@
+{# Template for the Prompts for the planning model in non-interactive planning approaches, potentially with few shot examples of complete interaction #}
+
+{%- block startinstructions -%}
+You are an assistant for providing a plan in the pddl language to successfully complete small tasks.
+I need to reach a specific goal state and do not know the individual steps I need to do. Please instruct me how to complete my task.
+{%- endblock startinstructions %}
+
+{% block taskinstruction -%}
+My task is to execute actions until reaching the goal. The goal is:
+{{ task_description }}
+{%- endblock taskinstruction %}
+
+{% block actions -%}
+Here is the definition of the domain in PDDL including the possible actions I can execute:
+{{ actions }}
+{%- endblock actions %}
+
+{%- block examples %}
+{% if include_examples -%}
+{% if pos_examples %}
+Here are some examples
+{%- for ex in pos_examples %}
+{{ prefixes['input'] }} {{ ex['input'] }}
+{{ prefixes['output'] }} {{ ex['output'] }}
+
+{% endfor %}
+{%- endif %}
+{%- endif %}
+{%- endblock examples -%}
+
+{%- block finalinstructions -%}
+Please provide me a step-by-step instruction for how to complete my task. Remember the goal is: {{ task_description }}.
+Please provide each step in a new line.
+{% endblock finalinstructions -%}
