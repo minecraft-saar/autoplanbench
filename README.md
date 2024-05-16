@@ -2,7 +2,7 @@
 
 This repository contains the code for AutoPlanBench, a tool to convert PDDL domains and problems into natural language and to run different LLM planning approaches on them. 
 
-Corresponding Paper: [AutoPlanBench: Automatically generating benchmarks for LLM planners from PDDL](https://arxiv.org/abs/2311.09830) <br>
+Corresponding Paper: [AutoPlanBench: Automatically generating benchmarks for LLM planners from PDDL](https://arxiv.org/abs/2311.09830) (Note: the current version of the code and data corresponds to an updated version of the paper that has been accepted for the PRL Workshop 2024 and will be published and linke here soon) <br>
 Corresponding [Website](https://coli-saar.github.io/autoplanbench) 
 
 The code in this repository is made available under the Apache 2.0 license. <br>
