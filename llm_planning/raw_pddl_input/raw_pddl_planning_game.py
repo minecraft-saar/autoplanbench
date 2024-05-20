@@ -21,26 +21,20 @@ class RawPDDLPlanningGame(PlanningGame):
                  positive_feedback: str = 'pddl',
                  negative_feedback: str = 'pddl',
                  subgoal_feedback: bool = False,
-                 allow_multi_action: Union[None, bool] = False
+                 allow_multi_action: Union[None, bool] = False,
+                 planning_approach: Union[str, None] = None
                  ):
 
         with open(domain_file, 'r') as df:
             self.domain_descript = df.read().strip()
 
-        super().__init__(llm_config=llm_config,
-                         env_config={'domain_file': domain_file, 'instance_file': instance_file},
-                         task_num=task_num,
-                         task_name=f'instance-{task_num}',
-                         subgoal_feedback=subgoal_feedback,
-                         provide_state=provide_state,
-                         log_history=log_history,
-                         positive_feedback=positive_feedback,
-                         negative_feedback=negative_feedback,
-                         incremental=incremental,
-                         translation_neural=translation_neural,
-                         not_finished_feedback=not_finished_feedback,
-                         allow_multi_action=allow_multi_action
-                         )
+        super().__init__(llm_config=llm_config, env_config={'domain_file': domain_file, 'instance_file': instance_file},
+                         task_num=task_num, task_name=f'instance-{task_num}', translation_neural=translation_neural,
+                         incremental=incremental, positive_feedback=positive_feedback,
+                         negative_feedback=negative_feedback, subgoal_feedback=subgoal_feedback,
+                         provide_state=provide_state, not_finished_feedback=not_finished_feedback,
+                         log_history=log_history, allow_multi_action=allow_multi_action,
+                         planning_approach=planning_approach)
 
     def split_problem_file(self, instance_file):
 

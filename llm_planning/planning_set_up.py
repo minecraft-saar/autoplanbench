@@ -130,8 +130,6 @@ def create_game(task_num, instance_config, few_shot_path, game_class) -> PDDLPla
 
     if 'domain_dir' in instance_config:
         instance_config.pop('domain_dir')
-    if 'planning_approach' in instance_config:
-        instance_config.pop('planning_approach')
     if 'thoughts' in instance_config:
         instance_config.pop('thoughts')
     if 'encoding_type' in instance_config:

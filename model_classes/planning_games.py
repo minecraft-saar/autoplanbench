@@ -27,7 +27,8 @@ class PlanningGame(ABC):
                  provide_state: bool,
                  not_finished_feedback: bool,
                  log_history: bool,
-                 allow_multi_action: Union[None, bool] = True
+                 allow_multi_action: Union[None, bool] = True,
+                 planning_approach: Union[str, None] = None
                  ):
         """
 
@@ -60,6 +61,8 @@ class PlanningGame(ABC):
                             only used if incremental=True
         :param allow_multi_action: whether to allow the model to generate multiple actions at once in the incremental set-up
                                 if set to False, then instructions with several actions will raise a ValueError
+        :param planning_approach: the type of the planning approach used, i.e. "planning_approach" from the config file;
+                              only used for logging the approach to the output file, i.e. has essentially no effect
         """
         self.translation_neural = translation_neural
         self.subgoal_feedback = subgoal_feedback
@@ -95,7 +98,8 @@ class PlanningGame(ABC):
                          'subgoal_feedback': subgoal_feedback,
                          'provide_state': provide_state,
                          'incremental': self.incremental,
-                         'not_finished_feedback': self.not_finished_feedback
+                         'not_finished_feedback': self.not_finished_feedback,
+                         'planning_approach': planning_approach
                          }
 
         self.summary_planning = self.reset_summary_planning()

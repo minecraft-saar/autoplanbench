@@ -3,11 +3,9 @@ bitsandbytes==0.39.1
 chardet
 diskcache
 fschat
-jupyter
 numpy
 openai
 pddl==0.2.0
-scienceworld
 scipy
 sentencepiece
 sentence-transformers

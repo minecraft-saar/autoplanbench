@@ -20,7 +20,8 @@ class PDDLGameThoughts(PDDLPlanningGame):
                  provide_state: bool = False,
                  not_finished_feedback: bool = False,
                  log_history: bool = False,
-                 by_action: bool = False
+                 by_action: bool = False,
+                 planning_approach: Union[str, None] = None
                  ):
 
         with open(domain_nl_file, 'r') as nl_file:
@@ -32,7 +33,8 @@ class PDDLGameThoughts(PDDLPlanningGame):
                          incremental=incremental, positive_feedback=positive_feedback,
                          negative_feedback=negative_feedback, subgoal_feedback=subgoal_feedback,
                          provide_state=provide_state, not_finished_feedback=not_finished_feedback,
-                         log_history=log_history, by_action=by_action)
+                         log_history=log_history, by_action=by_action,
+                         planning_approach=planning_approach)
 
 
     def get_next_instruction(self, debug=False, instr='') -> Tuple[bool, bool]:

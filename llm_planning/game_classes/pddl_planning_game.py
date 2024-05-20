@@ -22,23 +22,20 @@ class PDDLPlanningGame(PlanningGame):
                  provide_state: bool = False,
                  not_finished_feedback: bool = False,
                  log_history: bool = False,
-                 by_action: bool = False
+                 by_action: bool = False,
+                 planning_approach: Union[str, None] = None
                  ):
 
         self.by_action = by_action
         with open(domain_nl_file, 'r') as nl_file:
             self.domain_nl = json.load(nl_file)
 
-        super().__init__(llm_config=llm_config,
-                         env_config={'domain_file':domain_file, 'instance_file': instance_file},
-                         task_num=task_num,
-                         subgoal_feedback=subgoal_feedback, provide_state=provide_state,
-                         log_history=log_history,
-                         task_name=f'instance-{task_num}',
+        super().__init__(llm_config=llm_config, env_config={'domain_file': domain_file, 'instance_file': instance_file},
+                         task_num=task_num, task_name=f'instance-{task_num}', translation_neural=translation_neural,
                          incremental=incremental, positive_feedback=positive_feedback,
-                         negative_feedback=negative_feedback,
-                         not_finished_feedback=not_finished_feedback,
-                         translation_neural=translation_neural)
+                         negative_feedback=negative_feedback, subgoal_feedback=subgoal_feedback,
+                         provide_state=provide_state, not_finished_feedback=not_finished_feedback,
+                         log_history=log_history, planning_approach=planning_approach)
 
         self.metadata['by_action'] = by_action
 
