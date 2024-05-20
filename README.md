@@ -2,7 +2,7 @@
 
 This repository contains the code for AutoPlanBench, a tool to convert PDDL domains and problems into natural language and to run different LLM planning approaches on them. 
 
-Corresponding Paper: [AutoPlanBench: Automatically generating benchmarks for LLM planners from PDDL](https://arxiv.org/abs/2311.09830) <br>
+Corresponding Paper: [AutoPlanBench: Automatically generating benchmarks for LLM planners from PDDL](https://arxiv.org/abs/2311.09830) (Note: the current version of the code and data corresponds to an updated version of the paper that has been accepted for the PRL Workshop 2024 and will be published and linke here soon) <br>
 Corresponding [Website](https://coli-saar.github.io/autoplanbench) 
 
 The code in this repository is made available under the Apache 2.0 license. <br>
@@ -26,7 +26,7 @@ Readme:
 * `pip install -e .` in the main folder of the repository
 * download [fastdownward](https://www.fast-downward.org/Releases/22.12)
 * get and compile [VAL](https://github.com/KCL-Planning/VAL)
-* an OpenAI account (it is theoretically also possible to run other models such as llama or vicuna. However, we did not test these models on the tasks and cannot tell whether they successfully generate the formats required based on the prompts and few-shot examples from the current repository)
+* an OpenAI account (it is theoretically also possible to run other models such as llama or vicuna. However, we did not test these models on the tasks and cannot tell whether they successfully generate the formats required based on the prompts and few-shot examples from the current repository. See the [Wiki](https://github.com/minecraft-saar/autoplanbench/wiki/Adding-support-for-additional-LLM-types) for details on how to add support for other LLM models)
 
 If running vicuna with bitsandbytes it might be necessary to manually install the transformers library from source.
 
