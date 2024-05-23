@@ -1,7 +1,7 @@
 ## Dataset and Experiments 
 
 ### 1 Overview
-See the [readme](https://github.com/minecraft-saar/autoplanbench/tree/main/data) of the data repository for information about how to extract the data.
+See the [readme](https://github.com/minecraft-saar/autoplanbench/blob/main/data_main/readme.md) of the data repository for information about how to extract the data.
 
 The dataset folder contains all the files of the 12 domains used in the experiments as well as the configuration files that were used to run them:
 
