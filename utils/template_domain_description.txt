@@ -1,0 +1,24 @@
+{% block actions -%}
+I can carry out the following actions:
+{{ actions }}
+
+{% if preconditions -%}
+I have the following restrictions on my actions:
+{%- for prec in preconditions %}
+{{ prec }}
+{%- endfor %}
+{%- endif %}
+
+{% if effects -%}
+The actions have the following effects on the state:
+{%- for effect in effects %}
+{{ effect }}
+{%- endfor %}
+{%- endif %}
+
+{% if type_hierarchy -%}
+{%- for th in type_hierarchy %}
+{{ th }}
+{%- endfor %}
+{%- endif %}
+{%- endblock actions %}
