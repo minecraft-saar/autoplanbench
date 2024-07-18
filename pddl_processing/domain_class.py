@@ -5,6 +5,7 @@ from tarski.io import PDDLReader
 from tarski.fstrips import Action, AddEffect, DelEffect
 from tarski.syntax import Atom, CompoundFormula, VariableBinding, Variable, Constant, Predicate
 
+
 class Domain:
 
     def __init__(self, domain_file):
@@ -84,6 +85,7 @@ class Domain:
         with open(domain_file, 'r') as df:
             for line in df.readlines():
                 line = line.strip()
+                line = line.lower()
                 if ';' in line:
                     comment_start = line.index(';')
                     line = line[:comment_start]
@@ -102,10 +104,16 @@ class Domain:
 
         predicate_vars = dict()
         for pred in preds_list:
+            if ')(' in pred:
+                sub_preds = pred.split(')(')
+                pred = sub_preds[0]
+                preds_list.append(sub_preds[1])
             while pred.startswith('('):
                 pred = pred[1:]
+                pred = pred.strip()
             while pred.endswith(')'):
                 pred = pred[:-1]
+                pred = pred.strip()
             pred_parts = pred.split(' ')
             pred_name = pred_parts[0]
             pred_arg_names = []
@@ -234,6 +242,7 @@ class Domain:
         with open(domain_file, 'r') as df:
             for line in df.readlines():
                 line = line.strip()
+                line = line.lower()
                 if line.startswith(';NL') or line.startswith('; NL'):
                     annotation = line.replace(';', '').replace('NL', '').lower()
                     action_name = annotation.split(':')[0]

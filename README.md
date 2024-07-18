@@ -1,6 +1,8 @@
 # AutoPlanBench
 
-This repository contains the code for AutoPlanBench, a tool to convert PDDL domains and problems into natural language and to run different LLM planning approaches on them. 
+This repository contains the code for AutoPlanBench, a tool to convert PDDL domains and problems into natural language and to run different LLM planning approaches on them.
+
+**Note:** The code base is currently undergoing some changes and if you have already worked with the version before July 15, 2024 you might experience different behavior. For the previous version of the code (used also for the paper) download the release.
 
 Corresponding Paper: [AutoPlanBench: Automatically generating benchmarks for LLM planners from PDDL](https://arxiv.org/abs/2311.09830) (Note: the current version of the code and data corresponds to an updated version of the paper that has been accepted for the PRL Workshop 2024 and will be published and linke here soon) <br>
 Corresponding [Website](https://coli-saar.github.io/autoplanbench) 
@@ -22,7 +24,7 @@ Readme:
     * [Evaluation](https://github.com/minecraft-saar/autoplanbench#evaluation)
 
 ## Requirements
-* `conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia`
+* `conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia` (cuda is only needed for running LLMs from Huggingface)
 * `pip install -e .` in the main folder of the repository
 * download [fastdownward](https://www.fast-downward.org/Releases/22.12)
 * get and compile [VAL](https://github.com/KCL-Planning/VAL)

@@ -17,6 +17,7 @@ def setup_pddl_domain(domain_file: str,
                       output_dir: str,
                       llm: str,
                       llm_type: str,
+                      examples_chat: bool,
                       n_instances: Union[None, int] = None,
                       len_constraint: Union[Tuple[int, int], None] = (2, 20),
                       plan_timeout: int = 1200,
@@ -34,6 +35,7 @@ def setup_pddl_domain(domain_file: str,
     :param overwrite:
     :param llm:
     :param llm_type:
+    :param examples_chat:
     :param description_version:
     :param pddl2text_version:
     :return:
@@ -55,7 +57,8 @@ def setup_pddl_domain(domain_file: str,
         description_version=description_version,
         pddl2text_llm=llm,
         pddl2text_version=pddl2text_version,
-        pddl2text_model_type=llm_type
+        pddl2text_model_type=llm_type,
+        examples_chat=examples_chat
     )
 
     create_domain_nl_description(domain_nl_file=os.path.join(output_dir, nl_descrip_file))
@@ -67,6 +70,23 @@ def setup_pddl_domain(domain_file: str,
                               overwrite=overwrite)
     else:
         print(f'Number of instances is set to 0. No instance files, gold plans or few-shot examples are generated!')
+
+    # create few-shot examples
+    print(f'---- Creating Few-shot Examples ----')
+    translation_examples_file = os.path.join(output_dir, 'translation_examples.json')
+    translation_examples_repl_file = os.path.join(output_dir, 'translation_examples_dict.json')
+
+    if overwrite or (not os.path.exists(translation_examples_file)) or (
+    not os.path.exists(translation_examples_repl_file)):
+
+        example_data, example_data_replace = create_translation_examples(pddl_describer)
+        with open(translation_examples_file, 'w') as f:
+            json.dump(example_data, f, indent=4)
+        with open(translation_examples_repl_file, 'w') as f:
+            json.dump(example_data_replace, f, indent=4)
+    else:
+        print('Translation few-shot examples were already available and not created again.')
+
 
 
 def set_up_instance_files(domain_file: str,
@@ -128,20 +148,7 @@ def set_up_instance_files(domain_file: str,
                     len_constraint=len_constraint,
                     reselect=reselect)
 
-    # create few-shot examples
-    print(f'---- Creating Few-shot Examples ----')
-    translation_examples_file = os.path.join(output_dir, 'translation_examples.json')
-    translation_examples_repl_file = os.path.join(output_dir, 'translation_examples_dict.json')
 
-    if overwrite or (not os.path.exists(translation_examples_file)) or (not os.path.exists(translation_examples_repl_file)):
-
-        example_data, example_data_replace = create_translation_examples(pddl_describer)
-        with open(translation_examples_file, 'w') as f:
-            json.dump(example_data, f, indent=4)
-        with open(translation_examples_repl_file, 'w') as f:
-            json.dump(example_data_replace, f, indent=4)
-    else:
-        print('Translation few-shot examples were already available and not created again.')
 
 
 

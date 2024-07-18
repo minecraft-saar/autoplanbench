@@ -195,7 +195,7 @@ class PlanningGame(ABC):
         return examples_dict
 
 
-    # TODO: this is not ready to be used!!
+    # TODO: this is still under construction!!
     def create_examples_dict_incre(self, llm_config: dict) -> dict:
 
         try:
@@ -212,14 +212,21 @@ class PlanningGame(ABC):
         else:
             reformatted = []
             for ex in examples_dict['pos_examples']:
-                current_input = []
-                current_output = []
+                current_input = ''
+                current_output = ''
                 current_type = 'input'
-                for line in ex.split('\n'):
+                for line in ex[0].split('\n'):
                     if line.strip().startswith('You:'):
                         current_type = 'output'
                         line = line.replace('You:', '')
+
                     if line.strip().startswith('I:'):
+
+                        if current_type == 'output':
+                            reformatted.append({'input': current_input.strip(),
+                                                'output': current_output.strip()})
+                            current_input = ''
+                            current_output = ''
                         current_type = 'input'
                         line = line.replace('I:', '')
 
@@ -227,20 +234,15 @@ class PlanningGame(ABC):
                     if not processed_line:
                         continue
                     if current_type == 'input':
-                        current_input.append(processed_line)
+                        current_input += processed_line + '\n'
                     elif current_type == 'output':
-                        current_output.append(processed_line)
+                        current_output += processed_line + '\n'
 
-                reformatted.append({'input': ex[0], 'output': ex[1]})
+                if current_input and current_output:
+                    reformatted.append({'input': current_input.strip(),
+                                        'output': current_output.strip()})
+
             examples_dict['pos_examples'] = reformatted
-        if 'neg_examples' not in examples_dict.keys():
-            examples_dict['neg_examples'] = None
-        else:
-            reformatted = []
-            for ex in examples_dict['neg_examples']:
-                reformatted.append({'input': ex[0], 'wrong': ex[1], 'output': ex[2]})
-            examples_dict['neg_examples'] = reformatted
-
 
         return examples_dict
 
@@ -268,7 +270,7 @@ class PlanningGame(ABC):
         :return:
         """
         examples = examples_dict if examples_dict else self.llm_translate.examples_dict
-        include_examples = include_examples if include_examples else not self.llm_translate.examples_chat
+        include_examples = include_examples #if include_examples else not self.llm_translate.examples_chat
         template_args = self.create_trans_template_args(examples_dict=examples)
         template_args['include_examples'] = include_examples
 

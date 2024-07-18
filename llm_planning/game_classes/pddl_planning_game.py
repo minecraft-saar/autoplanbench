@@ -64,7 +64,10 @@ class PDDLPlanningGame(PlanningGame):
         else:
             self.task_description = self.env.get_description_goal_state()
 
-        examples_dict = self.create_examples_dict(llm_config=plan_llm_config)
+        if self.incremental:
+            examples_dict = self.create_examples_dict_incre(llm_config=plan_llm_config)
+        else:
+            examples_dict = self.create_examples_dict(llm_config=plan_llm_config)
         examples_in_prompt = not plan_llm_config.get('examples_chat', False)
         initial_prompt = self.create_plan_task_prompt(include_examples=examples_in_prompt,
                                                       examples_dict=examples_dict)

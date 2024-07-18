@@ -25,6 +25,7 @@ class RawPDDLEnvironment:
         self.tmp_action_file = f'./tmp_action_{self.tmp_file_int}'
 
         self.lowercase_domain_file = '.'.join(domain_file.split('.')[:-1]) + '_tmp.' + domain_file.split('.')[-1]
+        self.lower_case_instance_file = '.'.join(instance_file.split('.')[:-1]) + '_tmp.' + instance_file.split('.')[-1]
         self.problem = self.create_lowercase_problem()
 
         self.actions_pddl: dict = self.get_problem_actions()
@@ -70,7 +71,14 @@ class RawPDDLEnvironment:
                 orig_text = orig.read()
                 new_text = orig_text.lower()
                 new.write(new_text)
-        problem = self.get_problem(self.instance_file, self.lowercase_domain_file)
+
+        with open(self.lower_case_instance_file, 'w') as new_inst:
+            with open(self.instance_file, 'r') as orig_inst:
+                orig_text = orig_inst.read()
+                new_text = orig_text.lower()
+                new_inst.write(new_text)
+
+        problem = self.get_problem(self.lower_case_instance_file, self.lowercase_domain_file)
         return problem
 
     def remove_temp_files(self):

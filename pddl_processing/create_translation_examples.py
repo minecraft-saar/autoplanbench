@@ -4,6 +4,7 @@ import random
 import re
 from collections import defaultdict
 import copy
+from copy import deepcopy
 from pddl_processing.PDDL_describer import PDDLDescriber
 
 
@@ -14,12 +15,15 @@ def create_translation_examples(pddl_describer: PDDLDescriber):
     descriptions = []
     pddls = []
     pddls_replaced = []
-    object_maps = {'object_50': 'o', 'star_23': 'b', 'yew': 'yew', 'kumquat_8': 'c_8', 'screen': 'abc',
-                    'teddy': 'td', 'roof_11': 'r_11', 'socket': 'z', 'rain': 'rn', 'object_26': 'o2',
-                   'kumquat': 'k', 'fire': 'f'}
+    object_maps = {'object_50': 'o', 'star_213': 'b', 'yew': 'yew', 'kumquat_8': 'c_8', 'screen': 'abc',
+                    'teddy': 'td', 'roof_11': 'r_11', 'socket': 'z', 'rain': 'rn', 'object_260': 'o2',
+                   'kumquat': 'k', 'fire': 'f', 'bastion': 'bast', 'frame_9': 'fr', 'dress_red': 'dr'}
 
-    object_type_mapping = create_type_mappings(pddl_describer.action_mappings_indef, list(object_maps.keys()))
+    #object_type_mapping = create_type_mappings(pddl_describer.action_mappings_indef, list(object_maps.keys()))
     objects_used = []
+
+    object_type_mapping = create_type_mappings(pddl_describer, list(object_maps.keys()))
+    unused_object_type_mappings = deepcopy(object_type_mapping)
 
 
     for action in example_actions:
@@ -27,44 +31,60 @@ def create_translation_examples(pddl_describer: PDDLDescriber):
         arity = len(pddl_describer.domain.actions[action]['parameters'])
 
         # create nl descriptions
-        action_str = pddl_describer.action_mappings[action]
-
-        # find type name
-        tokens = action_str.split(' ')
-        parameter_inds = [ind for ind, token in enumerate(tokens) if token == "{}"]
-        parameter_types = []        # types of the parameters in the NL ordering(!)
-        for p_ind in parameter_inds:
-            obj_type = tokens[p_ind - 1]
-            parameter_types.append(obj_type)
-
-        #action_str = change_determiners(action_str)
+        parameter_types = []                # parameter types in NL order, tuples (para_name, para_type)
+        action_nl_template = pddl_describer.action_nl_templates[action]
+        reg = r'\{\?.+?\}'
+        parameters_nl_order = re.findall(reg, action_nl_template)
+        for param in parameters_nl_order:
+            param_no_brackets = param.replace('{', '').replace('}', '')
+            param_type = pddl_describer.action_data[action]['parameter_types'][param_no_brackets]
+            parameter_types.append((param_no_brackets, param_type))
 
         selected_objs = []
-        for para_type in parameter_types:
+        for param_name, para_type in parameter_types:
             for i in range(5):
-                object_with_type = random.choice(object_type_mapping[para_type])
-                if object_with_type not in selected_objs:
-                    selected_objs.append(object_with_type)
+
+                # make sure that the specific object has not been assigned a type yet before assigning a new one
+                if param_name in [tup[0] for tup in selected_objs]:
+                    for tup in selected_objs:
+                        if tup[0] == param_name:
+                            selected_objs.append((param_name, tup[1]))
+                            break
+
+                # select one of the not yet used names if available
+                if unused_object_type_mappings[para_type] != []:
+                    object_with_type = random.choice(unused_object_type_mappings[para_type])
+                    unused_object_type_mappings[para_type].remove(object_with_type)
+                # else select any object name of the correct type and add a suffix
+                else:
+                    object_with_type = random.choice(object_type_mapping[para_type])
+
+                # make sure that the selected object_name has not already been chosen before
+                if object_with_type not in [tup[1] for tup in selected_objs]:
+                    selected_objs.append((param_name, object_with_type))
                     break
-                if len(selected_objs) == arity:
-                    break
+
                 rand_int = random.randrange(20, 100)
                 new_object_with_type = f'{object_with_type}_{rand_int}'
-                object_type_mapping[para_type].append(new_object_with_type)
-                object_maps[new_object_with_type] = f'{object_maps[object_with_type]}_{rand_int}'
-                assert new_object_with_type not in selected_objs
-                selected_objs.append(new_object_with_type)
+
+                if new_object_with_type not in [tup[1] for tup in selected_objs]:
+                    object_type_mapping[para_type].append(new_object_with_type)
+                    object_maps[new_object_with_type] = f'{object_maps[object_with_type]}_{rand_int}'
+                    selected_objs.append((param_name, new_object_with_type))
+                    break
 
         # selected_objs contains the selected object in the NL order because it is based on parameter_types which is based on the nl templates
-        selected_objs_pddl_order = order_args(pddl_describer=pddl_describer, pred_name=action, obj_names_nl_order=selected_objs)
+        object_names_nl_order = [tup[1] for tup in selected_objs]
+        selected_objs_pddl_order = order_args(pddl_describer=pddl_describer, pred_name=action, obj_names_nl_order=object_names_nl_order)
 
-        action_descr = action_str.format(*selected_objs)
+        selected_objs_dict = dict(selected_objs)
+        action_descr = action_nl_template.format(**selected_objs_dict)
         descriptions.append(action_descr)
-        objects_used.extend(selected_objs)
+        objects_used.extend(object_names_nl_order)
 
         # create pddl descriptions; but selected_objs is the NL order, not necessarily the PDDL order!
         pddl_str = f'({action} {" ".join(selected_objs_pddl_order)})'
-        selected_objs_replaced = [object_maps[obj] for obj in selected_objs]
+        selected_objs_replaced = [object_maps[obj] for obj in object_names_nl_order]
         pddl_str_replaced = f'({action} {" ".join(selected_objs_replaced)})'
         pddls.append(pddl_str)
         pddls_replaced.append(pddl_str_replaced)
@@ -130,13 +150,36 @@ def order_args(pddl_describer: PDDLDescriber, pred_name: str, obj_names_nl_order
     obj_names_pddl_order = []
     for var_name in pddl_order:
         position_in_nl_order = nl_order.index(var_name)
+
         obj_name = obj_names_nl_order[position_in_nl_order]
         obj_names_pddl_order.append(obj_name)
 
     return obj_names_pddl_order
 
 
-def create_type_mappings(action_mappings: dict, objects: list):
+def create_type_mappings(pddl_describer: PDDLDescriber, objects: list):
+
+    all_types = set()
+
+    for action, action_data in pddl_describer.action_data.items():
+
+        # find type name
+        for variable_name, variable_type in action_data['parameter_types'].items():
+            all_types.add(variable_type)
+
+    assert len(all_types) <= len(objects)
+
+    all_types = list(all_types)
+    type_mapping = defaultdict(list)
+    for ind, obj in enumerate(objects):
+        type_ind = ind % len(all_types)
+        type_name = all_types[type_ind]
+        type_mapping[type_name].append(obj)
+
+    return type_mapping
+
+
+def create_type_mappings_old(action_mappings: dict, objects: list):
 
     all_types = set()
 
@@ -161,7 +204,6 @@ def create_type_mappings(action_mappings: dict, objects: list):
 
     return type_mapping
 
-
 def select_random_actions(pddl_describer: PDDLDescriber, n=4):
 
     # Randomly select n actions from the domain, preferably n actions that have different number of arguments and preferably n actions that are different
@@ -181,7 +223,7 @@ def select_random_actions(pddl_describer: PDDLDescriber, n=4):
         if not len(pddl_ordered_action_args) == len(nl_ordered_action_args):
             print(action)
 
-        assert len(pddl_ordered_action_args) == len(nl_ordered_action_args)
+        assert len(set(pddl_ordered_action_args)) == len(set(nl_ordered_action_args))
         # Compare the pddl and nl ordering
         if pddl_ordered_action_args != nl_ordered_action_args:
             actions_different_arg_order.append(action)

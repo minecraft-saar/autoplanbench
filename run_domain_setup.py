@@ -27,6 +27,7 @@ if __name__=='__main__':
     argument_parser.add_argument('--overwrite', required=False, default=False, help='Whether to re-run the adaption and plan generation for instances for which they already exist. Default is False')
     argument_parser.add_argument('--llm', required=True, help='Name of the llm to use.')
     argument_parser.add_argument('--llm-type', required=False, default=None, help='Type of the llm to use')
+    argument_parser.add_argument('--ex-chat', required=False, default=True, help='Whether examples should be presented in chat format')
     argument_parser.add_argument('--desc', required=False, default='medium')
     argument_parser.add_argument('--to-text', required=False, default='extended')
 
@@ -39,6 +40,7 @@ if __name__=='__main__':
     timeout = literal_eval(args.timeout) if isinstance(args.timeout, str) else args.timeout
     overwrite = literal_eval(args.overwrite) if isinstance(args.overwrite, str) else args.overwrite
     model_type = args.llm_type if args.llm_type is not None else get_llm_type(args.llm)
+    examples_chat = literal_eval(args.ex_chat) if isinstance(args.ex_chat, str) else args.ex_chat
 
     setup_pddl_domain(domain_file=domain_file,
                       orig_instances_dir=orig_inst_dir,
@@ -50,6 +52,7 @@ if __name__=='__main__':
                       llm=args.llm,
                       llm_type=model_type,
                       description_version=args.desc,
-                      pddl2text_version=args.to_text)
+                      pddl2text_version=args.to_text,
+                      examples_chat=examples_chat)
 
 

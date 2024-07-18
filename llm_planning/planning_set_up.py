@@ -3,6 +3,7 @@ import copy
 import math
 import time
 import openai
+from openai import Timeout, APIConnectionError
 import json
 from typing import Union, Tuple
 from set_env import set_env_vars

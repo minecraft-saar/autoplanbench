@@ -177,21 +177,23 @@ class TranslationModel:
         examples = []
 
         if "pos_examples" in self.examples_dict.keys():
-            for ex in self.examples_dict["pos_examples"]:
-                input = ex['input']
-                output = ex['output']
-                examples.append({"role": "user", "content": input})
-                examples.append({"role": "assistant", "content": output})
+            if self.examples_dict["pos_examples"] is not None:
+                for ex in self.examples_dict["pos_examples"]:
+                    input = ex['input']
+                    output = ex['output']
+                    examples.append({"role": "user", "content": input})
+                    examples.append({"role": "assistant", "content": output})
 
         if "neg_examples" in self.examples_dict.keys():
-            for neg_ex in self.examples_dict["neg_examples"]:
-                input = neg_ex['input']
-                wrong_output = neg_ex['output']
-                correct_output = neg_ex['wrong']
-                examples.append({"role": "user", "content": input})
-                examples.append({"role": "assistant", "content": wrong_output})
-                examples.append(
-                    {"role": "user", "content": f'This is wrong. The correct translation is: {correct_output}'})
+            if self.examples_dict['neg_examples'] is not None:
+                for neg_ex in self.examples_dict["neg_examples"]:
+                    input = neg_ex['input']
+                    wrong_output = neg_ex['output']
+                    correct_output = neg_ex['wrong']
+                    examples.append({"role": "user", "content": input})
+                    examples.append({"role": "assistant", "content": wrong_output})
+                    examples.append(
+                        {"role": "user", "content": f'This is wrong. The correct translation is: {correct_output}'})
 
         return examples
 
@@ -208,6 +210,7 @@ def create_llm_model(model_type: str, model_param: dict) -> LLMModel:
                         optional_keys: "caching", "seed"
     :return:
     """
+    # TODO: make the inputs more flexible
     model_path = model_param['model_path']
     max_tokens = model_param.get('max_tokens', 512)
     temp = model_param.get('temp', 1.0)
