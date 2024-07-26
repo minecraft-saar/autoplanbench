@@ -1,5 +1,0 @@
-(sail object_0 object_2)
-(board object_3 object_2)
-(sail object_2 object_1)
-(debark object_3 object_1)
-; cost = 4 (unit cost)

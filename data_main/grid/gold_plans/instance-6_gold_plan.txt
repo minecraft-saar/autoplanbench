@@ -1,4 +1,0 @@
-(pickup object_2 object_12)
-(move object_2 object_1)
-(putdown object_1 object_12)
-; cost = 3 (unit cost)

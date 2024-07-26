@@ -1,8 +1,0 @@
-(drive-truck object_3 object_5 object_6 object_1)
-(load-truck object_9 object_3 object_6)
-(drive-truck object_3 object_6 object_5 object_1)
-(unload-truck object_9 object_3 object_5)
-(load-airplane object_9 object_0 object_5)
-(fly-airplane object_0 object_5 object_7)
-(unload-airplane object_9 object_0 object_7)
-; cost = 7 (unit cost)
