@@ -2,6 +2,7 @@ import os
 from tarski.io import PDDLReader
 from argparse import ArgumentParser
 from utils.paths import DATA_DIR
+from collections import defaultdict
 
 """
 Script to generate an overview over the number of objects, plan lengths, goals facts and size of initial states of the problem instances
@@ -9,38 +10,44 @@ Script to generate an overview over the number of objects, plan lengths, goals f
 
 def get_analysis_instances(domain_file, instance_dir, gold_plan_dir) -> dict:
 
-    n_problems = 0
-    plan_lengths = []
-    n_objects = []
-    n_goal_facts = []
-    n_initial_facts = []
+    instance_data = defaultdict(dict)
 
     for file in os.listdir(instance_dir):
-        # number of problems
-        n_problems += 1 if os.path.isfile(os.path.join(instance_dir, file)) else 0
 
-        # plan_length: max, min, average
+        # plan_length
         instance_name = '.'.join(file.split('.')[:-1])
+        instance_id = int(instance_name.replace('instance-', ''))
         gold_plan = get_gold_plan(gold_plan_dir, instance_name)
-        plan_lengths.append(len(gold_plan))
-        if len(gold_plan) > 20:
-            print(f'{domain_file} {file}')
+        gold_plan_length = len(gold_plan)
+        instance_data[instance_id]['plan_length'] = gold_plan_length
 
         problem = get_problem(os.path.join(instance_dir, file),
                               domain_file)
-        # number of objects, max, min, average
+        # number of objects
         objects = list(problem.language.constants())
-        n_objects.append(len(objects))
+        instance_data[instance_id]['n_objects'] = len(objects)
 
-        # number of goal facts: max, min, average
+        # number of goal facts
         try:
             facts_goal_state = list(problem.goal.subformulas)
         except AttributeError:
             facts_goal_state = [problem.goal]
-        n_goal_facts.append(len(facts_goal_state))
+        instance_data[instance_id]['n_goal_facts'] = len(facts_goal_state)
 
         initial_facts = list(problem.init.as_atoms())
-        n_initial_facts.append(len(initial_facts))
+        instance_data[instance_id]['n_initial_facts'] = len(initial_facts)
+
+    return instance_data
+
+
+def get_analysis_overall_instances(domain_file, instance_dir, gold_plan_dir) -> dict:
+
+    instance_data = get_analysis_instances(domain_file, instance_dir, gold_plan_dir)
+    plan_lengths = [inst['plan_length'] for inst in instance_data.values()]
+    n_objects = [inst['n_objects'] for inst in instance_data.values()]
+    n_goal_facts = [inst['n_goal_facts'] for inst in instance_data.values()]
+    n_initial_facts = [inst['n_initial_facts'] for inst in instance_data.values()]
+    n_problems = len(instance_data.keys())
 
     plan_len_min = min(plan_lengths)
     plan_len_max = max(plan_lengths)
@@ -123,7 +130,7 @@ def get_analysis_domains(data_dir: str, output_file: str):
         gold_dir = os.path.join(data_dir, domain, 'gold_plans')
 
         try:
-            info_domain_instances = get_analysis_instances(domain_file=domain_file,
+            info_domain_instances = get_analysis_overall_instances(domain_file=domain_file,
                                                            instance_dir=instance_dir,
                                                            gold_plan_dir=gold_dir)
             if len(info_domain_instances.keys()) == 0:
@@ -138,9 +145,9 @@ def get_analysis_domains(data_dir: str, output_file: str):
     domains = list(domains_data.keys())
     domains.sort()
     ordered_columns = list(domains_data[domains[0]].keys())
-    ordered_columns.sort()
     # make sure 'domain' is the first column
     ordered_columns.remove('domain')
+    ordered_columns.sort()
     ordered_columns = ['domain'] + ordered_columns
 
     with open(output_file, 'w') as f:

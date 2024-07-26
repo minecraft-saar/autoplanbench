@@ -19,6 +19,7 @@ class PDDLGameThoughts(PDDLPlanningGame):
                  subgoal_feedback: bool = False,
                  provide_state: bool = False,
                  not_finished_feedback: bool = False,
+                 assert_cache: bool = False,
                  log_history: bool = False,
                  by_action: bool = False,
                  planning_approach: Union[str, None] = None
@@ -34,7 +35,8 @@ class PDDLGameThoughts(PDDLPlanningGame):
                          negative_feedback=negative_feedback, subgoal_feedback=subgoal_feedback,
                          provide_state=provide_state, not_finished_feedback=not_finished_feedback,
                          log_history=log_history, by_action=by_action,
-                         planning_approach=planning_approach)
+                         planning_approach=planning_approach,
+                         assert_cache=assert_cache)
 
 
     def get_next_instruction(self, debug=False, instr='') -> Tuple[bool, bool]:
@@ -99,11 +101,8 @@ class PDDLGameThoughts(PDDLPlanningGame):
 
         return self.is_completed, False
 
-    def run_instructions_all_complete(self, attempts: int):
+    def run_instructions_all_complete(self, attempts: int, batching: bool = False):
 
-        attempt = 0
-        reached_goal = False
-        reached_goal_any_time = False
         success = False
         executable = False
         failing_step = None
@@ -113,7 +112,8 @@ class PDDLGameThoughts(PDDLPlanningGame):
         if attempts > 1:
             assert self.llm_plan.model.max_history > 0
 
-        while attempt < attempts:
+        for attempt in range(attempts):
+            print(f'___________ {attempt} ---------------')
             if attempt == 0:
                 # generate initial state description
                 self.observation = self.get_description_current_state()
@@ -134,7 +134,10 @@ class PDDLGameThoughts(PDDLPlanningGame):
                 self.observation = replanning_prompt
 
             # pass as input to planning model
-            plan = self.llm_plan.generate(self.observation)
+            plan = self.llm_plan.generate(self.observation, assert_cache=True)
+            if batching:
+                return self.llm_plan
+
             print(f'$Model: {plan} Model$')
             self.write_log(plan, 'plan_model')
 
@@ -165,37 +168,26 @@ class PDDLGameThoughts(PDDLPlanningGame):
             print(f'$Translated: {translated_steps} Translated$')
             self.write_log(translated_steps, 'translate_model')
 
-            # try to execute translated plan step by step
-            for t_ind, t_step in enumerate(translated_steps):
-                observations, executable = self.try_execution(translation_output_list = [t_step],
-                                                              current_world_state='')
-                if executable and self.check_goal_completion():
-                    reached_goal_any_time = True
-                elif not executable:
-                    failing_step = t_ind
-                    failed_action = t_step
-                    failing_message = observations[0]
-                    break
+            reached_goal_any_time, step_reached_goal_first, success, executable, observation = self.process_complete_pred_plan(
+                predicted_plan=only_action_steps,
+                translated_plan=translated_steps)
 
-            if executable and self.check_goal_completion():
-                reached_goal = True
+            self.observation = observation
 
-            success = True if reached_goal else False
-            attempt += 1
+            self.summary_planning['reached_goal'] = reached_goal_any_time
+            self.summary_planning['success'] = success
+            self.summary_planning['executable'] = executable
+            self.summary_planning['n_steps'] = attempt + 1
+            self.summary_planning['step_reached_goal_first'] = step_reached_goal_first
 
-            if reached_goal:
+            if success:
                 break
 
-        summary = {'success': success,
-                   'reached_goal': reached_goal_any_time,
-                   'executable': executable,
-                   'attempts': attempt}
+            # else the environment needs to be reset to the initial world state
+            self.env = self.create_world_env(self.env_config)
+            self.reset_summary_planning()
+            self.summary_planning['n_steps'] = attempt + 1
 
-        for key, value in self.subgoals.items():
-            summary[key] = value
+        return success
 
-        with open(self.log, 'a') as log:
-            json.dump(summary, log)
-
-        return reached_goal
 

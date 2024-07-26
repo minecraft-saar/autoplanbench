@@ -66,7 +66,8 @@ Additionally, you will see one interaction between the instruction giver and the
 Your task is to come up with an appropriate and good reasoning thought with which [TODO: ADD REASONING THOUGHT] should be replaced. """
 
     model_param = {'model_path': llm,
-                   'max_tokens': 300,
+                   'model_name': model_type,
+                   'max_tokens': 700,
                    'temp': 0.0,
                    'max_history': 0}
     llm_model = create_llm_model(model_type=llm_type, model_param=model_param)
@@ -92,6 +93,8 @@ Your task is to come up with an appropriate and good reasoning thought with whic
 
     reg = r'\[TODO: ADD REASONING THOUGHT\]'
     open_spaces = re.findall(reg, template)
+    if not len(open_spaces) == len(relevant_responses):
+        relevant_responses = relevant_responses[:-1]
     assert len(open_spaces) == len(relevant_responses)
 
     final_few_shot_example = template

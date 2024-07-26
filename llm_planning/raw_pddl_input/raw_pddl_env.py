@@ -2,11 +2,13 @@ import json
 import os
 import random
 import re
+from pathlib import Path
 from typing import Tuple, List, Dict, Union
 from collections import defaultdict
 from tarski.io import PDDLReader
 from tarski.syntax import Atom, CompoundFormula
 import atexit
+from utils.paths import TEMP_DIR
 
 
 class RawPDDLEnvironment:
@@ -16,16 +18,19 @@ class RawPDDLEnvironment:
         self.domain_file = domain_file
         self.instance_file = instance_file
 
+        Path(TEMP_DIR).mkdir(exist_ok=True)
 
         while True:
             self.tmp_file_int = random.randint(0, 1000)
             if not os.path.exists(f'./tmp_action_{self.tmp_file_int}'):
                 break
-        self.tmp_instance_file = f'./tmp_instance_{self.tmp_file_int}.pddl'
-        self.tmp_action_file = f'./tmp_action_{self.tmp_file_int}'
+        self.tmp_instance_file = os.path.join(TEMP_DIR, f'tmp_instance_{self.tmp_file_int}.pddl')
+        self.tmp_action_file = os.path.join(TEMP_DIR, f'tmp_action_{self.tmp_file_int}')
 
-        self.lowercase_domain_file = '.'.join(domain_file.split('.')[:-1]) + '_tmp.' + domain_file.split('.')[-1]
-        self.lower_case_instance_file = '.'.join(instance_file.split('.')[:-1]) + '_tmp.' + instance_file.split('.')[-1]
+        domain_file_name = os.path.split(domain_file)[-1]
+        instance_file_name = os.path.split(instance_file)[-1]
+        self.lowercase_domain_file = os.path.join(TEMP_DIR, f'tmp_{domain_file_name}')
+        self.lower_case_instance_file = os.path.join(TEMP_DIR, f'tmp_{instance_file_name}')
         self.problem = self.create_lowercase_problem()
 
         self.actions_pddl: dict = self.get_problem_actions()
@@ -88,6 +93,8 @@ class RawPDDLEnvironment:
             os.remove(self.tmp_action_file)
         if os.path.exists(self.lowercase_domain_file):
             os.remove(self.lowercase_domain_file)
+        if os.path.exists(self.lower_case_instance_file):
+            os.remove(self.lower_case_instance_file)
 
     def process_goal_conditions(self) -> Dict[str, list]:
 
@@ -286,10 +293,10 @@ class RawPDDLEnvironment:
 
 
     def get_feedback_successful(self, action: str) -> str:
-        return 'Action was successfully executed.'
+        return f'The action "{action}" was successfully executed.'
 
     def get_feedback_unsat(self, advice: List[str]) -> str:
-        return 'The action is not applicable in the current state.'
+        return f'The action is not applicable in the current state because {advice}.'
 
     def parse_feedback_unsat(self, advice: List[str]) -> Tuple[str, str, list, list]:
         """

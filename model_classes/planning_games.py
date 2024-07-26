@@ -27,6 +27,7 @@ class PlanningGame(ABC):
                  provide_state: bool,
                  not_finished_feedback: bool,
                  log_history: bool,
+                 assert_cache: bool = False,
                  allow_multi_action: Union[None, bool] = True,
                  planning_approach: Union[str, None] = None
                  ):
@@ -73,6 +74,8 @@ class PlanningGame(ABC):
         self.count_successive_fails = 0
         self.allow_multi_action = allow_multi_action
 
+        self.examples_chat = llm_config['plan'].get('examples_chat', False)
+
         print("Initializing world state")
         self.env_config = env_config
         self.env = self.create_world_env(env_config)
@@ -80,6 +83,7 @@ class PlanningGame(ABC):
         self.log_history = log_history
         self.incremental = incremental
         self.not_finished_feedback = not_finished_feedback
+        self.assert_cache = assert_cache
 
         self.plan_prompt_template = self.create_prompt_template(llm_config['plan'])
         self.translate_prompt_template = self.create_prompt_template(llm_config['translate'])
@@ -105,7 +109,9 @@ class PlanningGame(ABC):
         self.summary_planning = self.reset_summary_planning()
 
         print("Getting LLMs")
+        print('Getting Plan LLM')
         self.llm_plan = self.create_plan_llm(llm_config['plan'])
+        print('Getting Translate LLM')
         self.llm_translate = self.create_trans_llm(llm_config['translate'])
 
 
@@ -196,8 +202,8 @@ class PlanningGame(ABC):
 
 
     # TODO: this is still under construction!!
-    def create_examples_dict_incre(self, llm_config: dict) -> dict:
-
+    def create_examples_dict_incre_chat(self, llm_config: dict) -> dict:
+        print(f'-------WARNING THIS FUNCTION WAS NOT TESTED ENOUGH YET ---------')
         try:
             with open(llm_config['examples_file'], 'r') as ef:
                 examples_dict = json.load(ef)
@@ -274,12 +280,12 @@ class PlanningGame(ABC):
         template_args = self.create_trans_template_args(examples_dict=examples)
         template_args['include_examples'] = include_examples
 
-        if include_examples:
-            if 'example_objs' in examples.keys() and 'objects' in template_args.keys():
-                all_objs = set(examples['example_objs'] + template_args['objects'])
-                all_objs = list(all_objs)
-                all_objs.sort()
-                template_args['objects'] = all_objs
+        #if include_examples:
+        if 'example_objs' in examples.keys() and 'objects' in template_args.keys():
+            all_objs = set(examples['example_objs'] + template_args['objects'])
+            all_objs = list(all_objs)
+            all_objs.sort()
+            template_args['objects'] = all_objs
 
         prompt = self.translate_prompt_template.render(**template_args)
         return prompt
@@ -515,7 +521,7 @@ class PlanningGame(ABC):
         if debug:
             instruction = instr
         else:
-            instruction = self.llm_plan.generate(model_input)
+            instruction = self.llm_plan.generate(model_input, assert_cache=self.assert_cache)
         print(f'$Model: {instruction} Model$')
         self.write_log(instruction, 'plan_model')
 
@@ -524,6 +530,7 @@ class PlanningGame(ABC):
 
         # translate instruction
         if self.translation_neural:
+            print('Translating')
             translation_output = self.llm_translate.generate(instruction)
         else:
             translation_output = self.text_to_plan(text=instruction)
@@ -535,6 +542,7 @@ class PlanningGame(ABC):
         translation_output_list = [tr_out for tr_out in translation_output_list if tr_out]
         assert len(translation_output_list) > 0
 
+        print('Executing')
         observations, _ = self.try_execution(translation_output_list, current_world)
         self.observation = '\n'.join(observations)
         self.write_log(self.observation, 'env_feedback')
@@ -743,7 +751,11 @@ class PlanningGame(ABC):
         return feedback
 
 
-    def run_instructions_all(self, steps: int, break_limit: Union[None, int] = None, break_limit_reached_goal: Union[None, int]=None, directory: str = '') -> bool:
+    def run_instructions_all(self,
+                             steps: int,
+                             break_limit: Union[None, int] = None,
+                             break_limit_reached_goal: Union[None, int]=None,
+                             directory: str = '') -> bool:
         """
 
         :return:
@@ -842,8 +854,7 @@ class PlanningGame(ABC):
     def text_to_plan(self, text: str) -> str:
         pass
 
-    def run_instructions_all_complete(self, attempts: int):
-
+    def run_instructions_all_complete(self, attempts: int, batching: bool = False):
         success = False
 
         if attempts > 1:
@@ -857,7 +868,10 @@ class PlanningGame(ABC):
                 self.write_log(self.observation, 'auto_state')
 
             # pass as input to planning model
-            plan = self.llm_plan.generate(self.observation)
+            plan = self.llm_plan.generate(self.observation, assert_cache=self.assert_cache)
+            if batching:
+                return self.llm_plan
+
             print(f'$Model: {plan} Model$')
             self.write_log(plan, 'plan_model')
 
@@ -952,6 +966,11 @@ class PlanningGame(ABC):
         first_auto_state_found = False
         translate_prompt = None
         plan_prompt = None
+
+        # TODO
+        if self.examples_chat:
+            raise NotImplementedError
+
         with open(log_file, 'r') as log:
             for line in log:
                 line_log = json.loads(line)

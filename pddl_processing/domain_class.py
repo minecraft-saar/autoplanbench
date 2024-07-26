@@ -1,10 +1,12 @@
+import os
 import re
+import atexit
 from typing import Dict, List, Tuple, Union
 from collections import OrderedDict, defaultdict
 from tarski.io import PDDLReader
 from tarski.fstrips import Action, AddEffect, DelEffect
 from tarski.syntax import Atom, CompoundFormula, VariableBinding, Variable, Constant, Predicate
-
+from utils.paths import TEMP_DIR
 
 class Domain:
 
@@ -41,8 +43,9 @@ class Domain:
         :param domain_file:
         """
 
+        self.lower_cased_domain_file = self.create_lowercase_domain(domain_file=domain_file)
         self.reader = PDDLReader(raise_on_error=True)
-        self.reader.parse_domain(domain_file)
+        self.reader.parse_domain(self.lower_cased_domain_file)
         self.problem = self.reader.problem
 
         self.predicates: Dict[str, OrderedDict] = self.parse_ordered_predicates(domain_file=domain_file)
@@ -51,6 +54,21 @@ class Domain:
         self.actions: Dict[str, dict] = self.parse_actions()
         self.domain_annotation, self.action_annotations = self.parse_action_annotations(domain_file=domain_file)
 
+        atexit.register(self.remove_temp_file)
+
+    def remove_temp_file(self):
+        if os.path.exists(self.lower_cased_domain_file):
+            os.remove(self.lower_cased_domain_file)
+
+    def create_lowercase_domain(self, domain_file):
+        domain_file_name = os.path.split(domain_file)[-1]
+        lowercase_domain_file = os.path.join(TEMP_DIR, f'tmp_{domain_file_name}')
+        with open(lowercase_domain_file, 'w') as new:
+            with open(domain_file, 'r') as orig:
+                orig_text = orig.read()
+                new_text = orig_text.lower()
+                new.write(new_text)
+        return lowercase_domain_file
 
     def parse_ordered_predicates(self, domain_file) -> Dict[str, OrderedDict]:
 

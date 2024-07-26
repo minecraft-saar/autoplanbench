@@ -26,6 +26,7 @@ if __name__=='__main__':
     parser.add_argument('--br-ni', required=False, default=1, help='Break limit for noninteractive approaches; defaults to 1')
     parser.add_argument('--enc', required=False, default='automatic')
     parser.add_argument('--dd', required=False, help='Path to the directory with the data; defaults to utils.paths.DATA_DIR')
+    parser.add_argument('--conf', required=False, default=True)
 
     args = parser.parse_args()
 
@@ -47,7 +48,8 @@ if __name__=='__main__':
          'max_steps_inter': ms_i,
          'break_inter': br_i,
          'max_steps_non_inter': ms_ni,
-         'break_non_inter': br_ni}
+         'break_non_inter': br_ni,
+         'configs': args.conf}
 
     if args.enc:
         d['encoding'] = args.enc

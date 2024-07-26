@@ -49,14 +49,6 @@ class OpenAIChatModel(LLMModel):
         self.role_user = "user"
         self.role_assistant = "assistant"
 
-    def update_init_prompt(self, new_init_prompt: str):
-        # need to adapt self.initial_prompt, self.history and self.initial_history
-        self.initial_prompt = new_init_prompt
-        self.initial_history[0]["content"] = new_init_prompt
-        self.history = self.initial_history.copy()
-        self.full_history_w_source.append({"role": "Warning: Updated init prompt",
-                                           "content": "Warning: Updated init prompt"})
-
     def add_examples(self, examples: List[dict]) -> None:
         """
         Add the examples from the input list to the dialogue history
@@ -76,21 +68,6 @@ class OpenAIChatModel(LLMModel):
             self.history.append({"role": role, "content": content})
             self.full_history_w_source.append({"role": role, "content": content, "source": "initial_input"})
         self.initial_history = self.history.copy()
-
-    def get_history(self) -> List[dict]:
-        return self.history
-
-    def get_initial_history(self) -> List[dict]:
-        return self.initial_history
-
-    def reset_history(self):
-        self.history = self.initial_history.copy()
-
-    def update_history(self, new_history: List[dict]):
-        self.history = new_history.copy()
-        self.full_history_w_source.append({"role": "Warning: Updated history",
-                                           "content": "Warning: Updated history"})
-        self.full_history_w_source.extend(new_history)
 
     def _generate(self, prompt: str):
 
