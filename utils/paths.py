@@ -6,7 +6,6 @@ PROJ_DIR = Path(__file__).resolve().parent.parent
 
 CACHE_DIR = PROJ_DIR / Path('llm_caches')
 DATA_DIR = PROJ_DIR / Path('data')
-PLANBENCH_DATA_DIR = DATA_DIR / Path('data_planbench')
 CONFIG_DIR = PROJ_DIR / Path('configs')
 OUTPUT_DIR = PROJ_DIR / Path('output_files')
 EVALUATION_RES_DIR = PROJ_DIR / Path('evaluation_results')
@@ -16,6 +15,7 @@ DOMAIN_DESCRIPTION_TEMPLATE = PROJ_DIR / Path('utils') / Path('template_domain_d
 ORIG_INST_FOLDER = 'orig_problems'
 INST_FOLDER = 'adapted_instances'
 GOLD_PLAN_FOLDER = 'gold_plans'
+ORIG_GOLD_PLAN_FOLDER= 'orig_gold_plans'
 TEMP_DIR = PROJ_DIR / Path('temp_files')
 
 APPROACHES = ['basic', 'act', 'react', 'cot', 'act_pddl', 'basic_pddl']

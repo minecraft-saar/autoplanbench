@@ -116,10 +116,10 @@ This will run the same experiments as reported in the paper with the same parame
 
 </details>
 
-**Generate only domain descriptions**<br>
+**Generate only domain descriptions and translation examples**<br>
 Set `-n 0` in the command from above
 
-**Generate adapted instances, gold plans and translation examples based on existing domain description**<br>
+**Generate adapted instances, gold plans and adapted gold plans based on existing domain description**<br>
 `python run_instance_setup.py -o [out_dir]`
 
 <details>
@@ -130,6 +130,13 @@ Set `-n 0` in the command from above
 * `--nl`: Path to the file with the created NL descriptions. Defaults to domain_description.json in the folder specified by -o
 
 </details>
+
+**Notes on generated files** <br>
+Running `run_instance_setup.py` or `run_domain_setup.py` (without -n 0) will create the following files and directories:
+* adapted_instances: directory with the instances from orig_instances but with different object_names (e.g. 'a' becomes 'object_0' or becomes 'truck_0', etc.)
+* orig_gold_plans: directory with plans generated for the original instances
+* gold_plans: directory with plans with the adapted object names
+* instance_object_mappings.json: json file with the mappings from original object names to adapted object names for all instances
 
 ### 2. Generate planning few-shot examples and configurations
 
@@ -147,6 +154,8 @@ In order to generate the few-shot example files and configuration files for all 
    
    <summary>Additional optional arguments:</summary>
    
+* `--configs`: whether the config files should be generated (or only few-shot examples); defaults to True
+* `--dd`: name of the subdirectory with the data, i.e. where a directory with the domain name is located; defaults to utils.paths.DATA_DIR / [domain_name]; if set to [sub_dir_name] then the data to use should be utils.paths.DATA_DIR / [sub_dir_name] / [domain_name]
 * `--thoughts`: Whether thoughts should be generated for react and cot examples. Otherwise only templates with placeholders for the thoughts are generated. Defaults to True
 * `--rl`: Number of steps in the ReAct example. If not set or set to None then the specified example is not shortened. Otherwise the ReAct and CoT few-shot example is shortened to the last --rl steps. 
 * `--react-exd`: Path to the file with the nl description of the example domain. Defaults to utils.paths.THOUGHT_GEN_EXAMPLE_DOMAIN
@@ -156,7 +165,7 @@ In order to generate the few-shot example files and configuration files for all 
 * `--ms-ni`: Max number of steps the planning LLM is allowed to predict in the non-interactive approaches; defaults to 1
 * `--br-ni`: Break limit for non-interactive approaches, i.e. if br-ni consecutive predictions are not executable then stop; defaults to 1
 * `--enc`: Type of the encoding. Should be 'planbench' if LLM planning is run on the domain encodings from [PlanBench](https://github.com/karthikv792/LLMs-Planning/tree/main/plan-bench). Otherwise should be 'automatic'. Defaults to 'automatic'.
-* `--dd`: Path to the directory with the data; defaults to utils.paths.DATA_DIR
+
 
 </details>
 

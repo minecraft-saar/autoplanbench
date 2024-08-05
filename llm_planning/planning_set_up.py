@@ -115,12 +115,16 @@ def play_games(config, few_shot_path, game_class):
                 continue
 
             except Exception as e:
+                print(f'ERROR when processing task {task_num}')
+                print(f'ERROR: {e} of type {type(e).__name__}')
+
                 game.log_planning_summary()
                 game.log_time_and_token(measured_time=0)
                 with open(game.log, 'a') as log:
                     log.write('\n')
                     json.dump({'Failed': True, 'Error_type': str(type(e)), 'Error_message': str(e)}, log)
                 break
+
 
 
 def create_game(task_num, instance_config, few_shot_path, game_class) -> PDDLPlanningGame:

@@ -6,6 +6,7 @@ from utils.paths import DATA_DIR, get_few_shot_dir, APPROACHES, THOUGHT_GEN_EXAM
 
 proj_dir_path = Path(__file__).resolve().parent.parent
 
+# Fix the DATA_dir, add option to skip configs
 def setup_files_domain(domain_name: str,
                        few_shot_id: int,
                        llm: str,
@@ -57,8 +58,6 @@ def setup_files_domain(domain_name: str,
         create_thought_files(domain_dir=domain_dir, few_shot_id=few_shot_id, llm=llm,
                              example_domain_nl=example_react_nl, example_react=example_react_file)
 
-    # TODO: fix
-    configs = False
     if configs:
         print('Setting up the configs')
         # create configs

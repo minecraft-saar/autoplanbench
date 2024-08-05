@@ -113,7 +113,6 @@ class PDDLGameThoughts(PDDLPlanningGame):
             assert self.llm_plan.model.max_history > 0
 
         for attempt in range(attempts):
-            print(f'___________ {attempt} ---------------')
             if attempt == 0:
                 # generate initial state description
                 self.observation = self.get_description_current_state()

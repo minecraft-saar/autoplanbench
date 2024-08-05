@@ -86,7 +86,7 @@ class PDDLPlanningGame(PlanningGame):
                 effects.extend(self.domain_nl['actions'][action]['effects'])
 
             args = {
-                'task_description': self.task_description,
+                #'task_description': self.task_description,
                 'actions': self.get_possible_actions_plan_task(),
                 'preconditions': preconditions,
                 'effects': effects,
@@ -95,6 +95,7 @@ class PDDLPlanningGame(PlanningGame):
                 'prefixes': examples_dict['prefixes'],
                 'type_hierarchy': self.domain_nl['type_hierarchy']
             }
+
         else:
             action_prec_and_effects = []
             for action in self.domain_nl['actions'].keys():
@@ -106,7 +107,7 @@ class PDDLPlanningGame(PlanningGame):
                 action_prec_and_effects.append('\n'.join(current_action_prec_eff))
 
             args = {
-                'task_description': self.task_description,
+                #'task_description': self.task_description,
                 'actions': self.get_possible_actions_plan_task(),
                 'preconditions_and_effects': action_prec_and_effects,
                 'incremental': self.incremental,
@@ -114,6 +115,9 @@ class PDDLPlanningGame(PlanningGame):
                 'prefixes': examples_dict['prefixes'],
                 'type_hierarchy': self.domain_nl['type_hierarchy']
             }
+
+        if not self.examples_chat:
+            args['task_description'] = self.task_description
 
         return args
 

@@ -70,8 +70,9 @@ def compute_plan(domain_file: str, instance_file: str, plan_file: str, plan_time
 
 
 def create_gold_plan_files(domain_file: str,
-                           instance_dir: str,
-                           plan_dir: str,
+                           orig_plan_dir: str,
+                           adapted_plan_dir: str,
+                           orig_instance_dir: str,
                            plan_timeout: int,
                            new_files_names: list,
                            inst_obj_mappings: dict,
@@ -79,8 +80,9 @@ def create_gold_plan_files(domain_file: str,
     """
     Run fastdownward with A* search to find all plans for the problems in the instance_dir and save them
     :param domain_file: path to the pddl domain file
-    :param instance_dir: path to the directory with the problem instance files
-    :param plan_dir: path to the directory where the files with the gold plans get saved
+    :param orig_instance_dir: path to the directory with the original instance files
+    :param orig_plan_dir: path to the directory with the original plan files (i.e. before adapting object names)
+    :param adapted_plan_dir: path to the directory where the files with the gold plans get saved
     :param plan_timeout: time in seconds after which the planning for a specific problem gets aborted if no plan found so far
     :param new_files_names: names of the files where the object names got adapted
     :param inst_obj_mappings: mappings of the original to adapted object names
@@ -89,23 +91,43 @@ def create_gold_plan_files(domain_file: str,
     """
     generated_plans = []
     kept_plans = []
-    Path(plan_dir).mkdir(exist_ok=True, parents=True)
-    for instance_file in os.listdir(instance_dir):
-        instance_file_path = os.path.join(instance_dir, instance_file)
 
-        plan_file_path = get_plan_file_name(instance_file_name=instance_file,
-                                       plan_dir=plan_dir)
+    # all names of instances for which the object names should be adapted;
+    # this includes all instances that got adapted as well as instances for which new plans were generated
+    inst_to_change_plans = set(new_files_names)
 
-        # if plan already exists and should not be overwritten then skip planning
-        if not overwrite_plans and os.path.exists(plan_file_path):
+    Path(orig_plan_dir).mkdir(exist_ok=True, parents=True)
+    Path(adapted_plan_dir).mkdir(exist_ok=True, parents=True)
+    for instance_file in os.listdir(orig_instance_dir):
+        instance_file_path = os.path.join(orig_instance_dir, instance_file)
+
+        orig_plan_file_path = get_plan_file_name(instance_file_name=instance_file,
+                                       plan_dir=orig_plan_dir)
+        adapted_plan_file_path = get_plan_file_name(instance_file_name=instance_file,
+                                                   plan_dir=adapted_plan_dir)
+
+        # if a plan already exists and should not be overwritten then skip planning
+        if not overwrite_plans and os.path.exists(orig_plan_file_path):
             # if there are already plans available for instances that have not been yet adapted then adapt the plan files accordingly
-            if instance_file in new_files_names:
-                adapt_gold_plan(instance_file=instance_file, inst_obj_mappings=inst_obj_mappings, plan_file_path=plan_file_path)
             kept_plans.append(True)
-        else:
-            plan_created = compute_plan(domain_file=domain_file, instance_file=instance_file_path,
-                                        plan_file=plan_file_path, plan_timeout=plan_timeout)
+
+        # if no plan for the original problem exists yet - or if overwrite is true - then run the planner
+        if overwrite_plans or not os.path.exists(orig_plan_file_path):
+            f'Generating plan for instance {instance_file}...'
+            inst_to_change_plans.add(instance_file)
+            plan_created = compute_plan(domain_file=domain_file,
+                                        instance_file=instance_file_path,
+                                        plan_file=orig_plan_file_path,
+                                        plan_timeout=plan_timeout)
             generated_plans.append(plan_created)
+
+        # For all instances that were adapted in the current run of set_up_instance_files,
+        # adapt the names of the objects of the plans
+        if instance_file in inst_to_change_plans:
+            adapt_gold_plan(instance_file=instance_file,
+                            inst_obj_mappings=inst_obj_mappings,
+                            orig_plan_file_path=orig_plan_file_path,
+                            adapted_plan_file_path=adapted_plan_file_path)
 
     skipped_problems = generated_plans.count(False)
     if skipped_problems > 0:
@@ -128,17 +150,21 @@ def get_plan_file_name(instance_file_name: str, plan_dir):
     return plan_file_path
 
 
-def adapt_gold_plan(instance_file: str, inst_obj_mappings: dict, plan_file_path:str):
+def adapt_gold_plan(instance_file: str,
+                    inst_obj_mappings: dict,
+                    orig_plan_file_path:str,
+                    adapted_plan_file_path: str):
     """
 
     :param instance_file:
     :param inst_obj_mappings:
-    :param plan_file_path:
+    :param orig_plan_file_path:
+    :param adapted_plan_file_path:
     :return:
     """
     obj_mappings = inst_obj_mappings[instance_file]
 
-    with open(plan_file_path, 'r') as pf:
+    with open(orig_plan_file_path, 'r') as pf:
         actions = []
         for line in pf.readlines():
             actions.append(line.strip())
@@ -163,7 +189,7 @@ def adapt_gold_plan(instance_file: str, inst_obj_mappings: dict, plan_file_path:
                 new_action = f'({action_name} {new_action_args})'
                 actions_adapted.append(new_action)
 
-    with open(plan_file_path, 'w') as pf:
+    with open(adapted_plan_file_path, 'w') as pf:
         for ac in actions_adapted:
             pf.write(f'{ac}\n')
 

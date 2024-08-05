@@ -510,6 +510,8 @@ class PlanningGame(ABC):
         if self.observation == '':
             # generate initial state description
             self.observation = self.get_description_current_state()
+            if self.examples_chat:
+                self.observation = f'{self.env.get_description_goal_state()}\n{self.observation}'
             print(f'$SWorld: {self.observation} SWorld$')
             self.write_log(self.observation, 'auto_state')
 
@@ -864,6 +866,8 @@ class PlanningGame(ABC):
             if attempt == 0:
                 # generate initial state description
                 self.observation = self.get_description_current_state()
+                if self.examples_chat:
+                    self.observation = f'{self.env.get_description_goal_state()}\n{self.observation}'
                 print(f'$SWorld: {self.observation} SWorld$')
                 self.write_log(self.observation, 'auto_state')
 
