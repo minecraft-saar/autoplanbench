@@ -21,7 +21,7 @@ class RawPDDLEnvironment:
         Path(TEMP_DIR).mkdir(exist_ok=True)
 
         while True:
-            self.tmp_file_int = random.randint(0, 1000)
+            self.tmp_file_int = random.randint(0, 10000)
             if not os.path.exists(f'./tmp_action_{self.tmp_file_int}'):
                 break
         self.tmp_instance_file = os.path.join(TEMP_DIR, f'tmp_instance_{self.tmp_file_int}.pddl')
@@ -29,8 +29,8 @@ class RawPDDLEnvironment:
 
         domain_file_name = os.path.split(domain_file)[-1]
         instance_file_name = os.path.split(instance_file)[-1]
-        self.lowercase_domain_file = os.path.join(TEMP_DIR, f'tmp_{domain_file_name}')
-        self.lower_case_instance_file = os.path.join(TEMP_DIR, f'tmp_{instance_file_name}')
+        self.lowercase_domain_file = os.path.join(TEMP_DIR, f'tmp_{self.tmp_file_int}_{domain_file_name}')
+        self.lower_case_instance_file = os.path.join(TEMP_DIR, f'tmp_{self.tmp_file_int}_{instance_file_name}')
         self.problem = self.create_lowercase_problem()
 
         self.actions_pddl: dict = self.get_problem_actions()
