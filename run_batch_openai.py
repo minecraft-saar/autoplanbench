@@ -9,7 +9,7 @@ set_env_vars()
 openai.api_key = os.environ['OPENAI_API_KEY']
 
 
-if __name__=='__main__':
+if __name__ ==' __main__':
 
     parser = ArgumentParser()
     # Option for creating batch request
