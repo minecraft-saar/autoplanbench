@@ -2,8 +2,6 @@ import json
 import os.path
 from pathlib import Path
 from typing import Union, Tuple
-import logging
-from pythonjsonlogger import jsonlogger
 from pddl_processing.PDDL_describer import PDDLDescriber
 from pddl_processing.adapt_instances import adapt_instance_files
 from pddl_processing.create_translation_examples import create_translation_examples
@@ -88,7 +86,7 @@ def setup_pddl_domain(domain_file: str,
         print('Translation few-shot examples were already available and not created again.')
 
 
-
+# TODO: add option not to get any plan
 def set_up_instance_files(domain_file: str,
                          orig_instances_dir: str,
                          output_dir: str,
@@ -129,12 +127,18 @@ def set_up_instance_files(domain_file: str,
 
     # get gold plans for adapted instances
     print(f'---- Creating Gold Plans ----')
-    gold_plan_dir = os.path.join(output_dir, 'gold_plans')
+    orig_gold_plan_dir = os.path.join(output_dir, 'orig_gold_plans')
+    adapted_gold_plan_dir = os.path.join(output_dir, 'gold_plans')
 
     # create the gold plans for new instances for which no plan is available yet
-    create_gold_plan_files(domain_file=domain_file, instance_dir=new_inst_dir, plan_dir=gold_plan_dir,
-                           plan_timeout=plan_timeout, new_files_names=adapted_file_names,
-                           inst_obj_mappings=instances_object_mappings, overwrite_plans=overwrite)
+    create_gold_plan_files(domain_file=domain_file,
+                           orig_plan_dir=orig_gold_plan_dir,
+                           adapted_plan_dir=adapted_gold_plan_dir,
+                           orig_instance_dir=orig_instances_dir,
+                           plan_timeout=plan_timeout,
+                           new_files_names=adapted_file_names,
+                           inst_obj_mappings=instances_object_mappings,
+                           overwrite_plans=overwrite)
 
 
     print(f'---- Selecting Instance Files ----')
@@ -143,7 +147,7 @@ def set_up_instance_files(domain_file: str,
         len_constraint = list(len_constraint)
     select_problems(n_instances=n_instances,
                     problem_dir=new_inst_dir,
-                    gold_plan_dir=gold_plan_dir,
+                    gold_plan_dir=adapted_gold_plan_dir,
                     not_selected_problem_dir=not_matching_instance_dir,
                     len_constraint=len_constraint,
                     reselect=reselect)
