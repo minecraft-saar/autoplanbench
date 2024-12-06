@@ -21,6 +21,7 @@ class PDDLPlanningGame(PlanningGame):
                  subgoal_feedback: bool = False,
                  provide_state: bool = False,
                  not_finished_feedback: bool = False,
+                 assert_cache: bool = False,
                  log_history: bool = False,
                  by_action: bool = False,
                  planning_approach: Union[str, None] = None
@@ -35,7 +36,8 @@ class PDDLPlanningGame(PlanningGame):
                          incremental=incremental, positive_feedback=positive_feedback,
                          negative_feedback=negative_feedback, subgoal_feedback=subgoal_feedback,
                          provide_state=provide_state, not_finished_feedback=not_finished_feedback,
-                         log_history=log_history, planning_approach=planning_approach)
+                         log_history=log_history, planning_approach=planning_approach,
+                         assert_cache=assert_cache)
 
         self.metadata['by_action'] = by_action
 
@@ -59,16 +61,13 @@ class PDDLPlanningGame(PlanningGame):
         :param plan_llm_config:
         :return:
         """
-        if plan_llm_config.get('task_description', None):
-            self.task_description = plan_llm_config['task_description']
-        else:
-            self.task_description = self.env.get_description_goal_state()
-
-        if self.incremental:
-            examples_dict = self.create_examples_dict_incre(llm_config=plan_llm_config)
+        self.task_description = self.env.get_description_goal_state()
+        examples_in_prompt = not plan_llm_config.get('examples_chat', False)
+        if self.incremental and not examples_in_prompt:
+            examples_dict = self.create_examples_dict_incre_chat(llm_config=plan_llm_config)
         else:
             examples_dict = self.create_examples_dict(llm_config=plan_llm_config)
-        examples_in_prompt = not plan_llm_config.get('examples_chat', False)
+
         initial_prompt = self.create_plan_task_prompt(include_examples=examples_in_prompt,
                                                       examples_dict=examples_dict)
         model = PlanningModelBlocksWorld(model_type=plan_llm_config['model_name'],
@@ -87,7 +86,7 @@ class PDDLPlanningGame(PlanningGame):
                 effects.extend(self.domain_nl['actions'][action]['effects'])
 
             args = {
-                'task_description': self.task_description,
+                #'task_description': self.task_description,
                 'actions': self.get_possible_actions_plan_task(),
                 'preconditions': preconditions,
                 'effects': effects,
@@ -96,6 +95,7 @@ class PDDLPlanningGame(PlanningGame):
                 'prefixes': examples_dict['prefixes'],
                 'type_hierarchy': self.domain_nl['type_hierarchy']
             }
+
         else:
             action_prec_and_effects = []
             for action in self.domain_nl['actions'].keys():
@@ -107,7 +107,7 @@ class PDDLPlanningGame(PlanningGame):
                 action_prec_and_effects.append('\n'.join(current_action_prec_eff))
 
             args = {
-                'task_description': self.task_description,
+                #'task_description': self.task_description,
                 'actions': self.get_possible_actions_plan_task(),
                 'preconditions_and_effects': action_prec_and_effects,
                 'incremental': self.incremental,
@@ -115,6 +115,9 @@ class PDDLPlanningGame(PlanningGame):
                 'prefixes': examples_dict['prefixes'],
                 'type_hierarchy': self.domain_nl['type_hierarchy']
             }
+
+        if not self.examples_chat:
+            args['task_description'] = self.task_description
 
         return args
 
@@ -304,11 +307,9 @@ class PDDLPlanningGame(PlanningGame):
         missing_precond_conj = ' and '.join(missing_preconditions_nl)
         feedback = f'This plan does not work. \nI cannot execute your instruction "{failed_action}" in step {failed_step} because {missing_precond_conj}'
 
-        _, _, _, _, advice_precond = self.env.parse_val_output(self.env.last_val_response)
-        feedback_type, failed_action, should_be_true, should_be_false = self.env.parse_feedback_unsat(advice=advice_precond)
-        assert feedback_type == 'precondition'
-
-
+        #_, _, _, _, advice_precond = self.env.parse_val_output(self.env.last_val_response)
+        #feedback_type, failed_action, should_be_true, should_be_false = self.env.parse_feedback_unsat(advice=advice_precond)
+        #assert feedback_type == 'precondition'
 
         feedback += '\nPlease provide a corrected plan.'
 

@@ -74,14 +74,18 @@ class LLMModel(ABC):
         """
         pass
 
-    @abstractmethod
     def update_init_prompt(self, new_init_prompt: str):
         """
         update the initial prompt, including the initial prompt in the dialogue history
         :param new_init_prompt: new initial prompt
         :return:
         """
-        pass
+        # need to adapt self.initial_prompt, self.history and self.initial_history
+        self.initial_prompt = new_init_prompt
+        self.initial_history[0]["content"] = new_init_prompt
+        self.history = self.initial_history.copy()
+        self.full_history_w_source.append({"role": "Warning: Updated init prompt",
+                                           "content": "Warning: Updated init prompt"})
 
     @abstractmethod
     def add_examples(self, examples: List[dict]) -> None:
@@ -93,40 +97,39 @@ class LLMModel(ABC):
         """
         pass
 
-    @abstractmethod
     def get_history(self) -> List[dict]:
         """
         Returns the current dialogue history in the following format:
         [{"role": "system", "content": initial_prompt}, {"role": role, "content": content}, ...]
         :return:
         """
-        pass
+        return self.history
 
-    @abstractmethod
     def get_initial_history(self) -> List[dict]:
         """
         Returns the initial history, i.e. system prompt + few-shot examples, in the following format:
         [{"role": "system", "content": initial_prompt}, {"role": role, "content": content}, ...]
         :return:
         """
-        pass
+        return self.initial_history
 
-    @abstractmethod
     def reset_history(self):
         """
         Resets the dialogue history to initial history
         :return:
         """
-        pass
+        self.history = self.initial_history.copy()
 
-    @abstractmethod
     def update_history(self, new_history: List[dict]):
         """
         Resets the dialogue history to new_history
         :param new_history:
         :return:
         """
-        pass
+        self.history = new_history.copy()
+        self.full_history_w_source.append({"role": "Warning: Updated history",
+                                           "content": "Warning: Updated history"})
+        self.full_history_w_source.extend(new_history)
 
     def get_initial_prompt(self) -> str:
         """
@@ -135,7 +138,7 @@ class LLMModel(ABC):
         """
         return self.initial_prompt
 
-    def generate(self, user_message: str) -> str:
+    def generate(self, user_message: str, assert_cache: bool = False) -> str:
         """
         Takes care of
         - adding the user_message to the dialogue history
@@ -150,6 +153,10 @@ class LLMModel(ABC):
         if self.temp == 0 and self.cache:
             cache_query = self.create_cache_query(prompt=prompt)
             with Cache(directory=self.cache) as cache:
+                if assert_cache:
+                    if not cache_query in cache:
+                        print(cache_query)
+                    assert cache_query in cache
                 if cache_query in cache:
                     print('Retrieved from cache')
                     response = cache[cache_query]

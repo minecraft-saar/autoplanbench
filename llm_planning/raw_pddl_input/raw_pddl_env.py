@@ -2,11 +2,13 @@ import json
 import os
 import random
 import re
+from pathlib import Path
 from typing import Tuple, List, Dict, Union
 from collections import defaultdict
 from tarski.io import PDDLReader
 from tarski.syntax import Atom, CompoundFormula
 import atexit
+from utils.paths import TEMP_DIR
 
 
 class RawPDDLEnvironment:
@@ -16,16 +18,19 @@ class RawPDDLEnvironment:
         self.domain_file = domain_file
         self.instance_file = instance_file
 
+        Path(TEMP_DIR).mkdir(exist_ok=True)
 
         while True:
-            self.tmp_file_int = random.randint(0, 1000)
+            self.tmp_file_int = random.randint(0, 10000)
             if not os.path.exists(f'./tmp_action_{self.tmp_file_int}'):
                 break
-        self.tmp_instance_file = f'./tmp_instance_{self.tmp_file_int}.pddl'
-        self.tmp_action_file = f'./tmp_action_{self.tmp_file_int}'
+        self.tmp_instance_file = os.path.join(TEMP_DIR, f'tmp_instance_{self.tmp_file_int}.pddl')
+        self.tmp_action_file = os.path.join(TEMP_DIR, f'tmp_action_{self.tmp_file_int}')
 
-        self.lowercase_domain_file = '.'.join(domain_file.split('.')[:-1]) + '_tmp.' + domain_file.split('.')[-1]
-        self.lower_case_instance_file = '.'.join(instance_file.split('.')[:-1]) + '_tmp.' + instance_file.split('.')[-1]
+        domain_file_name = os.path.split(domain_file)[-1]
+        instance_file_name = os.path.split(instance_file)[-1]
+        self.lowercase_domain_file = os.path.join(TEMP_DIR, f'tmp_{self.tmp_file_int}_{domain_file_name}')
+        self.lower_case_instance_file = os.path.join(TEMP_DIR, f'tmp_{self.tmp_file_int}_{instance_file_name}')
         self.problem = self.create_lowercase_problem()
 
         self.actions_pddl: dict = self.get_problem_actions()
@@ -88,6 +93,8 @@ class RawPDDLEnvironment:
             os.remove(self.tmp_action_file)
         if os.path.exists(self.lowercase_domain_file):
             os.remove(self.lowercase_domain_file)
+        if os.path.exists(self.lower_case_instance_file):
+            os.remove(self.lower_case_instance_file)
 
     def process_goal_conditions(self) -> Dict[str, list]:
 
@@ -249,6 +256,11 @@ class RawPDDLEnvironment:
         if checked_action != action_instr:
             return checked_action, False, self.completed
 
+        if len(self.problem.language.sorts) > 1:
+            type_checked_action = self.check_type_constraints(action_instr=action_instr)
+            if type_checked_action != action_instr:
+                return type_checked_action, False, self.completed
+
         # ----- Everything that can be done with VAL ----- #
 
         # need to write it into a temporary file as a unary plan
@@ -286,10 +298,10 @@ class RawPDDLEnvironment:
 
 
     def get_feedback_successful(self, action: str) -> str:
-        return 'Action was successfully executed.'
+        return f'The action "{action}" was successfully executed.'
 
     def get_feedback_unsat(self, advice: List[str]) -> str:
-        return 'The action is not applicable in the current state.'
+        return f'The action is not applicable in the current state because {advice}.'
 
     def parse_feedback_unsat(self, advice: List[str]) -> Tuple[str, str, list, list]:
         """
@@ -497,4 +509,40 @@ class RawPDDLEnvironment:
 
     def get_description_goal_state(self):
         return self.goal_descript
+
+    def check_type_constraints(self, action_instr: str):
+        pred_action_name, pred_objects = self.parse_pddl_tuple(action_instr, decode=False)
+        type_problems = []
+
+        action_arg_types = self.problem.actions[pred_action_name].sort()
+        predicted_arg_types = []
+        predicted_obj_names = []
+        constants_with_types = self.problem.language.constants()
+        for pr_o in pred_objects:
+            ordered_constants_names = [cons.name for cons in constants_with_types]
+            #obj_ind = constants_with_types.index(pr_o)
+            obj_ind = ordered_constants_names.index(pr_o)
+            constant = constants_with_types[obj_ind]
+            predicted_arg_types.append(constant.sort)
+            predicted_obj_names.append(constant.name)
+
+        for arg_ind, (gold_type, pred_type) in enumerate(zip(action_arg_types, predicted_arg_types)):
+            correct_type = False
+            if gold_type == pred_type:
+                correct_type = True
+            else:
+                type_hierarchy = self.problem.language.ancestor_sorts   # dict with key for each type, value is set of all ancestor sorts
+                super_types = type_hierarchy[pred_type]
+                if gold_type in super_types:
+                    correct_type = True
+
+            if not correct_type:
+                type_problems.append(f'{predicted_obj_names[arg_ind]} is a {pred_type}')
+
+        if type_problems:
+            feedback = f'The action is not applicable because '
+            feedback += ' and '.join(type_problems)
+            return feedback
+        else:
+            return action_instr
 

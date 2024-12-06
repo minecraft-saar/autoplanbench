@@ -22,6 +22,7 @@ Readme:
     * [Generating planning few-shot examples and configurations](https://github.com/minecraft-saar/autoplanbench#generating-planning-few-shot-examples)
     * [Running LLM planning](https://github.com/minecraft-saar/autoplanbench#running-llm-planning)
     * [Evaluation](https://github.com/minecraft-saar/autoplanbench#evaluation)
+    * [Using OpenAI's batch API](https://github.com/minecraft-saar/autoplanbench#batching)
 
 ## Requirements
 * `conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia` (cuda is only needed for running LLMs from Huggingface)
@@ -116,10 +117,10 @@ This will run the same experiments as reported in the paper with the same parame
 
 </details>
 
-**Generate only domain descriptions**<br>
+**Generate only domain descriptions and translation examples**<br>
 Set `-n 0` in the command from above
 
-**Generate adapted instances, gold plans and translation examples based on existing domain description**<br>
+**Generate adapted instances, gold plans and adapted gold plans based on existing domain description**<br>
 `python run_instance_setup.py -o [out_dir]`
 
 <details>
@@ -130,6 +131,13 @@ Set `-n 0` in the command from above
 * `--nl`: Path to the file with the created NL descriptions. Defaults to domain_description.json in the folder specified by -o
 
 </details>
+
+**Notes on generated files** <br>
+Running `run_instance_setup.py` or `run_domain_setup.py` (without -n 0) will create the following files and directories:
+* adapted_instances: directory with the instances from orig_instances but with different object_names (e.g. 'a' becomes 'object_0' or becomes 'truck_0', etc.)
+* orig_gold_plans: directory with plans generated for the original instances
+* gold_plans: directory with plans with the adapted object names
+* instance_object_mappings.json: json file with the mappings from original object names to adapted object names for all instances
 
 ### 2. Generate planning few-shot examples and configurations
 
@@ -147,6 +155,8 @@ In order to generate the few-shot example files and configuration files for all 
    
    <summary>Additional optional arguments:</summary>
    
+* `--configs`: whether the config files should be generated (or only few-shot examples); defaults to True
+* `--dd`: name of the subdirectory with the data, i.e. where a directory with the domain name is located; defaults to utils.paths.DATA_DIR / [domain_name]; if set to [sub_dir_name] then the data to use should be utils.paths.DATA_DIR / [sub_dir_name] / [domain_name]
 * `--thoughts`: Whether thoughts should be generated for react and cot examples. Otherwise only templates with placeholders for the thoughts are generated. Defaults to True
 * `--rl`: Number of steps in the ReAct example. If not set or set to None then the specified example is not shortened. Otherwise the ReAct and CoT few-shot example is shortened to the last --rl steps. 
 * `--react-exd`: Path to the file with the nl description of the example domain. Defaults to utils.paths.THOUGHT_GEN_EXAMPLE_DOMAIN
@@ -156,7 +166,7 @@ In order to generate the few-shot example files and configuration files for all 
 * `--ms-ni`: Max number of steps the planning LLM is allowed to predict in the non-interactive approaches; defaults to 1
 * `--br-ni`: Break limit for non-interactive approaches, i.e. if br-ni consecutive predictions are not executable then stop; defaults to 1
 * `--enc`: Type of the encoding. Should be 'planbench' if LLM planning is run on the domain encodings from [PlanBench](https://github.com/karthikv792/LLMs-Planning/tree/main/plan-bench). Otherwise should be 'automatic'. Defaults to 'automatic'.
-* `--dd`: Path to the directory with the data; defaults to utils.paths.DATA_DIR
+
 
 </details>
 
@@ -262,3 +272,27 @@ Note that there is not target initial state (P-LLM) or target NL action (T-LLM) 
 **Note:** the new log file will include everything from the previous log file except for the final information saved at the end of a run (i.e. success, number of tokens etc.). After the last entry (which should be a feedback from the simulator) the line shown below is added, then followed by all interaction logs from the P-LLM, T-LLM and simulator as usual. Note that the time and number of tokens only refers to the new time and tokens whereas the number of steps and step_reached_goal_first in the output take into account all (previous + new) steps
 
 `{"continued": true, "max_steps": [max_number_of_new_steps], "break_limit": [original_break_limi], "date": [date_of_new_run]}`
+
+# Batching
+
+The **Basic** and **CoT** approach requires only a single call to the P-LLM. Therefore, the batch API from OpenAI can be used for generating plans. <br>
+**Note**: in order to work, the implemented approach **requires that caching is used**!
+
+`python run_batch_openai.py -m [mode] --config [config] --few-shot-id [few-shot-id]`
+
+where:
+* `mode`:
+  * `'C'`: Creates the file with all inputs for the batch request 
+  * `'S'`: Submits the batch request
+  * `'R'`: Retrieves the results from running the batch API request
+* `config`: path to the same configuration file that would be used for running the normal API (i.e. the same configs as described above)
+* `few-shot-id`: id of the few-shot example 
+
+The file with the outputs of the batch request will not be in the format required for the evaluation yet and additionally, it does not include any translations back from NL to PDDL. However, running the script with `-m 'R'` will not only download the responses but also saves all inputs + responses to the cache. The final output files can then be derived by running the plan generation in the usual way (i.e. as described above) because all responses will be retrieved from the cache. 
+
+Pipeline for batching: 
+1. `python run_batch_openai.py -m 'CS' --config [config_file] --few-shot-id [few-shot-id]`
+2. `python run_batch_openai.py -m 'R' --config [config_file] --few-shot-id [few-shot-id]`
+3. `python run_planning.py --config [config_file] --few-shot-id [few-shot-id]`
+
+**Note**: it will take some time until the batch request is processed (at most 24 hours, often it takes less than 30 minutes for batches of 20 planning instances). Therefore, there should be some waiting time between step 1. and 2.

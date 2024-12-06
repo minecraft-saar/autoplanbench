@@ -1,5 +1,5 @@
 from typing import Tuple, Union, List, Dict
-
+import re
 from model_classes.planning_games import PlanningGame
 from llm_planning.game_classes.llm_models_pddl_planning import TranslationModelBlocksWorld, PlanningModelBlocksWorld
 from llm_planning.raw_pddl_input.raw_pddl_env import RawPDDLEnvironment
@@ -15,7 +15,8 @@ class RawPDDLPlanningGame(PlanningGame):
                  task_num: Union[int, str],
                  incremental: bool,
                  provide_state: bool,
-                 log_history: bool,
+                 log_history: bool = False,
+                 assert_cache: bool = False,
                  translation_neural: bool = False,
                  not_finished_feedback: bool = False,
                  positive_feedback: str = 'pddl',
@@ -34,7 +35,8 @@ class RawPDDLPlanningGame(PlanningGame):
                          negative_feedback=negative_feedback, subgoal_feedback=subgoal_feedback,
                          provide_state=provide_state, not_finished_feedback=not_finished_feedback,
                          log_history=log_history, allow_multi_action=allow_multi_action,
-                         planning_approach=planning_approach)
+                         planning_approach=planning_approach,
+                         assert_cache=assert_cache)
 
     def split_problem_file(self, instance_file):
 
@@ -73,8 +75,12 @@ class RawPDDLPlanningGame(PlanningGame):
         :return:
         """
         self.task_description = self.env.get_description_goal_state()
-        examples_dict = self.create_examples_dict(llm_config=plan_llm_config)
         examples_in_prompt = not plan_llm_config.get('examples_chat', False)
+        if self.incremental and not examples_in_prompt:
+            examples_dict = self.create_examples_dict_incre_chat(llm_config=plan_llm_config)
+        else:
+            examples_dict = self.create_examples_dict(llm_config=plan_llm_config)
+
         initial_prompt = self.create_plan_task_prompt(include_examples=examples_in_prompt,
                                                       examples_dict=examples_dict)
         model = PlanningModelBlocksWorld(model_type=plan_llm_config['model_name'],
@@ -109,7 +115,13 @@ class RawPDDLPlanningGame(PlanningGame):
 
 
     def text_to_plan(self, text: str) -> str:
-        return text
+
+        reg = r'\(.*\)'
+        pddl_actions = re.findall(reg, text)
+        if not pddl_actions:
+            return text
+        else:
+            return pddl_actions[0]
 
 
     def get_possible_actions_plan_task(self) -> str:

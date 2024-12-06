@@ -1,5 +1,0 @@
-(switch_on instrument_0 satellite_0)
-(calibrate satellite_0 instrument_0 star1)
-(turn_to satellite_0 planet2 star1)
-(take_image satellite_0 planet2 instrument_0 mode_0)
-; cost = 4 (unit cost)

@@ -1,3 +1,5 @@
+import copy
+
 import openai
 from typing import List, Tuple, Union
 from abc import ABC, abstractmethod
@@ -6,6 +8,8 @@ from utils.paths import get_cache_dir
 from .llm_models import LLMModel
 from .vicuna_models import VicunaModel
 from .openai_models import OpenAIComplModel, OpenAIChatModel
+from .openai_batch_model import OpenAIChatBatch
+from .llama_model import LlamaModel
 
 
 # TODO think about putting both classes together;
@@ -77,10 +81,10 @@ class PlanningModel:
         """
         self.model.reset_history()
 
-    def generate(self, user_message):
+    def generate(self, user_message, assert_cache: bool = False):
         if not self.examples_chat:
             user_message = self.create_input_format_example(user_message)
-        output = self.model.generate(user_message)
+        output = self.model.generate(user_message, assert_cache)
         return output
 
 
@@ -210,14 +214,34 @@ def create_llm_model(model_type: str, model_param: dict) -> LLMModel:
                         optional_keys: "caching", "seed"
     :return:
     """
-    # TODO: make the inputs more flexible
     model_path = model_param['model_path']
-    max_tokens = model_param.get('max_tokens', 512)
-    temp = model_param.get('temp', 1.0)
-    max_history = model_param.get('max_history', None)
-    seed = model_param.get('seed', None)
 
-    cache_sub_dir = model_param.get('caching', 'default')
+    model_input_param = copy.deepcopy(model_param)
+    try:
+        model_input_param.pop('examples_chat')
+    except KeyError:
+        pass
+
+    try:
+        model_input_param.pop('prompt_file')
+    except KeyError:
+        pass
+
+    try:
+        model_input_param.pop('examples_file')
+    except KeyError:
+        pass
+
+    try:
+        batching = model_input_param.pop('batching')
+    except KeyError:
+        batching = False
+
+    try:
+        cache_sub_dir = model_param.pop('caching')
+    except KeyError:
+        cache_sub_dir = 'default'
+
     if cache_sub_dir is None:
         cache_dir = get_cache_dir(None, None)
     elif cache_sub_dir == 'default':
@@ -227,33 +251,20 @@ def create_llm_model(model_type: str, model_param: dict) -> LLMModel:
         cache_dir = get_cache_dir(model_subdir_name=f'{model_type}_{model_path}',
                                   exp_subdir_name=cache_sub_dir)
 
-    if model_type == 'openai_chat':
-        model = OpenAIChatModel(model_name=model_type,
-                                model_path=model_path,
-                                max_tokens=max_tokens,
-                                temp=temp,
-                                max_history=max_history,
-                                cache_directory=cache_dir,
-                                seed=seed)
+    model_input_param['cache_directory'] = cache_dir
 
+    if model_type == 'openai_chat' and batching:
+        model = OpenAIChatBatch(**model_input_param)
+    elif model_type == 'openai_chat':
+        model = OpenAIChatModel(**model_input_param)
     elif model_type == 'openai_comp':
-        model = OpenAIComplModel(model_name=model_type,
-                                model_path=model_path,
-                                max_tokens=max_tokens,
-                                temp=temp,
-                                max_history=max_history,
-                                cache_directory=cache_dir,
-                                seed=seed)
+        model = OpenAIComplModel(**model_input_param)
+    # TODO:
+    elif model_type == 'llama_hf':
+        model = LlamaModel(**model_input_param)
 
     elif model_type in ['vicuna', 'vicuna-x-gpt']:
-        model = VicunaModel(model_name=model_type,
-                            model_path=model_path,
-                            cuda_n=model_param['cuda_n'],
-                            load_method=model_param['load_method'],
-                            max_tokens=max_tokens,
-                            temp=temp,
-                            max_history=max_history,
-                                cache_directory=cache_dir)
+        model = VicunaModel(**model_input_param)
     else:
         raise NotImplementedError
 

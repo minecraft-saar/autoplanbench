@@ -112,7 +112,7 @@ if __name__ == '__main__':
 
     descrip_type = args.type
     if descrip_type == 'domain':
-        assert args.d and args.t
+        assert args.t and args.d_nl
         create_domain_nl_description(domain_nl_file=args.d_nl,
                                      output_file=args.o,
                                      template_file=args.t)

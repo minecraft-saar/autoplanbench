@@ -344,7 +344,8 @@ class PDDLDescriber:
 
 
     def create_model(self, llm_name: str, model_type, max_tokens=200, temperature=0.0) -> LLMModel:
-        model_param = {'model_path': llm_name,
+        model_param = {'model_name': model_type,
+                       'model_path': llm_name,
                        'max_tokens': max_tokens,
                        'temp': temperature,
                        'max_history': 0}

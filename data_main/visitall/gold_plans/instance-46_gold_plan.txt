@@ -1,5 +1,0 @@
-(move place_5 place_4)
-(move place_4 place_3)
-(move place_3 place_2)
-(move place_2 place_0)
-; cost = 4 (unit cost)

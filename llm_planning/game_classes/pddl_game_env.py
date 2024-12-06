@@ -19,7 +19,11 @@ class PDDLWorldEnvironment(RawPDDLEnvironment):
 
         self.config = domain_nl
 
-        self.nlp_processor = stanza.Pipeline(lang='en', processors='tokenize,mwt,pos,lemma,depparse', download_method=DownloadMethod.REUSE_RESOURCES)
+        # Do not show stanza output
+        self.nlp_processor = stanza.Pipeline(lang='en', processors='tokenize,mwt,pos,lemma,depparse',
+                                             download_method=DownloadMethod.REUSE_RESOURCES,
+                                             logging_level='WARN', use_gpu=False)
+
 
         self.actions_text: dict = self.config['action_mappings']
         self.actions_text_indef: dict = self.config['action_mappings_indef']
@@ -186,6 +190,8 @@ class PDDLWorldEnvironment(RawPDDLEnvironment):
             neg = ' ' + head_token + ' not '
 
         negated_pred = re.sub(reg, neg, pred_description)
+        if pred_description == negated_pred:
+            negated_pred = f'it is not the case that {pred_description}'
         assert pred_description != negated_pred
         if head_token == 'can':
             negated_pred = negated_pred.replace('can not', 'cannot')

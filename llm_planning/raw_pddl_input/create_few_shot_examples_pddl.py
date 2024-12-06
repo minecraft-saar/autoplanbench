@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Union
 from argparse import ArgumentParser
 from set_env import set_env_vars
-from llm_planning.raw_pddl_input.raw_pddl_game_env import RawPDDLEnvironment
+from llm_planning.raw_pddl_input.raw_pddl_env import RawPDDLEnvironment
 from llm_planning.create_few_shot_examples import read_plan_file
 
 

@@ -1,3 +1,0 @@
-(pick-up object_3)
-(stack object_3 object_2)
-; cost = 2 (unit cost)

@@ -190,7 +190,7 @@ class VicunaModel(LLMModel):
 
         return prompt
 
-    def clean_up_from_generation(self, model_response) -> str:
+    def clean_up_from_generation(self, model_response, response_source: Union[str, None] = None) -> str:
         # add the generated response to the history
         self.conversation.messages[-1][-1] = model_response.strip()
         actual_response = model_response.replace(self.conversation.sep2, '') # remove end of sequence token

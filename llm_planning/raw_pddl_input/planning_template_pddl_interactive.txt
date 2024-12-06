@@ -30,4 +30,5 @@ Here is an example of one complete round of providing a plan:
 {%- block finalinstructions -%}
 Please instruct me how to complete my task. Remember the goal is: {{ task_description }}.
 Please provide only one single step at a time.
+When I am finished with my task then please tell me: 'You are finished'.
 {% endblock finalinstructions -%}
