@@ -4,7 +4,7 @@ This repository contains the code for AutoPlanBench, a tool to convert PDDL doma
 
 Additionally, we make our complete dataset available, consisting of NL conversions for a large set of IPC datasets and some additional domains. 
 
-**Note:** There exist two main versions of this code and the dataset. (See also the dataset readme)
+**Note:** There exist two main versions of this code and the dataset. (See also the [dataset readme](https://github.com/minecraft-saar/autoplanbench/tree/main/autoplanbench_dataset#autoplanbench-dataset) ).
 
 **APB 2.0**
 * latest version of the dataset
@@ -21,7 +21,7 @@ Additionally, we make our complete dataset available, consisting of NL conversio
 * code is available [here](https://github.com/minecraft-saar/autoplanbench/releases/tag/v1.0)
 
 The code in this repository is made available under the Apache 2.0 license. <br>
-The [dataset](https://github.com/coli-saar/autoplanbench/tree/main/autoplanbench_dataset) is composed of domain files from different original sources and problems are generated using the corresponding generators (see [Data README](https://github.com/coli-saar/autoplanbench/blob/main/autoplanbench_dataset/readme.md)) as well as the datasets from the IPC competitoins. For the individual licenses check the respective licenses of the original software/data. 
+The [datasets](https://github.com/minecraft-saar/autoplanbench/tree/main/autoplanbench_dataset) are composed of domain files from different original sources and problems generated using the corresponding generators as well as the datasets from the IPC competitions. For the individual licenses check the respective licenses of the original software/data. 
 
 ### Overview
 
@@ -29,7 +29,7 @@ The [dataset](https://github.com/coli-saar/autoplanbench/tree/main/autoplanbench
     <img src="images/autoplanbench.svg" width="40%" />
 </center>
 
-This Readme contains the information needed to run the main parts of the project. More detailed information about the different options and configurations, the prompts, evaluation and additional scripts can be found in the [Wiki](https://github.com/coli-saar/autoplanbench/wiki).
+This Readme contains the information needed to run the main parts of the project. More detailed information about the different options and configurations, the prompts, evaluation and additional scripts can be found in the [Wiki](https://github.com/minecraft-saar/autoplanbench/wiki).
 
 ## Prerequisites
 
