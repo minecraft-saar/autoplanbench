@@ -1,6 +1,6 @@
 import json
 from typing import Tuple, Union
-
+from stanza import Pipeline
 from llm_planning.game_classes.pddl_game_env import PDDLWorldEnvironment
 from llm_planning.game_classes.llm_models_pddl_planning import TranslationModelBlocksWorld, PlanningModelBlocksWorld
 from model_classes.planning_games import PlanningGame
@@ -14,6 +14,7 @@ class PDDLPlanningGame(PlanningGame):
                  domain_file: str,
                  domain_nl_file: str,
                  instance_file: str,
+                 nlp_processor: Pipeline,
                  translation_neural: bool = True,
                  incremental: bool = True,
                  positive_feedback: str = 'full',
@@ -24,12 +25,14 @@ class PDDLPlanningGame(PlanningGame):
                  assert_cache: bool = False,
                  log_history: bool = False,
                  by_action: bool = False,
-                 planning_approach: Union[str, None] = None
+                 planning_approach: Union[str, None] = None,
                  ):
 
         self.by_action = by_action
         with open(domain_nl_file, 'r') as nl_file:
             self.domain_nl = json.load(nl_file)
+
+        self.nlp_processor = nlp_processor
 
         super().__init__(llm_config=llm_config, env_config={'domain_file': domain_file, 'instance_file': instance_file},
                          task_num=task_num, task_name=f'instance-{task_num}', translation_neural=translation_neural,
@@ -51,7 +54,8 @@ class PDDLPlanningGame(PlanningGame):
         instance_file = env_dict['instance_file']
         bw_env = PDDLWorldEnvironment(domain_nl=self.domain_nl,
                                       instance_file=instance_file,
-                                      domain_file=domain_file)
+                                      domain_file=domain_file,
+                                      nlp_processor=self.nlp_processor)
         return bw_env
 
 
@@ -86,7 +90,7 @@ class PDDLPlanningGame(PlanningGame):
                 effects.extend(self.domain_nl['actions'][action]['effects'])
 
             args = {
-                #'task_description': self.task_description,
+                'task_description': self.task_description,
                 'actions': self.get_possible_actions_plan_task(),
                 'preconditions': preconditions,
                 'effects': effects,
@@ -107,7 +111,7 @@ class PDDLPlanningGame(PlanningGame):
                 action_prec_and_effects.append('\n'.join(current_action_prec_eff))
 
             args = {
-                #'task_description': self.task_description,
+                'task_description': self.task_description,
                 'actions': self.get_possible_actions_plan_task(),
                 'preconditions_and_effects': action_prec_and_effects,
                 'incremental': self.incremental,
@@ -315,6 +319,6 @@ class PDDLPlanningGame(PlanningGame):
 
         return feedback
 
-
     def text_to_plan(self, text: str) -> str:
         raise NotImplementedError
+

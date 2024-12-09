@@ -14,7 +14,7 @@ DOMAIN_DESCRIPTION_TEMPLATE = PROJ_DIR / Path('utils') / Path('template_domain_d
 
 ORIG_INST_FOLDER = 'orig_problems'
 INST_FOLDER = 'adapted_instances'
-GOLD_PLAN_FOLDER = 'gold_plans'
+GOLD_PLAN_FOLDER = 'adapted_gold_plans'
 ORIG_GOLD_PLAN_FOLDER= 'orig_gold_plans'
 TEMP_DIR = PROJ_DIR / Path('temp_files')
 
@@ -22,6 +22,7 @@ APPROACHES = ['basic', 'act', 'react', 'cot', 'act_pddl', 'basic_pddl']
 
 THOUGHT_GEN_EXAMPLE_DOMAIN = os.path.join(PROJ_DIR, 'llm_planning', 'manual_react_examples', 'logistics_domain_description.json')
 THOUGHT_GEN_EXAMPLE_FILE = os.path.join(PROJ_DIR, 'llm_planning', 'manual_react_examples', 'logistics_react.json')
+
 
 def get_cache_dir(model_subdir_name: Union[str, None], exp_subdir_name: Union[str, None]):
 
@@ -41,8 +42,10 @@ def get_domain_file_path(domain_name, data_dir):
     domain_data_dir = get_domain_data_dir(domain_name=domain_name, data_dir=data_dir)
     return os.path.join(domain_data_dir, 'domain.pddl')
 
+
 def get_domain_data_dir(domain_name, data_dir):
     return os.path.join(data_dir, domain_name)
+
 
 def get_few_shot_dir(planning_approach, domain_data_dir):
 
@@ -66,26 +69,34 @@ def get_few_shot_dir(planning_approach, domain_data_dir):
     return output_dir
 
 
-def get_few_shot_ex_file(few_shot_dir, instance_id, approach):
-    return os.path.join(few_shot_dir, f'{approach}_examples_instance-{instance_id}.json')
+def get_few_shot_ex_file(few_shot_dir, instance_id, approach, seed: Union[int, None]):
+    if seed is None:
+        return os.path.join(few_shot_dir, f'{approach}_examples_instance-{instance_id}.json')
+    else:
+        return os.path.join(few_shot_dir, f'{approach}_examples_instance-{instance_id}_seed{seed}.json')
 
 
 def get_gold_plan_dir(domain_name, data_dir):
     return os.path.join(data_dir, domain_name, GOLD_PLAN_FOLDER)
 
+
 def get_instance_dir(domain_name, data_dir):
     return os.path.join(data_dir, domain_name, INST_FOLDER)
 
+
 def get_orig_inst_dir(domain_name, data_dir):
     return os.path.join(data_dir, domain_name, ORIG_INST_FOLDER)
+
 
 def get_config_file(domain_name, config_dir, approach, model):
     file_name = f'config_{approach}_{model}.json'
     config_domain_dir = get_config_domain_dir(domain_name=domain_name, config_dir=config_dir)
     return os.path.join(config_domain_dir, file_name)
 
+
 def get_config_domain_dir(domain_name, config_dir):
     return os.path.join(config_dir, domain_name)
+
 
 def create_config_domain_dir(domain_name, config_dir):
     config_domain_dir = get_config_domain_dir(domain_name=domain_name, config_dir=config_dir)

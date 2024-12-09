@@ -7,7 +7,7 @@ I can only use objects that are observable in the situation.
 {%- endblock startinstructions %}
 
 {% block taskinstruction -%}
-My task is to execute actions until reaching my goal. {{ task_description }}
+My task is to execute actions until reaching my goal. {% if include_examples -%} {{ task_description }} {%- endif %}
 {%- endblock taskinstruction %}
 
 {% block actions -%}
@@ -49,12 +49,12 @@ Here is an example of one complete round of providing me instructions.
 
 {%- block finalinstructions -%}
 {% if incremental -%}
-Please instruct me how to complete my task. Remember: {{ task_description }}.
+Please instruct me how to complete my task. {% if include_examples -%} Remember: {{ task_description }} {% endif %}.
 Please provide me only one single step at a time.
 You can tell me to look around to get a description of what I see.
 When I am finished with my task then please tell me: 'You are finished'.
 {% else %}
-Please provide me a step-by-step instruction for how to complete my task. Remember: {{ task_description }}.
+Please provide me a step-by-step instruction for how to complete my task. {% if include_examples -%} Remember: {{ task_description }} {% endif %}.
 Please provide each step in a new line.
 {%- endif %}
 {% endblock finalinstructions -%}

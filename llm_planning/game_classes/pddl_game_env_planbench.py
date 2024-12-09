@@ -1,10 +1,13 @@
+from stanza import Pipeline
 from llm_planning.game_classes.pddl_game_env import PDDLWorldEnvironment
-
 
 
 class PlanBenchEnvironment(PDDLWorldEnvironment):
 
-    def __init__(self, domain_nl: dict, instance_file: str, domain_file: str):
+    def __init__(self, domain_nl: dict,
+                 instance_file: str,
+                 domain_file: str,
+                 nlp_processor: Pipeline):
 
         domain_nl = domain_nl.copy()
         encoded_objs = domain_nl['encoded_objects'].items()
@@ -13,9 +16,10 @@ class PlanBenchEnvironment(PDDLWorldEnvironment):
                 del domain_nl['encoded_objects']
                 break
 
-        super().__init__(domain_nl=domain_nl, instance_file=instance_file, domain_file=domain_file)
-
-
+        super().__init__(domain_nl=domain_nl,
+                         instance_file=instance_file,
+                         domain_file=domain_file,
+                         nlp_processor=nlp_processor)
 
     def get_description_state_basic(self, state_facts: list, sep=', '):
         pred_descriptions = []

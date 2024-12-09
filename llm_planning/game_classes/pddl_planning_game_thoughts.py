@@ -1,4 +1,5 @@
 import json
+from stanza import Pipeline
 from typing import Tuple, Union
 
 from llm_planning.game_classes.pddl_planning_game import PDDLPlanningGame
@@ -12,6 +13,7 @@ class PDDLGameThoughts(PDDLPlanningGame):
                  domain_file: str,
                  domain_nl_file: str,
                  instance_file: str,
+                 nlp_processor: Pipeline,
                  translation_neural: bool = True,
                  incremental: bool = True,
                  positive_feedback: str = 'full',
@@ -36,8 +38,8 @@ class PDDLGameThoughts(PDDLPlanningGame):
                          provide_state=provide_state, not_finished_feedback=not_finished_feedback,
                          log_history=log_history, by_action=by_action,
                          planning_approach=planning_approach,
-                         assert_cache=assert_cache)
-
+                         assert_cache=assert_cache,
+                         nlp_processor=nlp_processor)
 
     def get_next_instruction(self, debug=False, instr='') -> Tuple[bool, bool]:
 
@@ -48,9 +50,13 @@ class PDDLGameThoughts(PDDLPlanningGame):
         if self.observation == '':
             # generate initial state description
             self.observation = self.get_description_current_state()
+            # If initial step: use goal description for current state
+            if self.examples_chat:
+                self.observation = f'{self.env.get_description_goal_state()} {self.observation}'
             print(f'$SWorld: {self.observation} SWorld$')
             self.write_log(self.observation, 'auto_state')
 
+        # What is current_world for?
         current_world = self.get_description_current_state()
 
         model_input = self.observation
@@ -82,7 +88,7 @@ class PDDLGameThoughts(PDDLPlanningGame):
 
             instruction = instruction.replace('instruction: ', '').replace('Instruction: ', '')
 
-            assert 'think' not in instruction.lower()
+            assert 'think' not in instruction.lower(), 'Think in processed instruction'
             # translate instruction
             if self.translation_neural:
                 translation_output = self.llm_translate.generate(instruction)
@@ -91,7 +97,7 @@ class PDDLGameThoughts(PDDLPlanningGame):
 
             # output of the translation model can consist of several actions theoretically
             translation_output_list = self.process_multi_action_translations(translation_output=translation_output)
-            assert len(translation_output_list) > 0
+            assert len(translation_output_list) > 0, 'No translation output'
 
             observations, _ = self.try_execution(translation_output_list, current_world)
 
@@ -110,12 +116,14 @@ class PDDLGameThoughts(PDDLPlanningGame):
         failing_message = None
 
         if attempts > 1:
-            assert self.llm_plan.model.max_history > 0
+            assert self.llm_plan.model.max_history > 0, 'Wrong max history value'
 
         for attempt in range(attempts):
             if attempt == 0:
                 # generate initial state description
                 self.observation = self.get_description_current_state()
+                if self.examples_chat:
+                    self.observation = f'{self.env.get_description_goal_state()}\n{self.observation}'
                 print(f'$SWorld: {self.observation} SWorld$')
                 self.write_log(self.observation, 'auto_state')
 

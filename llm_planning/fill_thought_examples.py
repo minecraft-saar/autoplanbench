@@ -12,7 +12,7 @@ set_env_vars()
 openai.api_key = os.environ['OPENAI_API_KEY']
 
 
-def generate_reasoning_thoughts(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, llm: str, llm_type: str):
+def generate_reasoning_thoughts(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, llm: str, llm_type: str, seed: int):
     """
 
     :param template_file:
@@ -21,6 +21,7 @@ def generate_reasoning_thoughts(template_file: str, nl_domain_file: str, example
     :param react_example:
     :param llm:
     :param llm_type:
+    :param seed:
     :return:
     """
 
@@ -57,19 +58,27 @@ def generate_reasoning_thoughts(template_file: str, nl_domain_file: str, example
     # Create model input
     model_input = domain_intro + '\n' + template
 
+    reg = r'\[TODO: ADD REASONING THOUGHT\]'
+    open_spaces = re.findall(reg, template)
+
     system_prompt = """You are a brilliant and helpful assistant to provide reasoning thoughts for an interaction where one agent instructs another agent to execute a task.
 
 You will be shown the actions that can be carried out, their preconditions and their effects. 
 
 Additionally, you will see one interaction between the instruction giver and the instruction follower.
 
-Your task is to come up with an appropriate and good reasoning thought with which [TODO: ADD REASONING THOUGHT] should be replaced. """
+Your task is to come up with an appropriate and good reasoning thought with which each [TODO: ADD REASONING THOUGHT] should be replaced.
+
+Make sure to come up with exactly one thought for each slot [TODO: ADD REASONING THOUGHT]."""
+
+    system_prompt += f" In this template, there are {len(open_spaces)} such slots, so you have to generate {len(open_spaces)} thoughts."
 
     model_param = {'model_path': llm,
                    'model_name': model_type,
-                   'max_tokens': 700,
+                   'max_tokens': 2000,
                    'temp': 0.0,
-                   'max_history': 0}
+                   'max_history': 0,
+                   'seed': seed}
     llm_model = create_llm_model(model_type=llm_type, model_param=model_param)
     llm_model.init_model(init_prompt=system_prompt)
     llm_model.add_examples(
@@ -79,11 +88,6 @@ Your task is to come up with an appropriate and good reasoning thought with whic
         ])
 
     response = llm_model.generate(user_message=model_input)
-    print(f'{llm_model.get_initial_prompt()}')
-    print(input_example)
-    print(output_example)
-    print(f'{model_input}')
-    print(f'{response}')
 
     response_parts = response.split('\n')
     relevant_responses = []
@@ -91,10 +95,10 @@ Your task is to come up with an appropriate and good reasoning thought with whic
         if 'Think:' in rp:
             relevant_responses.append(rp)
 
-    reg = r'\[TODO: ADD REASONING THOUGHT\]'
-    open_spaces = re.findall(reg, template)
     if not len(open_spaces) == len(relevant_responses):
         relevant_responses = relevant_responses[:-1]
+    if not len(open_spaces) == len(relevant_responses):
+        print(f'Expected len: {len(open_spaces)}, Generated len: {len(relevant_responses)}')
     assert len(open_spaces) == len(relevant_responses)
 
     final_few_shot_example = template
@@ -107,7 +111,7 @@ Your task is to come up with an appropriate and good reasoning thought with whic
     return final_few_shot_example
 
 
-def create_react_few_shot_file(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, output_file: str, llm: str, llm_type: str):
+def create_react_few_shot_file(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, output_file: str, llm: str, llm_type: str, seed: int = 0):
     """
 
     :param template_file:
@@ -117,13 +121,14 @@ def create_react_few_shot_file(template_file: str, nl_domain_file: str, example_
     :param output_file:
     :param llm:
     :param llm_type:
+    :param seed:
     :return:
     """
     output_dir = os.path.split(output_file)[0]
     Path(output_dir).mkdir(exist_ok=True)
 
     react_few_shot = generate_reasoning_thoughts(template_file=template_file, nl_domain_file=nl_domain_file,
-                                example_nl_domain_file=example_nl_domain_file, react_example=react_example, llm=llm, llm_type=llm_type)
+                                example_nl_domain_file=example_nl_domain_file, react_example=react_example, llm=llm, llm_type=llm_type, seed=seed)
 
     with open(output_file, 'w') as f:
         example_dict = {
@@ -133,7 +138,7 @@ def create_react_few_shot_file(template_file: str, nl_domain_file: str, example_
         json.dump(example_dict, f, indent=4)
 
 
-def create_cot_few_shot_file(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, output_file: str, llm: str, llm_type: str):
+def create_cot_few_shot_file(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, output_file: str, llm: str, llm_type: str, seed: int = 0):
     """
 
     :param template_file:
@@ -150,11 +155,9 @@ def create_cot_few_shot_file(template_file: str, nl_domain_file: str, example_nl
 
     filled_react_example = generate_reasoning_thoughts(template_file=template_file, nl_domain_file=nl_domain_file,
                                                        example_nl_domain_file=example_nl_domain_file,
-                                                       react_example=react_example, llm=llm, llm_type=llm_type)
+                                                       react_example=react_example, llm=llm, llm_type=llm_type, seed=seed)
 
     create_cot_from_react(output_file=output_file, final_react_example=filled_react_example)
-
-
 
 
 def create_cot_from_react(output_file: str, final_react_example: str):
@@ -199,8 +202,6 @@ def create_cot_from_react(output_file: str, final_react_example: str):
         json.dump(example_dict, f, indent=4)
 
 
-
-
 def create_domain_intro(nl_domain_file: str):
 
     with open(nl_domain_file, 'r') as f:
@@ -229,7 +230,7 @@ def create_domain_intro(nl_domain_file: str):
 
 
 
-def create_react_and_cot(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, react_output_file: str, llm: str, llm_type: str):
+def create_react_and_cot(template_file: str, nl_domain_file: str, example_nl_domain_file: str, react_example: str, react_output_file: str, llm: str, llm_type: str, seed: int = 0):
     """
 
     :param template_file:
@@ -247,7 +248,7 @@ def create_react_and_cot(template_file: str, nl_domain_file: str, example_nl_dom
     create_react_few_shot_file(template_file=template_file, nl_domain_file=nl_domain_file,
                                example_nl_domain_file=example_nl_domain_file,
                                react_example=react_example, llm=llm,
-                               output_file=react_output_file, llm_type=llm_type)
+                               output_file=react_output_file, llm_type=llm_type, seed=seed)
 
 
     with open(react_output_file, 'r') as f:
@@ -271,6 +272,7 @@ if __name__ == '__main__':
                                                      "cot example is derived by replacing 'react' by 'cot'")
 
     parser.add_argument('--llm', required=True, help="name of the llm to use (currently only chat gpt models possible)")
+    parser.add_argument('--seed', required=True, type=int, help='seed to use fot the llm')
     parser.add_argument('--llm_type', required=False, default=None, help='type of the llm to use')
 
     args = parser.parse_args()
@@ -282,10 +284,9 @@ if __name__ == '__main__':
     out_file = args.out
     llm = args.llm
     model_type = args.llm_type if args.llm_type is not None else get_llm_type(args.llm)
-
+    seed = args.seed
 
     create_react_and_cot(template_file=template, nl_domain_file=nl_domain,
                          example_nl_domain_file= example_domain, react_example=react_interaction_example,
-                         react_output_file=out_file, llm=llm, llm_type=model_type)
-
+                         react_output_file=out_file, llm=llm, llm_type=model_type, seed=seed)
 

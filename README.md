@@ -1,298 +1,196 @@
 # AutoPlanBench
 
-This repository contains the code for AutoPlanBench, a tool to convert PDDL domains and problems into natural language and to run different LLM planning approaches on them.
+This repository contains the code for AutoPlanBench, a tool to convert PDDL domains and problems into natural language and to run different LLM action choiche mechanisms (both plan generation and action policy) on them.
 
-**Note:** The code base is currently undergoing some changes and if you have already worked with the version before July 15, 2024 you might experience different behavior. For the previous version of the code (used also for the paper) download the release.
+Additionally, we make our complete dataset available, consisting of NL conversions for a large set of IPC datasets and some additional domains. 
 
-Corresponding Paper: [AutoPlanBench: Automatically generating benchmarks for LLM planners from PDDL](https://arxiv.org/abs/2311.09830) (Note: the current version of the code and data corresponds to an updated version of the paper that has been accepted for the PRL Workshop 2024 and will be published and linke here soon) <br>
-Corresponding [Website](https://coli-saar.github.io/autoplanbench) 
+**Note:** There exist two main versions of this code and the dataset. (See also the dataset readme)
+
+**APB 2.0**
+* latest version of the dataset
+* containing the same 12 domains as APB 1.0 plus a large number of IPC datasets 
+* NL versions generated using OpenAI's GPT-4o model between Aug-Nov, 24 
+* corresponds to the newest version of the paper that will soon be made publicly available 
+* current respository corresponds to the latest version of the data and paper
+
+**APB 1.0**
+* first version of the dataset
+* comprising 12 domains and not including IPC datasets
+* NL versions generated using OpenAI's GPT-4 model between Nov, 23 and March, 24
+* used for the experiments in the first version of the paper([AutoPlanBench: Automatically generating benchmarks for LLM planners from PDDL](https://arxiv.org/abs/2311.09830)) and the (slightly extended) version presented at the  [Workshop on Bridging the Gap Between AI Planning and Reinforcement Learning](https://prl-theworkshop.github.io/prl2024-icaps/) (PRL) at ICAPS 2024 (see the [Website](https://coli-saar.github.io/autoplanbench) or the Workshop website for the paper)
+* code is available [here](https://github.com/minecraft-saar/autoplanbench/releases/tag/v1.0)
 
 The code in this repository is made available under the Apache 2.0 license. <br>
-The [dataset](https://github.com/minecraft-saar/autoplanbench/tree/main/data) is composed of domain files from different original sources and problems are generated using the corresponding generators (see [data readme](https://github.com/minecraft-saar/autoplanbench/blob/main/data/readme.md)). For the individual licenses check the respective licenses of the original software/data. 
+The [dataset](https://github.com/coli-saar/autoplanbench/tree/main/autoplanbench_dataset) is composed of domain files from different original sources and problems are generated using the corresponding generators (see [Data README](https://github.com/coli-saar/autoplanbench/blob/main/autoplanbench_dataset/readme.md)) as well as the datasets from the IPC competitoins. For the individual licenses check the respective licenses of the original software/data. 
 
 ### Overview
-This Readme contains the information needed to run the main parts of the project. More detailed information about the different options and configurations, the prompts, evaluation and additional scripts can be found in the [Wiki](https://github.com/minecraft-saar/LLM-planning-PDDL-domains/wiki).
 
-Readme:
-* [Requirements](https://github.com/minecraft-saar/LLM-planning-PDDL-domains/blob/main/README.md#requirements)
-* [AutoPlanBench Overview](https://github.com/minecraft-saar/autoplanbench#autoplanbench-overview)
-* [Running the Pipeline](https://github.com/minecraft-saar/autoplanbench#running-the-complete-pipeline)
-* [Running individual steps](https://github.com/minecraft-saar/autoplanbench/blob/main/README.md#running-individual-steps)
-    * [Generating domain descriptions, instances, etc.](https://github.com/minecraft-saar/autoplanbench#generating-the-domain-descriptions)
-    * [Generating planning few-shot examples and configurations](https://github.com/minecraft-saar/autoplanbench#generating-planning-few-shot-examples)
-    * [Running LLM planning](https://github.com/minecraft-saar/autoplanbench#running-llm-planning)
-    * [Evaluation](https://github.com/minecraft-saar/autoplanbench#evaluation)
-    * [Using OpenAI's batch API](https://github.com/minecraft-saar/autoplanbench#batching)
+<center>
+    <img src="images/autoplanbench.svg" width="40%" />
+</center>
 
-## Requirements
-* `conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia` (cuda is only needed for running LLMs from Huggingface)
-* `pip install -e .` in the main folder of the repository
-* download [fastdownward](https://www.fast-downward.org/Releases/22.12)
-* get and compile [VAL](https://github.com/KCL-Planning/VAL)
-* an OpenAI account (it is theoretically also possible to run other models such as llama or vicuna. However, we did not test these models on the tasks and cannot tell whether they successfully generate the formats required based on the prompts and few-shot examples from the current repository. See the [Wiki](https://github.com/minecraft-saar/autoplanbench/wiki/Adding-support-for-additional-LLM-types) for details on how to add support for other LLM models)
+This Readme contains the information needed to run the main parts of the project. More detailed information about the different options and configurations, the prompts, evaluation and additional scripts can be found in the [Wiki](https://github.com/coli-saar/autoplanbench/wiki).
 
-If running vicuna with bitsandbytes it might be necessary to manually install the transformers library from source.
+## Prerequisites
 
-Create a file `set_env.py` in the main directory and specify the environment variables for openai and the planning tools like this:
+- Linux 
+  - This code has only been tested under Linux.
+  - It should work on MacOS as well provided the VAL can be compiled successfully
+- an OpenAI account 
+  - (it is theoretically also possible to run other models such as llama or vicuna. However, we 1) did not test these models on the tasks and cannot tell whether they successfully generate the formats required based on the prompts and few-shot examples from the current repository and 2) there have been several updates to required dependencies since this was set up which cause problems. See the [Wiki](https://github.com/coli-saar/autoplanbench/wiki/Adding-support-for-additional-LLM-types) for details on how to add support for other LLM models)
+
+## How to set up Autoplanbench
+
+1. Clone the repository, `cd` into the project directory
+2. Install pytorch
+   - If you are planning to use models from huggingface, install with CUDA:
+     + `conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia`
+   - Otherwise, CUDA is not needed:
+     + `conda install pytorch torchvision torchaudio cpuonly -c pytorch`
+3. Install the requirements
+   - `pip install -e .`
+4. Download [fastdownward](https://www.fast-downward.org/Releases/22.12)
+5. Get and compile [VAL](https://github.com/KCL-Planning/VAL)
+6. Create a `set_env.py` file in the project directory using the template below and
+   - define the path to fastforward
+   - define the path to VAL and specifically the `Validate` binary file (which should be in the directory of the built binary files of VAL)
+   - set the API key for openai
+
 ```
 import os
+
 def set_env_vars():
     os.environ['OPENAI_API_KEY'] = '[KEY]'
     os.environ['FAST_DOWNWARD'] = '[PATH]/fast-downward-22.12'
     os.environ['VAL'] = '[PATH]/VAL'
     os.environ['TOKENIZERS_PARALLELISM'] = 'false'
-
+    
+def get_key_openai(name: str):
+    """
+    Set the OPENAI_API_KEY for specific instances of OpenAI clients hence overwriting the value set by the environment variable
+    """
+    if name == [KEY_IDENTIFIER1]:
+        api_key = [ANOTHER API KEY]
+    elif name == [KEY_IDENTIFIER2]:
+        api_key = [YET ANOTHER API KEY]
+    return api_key 
 ```
 
-## AutoPlanBench Overview
-<center>
-    <img src="images/autoplanbench.svg" width="40%" />
-</center>
+## Running experiments
 
-## Required input files
+### Setting up the directory structure for an experiment
 
-A .pddl domain description and .pddl problem files for the domain are required as input files. Create a folder in the `data` directory with the domain name as folder name. Add the domain description to this folder and name it `domain.pddl`. The problem files should be placed in a subfolder called `orig_problems`. 
+This section shows how to run an experiment for a single domain, using the blocksworld domain as an example.
 
-The `DATA_DIR` and `ORIG_INST_FOLDER` variables in [utils/paths.py](https://github.com/minecraft-saar/autoplanbench/blob/main/utils/paths.py) can be changed if another data directory or another name for the subfolder with the problem instances is used. Alternatively different directories can be specified when running run_autoplanbench.py
+1. Create a folder for the domain in the data directory.
+2. Place the `domain.pddl` file of the file in the domain directory.
+3. Place the `orig_problems` folder containing the individual instance pddl files in the domain directory.
+4. Make sure a folder called `orig_gold_plans` exists in the domain directory, and contains at least the goldplan for the instance to be selected as the few-shot example, but ideally for all instances. If no other instance is specified as the few-shot example later on, the domain setup would expect a gold plan for instance 1 per default. The gold plans for all other instances will be created, if they are missing.
 
-**Requirements for PDDL**<br>
+The resulting directory tree will look like this:
+
+```
+.
+├── ...
+└── data
+    └── blocksworld
+        ├── domain.pddl
+        ├── orig_problems
+        │   ├── instance_1.pddl
+        │   ├── instance_2.pddl
+        │   ├── ...
+        │   └── instance_n.pddl
+        └── orig_gold_plans
+            ├── instance_1_gold_plan.txt
+            ├── instance_2_gold_plan.txt
+            ├── ...
+            └── instance_n_gold_plan.txt
+```
+
+**NOTE:**
+The `DATA_DIR` and `ORIG_INST_FOLDER` variables in
+[utils/paths.py](https://github.com/coli-saar/autoplanbench/blob/main/utils/paths.py)
+can be changed if another data directory or another name for the subfolder
+with the problem instances is used. Alternatively different directories can
+be specified when running `run_autoplanbench.py`
+
+
+**Requirements for PDDL:**
 The current version of AutoPlanBench covers STRIPS PDDL definitions containing the operators "AND" and "NOT" and that can include *typing* and *negative_preconditions* as requirements. 
 
-## Running the complete Pipeline
-
-In order to run the complete AutoPlanBench pipeline including the generation of the natural language domain descriptions, all required files and running LLM planning and evaluation run:
-
-`python run_autoplanbench.py -d [domain_name] -n [n_instances] --p-llm [planning_llm] --nl-llm [pddl2nl_llm]`
-
-* `domain_name`: name of the domain; needs to match the name of the subfolder in the data folder where the domain file is located
-* `n_instances`: number of instances that should be processed (set to number of instances to run planning on + 1 for few-shot example)
-* `planning-llm`: the name of the LLM to use for the LLM planning and for translating the natural language output back to PDDL (in order to use two different models for planning and translation follow the individual steps approach below); e.g. 'gpt-4' or 'gpt-3.5-turbo'
-* `nl-llm`: the name of the LLM to use for the generation of the natural language domain descriptions and the ReAct and CoT few-shot examples (currently only chat OpenAI models are supported here; to run different models the steps of the pipeline need to be run individually)
-
-This will run the same experiments as reported in the paper with the same parameters. In order to change the parameters, the following additional arguments can be specified.
-
-<details>
-   
-   <summary>Additional optional arguments:</summary>
-   
-  * `--app`: Tuple with the names of all planning approaches to run and evaluate. Defaults to ("basic", "cot", "react", "act")
-  * `--data`: Path to the directory containing all data. Defaults to utils.paths.DATA_DIR
-  * `--orig`: Path to the directory with the original instances. Defaults to utils.paths.DATA_DIR/domain_name/ORIG_INST_FOLDER
-  * `--len-i`: Select only instances for which the length of the optimal plan is within the specified limits (inclusive). Default is (2, 20)
-  * `--len-e`: Select the few-shot example by selecting randomly one of the instances with an optimal plan within the specified limits (inclusive). Default is (2, 5)
-  * `--len-react`: Number of steps in the ReAct (and CoT) example; Default is 3
-  * `--timeout`: Time (in sec) to let fast downward try to find an optimal gold plan. If no plan is found within this time limit the problem is treated as unsolvable, i.e. not considered. Default is 1200, i.e. 20 minutes. 
-  * `--overwrite`: Whether to re-run the adaption and plan generation for instances for which they already exist. Default is False
-  * `--desc`: Approach to create the precondition and effect descriptions: 'medium', 'long' or 'short'. Defaults to 'medium'. (see [here](https://github.com/minecraft-saar/autoplanbench/wiki/Generating-Natural-Language-Descriptions#composing-domain-descriptions-from-fragments) for mor details)
-  * `--to-text`: Type of few-shot examples to use for creating the natural language domain descriptions: 'extended', 'annotated', 'full', 'simple; Defaults to 'extended' (see [here](https://github.com/minecraft-saar/autoplanbench/wiki/Generating-Natural-Language-Descriptions#prompts-and-examples-for-generating-the-natural-language-fragments) for more details)
-  * `--ms-i`: Max number of steps the planning LLM is allowed to predict in the interactive approaches; defaults to 24
-  * `--br-i`: Break limit for interactive approaches, i.e. if br-i consecutive predictions are not executable then stop; defaults to 5
-  * `--ms-ni`: Max number of steps the planning LLM is allowed to predict in the non-interactive approaches; defaults to 1
-  * `--br-ni`: Break limit for non-interactive approaches, i.e. if br-ni consecutive predictions are not executable then stop; defaults to 1
-   
-  </details>
-
-## Running Individual Steps 
-
-### 1. Generating the domain descriptions, adapted instances, gold plans and translation examples
-
-`python run_domain_setup.py -o [out_dir] --llm [llm]`
-
-* `out_dir`: Path to the directory where all files for the specific domain are located 
-* `llm`: Name of the LLM to use
-
-<details>
-   
-   <summary>Additional optional arguments:</summary>
-   
-* `--llm-type`: type of the llm to use, e.g. 'openai_chat'; if not specified, it is determined based on the llm name (see utils.helpers.get_llm_type)
-* `-d`: Path to the domain.pddl file. Defaults to domain.pddl in the folder specified by -o.
-* `-i`: Path to the directory with the original instance pddl files. Defaults to utils.paths.ORIT_INST_FOLDER in the folder specified by -o
-* `-n`: number of instances that should be preprocessed and selected; If not set, then all instances from -i directory that are solvable and fulfill the length criterium are selected
-* `--len`: Select only instances for which the length of the optimal plan is within the specified limits (inclusive). Default is (2, 20)
-* `--timeout`: Time (in sec) to let fast downward try to find an optimal gold plan. If no plan is found within this time limit the problem is treated as unsolvable, i.e. not considered. Default is 1200, i.e. 20 minutes. 
-* `--overwrite`: Whether to re-run the adaption and plan generation for instances for which they already exist. Default is False
-* `--desc`: Approach to create the precondition and effect descriptions: 'medium', 'long' or 'short'. Defaults to 'medium'. (see [here](https://github.com/minecraft-saar/autoplanbench/wiki/Generating-Natural-Language-Descriptions#composing-domain-descriptions-from-fragments) for mor details)
-* `--to-text`: Type of few-shot examples to use for creating the natural language domain descriptions: 'extended', 'annotated', 'full', 'simple; Defaults to 'extended' (see [here](https://github.com/minecraft-saar/autoplanbench/wiki/Generating-Natural-Language-Descriptions#prompts-and-examples-for-generating-the-natural-language-fragments) for more details)
-
-</details>
-
-**Generate only domain descriptions and translation examples**<br>
-Set `-n 0` in the command from above
-
-**Generate adapted instances, gold plans and adapted gold plans based on existing domain description**<br>
-`python run_instance_setup.py -o [out_dir]`
-
-<details>
-   
-   <summary>Additional optional arguments:</summary>
-   
-* `-d`, `-n`, `--len`, `--timeout`, `--overwrite` as described above 
-* `--nl`: Path to the file with the created NL descriptions. Defaults to domain_description.json in the folder specified by -o
 
-</details>
-
-**Notes on generated files** <br>
-Running `run_instance_setup.py` or `run_domain_setup.py` (without -n 0) will create the following files and directories:
-* adapted_instances: directory with the instances from orig_instances but with different object_names (e.g. 'a' becomes 'object_0' or becomes 'truck_0', etc.)
-* orig_gold_plans: directory with plans generated for the original instances
-* gold_plans: directory with plans with the adapted object names
-* instance_object_mappings.json: json file with the mappings from original object names to adapted object names for all instances
-
-### 2. Generate planning few-shot examples and configurations
-
-**Generate few-shot examples and configurations**<br>
-
-In order to generate the few-shot example files and configuration files for all approaches specified by utils.paths.APPROACHES the following command can be used:
-
-`python run_setup_exp_files.py -d [domain_name] --ex-id [example_id] --llm [llm]`
-
-* `domain_name`: name of the domain
-* `example_id`: ID of instance that gets used as few-shot example and should be excluded from the experiment.
-* `llm`:  name of the LLM to use for generating the thoughts and that is used as both the planning and nl-to-pddl translation LLM (to use two different models, the configuration files need to be created / changed manually)
-
-<details>
-   
-   <summary>Additional optional arguments:</summary>
-   
-* `--configs`: whether the config files should be generated (or only few-shot examples); defaults to True
-* `--dd`: name of the subdirectory with the data, i.e. where a directory with the domain name is located; defaults to utils.paths.DATA_DIR / [domain_name]; if set to [sub_dir_name] then the data to use should be utils.paths.DATA_DIR / [sub_dir_name] / [domain_name]
-* `--thoughts`: Whether thoughts should be generated for react and cot examples. Otherwise only templates with placeholders for the thoughts are generated. Defaults to True
-* `--rl`: Number of steps in the ReAct example. If not set or set to None then the specified example is not shortened. Otherwise the ReAct and CoT few-shot example is shortened to the last --rl steps. 
-* `--react-exd`: Path to the file with the nl description of the example domain. Defaults to utils.paths.THOUGHT_GEN_EXAMPLE_DOMAIN
-* `--react-exf`: Path to the file with the react interaction example. Defaults to utils.paths.THOUGHT_GEN_EXAMPLE_FILE.
-* `--ms-i`: Max number of steps the planning LLM is allowed to predict in the interactive approaches; defaults to 24
-* `--br-i`: Break limit for interactive approaches, i.e. if br-i consecutive predictions are not executable then stop; defaults to 5
-* `--ms-ni`: Max number of steps the planning LLM is allowed to predict in the non-interactive approaches; defaults to 1
-* `--br-ni`: Break limit for non-interactive approaches, i.e. if br-ni consecutive predictions are not executable then stop; defaults to 1
-* `--enc`: Type of the encoding. Should be 'planbench' if LLM planning is run on the domain encodings from [PlanBench](https://github.com/karthikv792/LLMs-Planning/tree/main/plan-bench). Otherwise should be 'automatic'. Defaults to 'automatic'.
-
-
-</details>
-
-**Generating few-shot examples**<br>
-
-In order to generate the few-shot examples for a specific domain and specific approach run:
-
-`python llm_planning/create_few_shot_examples.py --dir [data_dir] --pref [prefixes] --version [approach]`
-
-* `data_dir`: Path to the directory with the files of the specific domain
-* `prefixes`: Tuple of the prefixes that should be added to the beginning of the input and output few-shot examples. First prefix is for the input and second one for the output. Is usually set to "('', '')" for the interactive approaches and "(['STATEMENT'], ['PLAN'])" for the non-interactive ones
-* `approach`: The approach for which the few-shot examples get generated ('basic', 'act', 'cot', 'react' or 'state_reasoning')
-
-<details>
-   
-   <summary>Additional optional arguments:</summary>
-   
-* `--ex-id`: The ID of the instance that should be converted into a few-shot example. If not set then all instances are converted into a few-shot example.
-* `--enc` and `--rl` as above
-
-</details>
-
-**Note**: for the react and cot approach, this function only generates templates, i.e. with placeholders for the thoughts. In order to generate thoughts using an LLM and add them run the llm_planning/fill_thought_examples.py script
-
-`python fill_though_examples.py --template [template] --nl-domain [nl_domain] --ex-domain [ex-domain] --ex-react [ex-react] --out [out] --llm [llm]`
-* `template`: path to the template file generated by the create_few_shot_examples script
-* `nl_domain`: path to the file with the natural language description of the domain for which the example is generated
-* `ex-domain`: path to the file with the natural language description of the domain that is used as few-shot example for the thoughts generation
-* `ex-react`: path to the few-shot example for the thoughts generation
-* `out`: path to the output file for the react example, the path to the output file for the cot example is derived by replacing 'react' by 'cot'
-* `llm`: the LLM got use for generating the thoughts
-
-**Generate planning configurations**<br>
-
-In order to generate the configuration files for all 5 implemented approaches for a specific domain the following command can be used:
-
-`python configs/create_config.py -d [domain_name] --llm [llm]`
-
-* `domain_name`: name of the domain
-* `llm`: name of the LLM to use as both the planning and nl-to-pddl translation LLM (to use two different models, the configuration files need to be created / changed manually)
-
-<details>
-   
-   <summary>Additional optional arguments:</summary>
-   
-* `--d-dir`: Path domain directory. Defaults to utils.paths.DATA_DIR/domain_name
-* `--ex-id`: ID of instance that gets used as few-shot example and should be excluded from the experiment. If set to None, all instances from --d-dir/adapted_instances are included in the experiments. Defaults to None.
-* `--enc`: Type of the encoding. Should be 'planbench' if LLM planning is run on the domain encodings from [PlanBench](https://github.com/karthikv792/LLMs-Planning/tree/main/plan-bench). Otherwise, should be 'automatic'. Defaults to 'automatic'.
-* `--ms-i`, `--br-i`, `--ms-ni`, `--br-ni`, `--enc` as above
-
-</details>
-
-### 3. Running LLM planning
-
-`python run_planning.py --config [config] --few-shot-id [example_id]`
-
-* `config`: Path to the planning configuration file
-* `example_id`: ID fo the few-shot example to use. Will be selected from the few-shot example directory of the specific approach; For example, if the approach is 'basic' and example_id is X then the few-shot example is read from the file DATA_DIR/domain_name/few_shot_examples_basic/basic_examples_instance-X.json
-
-The format of the generated output files is explained in the [Wiki: Output File (Log) Format](https://github.com/minecraft-saar/autoplanbench/wiki/Output-File-(Log)-Format)
-
-
-### 4. Evaluation
-See the [evaluation Readme](https://github.com/minecraft-saar/autoplanbench/blob/main/evaluation/README.md#evaluation).
-
-
-### 5. Additional Functionalities
-
-**Saving NL descriptions**<br>
-
-Functions to save human readable versions of the NL domain description, a specific few-shot example or a NL description of a specific PDDL problem
-
-`python utils/run_save_descriptions.py --type domain -o [output_path] --d-nl [nl_domain] -t [template_file]`
-
-`python utils/run_save_descriptions.py --type example -o [output_path] -e [example_path]`
-
-`python utils/run_save_descriptions.py --type instance -o [output_path] --d-nl [nl_domain] -d [pddl_domain] -p [pddl_problem]`
-
-* `output_path`: path to the output file
-* `nl_domain`: path to the .json file with the generated nl descriptions
-* `template_file`: file to the jinja template for the domain description, defaults to utils.paths.DOMAIN_DESCRIPTION_TEMPLATE
-* `example_path`: path to the few-shot example file 
-* `pddl_domain`: path to the pddl domain file
-* `pddl_problem`: path to the pddl problem file for which the NL descriptions is generated
-
-**Saving the prompts**<br>
-In order to save the P-LLM and T-LLM prompt for a specific problem instance in a separate file run: <br>
-`python save_prompts.py --config [config] --few-shot-id [example_id] --pl-out --tr-out`<br>
-where `config` and `few-shot-id` are as described above and `pl-out` and `tr_out` are the paths to the file where the P-LLM and the T-LLM prompt gets saved respectively.
-
-Note that there is not target initial state (P-LLM) or target NL action (T-LLM) included at the end of the generated prompts as only the parts that are independent of the specific target problem are generated. 
-
-**Continuing a previous interactive run**<br>
-
-`python utils/run_replay_from_log --config [config_path] --steps [total_steps] --few-shot-id [few_shot_id] --log-file [log_file_previous_run] --new-log-dir [dir_for_new_log_file]`
-
-* `config_path`: path to the config file that had been used for the original run (the specified task_ids will be ignored)
-* `total_steps`: total number of steps; i.e. number of new steps to be run will be determined by total_steps - previously_run_steps
-* `few_shot_id`: id of the few-shot examp[openai_chat_instance-8_2024-04-17-20-22-34.jsonlines](output_files%2Fsatellite_fixed_react%2Fopenai_chat_instance-8_2024-04-17-20-22-34.jsonlines)le to use
-* `log_file_previous_run`: path to the results file form the previous run that should be continued
-* `dir_for_new_log_file`: path to the subdirectory of the OUTPUT_DIR where the new results file gets saved (overwrites the specified directory in the run_confing in the config file)
-
-**Note:** the new log file will include everything from the previous log file except for the final information saved at the end of a run (i.e. success, number of tokens etc.). After the last entry (which should be a feedback from the simulator) the line shown below is added, then followed by all interaction logs from the P-LLM, T-LLM and simulator as usual. Note that the time and number of tokens only refers to the new time and tokens whereas the number of steps and step_reached_goal_first in the output take into account all (previous + new) steps
-
-`{"continued": true, "max_steps": [max_number_of_new_steps], "break_limit": [original_break_limi], "date": [date_of_new_run]}`
-
-# Batching
-
-The **Basic** and **CoT** approach requires only a single call to the P-LLM. Therefore, the batch API from OpenAI can be used for generating plans. <br>
-**Note**: in order to work, the implemented approach **requires that caching is used**!
-
-`python run_batch_openai.py -m [mode] --config [config] --few-shot-id [few-shot-id]`
-
-where:
-* `mode`:
-  * `'C'`: Creates the file with all inputs for the batch request 
-  * `'S'`: Submits the batch request
-  * `'R'`: Retrieves the results from running the batch API request
-* `config`: path to the same configuration file that would be used for running the normal API (i.e. the same configs as described above)
-* `few-shot-id`: id of the few-shot example 
-
-The file with the outputs of the batch request will not be in the format required for the evaluation yet and additionally, it does not include any translations back from NL to PDDL. However, running the script with `-m 'R'` will not only download the responses but also saves all inputs + responses to the cache. The final output files can then be derived by running the plan generation in the usual way (i.e. as described above) because all responses will be retrieved from the cache. 
-
-Pipeline for batching: 
-1. `python run_batch_openai.py -m 'CS' --config [config_file] --few-shot-id [few-shot-id]`
-2. `python run_batch_openai.py -m 'R' --config [config_file] --few-shot-id [few-shot-id]`
-3. `python run_planning.py --config [config_file] --few-shot-id [few-shot-id]`
-
-**Note**: it will take some time until the batch request is processed (at most 24 hours, often it takes less than 30 minutes for batches of 20 planning instances). Therefore, there should be some waiting time between step 1. and 2.
+### Running the domain setup and planning
+
+This domain setup step will set up all relevant files for the subsequent planning experiments, including few-shot examples and
+translations to natural language. The planning step takes care of the running the actual planning experiments.
+For both steps, the script `run.py` creates the correct steps in order. It can be used to merely create
+shell scripts with the appropriate steps for each domain, to run existing shell scripts or to
+do both consecutively. Please note that domain setup and planning need to
+be called separately.
+
+#### Usage of `run.py` 
+
+```
+run.py [-h] --version {domain_setup,planning}
+            --mode {create,run,both}
+            --domains DOMAINS [DOMAINS ...]
+            [--outfile OUTFILE]
+            [--approaches {basic,act,cot,react} [{basic,act,cot,react} ...]]
+            [--seeds SEEDS [SEEDS ...]]
+            [--fewshot-mappings FEWSHOT_MAPPINGS]
+            [--api-key-id API_KEY_ID]
+            [--pddl]
+```
+
+The individual arguments are as follows:
+
+- `--version`, `-v`: Has to be set to either `domain_setup` or `planning`, depending on which set of commands is up next. To run a complete planning experiment on a domain, `domain_setup` has to be run for that domain first, and afterwards, `planning`.
+- `--mode`, `-m`: One of `create`, `run` or `both`.
+  + If `create` is chosen. In this case, the shell scripts for the chosen version and configuration are only being generated, but not executed immediately.
+  + If `run` is chosen, existing shell scripts for the chosen version and configuration are executed.
+  + If `both` is chosen, shell scripts for the chosen version and configuration are only being generated, and executed immediately afterwards.
+- `--domains`: Names of the domains to be handled.
+- `--approaches`: Which approaches to run, defaults to all for of the four approaches:
+  + `basic`: Directly prompts the LLM to generate plans for each of the problems.
+  + `act`: Prompts the LLM to generate plans one step at a time, providing immediate domain feedback on the applicability of the selected step.
+  + `cot`: Prompts the LLM to use Chain-of-Thought reasoning when generating plans.
+  + `react`: Act combined with thoughts - prompts the LLM to generate plans one step at a time using reasoning thoughts, then providing immediate domain feedback.
+- `--outfile`: If the commands leading to the creation of the shell scripts for the chosen approach and configuration are to be saved as well, specify a path for output .sh-file.
+- `--seeds`: Seeds to be used for the language models.
+- `--fewshot-mappings`: File path to the few-shot ID mappings file. Defaults to `data/few_shot_mappings.json`.
+- `--api-key-id`: Identifier of the API key to use. Specify the identifiers in `set_env.py` as described above.
+- `--pddl`: Set this flag if the input is specified in pddl, note: This is currently only implemented for the approaches basic and act.
+
+#### Domain setup and planning
+
+To return to the example, run domain setup for the blocksworld domain, using the seeds 1, 2 and 3 and the API key associated with the identifier key1 as follows:
+
+```
+python run.py --version domain_setup --mode both --domains blocksworld --seeds 1 2 3 --api-key-id key1
+```
+
+Run planning for the same configuration:
+
+```
+python create_steps_commands.py --version planning --mode both --domains blocksworld --seeds 1 2 3 --api-key-id key1
+```
+
+### Running individual steps
+
+For information on how to run individual steps, refer to the [Wiki](https://github.com/coli-saar/autoplanbench/wiki/Running-individual-steps).
+
+### Output Files
+
+When running the pipeline with `run.py` or `generate_steps.py`, the output
+files will be saved to the directory `output_files` per default. Example
+output files for the domain blocksworld with the approach react and seed 1
+can be seen in this directory.
+
+### Evaluation Results
+
+When running the pipeline with `run.py` or `generate_steps.py`, the evaluation
+files will be saved to the directory `evaluation_results` per default.
+For each configuration of domain, approach and seed, two files will be saved:
+One .csv file with the individual results per instance, and one .csv file
+containing a summary with a number of metrics. For a detailed description,
+please refer to the [Wiki](https://github.com/coli-saar/autoplanbench/wiki/Evaluation-metrics).

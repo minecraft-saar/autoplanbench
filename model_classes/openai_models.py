@@ -14,7 +14,8 @@ class OpenAIChatModel(LLMModel):
                  max_history: Union[int, None],
                  cache_directory: Union[str, None] = None,
                  seed: Union[int, None] = None,
-                 logprobs: Union[bool, None] = True):
+                 logprobs: Union[bool, None] = True,
+                 api_key: Union[None, str]=None):
         """
 
         :param model_name: the general name of the model to identify the correct LLMModel subclass, e.g. openai_chat
@@ -31,11 +32,15 @@ class OpenAIChatModel(LLMModel):
 
         super().__init__(model_name=model_name, model_path=model_path, max_tokens=max_tokens,
                          temp=temp, max_history=max_history, cache_directory=cache_directory, seed=seed)
+        self.api_key = api_key
         self.logprobs = logprobs
         self.client = self.create_client()
 
     def create_client(self):
-        client = OpenAI()
+        if self.api_key is None:
+            client = OpenAI()
+        else:
+            client = OpenAI(api_key=self.api_key)
         return client
 
     def init_model(self, init_prompt: str):
@@ -70,6 +75,7 @@ class OpenAIChatModel(LLMModel):
         self.initial_history = self.history.copy()
 
     def _generate(self, prompt: str):
+        assert self.seed is not None
 
         if self.seed:
             output = self.client.chat.completions.create(model=self.model_path, messages=self.history, temperature=self.temp, max_tokens=self.max_tokens, seed=self.seed, logprobs=self.logprobs)

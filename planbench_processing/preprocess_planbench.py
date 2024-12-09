@@ -252,17 +252,17 @@ if __name__=='__main__':
     new_config_path = os.path.join(args.planbench_dir, 'domain_description.json')
 
     # Transform the natural language descriptions into the required format
-    transform_planbench_config(yaml_config_file=orig_config_path,
-                               json_config_file=new_config_path)
+    #transform_planbench_config(yaml_config_file=orig_config_path,
+                               #json_config_file=new_config_path)
 
 
     # Adapt the instances and plan files to match the variables etc.
     orig_instances_dir = os.path.join(args.orig_data_dir, 'orig_problems')
-    orig_plan_dir = os.path.join(args.orig_data_dir, 'gold_plans')
+    orig_plan_dir = os.path.join(args.orig_data_dir, 'adapted_gold_plans')
     instance_names_mappings = os.path.join(args.orig_data_dir, 'instance_object_mappings.json')
 
     adapted_instances_dir = os.path.join(args.planbench_dir, 'adapted_instances')
-    adapted_plan_dir = os.path.join(args.planbench_dir, 'gold_plans')
+    adapted_plan_dir = os.path.join(args.planbench_dir, 'adapted_gold_plans')
 
     adapt_problems_and_gold(orig_instance_dir=orig_instances_dir,
                             orig_domain_nl_file=orig_config_path,

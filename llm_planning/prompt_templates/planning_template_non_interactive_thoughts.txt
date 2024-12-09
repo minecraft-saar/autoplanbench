@@ -1,0 +1,69 @@
+{# Template for the Prompts for the planning model in non-interactive planning approaches, potentially with few shot examples of complete interaction #}
+
+{%- block startinstructions -%}
+You are an assistant for giving instructions to successfully complete small tasks.
+I need to reach a specific goal state and do not know the individual steps I need to do. Please instruct me how to complete my task.
+I can only use objects that are observable in the situation.
+{%- endblock startinstructions %}
+
+{% block taskinstruction -%}
+My task is to execute actions until reaching my goal. {% if include_examples -%} {{ task_description }} {%- endif %}
+{%- endblock taskinstruction %}
+
+{% block actions -%}
+I can carry out the following actions:
+{{ actions }}
+
+{% if preconditions -%}
+I have the following restrictions on my actions:
+{%- for prec in preconditions %}
+{{ prec }}
+{%- endfor %}
+{%- endif %}
+
+{% if effects -%}
+The actions have the following effects on the state:
+{%- for effect in effects %}
+{{ effect }}
+{%- endfor %}
+{%- endif %}
+
+{% if type_hierarchy -%}
+{%- for th in type_hierarchy %}
+{{ th }}
+{%- endfor %}
+{%- endif %}
+{%- endblock actions %}
+
+{%- block examples %}
+{% if include_examples -%}
+{% if pos_examples %}
+Here are some examples
+{%- for ex in pos_examples %}
+{{ prefixes['input'] }} {{ ex['input'] }}
+{{ prefixes['output'] }} {{ ex['output'] }}
+
+{% endfor %}
+{%- endif %}
+{%- endif %}
+{%- endblock examples -%}
+
+{%- block finalinstructions -%}
+{% if incremental -%}
+Please instruct me how to complete my task. {% if include_examples -%} Remember: {{ task_description }} {% endif %}.
+Please provide me only one single step at a time.
+You can tell me to look around to get a description of what I see.
+When I am finished with my task then please tell me: 'You are finished'.
+{% else -%}
+Please provide me a step-by-step instruction for how to complete my task. {% if include_examples -%} Remember: {{ task_description }} {% endif %}.
+Please think step-by-step and provide your reasoning thought before each instruction.
+Your output should have the following format:
+
+Think: [Your reasoning thought]
+Instruction: [The instruction for the next action]
+
+Please provide each thought and each instruction in a new line.
+
+Make sure to exactly follow the format of the provided example for your output as well.
+{%- endif %}
+{% endblock finalinstructions -%}

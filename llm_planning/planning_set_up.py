@@ -5,6 +5,8 @@ import time
 import openai
 from openai import Timeout, APIConnectionError
 import json
+import stanza
+from stanza.pipeline.core import DownloadMethod
 from typing import Union, Tuple
 from set_env import set_env_vars
 from llm_planning.game_classes.pddl_planning_game import PDDLPlanningGame
@@ -41,78 +43,80 @@ def play_games(config, few_shot_path, game_class):
                                              task_num=task_num)
                 run_config['steps'] = steps
 
-            game = create_game(task_num=task_num, instance_config=instance_config, few_shot_path=few_shot_path,
+            game = create_game(task_num=task_num,
+                               instance_config=instance_config,
+                               few_shot_path=few_shot_path,
                                game_class=game_class)
 
             try:
                 game.run_instructions_all(**run_config)
                 break
 
-            except openai.APIConnectionError as e:
-                print('Warning: Server was unavailable. Will try again in a few seconds')
-                game.summary_planning['stopping_reason'] = 'error'
-                game.log_planning_summary()
-                game.log_time_and_token(measured_time=0)
-                with open(game.log, 'a') as log:
-                    log.write('\n')
-                    json.dump({'Failed': True, 'Error_type': 'openai.APIConnectionError', 'Error_message': str(e)}, log)
-                    log.write('\n')
-                time.sleep(10)
-                attempt += 1
-                continue
-
-            except openai.Timeout as e:
-                print('Warning: Timout error. Will try again in a few seconds')
-                game.summary_planning['stopping_reason'] = 'error'
-                game.log_planning_summary()
-                game.log_time_and_token(measured_time=0)
-                with open(game.log, 'a') as log:
-                    log.write('\n')
-                    json.dump({'Failed': True, 'Error_type': 'openai.Timeout', 'Error_message': str(e)}, log)
-                    log.write('\n')
-                time.sleep(10)
-                attempt += 1
-                continue
-
-            except openai.RateLimitError as e:
-                print('Warning: RateLimitError. Will try again in a few seconds')
-                game.summary_planning['stopping_reason'] = 'error'
-                game.log_planning_summary()
-                game.log_time_and_token(measured_time=0)
-                with open(game.log, 'a') as log:
-                    log.write('\n')
-                    json.dump({'Failed': True, 'Error_type': 'openai.RateLimitError', 'Error_message': str(e)}, log)
-                time.sleep(40)
-                attempt += 1
-                continue
-
-            except openai.BadRequestError as e:
-                print(f'Warning: Invalid Request. Will skip instance and continue with next one. {str(e)}')
-                if 'maximum context length' in str(e):
-                    game.summary_planning['stopping_reason'] = 'reached_token_limit'
-                else:
+                """except openai.APIConnectionError as e:
+                    print('Warning: Server was unavailable. Will try again in a few seconds')
                     game.summary_planning['stopping_reason'] = 'error'
-                game.log_planning_summary()
-                game.log_time_and_token(measured_time=0)
-                with open(game.log, 'a') as log:
-                    log.write('\n')
-                    json.dump({'Failed': True, 'Error_type': 'openai.BadRequestError', 'Error_message': str(e)}, log)
-                    log.write('\n')
-                time.sleep(10)
-                break
-
-            except openai.APIStatusError as e:
-                print('Warning: API Status Error. Will try again in a few seconds')
-                game.summary_planning['stopping_reason'] = 'error'
-                game.log_planning_summary()
-                game.log_time_and_token(measured_time=0)
-                with open(game.log, 'a') as log:
-                    log.write('\n')
-                    json.dump({'Failed': True, 'Error_type': 'openai.APIStatusError', 'Error_message': str(e)}, log)
-                    log.write('\n')
-                time.sleep(10)
-                attempt += 1
-                continue
+                    game.log_planning_summary()
+                    game.log_time_and_token(measured_time=0)
+                    with open(game.log, 'a') as log:
+                        log.write('\n')
+                        json.dump({'Failed': True, 'Error_type': 'openai.APIConnectionError', 'Error_message': str(e)}, log)
+                        log.write('\n')
+                    time.sleep(10)
+                    attempt += 1
+                    continue
+    
+                except openai.Timeout as e:
+                    print('Warning: Timout error. Will try again in a few seconds')
+                    game.summary_planning['stopping_reason'] = 'error'
+                    game.log_planning_summary()
+                    game.log_time_and_token(measured_time=0)
+                    with open(game.log, 'a') as log:
+                        log.write('\n')
+                        json.dump({'Failed': True, 'Error_type': 'openai.Timeout', 'Error_message': str(e)}, log)
+                        log.write('\n')
+                    time.sleep(10)
+                    attempt += 1
+                    continue
+    
+                except openai.RateLimitError as e:
+                    print('Warning: RateLimitError. Will try again in a few seconds')
+                    game.summary_planning['stopping_reason'] = 'error'
+                    game.log_planning_summary()
+                    game.log_time_and_token(measured_time=0)
+                    with open(game.log, 'a') as log:
+                        log.write('\n')
+                        json.dump({'Failed': True, 'Error_type': 'openai.RateLimitError', 'Error_message': str(e)}, log)
+                    time.sleep(40)
+                    attempt += 1
+                    continue
+    
+                except openai.BadRequestError as e:
+                    print(f'Warning: Invalid Request. Will skip instance and continue with next one. {str(e)}')
+                    if 'maximum context length' in str(e):
+                        game.summary_planning['stopping_reason'] = 'reached_token_limit'
+                    else:
+                        game.summary_planning['stopping_reason'] = 'error'
+                    game.log_planning_summary()
+                    game.log_time_and_token(measured_time=0)
+                    with open(game.log, 'a') as log:
+                        log.write('\n')
+                        json.dump({'Failed': True, 'Error_type': 'openai.BadRequestError', 'Error_message': str(e)}, log)
+                        log.write('\n')
+                    time.sleep(10)
+                    break
+    
+                except openai.APIStatusError as e:
+                    print('Warning: API Status Error. Will try again in a few seconds')
+                    game.summary_planning['stopping_reason'] = 'error'
+                    game.log_planning_summary()
+                    game.log_time_and_token(measured_time=0)
+                    with open(game.log, 'a') as log:
+                        log.write('\n')
+                        json.dump({'Failed': True, 'Error_type': 'openai.APIStatusError', 'Error_message': str(e)}, log)
+                        log.write('\n')
+                    time.sleep(10)
+                    attempt += 1
+                    continue"""
 
             except Exception as e:
                 print(f'ERROR when processing task {task_num}')
@@ -124,7 +128,6 @@ def play_games(config, few_shot_path, game_class):
                     log.write('\n')
                     json.dump({'Failed': True, 'Error_type': str(type(e)), 'Error_message': str(e)}, log)
                 break
-
 
 
 def create_game(task_num, instance_config, few_shot_path, game_class) -> PDDLPlanningGame:
@@ -139,9 +142,16 @@ def create_game(task_num, instance_config, few_shot_path, game_class) -> PDDLPla
         instance_config.pop('thoughts')
     if 'encoding_type' in instance_config:
         instance_config.pop('encoding_type')
+
+    nlp_processor = stanza.Pipeline(lang='en',
+                                              processors='tokenize,mwt,pos,lemma,depparse',
+                                              download_method=DownloadMethod.REUSE_RESOURCES,
+                                              logging_level='WARN', use_gpu=False)
+    instance_config['nlp_processor'] = nlp_processor
     game = game_class(**instance_config)
 
     return game
+
 
 def create_instance_game_config(task_num, instance_config, few_shot_path):
 
@@ -203,7 +213,7 @@ def get_game_class(thoughts: bool, planbench: bool, pddl: bool = False):
     return game_class
 
 
-def set_up_configurations(config_file:str, few_shot_id: Union[int, None]) -> Tuple[dict, Union[str, None]]:
+def set_up_configurations(config_file:str, few_shot_id: Union[int, None], seed: int) -> Tuple[dict, Union[str, None]]:
 
     with open(config_file, 'r') as cf:
         config = json.load(cf)
@@ -215,7 +225,7 @@ def set_up_configurations(config_file:str, few_shot_id: Union[int, None]) -> Tup
         config['domain_file'] = os.path.join(domain_dir, 'domain.pddl')
     if config.get('domain_nl_file', '') == '':
         assert domain_dir
-        config['domain_nl_file'] = os.path.join(domain_dir, 'domain_description.json')
+        config['domain_nl_file'] = os.path.join(domain_dir, f'domain_description_seed{seed}.json')
     if config.get('instance_dir', '') == '':
         assert domain_dir
         config['instance_dir'] = os.path.join(domain_dir, INST_FOLDER)
@@ -237,7 +247,8 @@ def set_up_configurations(config_file:str, few_shot_id: Union[int, None]) -> Tup
         few_shot_path = None
     else:
         few_shot_dir_path = get_few_shot_dir(planning_approach=approach_type, domain_data_dir=domain_dir)
-        few_shot_path = get_few_shot_ex_file(few_shot_dir=few_shot_dir_path, instance_id=few_shot_id, approach=approach_type)
+
+        few_shot_path = get_few_shot_ex_file(few_shot_dir=few_shot_dir_path, instance_id=few_shot_id, approach=approach_type, seed=seed)
 
     return config, few_shot_path
 

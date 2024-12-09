@@ -1,5 +1,6 @@
 from typing import Tuple, Union
 import json
+from stanza import Pipeline
 
 from llm_planning.game_classes.pddl_planning_game_planbench import PDDLGamePlanBench
 
@@ -12,6 +13,7 @@ class PDDLGamePlanbenchThoughts(PDDLGamePlanBench):
                  domain_file: str,
                  domain_nl_file: str,
                  instance_file: str,
+                 nlp_processor: Pipeline,
                  translation_neural: bool = True,
                  incremental: bool = True,
                  positive_feedback: str = 'full',
@@ -36,7 +38,8 @@ class PDDLGamePlanbenchThoughts(PDDLGamePlanBench):
                          provide_state=provide_state, not_finished_feedback=not_finished_feedback,
                          log_history=log_history, by_action=by_action,
                          planning_approach=planning_approach,
-                         assert_cache=assert_cache)
+                         assert_cache=assert_cache,
+                         nlp_processor=nlp_processor)
 
 
     def get_next_instruction(self, debug=False, instr='') -> Tuple[bool, bool]:
@@ -48,9 +51,13 @@ class PDDLGamePlanbenchThoughts(PDDLGamePlanBench):
         if self.observation == '':
             # generate initial state description
             self.observation = self.get_description_current_state()
+            # If initial step: use goal description for current state
+            if self.examples_chat:
+                self.observation = f'{self.env.get_description_goal_state()} {self.observation}'
             print(f'$SWorld: {self.observation} SWorld$')
             self.write_log(self.observation, 'auto_state')
 
+        # What is current_world for?
         current_world = self.get_description_current_state()
 
         model_input = self.observation
@@ -119,6 +126,8 @@ class PDDLGamePlanbenchThoughts(PDDLGamePlanBench):
             if attempt == 0:
                 # generate initial state description
                 self.observation = self.get_description_current_state()
+                if self.examples_chat:
+                    self.observation = f'{self.env.get_description_goal_state()}\n{self.observation}'
                 print(f'$SWorld: {self.observation} SWorld$')
                 self.write_log(self.observation, 'auto_state')
 

@@ -1,8 +1,7 @@
 import os
 import re
 from typing import Tuple, List
-import stanza
-from stanza.pipeline.core import DownloadMethod
+from stanza import Pipeline
 from llm_planning.raw_pddl_input.raw_pddl_env import RawPDDLEnvironment
 
 
@@ -13,17 +12,18 @@ class IdentityEncodingDict(dict):
 
 class PDDLWorldEnvironment(RawPDDLEnvironment):
 
-    def __init__(self, domain_nl: dict, instance_file: str, domain_file: str):
+    def __init__(self,
+                 domain_nl: dict,
+                 instance_file: str,
+                 domain_file: str,
+                 nlp_processor: Pipeline):
 
         super().__init__(instance_file=instance_file, domain_file=domain_file)
 
         self.config = domain_nl
 
-        # Do not show stanza output
-        self.nlp_processor = stanza.Pipeline(lang='en', processors='tokenize,mwt,pos,lemma,depparse',
-                                             download_method=DownloadMethod.REUSE_RESOURCES,
-                                             logging_level='WARN', use_gpu=False)
-
+        self.nlp_processor: Pipeline = nlp_processor
+        self.negation_patterns = dict()
 
         self.actions_text: dict = self.config['action_mappings']
         self.actions_text_indef: dict = self.config['action_mappings_indef']
@@ -78,7 +78,6 @@ class PDDLWorldEnvironment(RawPDDLEnvironment):
         else:
             return action_instr
 
-
     def step(self, action_instr: str):
         # ----- Functionalities to deal with inputs VAL cannot deal with for this domain ------
         if action_instr == '(look-around)':
@@ -104,10 +103,8 @@ class PDDLWorldEnvironment(RawPDDLEnvironment):
 
         # need run VAL validate -v self.domain_file self.instance_file plan
         val = os.environ.get('VAL')
-        #val = '/localfast/kstein/LLMs-Planning/planner_tools/VAL'
-        cmd = f'{val}/validate -v {self.domain_file} {self.tmp_instance_file} {self.tmp_action_file}'
+        cmd = f'{val} -v {self.domain_file} {self.tmp_instance_file} {self.tmp_action_file}'
         self.last_val_response = os.popen(cmd).read()
-
 
         # store output somehow and parse it
         reached_goal, executable, effects, advice_goal, advice_precond = self.parse_val_output(self.last_val_response)
@@ -156,8 +153,13 @@ class PDDLWorldEnvironment(RawPDDLEnvironment):
 
     def negate_pred_description(self, pred_description):
 
-        # simple rules to negate auxiliary verbs
         negated_pred = None
+
+        if pred_description in self.negation_patterns.keys():
+            negated_pred = self.negation_patterns[pred_description]
+            return negated_pred
+
+        # simple rules to negate auxiliary verbs
         aux_verbs = ['is', 'are', 'has', 'have', 'can']
         for v in aux_verbs:
             if f' {v} ' in pred_description and pred_description.split().count(v) == 1:
@@ -169,6 +171,7 @@ class PDDLWorldEnvironment(RawPDDLEnvironment):
                 negated_pred = re.sub(f'{v} ', f'{v} not ', pred_description, 1)
 
         if negated_pred is not None:
+            self.negation_patterns[pred_description] = negated_pred
             return negated_pred
 
         # use dependency parsing if none of the rules applies (might add negation at the wrong place)
@@ -195,6 +198,8 @@ class PDDLWorldEnvironment(RawPDDLEnvironment):
         assert pred_description != negated_pred
         if head_token == 'can':
             negated_pred = negated_pred.replace('can not', 'cannot')
+
+        self.negation_patterns[pred_description] = negated_pred
 
         return negated_pred
 
@@ -226,6 +231,7 @@ class PDDLWorldEnvironment(RawPDDLEnvironment):
         all_types = list(self.types2objects.keys())
         if len(all_types) == 1:
             possible_objects_names = [self.encoded_objects[obj] for obj in self.possible_objects]
+            possible_objects_names.sort()
             if all_types[0] == 'object':
                 if len(self.possible_objects) == 1:
                     obj_descrip = f'There is {len(self.possible_objects)} object: {", ".join(possible_objects_names)}'
@@ -344,6 +350,13 @@ class PDDLWorldEnvironment(RawPDDLEnvironment):
         reduced_pddl_templ = pddl_templ.replace(')', ' ')
         pddl_order = re.findall(r'\?.+? ', reduced_pddl_templ)
         pddl_order = [var.strip() for var in pddl_order]
+
+        if not set(nl_order) == set(pddl_order):
+            print(pred_type)
+            print(pred_name)
+            print(nl_templ)
+            print(set(nl_order))
+            print(set(pddl_order))
 
         assert set(nl_order) == set(pddl_order)
 

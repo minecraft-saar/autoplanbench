@@ -20,9 +20,9 @@ Code making batch API requests
 """
 
 
-def create_batch_request_file(config_file, few_shot_id, batch_file_name,):
+def create_batch_request_file(config_file, few_shot_id, batch_file_name, seed):
 
-    batch_tasks = create_batch_tasks(config_file=config_file, few_shot_id=few_shot_id)
+    batch_tasks = create_batch_tasks(config_file=config_file, few_shot_id=few_shot_id, seed=seed)
 
     path_batch_file = os.path.split(batch_file_name)[0]
     Path(path_batch_file).mkdir(exist_ok=True, parents=True)
@@ -32,9 +32,9 @@ def create_batch_request_file(config_file, few_shot_id, batch_file_name,):
             bf.write(json.dumps(obj) + '\n')
 
 
-def create_batch_tasks(config_file, few_shot_id):
+def create_batch_tasks(config_file, few_shot_id, seed):
 
-    config, few_shot_path = set_up_configurations(config_file, few_shot_id)
+    config, few_shot_path = set_up_configurations(config_file, few_shot_id, seed)
 
     assert not config['incremental'], 'Warning: batch request is not implemented for incremental planning mechanisms!'
 
@@ -71,8 +71,10 @@ def create_batch_tasks(config_file, few_shot_id):
 
         batch_input = plan_llm.get_history()
 
+        #custom_id = f"task-{task_index}"
+        custom_id = f"task-{task_num}-{config_file}"
         task = {
-            "custom_id": f"task-{task_index}",
+            "custom_id": custom_id,
             "method": "POST",
             "url": "/v1/chat/completions",
             "body":
@@ -145,10 +147,18 @@ def retrieve_response_batch_request(batch_request_details_path):
     retrieve_status = client.batches.retrieve(batch_id)
     print(f"BATCH  openai.batches.retrieve() response: {retrieve_status}")
 
+    all_successfull = True
+    not_finished = False
+
     if retrieve_status.output_file_id:
         output_file_id = retrieve_status.output_file_id
         content = client.files.content(output_file_id)
         print(f"BATCH obtained output_file_id: {output_file_id} content: {content}")
+
+        failed_requests = retrieve_status.request_counts.failed
+        if failed_requests != 0:
+            all_successfull = False
+            print(f'Batch request failed at {failed_requests} instances')
 
         batch_output_file_path = data['local_batch_input_file_path'].replace("batch_request_", "batch_response_")
         with open(batch_output_file_path, 'wb') as file:
@@ -162,6 +172,7 @@ def retrieve_response_batch_request(batch_request_details_path):
     elif retrieve_status.status == 'completed':
         error_file_id = retrieve_status.error_file_id
         content = client.files.content(error_file_id)
+        all_successfull = False
         print(f'BATCH failed')
 
         path_for_error_file, name_detail_file = os.path.split(batch_request_details_path)
@@ -171,7 +182,11 @@ def retrieve_response_batch_request(batch_request_details_path):
         with open(error_output_file_path, 'wb') as file:
             file.write(content.content)
     else:
+        all_successfull = False
+        not_finished = True
         print('Response not available yet.')
+
+    return all_successfull, not_finished
 
 
 def parse_batch_request_output_and_add_to_cache(
@@ -188,7 +203,6 @@ def parse_batch_request_output_and_add_to_cache(
     with open(request_output_file, 'r') as rof:
         for line in rof:
             output_data.append(json.loads(line.strip()))
-
 
     paired_data = dict()
 
@@ -209,12 +223,15 @@ def parse_batch_request_output_and_add_to_cache(
     for key, value in paired_data.items():
 
         cache_query = create_cache_query(value['input_content'], value['seed'])
-        #print(cache_query)
-        response = convert_completion_response(value['output_content'])
-        #print(response)
+        try:
+            response = convert_completion_response(value['output_content'])
+            with Cache(directory=cache_dir) as cache:
+                cache[cache_query] = response
 
-        with Cache(directory=cache_dir) as cache:
-            cache[cache_query] = response
+        except KeyError:
+            print(f'Error: There was not response generated for instance {key}')
+
+
 
 def create_cache_query(history, seed):
     # put together everything that is in the chat history (this already includes the prompt)

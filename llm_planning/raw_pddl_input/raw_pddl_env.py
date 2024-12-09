@@ -43,15 +43,39 @@ class RawPDDLEnvironment:
         self.conditions_goal_state: dict = self.process_goal_conditions()
 
         self.completed = False
-        self.goal_feedback = ''
+        self.goal_feedback = self.get_first_diff_to_goal_feedback()
         self.last_val_response = ''
 
         self.problem_descript, self.goal_descript = self.split_problem_file(instance_file=instance_file)
 
         atexit.register(self.remove_temp_files)
 
+    def get_first_diff_to_goal_feedback(self):
 
-    def split_problem_file(self, instance_file):
+        with open(self.tmp_action_file, 'w') as plan_file:
+            plan_file.write('')
+
+        # need run VAL validate -v self.domain_file self.instance_file plan
+        val = os.environ.get('VAL')
+        cmd = f'{val} -v {self.domain_file} {self.instance_file} {self.tmp_action_file}'
+        self.last_val_response = os.popen(cmd).read()
+
+        # store output somehow and parse it
+        reached_goal, executable, effects, advice_goal, advice_precond = self.parse_val_output(self.last_val_response)
+
+        if reached_goal:
+            self.completed = True
+
+        if not reached_goal and executable:
+            goal_feedback = self.get_feedback_unsat(advice_goal)
+
+        else:
+            goal_feedback = 'Great!'
+
+        return goal_feedback
+
+
+    def split_problem_file_old(self, instance_file):
 
         with open(instance_file, 'r') as pf:
             problem_text = pf.read()
@@ -68,6 +92,14 @@ class RawPDDLEnvironment:
             goal_def = goal_def[:-1]
 
         return problem_def, goal_def
+
+    def split_problem_file(self, instance_file):
+
+        with open(instance_file, 'r') as pf:
+            problem_text = pf.read()
+            _, definition = problem_text.split('(:objects')
+            problem_def = f'(:objects {definition}'
+        return problem_def, ''
 
 
     def create_lowercase_problem(self):
@@ -204,6 +236,11 @@ class RawPDDLEnvironment:
         """
         pred_action_name, pred_objects = self.parse_pddl_tuple(action_instr, decode=False)
         feedback = ''
+
+        cleaned_instruction = action_instr.strip()
+        if not cleaned_instruction.endswith(')') and not cleaned_instruction.startswith('('):
+            feedback = f'It seems there is something wrong with this instructions. Please provide a new one. Remember to only suggest actions that I can carry out.'
+
         # check whether action is part of the domain actions
         try:
             # check whether correct number of arguments for the action are provided
@@ -239,10 +276,10 @@ class RawPDDLEnvironment:
             fact = ' '.join(fact)
             if effect_type == 'Deleting':
                 #assert fact in self.facts_current_state
-                try:
+                count_pred = self.facts_current_state.count(fact)
+                for _ in range(count_pred):
                     self.facts_current_state.remove(fact)
-                except ValueError:
-                    continue
+
             elif effect_type == 'Adding':
                 self.facts_current_state.append(fact)
             else:
@@ -272,8 +309,7 @@ class RawPDDLEnvironment:
 
         # need run VAL validate -v self.domain_file self.instance_file plan
         val = os.environ.get('VAL')
-        #val = '/localfast/kstein/LLMs-Planning/planner_tools/VAL'
-        cmd = f'{val}/validate -v {self.domain_file} {self.tmp_instance_file} {self.tmp_action_file}'
+        cmd = f'{val} -v {self.domain_file} {self.instance_file} {self.tmp_action_file}'
         self.last_val_response = os.popen(cmd).read()
 
         # store output somehow and parse it
@@ -284,6 +320,7 @@ class RawPDDLEnvironment:
 
         if executable:
             assert len(effects) > 0
+            print(effects)
             self.update_current_state(effects)
             feedback = self.get_feedback_successful(action_instr)
 
@@ -301,7 +338,22 @@ class RawPDDLEnvironment:
         return f'The action "{action}" was successfully executed.'
 
     def get_feedback_unsat(self, advice: List[str]) -> str:
-        return f'The action is not applicable in the current state because {advice}.'
+
+        feedback_type, failed_action, should_be_true, should_be_false = self.parse_feedback_unsat(advice=advice)
+
+        if feedback_type == 'precondition':
+            feedback = f'The action {failed_action} is not applicable because '
+        else:
+            feedback = 'The task is not finished yet because '
+
+        for pred in should_be_false:
+            feedback += f'{pred} is true, '
+        for pred in should_be_true:
+            feedback += f'{pred} is false, '
+
+        feedback = feedback[:-2]    # remove last whitespace and comma
+
+        return feedback
 
     def parse_feedback_unsat(self, advice: List[str]) -> Tuple[str, str, list, list]:
         """
@@ -448,6 +500,7 @@ class RawPDDLEnvironment:
         """
         constants = list(self.problem.language.constants())
         object_constants = [str(c) for c in constants]
+        object_constants.sort()
         return object_constants
 
 
@@ -506,9 +559,13 @@ class RawPDDLEnvironment:
     def get_description_initial_state(self):
         return self.problem_descript
 
+    # TODO:
+    def get_description_current_state(self):
+        raise NotImplementedError
 
     def get_description_goal_state(self):
-        return self.goal_descript
+        #return self.goal_descript
+        return ''
 
     def check_type_constraints(self, action_instr: str):
         pred_action_name, pred_objects = self.parse_pddl_tuple(action_instr, decode=False)

@@ -1,4 +1,5 @@
 import os
+from typing import Tuple
 from tarski.io import PDDLReader
 from argparse import ArgumentParser
 from utils.paths import DATA_DIR
@@ -8,9 +9,11 @@ from collections import defaultdict
 Script to generate an overview over the number of objects, plan lengths, goals facts and size of initial states of the problem instances
 """
 
-def get_analysis_instances(domain_file, instance_dir, gold_plan_dir) -> dict:
+
+def get_analysis_instances(domain_file, instance_dir, gold_plan_dir) -> Tuple[dict, dict]:
 
     instance_data = defaultdict(dict)
+    fewshot_data = dict()
 
     for file in os.listdir(instance_dir):
 
@@ -19,30 +22,47 @@ def get_analysis_instances(domain_file, instance_dir, gold_plan_dir) -> dict:
         instance_id = int(instance_name.replace('instance-', ''))
         gold_plan = get_gold_plan(gold_plan_dir, instance_name)
         gold_plan_length = len(gold_plan)
-        instance_data[instance_id]['plan_length'] = gold_plan_length
 
         problem = get_problem(os.path.join(instance_dir, file),
                               domain_file)
+
+        if not problem:
+            # skip the domain
+            return {}, {}
+
         # number of objects
         objects = list(problem.language.constants())
-        instance_data[instance_id]['n_objects'] = len(objects)
 
         # number of goal facts
         try:
             facts_goal_state = list(problem.goal.subformulas)
         except AttributeError:
             facts_goal_state = [problem.goal]
-        instance_data[instance_id]['n_goal_facts'] = len(facts_goal_state)
 
+        # number of initial facts
         initial_facts = list(problem.init.as_atoms())
-        instance_data[instance_id]['n_initial_facts'] = len(initial_facts)
 
-    return instance_data
+        if instance_id == 0:
+            fewshot_data['n_goal_facts'] = len(facts_goal_state)
+            fewshot_data['n_objects'] = len(objects)
+            fewshot_data['n_initial_facts'] = len(initial_facts)
+            fewshot_data['plan_length'] = gold_plan_length
+        else:
+            instance_data[instance_id]['n_goal_facts'] = len(facts_goal_state)
+            instance_data[instance_id]['n_objects'] = len(objects)
+            instance_data[instance_id]['n_initial_facts'] = len(initial_facts)
+            instance_data[instance_id]['plan_length'] = gold_plan_length
+
+    return instance_data, fewshot_data
 
 
 def get_analysis_overall_instances(domain_file, instance_dir, gold_plan_dir) -> dict:
 
-    instance_data = get_analysis_instances(domain_file, instance_dir, gold_plan_dir)
+    instance_data, fewshot_data = get_analysis_instances(domain_file, instance_dir, gold_plan_dir)
+
+    if len(instance_data.keys()) == 0:
+        return dict()
+
     plan_lengths = [inst['plan_length'] for inst in instance_data.values()]
     n_objects = [inst['n_objects'] for inst in instance_data.values()]
     n_goal_facts = [inst['n_goal_facts'] for inst in instance_data.values()]
@@ -77,8 +97,13 @@ def get_analysis_overall_instances(domain_file, instance_dir, gold_plan_dir) -> 
         'n_gfacts_avg': n_gfacts_avg,
          'n_initfacts_min': n_ifacts_min,
          'n_initfacts_max': n_ifacts_max,
-         'n_initfacts_avg': n_ifacts_avg
+         'n_initfacts_avg': n_ifacts_avg,
+         'few_shot_plan_len': fewshot_data['plan_length'],
+         'few_shot_objs': fewshot_data['n_objects'],
+         'few_shot_init': fewshot_data['n_initial_facts'],
+         'few-shot_goal': fewshot_data['n_goal_facts']
     }
+
     return d
 
 
@@ -108,7 +133,8 @@ def get_problem(instance, domain: str):
         parsed_inst = reader.parse_instance(instance)
     except:
         print(instance)
-        raise RuntimeError
+        #raise RuntimeError
+        parsed_inst = None
     return parsed_inst
 
 
@@ -119,15 +145,18 @@ def get_analysis_domains(data_dir: str, output_file: str):
     for domain in os.listdir(data_dir):
         if 'demo' in domain:
             continue
+        elif 'planbench' in domain:
+            continue
+        elif 'template' in domain:
+            continue
 
         elif not os.path.isdir(os.path.join(data_dir, domain)):
             continue
 
         domain_file = os.path.join(data_dir, domain, 'domain.pddl')
-        #instance_dir = os.path.join(data_dir, domain, 'adapted_instances')
         instance_dir = os.path.join(data_dir, domain, 'adapted_instances')
 
-        gold_dir = os.path.join(data_dir, domain, 'gold_plans')
+        gold_dir = os.path.join(data_dir, domain, 'adapted_gold_plans')
 
         try:
             info_domain_instances = get_analysis_overall_instances(domain_file=domain_file,

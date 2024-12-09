@@ -2,20 +2,31 @@ import json
 import os.path
 from pathlib import Path
 import random
+import stanza
+from stanza.pipeline.core import DownloadMethod
 from ast import literal_eval
 from typing import Union
 from argparse import ArgumentParser
-from set_env import set_env_vars
 from llm_planning.game_classes.pddl_game_env import PDDLWorldEnvironment
 from llm_planning.game_classes.pddl_game_env_planbench import PlanBenchEnvironment
-from utils.paths import get_few_shot_dir, get_few_shot_ex_file
+from utils.paths import get_few_shot_dir, get_few_shot_ex_file, GOLD_PLAN_FOLDER, INST_FOLDER
+from set_env import set_env_vars
 
 
 set_env_vars()
 possible_prefixes = ['', 'Now, ', 'Next, ', 'As the next step, ']
 
 
-def create_few_shot_examples(plan_dir, instance_dir, domain_nl_file, domain_file, output_dir, planning_type: str, is_planbench: bool = False, prefixes: tuple = ('', '')):
+def create_few_shot_examples(plan_dir,
+                             instance_dir,
+                             few_shot_id: int,
+                             domain_nl_file,
+                             domain_file,
+                             output_dir,
+                             planning_type: str,
+                             seed: Union[int, None],
+                             is_planbench: bool = False,
+                             prefixes: tuple = ('', '')):
     """
 
     :param plan_dir:
@@ -23,6 +34,7 @@ def create_few_shot_examples(plan_dir, instance_dir, domain_nl_file, domain_file
     :param domain_nl_file:
     :param domain_file:
     :param output_dir:
+    :param seed:
     :param planning_type: either 'basic', 'act', 'state_reasoning'
     :param prefixes:
     :return:
@@ -33,77 +45,82 @@ def create_few_shot_examples(plan_dir, instance_dir, domain_nl_file, domain_file
     with open(domain_nl_file, 'r') as nl_file:
         domain_nl = json.load(nl_file)
 
-    for instance_file in os.listdir(instance_dir):
-        instance_file_path = os.path.join(instance_dir, instance_file)
-        instance_id = int(instance_file.replace('instance-', '').replace('.pddl', ''))
+    few_shot_inst_name = f'instance-{few_shot_id}.pddl'
+    instance_file_path = os.path.join(instance_dir, few_shot_inst_name)
+    nlp_processor = stanza.Pipeline(lang='en',
+                                    processors='tokenize,mwt,pos,lemma,depparse',
+                                    download_method=DownloadMethod.REUSE_RESOURCES,
+                                    logging_level='WARN', use_gpu=False)
 
-        if is_planbench:
-            domain_env = PlanBenchEnvironment(domain_nl=domain_nl, instance_file=instance_file_path, domain_file=domain_file)
-        else:
-            domain_env = PDDLWorldEnvironment(domain_nl=domain_nl, instance_file=instance_file_path, domain_file=domain_file)
+    if is_planbench:
+        domain_env = PlanBenchEnvironment(domain_nl=domain_nl, instance_file=instance_file_path, domain_file=domain_file,
+                                          nlp_processor=nlp_processor)
+    else:
+        domain_env = PDDLWorldEnvironment(domain_nl=domain_nl, instance_file=instance_file_path, domain_file=domain_file,
+                                          nlp_processor=nlp_processor)
+
+    initial_state = domain_env.get_description_initial_state()
+    goal_state = domain_env.get_description_goal_state()
+
+    plan_file_name = f'instance-{few_shot_id}_gold_plan.txt'
+    plan_file_path = os.path.join(plan_dir, plan_file_name)
+    gold_path = read_plan_file(plan_file_path)
+
+    interactions = []
+    for step, action in enumerate(gold_path):
+        nl_instruction = domain_env.get_description_action(action)
+        if step != 0:
+            pref = random.choice(possible_prefixes)
+            nl_instruction = pref + nl_instruction
+        # needs to be the state before executing the action
+        current_state_description = f'{domain_env.get_description_state(domain_env.facts_current_state)}'
+        val = os.environ.get('VAL')
+        successful_feedback, executable, _ = domain_env.step(action_instr=action)
+        assert executable
+        #successful_feedback = domain_env.get_feedback_successful(action)
+
+        interactions.append((nl_instruction, successful_feedback, current_state_description))
 
 
-        initial_state = domain_env.get_description_initial_state()
-        goal_state = domain_env.get_description_goal_state()
+    if planning_type == 'state_reasoning':
+        example_input_text = f'{goal_state}\n'
+        example_input_text += f'I: {initial_state}\n'
 
-        plan_file_name = f'instance-{instance_id}_gold_plan.txt'
-        plan_file_path = os.path.join(plan_dir, plan_file_name)
-        gold_path = read_plan_file(plan_file_path)
+        for inter in interactions:
+            example_input_text += f'You:\n\tThink: {inter[2]}\n\tInstruction: {inter[0]}\nI: {inter[1]}\n'
+        goal_state_description = domain_env.get_description_goal_state_basic()
+        example_input_text += f'You:\n\tThink: {goal_state_description}\n\tInstruction: You are finished.\nI: Great!'
+        example_output_text = ''
 
-        interactions = []
-        for step, action in enumerate(gold_path):
-            nl_instruction = domain_env.get_description_action(action)
-            if step != 0:
-                pref = random.choice(possible_prefixes)
-                nl_instruction = pref + nl_instruction
-            # needs to be the state before executing the action
-            current_state_description = f'{domain_env.get_description_state(domain_env.facts_current_state)}'
-            successful_feedback, executable, _ = domain_env.step(action_instr=action)
-            assert executable
-            #successful_feedback = domain_env.get_feedback_successful(action)
+    elif planning_type == 'basic':
+        example_input_text = f'{goal_state}\n'
+        example_input_text += f'{initial_state}\n'
+        example_output_text = ''
+        for inter in interactions:
+            example_output_text += f'{inter[0]}\n'
+        example_output_text += '[PLAN END]'
 
-            interactions.append((nl_instruction, successful_feedback, current_state_description))
+    elif planning_type == 'act':
+        example_input_text = f'{goal_state}\n'
+        example_input_text += f'I: {initial_state}\n'
+        for inter in interactions:
+            example_input_text += f'You: {inter[0]}\nI: {inter[1]}\n'
+        example_input_text += "You: You're finished\nI: Great!"
+        example_output_text = ''
+    else:
+        raise ValueError
 
+    few_shot_file = get_few_shot_ex_file(few_shot_dir=output_dir, instance_id=few_shot_id, approach=planning_type, seed=seed)
+    with open(few_shot_file, 'w') as out:
+        # remove last line break to avoid too many line breaks in prompt
+        example_input_text = example_input_text.strip()
+        example_output_text = example_output_text.strip()
 
-        if planning_type == 'state_reasoning':
-            example_input_text = f'{goal_state}\n'
-            example_input_text += f'I: {initial_state}\n'
-
-            for inter in interactions:
-                example_input_text += f'You:\n\tThink: {inter[2]}\n\tInstruction: {inter[0]}\nI: {inter[1]}\n'
-            goal_state_description = domain_env.get_description_goal_state_basic()
-            example_input_text += f'You:\n\tThink: {goal_state_description}\n\tInstruction: You are finished.\nI: Great!'
-            example_output_text = ''
-
-        elif planning_type == 'basic':
-            example_input_text = f'{goal_state}\n'
-            example_input_text += f'{initial_state}\n'
-            example_output_text = ''
-            for inter in interactions:
-                example_output_text += f'{inter[0]}\n'
-            example_output_text += '[PLAN END]'
-
-        elif planning_type == 'act':
-            example_input_text = f'{goal_state}\n'
-            example_input_text += f'I: {initial_state}\n'
-            for inter in interactions:
-                example_input_text += f'You: {inter[0]}\nI: {inter[1]}\n'
-            example_input_text += "You: You're finished\nI: Great!"
-            example_output_text = ''
-        else:
-            raise ValueError
-
-        few_shot_file = get_few_shot_ex_file(few_shot_dir=output_dir, instance_id=instance_id, approach=planning_type)
-        with open(few_shot_file, 'w') as out:
-            # remove last line break to avoid too many line breaks in prompt
-            example_input_text = example_input_text.strip()
-            example_output_text = example_output_text.strip()
-
-            example_dict = {
-                "prefixes": {"input": prefixes[0], "output": prefixes[1]},
-                "pos_examples": [[example_input_text, example_output_text]]
-            }
-            json.dump(example_dict, out, indent=4)
+        example_dict = {
+            "prefixes": {"input": prefixes[0], "output": prefixes[1]},
+            "pos_examples": [[example_input_text, example_output_text]]
+        }
+        json.dump(example_dict, out, indent=4)
 
 
 def read_plan_file(plan_file):
@@ -146,10 +163,15 @@ def create_react_few_shot_example_template(example_inst_plan: str,
 
     example_plan = plan#[: -length]
 
+    nlp_processor = stanza.Pipeline(lang='en',
+                                    processors='tokenize,mwt,pos,lemma,depparse',
+                                    download_method=DownloadMethod.REUSE_RESOURCES,
+                                    logging_level='WARN', use_gpu=False)
+
     if is_planbench:
-        domain_env = PlanBenchEnvironment(domain_nl=domain_nl, instance_file=example_inst, domain_file=domain_file)
+        domain_env = PlanBenchEnvironment(domain_nl=domain_nl, instance_file=example_inst, domain_file=domain_file,nlp_processor=nlp_processor)
     else:
-        domain_env = PDDLWorldEnvironment(domain_nl=domain_nl, instance_file=example_inst, domain_file=domain_file)
+        domain_env = PDDLWorldEnvironment(domain_nl=domain_nl, instance_file=example_inst, domain_file=domain_file,nlp_processor=nlp_processor)
 
     orig_initial_state = domain_env.facts_initial_state
 
@@ -165,12 +187,9 @@ def create_react_few_shot_example_template(example_inst_plan: str,
         reduced_interaction = instructions_and_feedback_and_state[-length:]
     else:
         reduced_interaction = instructions_and_feedback_and_state
-    #print(reduced_interaction[0][2])
-    #print(reduced_interaction[0][3])
 
     facts_new_initial_state = reduced_interaction[0][2]
     domain_env.facts_initial_state = facts_new_initial_state
-    #print(domain_env.facts_initial_state == orig_initial_state)
     new_initial_state = domain_env.get_description_initial_state()
     new_goal_state = domain_env.get_description_goal_state_basic()
 
@@ -181,7 +200,7 @@ def create_react_few_shot_example_template(example_inst_plan: str,
         feedback = instr_feed[1]
         example += f'You:\n\tThink: [TODO: ADD REASONING THOUGHT]\n\tInstruction: {instr}\n'
         example += f'I: {feedback}\n'
-    example+= f'You:\n\tThink: {new_goal_state}\n\tInstruction: You are finished.\nI: Great!'
+    example += f'You:\n\tThink: {new_goal_state}\n\tInstruction: You are finished.\nI: Great!'
 
     with open(output_file, 'w') as out:
 
@@ -204,19 +223,22 @@ if __name__=='__main__':
     parser.add_argument('--version', required=True, help='For which approach to create the few-shot examples. Can be: "basic", "cot", "act" "state_reasoning", "react".')
     parser.add_argument('--enc', required=False, default='automatic', help=' "planbench" if the domain description is from the PlanBench repo, otherwise "automatic". Defaults to "automatic".')
     parser.add_argument('--rl', required=False, default=None, help='The length to which the few-shot example for react should be shortened to.')
-
+    parser.add_argument('--nl-domain', required=True, type=str, help='Path to the file with the natural language description of the domain for which the examples are generated')
+    parser.add_argument('--seed', required=True)
 
     args = parser.parse_args()
     prefixes = literal_eval(args.pref)
     is_planbench = True if args.enc == 'planbench' else False
     example_id = literal_eval(args.ex_id) if isinstance(args.ex_id, str) else None
     data_dir = args.dir
+    seed = literal_eval(args.seed)
     planning_approach = args.version
     react_length = literal_eval(args.rl) if isinstance(args.rl, str) else args.rl
 
-    plan_dir = os.path.join(data_dir, 'gold_plans')
-    instance_dir = os.path.join(data_dir, 'adapted_instances')
-    domain_nl_file = os.path.join(data_dir, 'domain_description.json')
+    plan_dir = os.path.join(data_dir, GOLD_PLAN_FOLDER)
+    instance_dir = os.path.join(data_dir, INST_FOLDER)
+    # domain_nl_file = os.path.join(data_dir, f'domain_description_seed{seed}.json')
+    domain_nl_file = args.nl_domain
     domain_file = os.path.join(data_dir, 'domain.pddl')
 
     output_dir = get_few_shot_dir(planning_approach=planning_approach, domain_data_dir=data_dir)
@@ -226,21 +248,22 @@ if __name__=='__main__':
     if planning_approach == 'react' or planning_approach == 'cot':
         plan_file = os.path.join(plan_dir, f'instance-{example_id}_gold_plan.txt')
         instance_file = os.path.join(instance_dir, f'instance-{example_id}.pddl')
-        output_file = os.path.join(output_dir, f'react_template_instance-{example_id}.json')
+        output_file = os.path.join(output_dir, f'react_template_instance-{example_id}_seed{seed}.json')
         create_react_few_shot_example_template(example_inst_plan=plan_file,
                                                example_inst=instance_file,
                                                domain_nl_file=domain_nl_file,
                                                domain_file=domain_file,
                                                output_file=output_file,
                                                is_planbench=is_planbench,
-                                               length=react_length
-                                               )
+                                               length=react_length)
     else:
         create_few_shot_examples(plan_dir=plan_dir,
                                  instance_dir=instance_dir,
+                                 few_shot_id=example_id,
                                  domain_file=domain_file,
                                  domain_nl_file=domain_nl_file,
                                  output_dir=output_dir,
                                  prefixes=prefixes,
                                  planning_type=planning_approach,
-                                 is_planbench=is_planbench)
+                                 is_planbench=is_planbench,
+                                 seed=seed)

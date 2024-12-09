@@ -1,7 +1,7 @@
 import os
 import re
 import string
-from typing import Dict
+from typing import Dict, Union
 from collections import defaultdict, OrderedDict
 from tarski.syntax import BuiltinPredicateSymbol
 from model_classes.llm_models import LLMModel
@@ -35,8 +35,12 @@ class PDDLDescriber:
 
     def __init__(self, domain_file):
         self.domain = Domain(domain_file=domain_file)
+        self.domain_file = domain_file
         self.llm_name = ''
-        self.llm_model = None
+        self.llm_model: Union[LLMModel, None] = None
+
+        self.output_log = ''
+        self.seed = None
 
         self.action_mappings = dict()
         self.action_mappings_indef = dict()
@@ -125,7 +129,10 @@ class PDDLDescriber:
                                                 pddl2text_llm: str = 'gpt-4o',
                                                 pddl2text_model_type: str = 'openai_chat',
                                                 pddl2text_version: str = 'full',
-                                                examples_chat: bool = True):
+                                                examples_chat: bool = True,
+                                                seed: int = 0):
+        self.seed = seed
+        self.output_log = self.domain_file.replace('domain.pddl', f'output_log_{seed}.txt')
 
         self.llm_name = pddl2text_llm
         # create mappings
@@ -133,13 +140,15 @@ class PDDLDescriber:
                                                                                              pddl2text_llm=pddl2text_llm,
                                                                                              pddl2text_version=pddl2text_version,
                                                                                              pddl2text_model_type=pddl2text_model_type,
-                                                                                             examples_chat=examples_chat)
+                                                                                             examples_chat=examples_chat,
+                                                                                             seed=seed)
 
         self.action_mappings, self.action_nl_templates = self.create_action_mapping(prompt_file=prompt_file,
                                                                                     pddl2text_llm=pddl2text_llm,
                                                                                     pddl2text_version=pddl2text_version,
                                                                                     pddl2text_model_type=pddl2text_model_type,
-                                                                                    examples_chat=examples_chat)
+                                                                                    examples_chat=examples_chat,
+                                                                                    seed=seed)
 
         self.formal_mapping_check()
 
@@ -150,6 +159,8 @@ class PDDLDescriber:
 
         templates_with_wrong_args = []
         templates_with_wrong_number_args = []
+        wrong_preds = set()
+        correct_number_args = []
 
         for action_name, action_details in self.action_data.items():
             parameter_names_pddl = action_details['parameter_types'].keys()
@@ -159,13 +170,24 @@ class PDDLDescriber:
 
             if len(set(parameter_names_nl)) != len(set(parameter_names_pddl)):
                 templates_with_wrong_number_args.append(action_name)
+                correct_number_args.append(len(set(parameter_names_pddl)))
+                wrong_preds.add(action_nl_template)
 
             if set(parameter_names_nl) != set(parameter_names_pddl):
                 templates_with_wrong_args.append(action_name)
+                wrong_preds.add(action_nl_template)
 
-        assert templates_with_wrong_args == [] and templates_with_wrong_number_args == [], f'Error: there are translations that went wrong.\n' \
-                                                                                           f'Wrong number of args: {templates_with_wrong_number_args}\n' \
-                                                                                           f'Wrong variable names: {templates_with_wrong_args}'
+        all_correct = True
+        if not (templates_with_wrong_args == [] and templates_with_wrong_number_args == []):
+            all_correct = False
+        if not all_correct:
+            with open('./utils/errors_domain_description_gen.txt', 'a') as f:
+                f.write(f'Errors when processing {self.domain_file}, seed {self.seed}\n')
+                f.write(f'Wrong number of args: {templates_with_wrong_number_args}\nCorrect numbers of args would have been: {correct_number_args}\nWrong variable names: {templates_with_wrong_args}\n{wrong_preds}\n\n')
+        assert all_correct, f'Error: there are translations that went wrong.\n' \
+                            f'Wrong number of args: {templates_with_wrong_number_args}\n' \
+                            f'Correct numbers of args would have been: {correct_number_args}\n' \
+                            f'Wrong variable names: {templates_with_wrong_args}'
 
 
     def create_domain_descriptions_from_mappings(self, output_file: str, description_version: str):
@@ -191,17 +213,15 @@ class PDDLDescriber:
         with open(output_file, 'w') as out:
             json.dump(domain_description_dict, out, indent=4)
 
+    def create_action_mapping(self, prompt_file, pddl2text_llm, pddl2text_version, pddl2text_model_type, examples_chat: bool, seed=0) -> Tuple[Dict[str, str], Dict[str, str]]:
 
-    def create_action_mapping(self, prompt_file, pddl2text_llm, pddl2text_version, pddl2text_model_type, examples_chat: bool) -> Tuple[Dict[str, str], Dict[str, str]]:
-
-        llm_model = self.create_model(llm_name=pddl2text_llm, model_type=pddl2text_model_type)
+        llm_model = self.create_model(llm_name=pddl2text_llm, model_type=pddl2text_model_type, seed=seed)
 
         if pddl2text_version == 'simple' or pddl2text_version == 'annotated':
             prompt, examples = self.create_prompt(prompt_file=prompt_file, example_keys=['examples_pred', 'examples_act'], examples_chat=examples_chat)
         else:
             prompt, examples = self.create_prompt(prompt_file=prompt_file, example_keys=['examples_act'], examples_chat=examples_chat)
 
-        #print(f'Prompt Action: {prompt}')
         llm_model.init_model(init_prompt=prompt)
         if examples_chat:
             llm_model.add_examples(examples)
@@ -210,27 +230,24 @@ class PDDLDescriber:
 
         return mappings, mappings_templates
 
+    def create_predicate_mapping(self, prompt_file, pddl2text_llm, pddl2text_version, pddl2text_model_type, examples_chat: bool, seed=0) -> Tuple[Dict[str, str], Dict[str, str]]:
 
-    def create_predicate_mapping(self, prompt_file, pddl2text_llm, pddl2text_version, pddl2text_model_type, examples_chat: bool) -> Tuple[Dict[str, str], Dict[str, str]]:
-
-        llm_model = self.create_model(llm_name=pddl2text_llm, model_type=pddl2text_model_type)
+        llm_model = self.create_model(llm_name=pddl2text_llm, model_type=pddl2text_model_type, seed=seed)
 
         if pddl2text_version == 'simple' or pddl2text_version == 'annotated':
             prompt, examples = self.create_prompt(prompt_file=prompt_file, example_keys = ['examples_pred', 'examples_act'], examples_chat=examples_chat)
         else:
             prompt, examples = self.create_prompt(prompt_file=prompt_file, example_keys=['examples_pred'], examples_chat=examples_chat)
 
-        #print(f'Prompt Predicate: {prompt}')
         llm_model.init_model(init_prompt=prompt)
         if examples_chat:
             llm_model.add_examples(examples)
         model_inputs = self.create_llm_inputs_predicates()
         mappings, mappings_templates = self.run_generation(inputs=model_inputs, llm_model=llm_model, is_action=False)
 
-        #mappings, mappings_templates = self.add_predicate_mappings_builtin_preds(mappings, mappings_templates)
+        # mappings, mappings_templates = self.add_predicate_mappings_builtin_preds(mappings, mappings_templates)
 
         return mappings, mappings_templates
-
 
     def add_predicate_mappings_builtin_preds(self, mappings: dict, mappings_temp: dict):
 
@@ -239,7 +256,6 @@ class PDDLDescriber:
             mappings_temp[built_in_pred_name] = built_in_pred_data['mapping_template']
 
         return mappings, mappings_temp
-
 
     def run_generation(self, inputs: dict, llm_model: LLMModel, is_action: bool) -> Tuple[Dict[str, str], Dict[str, str]]:
         """
@@ -253,12 +269,30 @@ class PDDLDescriber:
         mappings_templates = dict()
 
         for name, instance in inputs.items():
-            print(f'Input: {instance}')
             model_output = llm_model.generate(user_message=instance)
-            print(f'Output: {model_output}')
             model_output = model_output.replace('Output: ', '')
 
+            if instance == '(supply_resource ?s ?r)':
+                print('Test')
+
+            with open(self.output_log, 'a') as f:
+                f.write(f'{instance} -> {model_output}\n')
+
             output_formatted, output_template = self.format_model_output(model_output=model_output, is_action=is_action)
+            # check output format
+            correct_args = self.check_number_args(action_name=name,
+                                                  action_nl_template=output_template,
+                                                  is_action=is_action)
+            # if not formatted correctly call once again the llm
+            if not correct_args:
+                user_message = f'There is a mistake in the last response. The number of parameters does not match the parameters of {name} or the format is not correct.\nPlease provide the revised natural language description. Make sure that all parameters are part of your response and are surrounded by brackets and start with "?"\nDo not inlcude anything else than the fixed description in your response.'
+                model_output = self.llm_model.generate(user_message=user_message)
+                model_output = model_output.replace('Output: ', '')
+                print('FIRST ATTEMPT INCORRECT; RUNNING REVISION')
+                with open(self.output_log, 'a') as f:
+                    f.write(f'Revised: {instance} -> {model_output}\n')
+                output_formatted, output_template = self.format_model_output(model_output=model_output,
+                                                                             is_action=is_action)
 
             if is_action:
                 output_formatted_indef, output_indef_template = self.create_action_template_indefinite(model_output=model_output)
@@ -269,8 +303,25 @@ class PDDLDescriber:
             mappings[name] = output_formatted
             mappings_templates[name] = output_template
 
+        # Reset the history
+        self.llm_model.reset_history()
+
         return mappings, mappings_templates
 
+    def check_number_args(self, action_name: str, action_nl_template: str, is_action: bool) -> bool:
+
+        if is_action:
+            details = self.action_data[action_name]
+        else:
+            details = self.predicate_data[action_name]
+        parameter_names_pddl = details['parameter_types'].keys()
+        parameter_names_nl = re.findall(r'\{\?.+?\}', action_nl_template)
+        parameter_names_nl = [pn.replace('}', '').replace('{', '') for pn in parameter_names_nl]
+
+        if len(set(parameter_names_nl)) != len(set(parameter_names_pddl)):
+            return False
+        else:
+            return True
 
     def format_model_output(self, model_output: str, is_action: bool) -> Tuple[str, str]:
 
@@ -343,14 +394,16 @@ class PDDLDescriber:
         return nl_description_indef, nl_description_indef_templates
 
 
-    def create_model(self, llm_name: str, model_type, max_tokens=200, temperature=0.0) -> LLMModel:
+    def create_model(self, llm_name: str, model_type, max_tokens=200, temperature=0.0, seed=0) -> LLMModel:
         model_param = {'model_name': model_type,
                        'model_path': llm_name,
                        'max_tokens': max_tokens,
                        'temp': temperature,
-                       'max_history': 0}
+                       'max_history': 1,
+                       'seed': seed}
         llm_model = create_llm_model(model_type=model_type, model_param=model_param)
         self.llm_model = llm_model
+        print(self.llm_model.seed)
         return llm_model
 
 
@@ -374,7 +427,6 @@ class PDDLDescriber:
                 for example in prompt_dict[ex_key]:
                     prompt += f'\n\nOriginal: {example["input"]}\nOutput: {example["output"]}'
 
-        #print(prompt)
         return prompt, examples
 
 
@@ -389,8 +441,8 @@ class PDDLDescriber:
         for action_name, action_dict in self.domain.actions.items():
             action_params = action_dict['parameters']
             params_names = list(action_params.keys())
-            params_str = ' '.join(params_names)
-            params_str = f'({params_str})'
+            params_str = ', '.join(params_names)
+            params_str = f'[{params_str}]'
 
             action_str = f'action: {action_name}\nparameters: {params_str}'
             if pddl2text_version == 'annotated' or pddl2text_version == 'full':
@@ -477,7 +529,6 @@ class PDDLDescriber:
             pred_params_ac_names = pred[1:]
             pred_params_orig_names = self.domain.predicates[pred_name].keys()
             pred_params_dict = dict([(orig_p, ac_p) for (orig_p, ac_p) in zip(pred_params_orig_names, pred_params_ac_names)])
-            template= self.predicate_nl_templates[pred_name]
             pred_description = self.predicate_nl_templates[pred_name].format(**pred_params_dict)
             predicate_descriptions.append(pred_description)
 

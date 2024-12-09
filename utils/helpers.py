@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 from collections import defaultdict
 
+
 def get_timestamp_for_log():
     now = str(datetime.now())
     day_now = now.split(' ')[0]

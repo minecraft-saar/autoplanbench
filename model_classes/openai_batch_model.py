@@ -20,7 +20,8 @@ class OpenAIChatBatch(OpenAIChatModel):
                  max_history: Union[int, None],
                  cache_directory: Union[str, None] = None,
                  seed: Union[int, None] = None,
-                 logprobs: Union[bool, None] = True):
+                 logprobs: Union[bool, None] = True,
+                 api_key: Union[str, None]=None):
         """
 
         :param model_name: the general name of the model to identify the correct LLMModel subclass, e.g. openai_chat
@@ -39,7 +40,8 @@ class OpenAIChatBatch(OpenAIChatModel):
                          max_tokens=max_tokens, temp=temp,
                          max_history=max_history, cache_directory=cache_directory,
                          seed=seed,
-                         logprobs=logprobs)
+                         logprobs=logprobs,
+                         api_key=api_key)
 
     def generate(self, user_message: str, assert_cache: bool = False) -> str:
         """

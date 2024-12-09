@@ -189,6 +189,8 @@ class PlanningGame(ABC):
             reformatted = []
             for ex in examples_dict['pos_examples']:
                 reformatted.append({'input': ex[0], 'output': ex[1]})
+            reformatted.append({'input': "Great! Let's continue with another task.",
+                                'output': 'Sure.'})
             examples_dict['pos_examples'] = reformatted
         if 'neg_examples' not in examples_dict.keys():
             examples_dict['neg_examples'] = None
@@ -200,10 +202,7 @@ class PlanningGame(ABC):
 
         return examples_dict
 
-
-    # TODO: this is still under construction!!
     def create_examples_dict_incre_chat(self, llm_config: dict) -> dict:
-        print(f'-------WARNING THIS FUNCTION WAS NOT TESTED ENOUGH YET ---------')
         try:
             with open(llm_config['examples_file'], 'r') as ef:
                 examples_dict = json.load(ef)
@@ -248,6 +247,8 @@ class PlanningGame(ABC):
                     reformatted.append({'input': current_input.strip(),
                                         'output': current_output.strip()})
 
+            reformatted.append({'input': "Great! Let's continue with another task.",
+                                'output': 'Sure.'})
             examples_dict['pos_examples'] = reformatted
 
         return examples_dict
@@ -502,7 +503,6 @@ class PlanningGame(ABC):
         :return:
         """
 
-
         if self.log_history:
             with open('./temp_log_history.txt', 'a') as f:
                 f.write(f'{self.llm_plan.get_history()}\n')
@@ -527,7 +527,7 @@ class PlanningGame(ABC):
         print(f'$Model: {instruction} Model$')
         self.write_log(instruction, 'plan_model')
 
-        if 'you are finished' in instruction.lower():
+        if 'you are finished' in instruction.lower() or "you're finished" in instruction.lower():
             return self.process_finished_message()
 
         # translate instruction
@@ -542,7 +542,7 @@ class PlanningGame(ABC):
 
         # avoid problems is model adds empty lines between two steps
         translation_output_list = [tr_out for tr_out in translation_output_list if tr_out]
-        assert len(translation_output_list) > 0
+        assert len(translation_output_list) > 0, f'Len translation output list is {len(translation_output_list)} for {translation_output}'
 
         print('Executing')
         observations, _ = self.try_execution(translation_output_list, current_world)
@@ -821,7 +821,7 @@ class PlanningGame(ABC):
         success = False
         self.summary_planning['stopping_reason'] = 'step_limit'
         for i in range(steps):
-
+            # TODO
             is_completed, is_aware = self.get_next_instruction()
             self.summary_planning['n_steps'] += 1
             if is_completed:
@@ -860,7 +860,7 @@ class PlanningGame(ABC):
         success = False
 
         if attempts > 1:
-            assert self.llm_plan.model.max_history > 0
+            assert self.llm_plan.model.max_history > 0, f'Max history is larger 0'
 
         for attempt in range(attempts):
             if attempt == 0:
@@ -957,7 +957,6 @@ class PlanningGame(ABC):
             step_reached_goal_first = 'NA'
         return reached_goal_any_time, step_reached_goal_first, reached_goal, executable_plan, observation
 
-
     def replay_from_log(self, log_file):
         """
         Overwrite if log output format changes
@@ -992,12 +991,12 @@ class PlanningGame(ABC):
                     elif line_log['type'] == 'Env Feedback':
                         feedback.append(line_log['text'])
                     elif line_log['type'] == 'World State' and not first_auto_state_found:
-                        assert feedback == []
+                        assert feedback == [], 'Feedback is not empty'
                         feedback.append(line_log['text'])
                         first_auto_state_found = True
 
-        assert translate_prompt is not None
-        assert plan_prompt is not None
+        assert translate_prompt is not None, f'Translation prompt is None'
+        assert plan_prompt is not None, f'Plan prompt is None'
 
         self.llm_plan.update_initial_prompt(new_init_prompt=plan_prompt)
         self.llm_translate.update_initial_prompt(new_init_prompt=translate_prompt)
@@ -1009,7 +1008,7 @@ class PlanningGame(ABC):
             self.observation, executable, is_completed = self._execute(action_to_exec)
             print(f'$Observation {self.observation} Observation$')
 
-        assert len(plan_output) == len(feedback)
+        assert len(plan_output) == len(feedback), f'Len of plan outputs and of feedbacks are different'
         # create the history for the planning llm
         plan_history = self.llm_plan.get_history()
         for interaction_id in range(len(plan_output)):

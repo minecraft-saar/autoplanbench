@@ -1,5 +1,6 @@
 from typing import Tuple, Union, List, Dict
 import re
+from stanza import Pipeline
 from model_classes.planning_games import PlanningGame
 from llm_planning.game_classes.llm_models_pddl_planning import TranslationModelBlocksWorld, PlanningModelBlocksWorld
 from llm_planning.raw_pddl_input.raw_pddl_env import RawPDDLEnvironment
@@ -12,6 +13,7 @@ class RawPDDLPlanningGame(PlanningGame):
                  domain_file: str,
                  domain_nl_file: Union[str, None],
                  instance_file: str,
+                 nlp_processor: Pipeline,
                  task_num: Union[int, str],
                  incremental: bool,
                  provide_state: bool,
@@ -38,21 +40,6 @@ class RawPDDLPlanningGame(PlanningGame):
                          planning_approach=planning_approach,
                          assert_cache=assert_cache)
 
-    def split_problem_file(self, instance_file):
-
-        with open(instance_file, 'r') as pf:
-            problem_text = pf.read()
-        problem_text = problem_text.strip()
-        pref, definition = problem_text.split('(:objects')
-        problem_def, goal_def = definition.split('(:goal')
-
-        problem_def = f'(:objects {problem_def}'
-        goal_def = f'(:goal {goal_def}'
-        goal_def = goal_def.strip()
-        if goal_def[-1] == ')':
-            goal_def = goal_def[:-1]
-
-        return problem_def, goal_def
 
     def create_world_env(self, env_dict: dict):
         """
@@ -119,7 +106,11 @@ class RawPDDLPlanningGame(PlanningGame):
         reg = r'\(.*\)'
         pddl_actions = re.findall(reg, text)
         if not pddl_actions:
-            return text
+
+            if 'look around' in text.lower():
+                return '(look-around)'
+            else:
+                return text
         else:
             return pddl_actions[0]
 
@@ -175,7 +166,11 @@ class RawPDDLPlanningGame(PlanningGame):
         return self.is_completed
 
     def get_diff_to_goal_feedback(self) -> str:
-        return ''
+        if self.negative_feedback == 'full' or self.negative_feedback == 'pddl':
+            feedback = self.env.goal_feedback
+        else:
+            feedback = 'I am not finished yet.'
+        return feedback
 
     def get_possible_actions_trans_task(self) -> str:
         return ''
@@ -194,3 +189,29 @@ class RawPDDLPlanningGame(PlanningGame):
 
     def create_trans_task_prompt(self, include_examples: Union[bool, None] = None, examples_dict: Union[dict, None] = None) -> str:
         return ''
+
+    def process_multi_action_translations(self, translation_output: str) -> List[str]:
+        """
+        Instructions, and hence translations, can theoretically consist of several steps at once
+        -> need to be split into the individual actions for executing them
+        :param translation_output:
+        :return:
+        """
+        n_actions = translation_output.count('(')
+        sep_chars = '\n'
+        # check whether translation resulted in several actions
+        if n_actions > 1 and not self.allow_multi_action:
+            raise ValueError('LLM generated instructions consisting of several steps.')
+        elif n_actions > 1: # find the chars, that are used to separate several outputs
+            char_index = translation_output.index(')')
+            char = ')'
+            sep_chars = ''
+            while char != '(':
+                char_index += 1
+                char = translation_output[char_index]
+                sep_chars += char
+
+            translation_output_list = translation_output.split(sep_chars)
+        else:
+            translation_output_list = [translation_output]
+        return translation_output_list

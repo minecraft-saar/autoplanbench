@@ -1,5 +1,6 @@
 import json
 from typing import Union
+from stanza import Pipeline
 
 from llm_planning.game_classes.pddl_planning_game import PDDLPlanningGame
 from llm_planning.game_classes.pddl_game_env_planbench import PlanBenchEnvironment
@@ -12,6 +13,7 @@ class PDDLGamePlanBench(PDDLPlanningGame):
                  domain_file: str,
                  domain_nl_file: str,
                  instance_file: str,
+                 nlp_processor: Pipeline,
                  translation_neural: bool = True,
                  incremental: bool = True,
                  positive_feedback: str = 'full',
@@ -28,7 +30,6 @@ class PDDLGamePlanBench(PDDLPlanningGame):
         with open(domain_nl_file, 'r') as nl_file:
             self.domain_nl = json.load(nl_file)
 
-
         super().__init__(llm_config=llm_config, task_num=task_num,
                          domain_file=domain_file, domain_nl_file=domain_nl_file,
                          instance_file=instance_file, translation_neural=translation_neural,
@@ -36,7 +37,8 @@ class PDDLGamePlanBench(PDDLPlanningGame):
                          negative_feedback=negative_feedback, subgoal_feedback=subgoal_feedback,
                          provide_state=provide_state, not_finished_feedback=not_finished_feedback,
                          log_history=log_history, by_action=by_action, planning_approach=planning_approach,
-                         assert_cache=assert_cache)
+                         assert_cache=assert_cache,
+                         nlp_processor=nlp_processor)
 
 
 
@@ -49,11 +51,12 @@ class PDDLGamePlanBench(PDDLPlanningGame):
         domain_file = env_dict['domain_file']
         instance_file = env_dict['instance_file']
         bw_env = PlanBenchEnvironment(domain_nl=self.domain_nl,
-                                        instance_file=instance_file,
-                                        domain_file=domain_file)
+                                      instance_file=instance_file,
+                                      domain_file=domain_file,
+                                      nlp_processor=self.nlp_processor)
         return bw_env
 
-
+    # TODO: also need the examples_chat parameter?
     def create_plan_template_args(self, examples_dict) -> dict:
 
         args = {

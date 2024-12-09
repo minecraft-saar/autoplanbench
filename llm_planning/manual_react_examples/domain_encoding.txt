@@ -1,0 +1,30 @@
+I can carry out the following actions:
+load an object A into a truck B at a location C
+load an object A onto an airplane B at a location C
+unload an object A from a truck B at a location C
+unload an object A from an airplane B at a location C
+drive a truck A from a location B to a location C within a city D
+fly an airplane A from an airport B to an airport C
+
+I have the following restrictions on my actions:
+I can only load an object A into a truck B at a location C if it is the case that A is an obj and B is a truck and C is a location and B is at C and A is at C
+I can only load an object A onto an airplane B at a location C if it is the case that A is an obj and B is an airplane and C is a location and A is at C and B is at C
+I can only unload an object A from a truck B at a location C if it is the case that A is an obj and B is a truck and C is a location and B is at C and A is in B
+I can only unload an object A from an airplane B at a location C if it is the case that A is an obj and B is an airplane and C is a location and A is in B and B is at C
+I can only drive a truck A from a location B to a location C within a city D if it is the case that A is a truck and B is a location and C is a location and D is a city and A is at B and B is in the city D and C is in the city D
+I can only fly an airplane A from an airport B to an airport C if it is the case that A is an airplane and B is an airport and C is an airport and A is at B
+
+The actions have the following effects on the state:
+Once I load an object A into a truck B at a location C, it is the case that A is in B
+Once I load an object A into a truck B at a location C, it is not the case anymore that A is at C
+Once I load an object A onto an airplane B at a location C, it is the case that A is in B
+Once I load an object A onto an airplane B at a location C, it is not the case anymore that A is at C
+Once I unload an object A from a truck B at a location C, it is the case that A is at C
+Once I unload an object A from a truck B at a location C, it is not the case anymore that A is in B
+Once I unload an object A from an airplane B at a location C, it is the case that A is at C
+Once I unload an object A from an airplane B at a location C, it is not the case anymore that A is in B
+Once I drive a truck A from a location B to a location C within a city D, it is the case that A is at C
+Once I drive a truck A from a location B to a location C within a city D, it is not the case anymore that A is at B
+Once I fly an airplane A from an airport B to an airport C, it is the case that A is at C
+Once I fly an airplane A from an airport B to an airport C, it is not the case anymore that A is at B
+

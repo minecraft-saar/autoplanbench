@@ -6,8 +6,10 @@ from utils.paths import DATA_DIR, get_few_shot_dir, APPROACHES, THOUGHT_GEN_EXAM
 
 proj_dir_path = Path(__file__).resolve().parent.parent
 
+
 # Fix the DATA_dir, add option to skip configs
 def setup_files_domain(domain_name: str,
+                       nl_domain: str,
                        few_shot_id: int,
                        llm: str,
                        react_length: Union[int, None],
@@ -17,6 +19,7 @@ def setup_files_domain(domain_name: str,
                        break_inter: int,
                        max_steps_non_inter: int,
                        break_non_inter: int,
+                       seed: Union[int, None],
                        thoughts: bool = True,
                        configs: bool = True,
                        encoding: str = 'automatic',
@@ -37,6 +40,7 @@ def setup_files_domain(domain_name: str,
     :param configs:
     :param encoding:
     :param data_dir:
+    :param seed:
     :return:
     """
     domain_dir = os.path.join(data_dir, domain_name)
@@ -47,16 +51,27 @@ def setup_files_domain(domain_name: str,
 
     # Create few-shot examples
     few_shot_script = os.path.join(proj_dir_path, 'llm_planning', 'create_few_shot_examples.py')
-    create_few_shot_files(script=few_shot_script, domain_dir=domain_dir,
-                          few_shot_id=few_shot_id, encoding=encoding, react_length=react_length, versions=approaches)
+
+    create_few_shot_files(script=few_shot_script,
+                          domain_dir=domain_dir,
+                          nl_domain=nl_domain,
+                          few_shot_id=few_shot_id,
+                          encoding=encoding,
+                          react_length=react_length,
+                          versions=approaches,
+                          seed=seed)
 
     # Generate thoughts for few-shot examples
     if thoughts:
         print('Generating thoughts')
         example_react_nl = react_example_domain if react_example_domain else THOUGHT_GEN_EXAMPLE_DOMAIN
         example_react_file = react_example_file if react_example_file else THOUGHT_GEN_EXAMPLE_FILE
-        create_thought_files(domain_dir=domain_dir, few_shot_id=few_shot_id, llm=llm,
-                             example_domain_nl=example_react_nl, example_react=example_react_file)
+        create_thought_files(domain_dir=domain_dir,
+                             few_shot_id=few_shot_id,
+                             llm=llm,
+                             example_domain_nl=example_react_nl,
+                             example_react=example_react_file,
+                             seed=seed)
 
     if configs:
         print('Setting up the configs')
@@ -67,29 +82,28 @@ def setup_files_domain(domain_name: str,
         os.system(cmd)
 
 
-def create_thought_files(domain_dir: str, few_shot_id, llm: str, example_domain_nl: str, example_react: str):
+def create_thought_files(domain_dir: str, few_shot_id, llm: str, example_domain_nl: str, example_react: str, seed: Union[int, None]):
 
     create_thoughts_script = os.path.join(proj_dir_path, 'llm_planning', 'fill_thought_examples.py')
     few_shot_dir_react = get_few_shot_dir('react', domain_data_dir=domain_dir)
-    template_file = os.path.join(few_shot_dir_react, f'react_template_instance-{few_shot_id}.json')
-    nl_file = os.path.join(domain_dir, 'domain_description.json')
-    few_shot_file_react = get_few_shot_ex_file(few_shot_dir=few_shot_dir_react, instance_id=few_shot_id, approach='react')
+    template_file = os.path.join(few_shot_dir_react, f'react_template_instance-{few_shot_id}_seed{seed}.json')
+    nl_file = os.path.join(domain_dir, f'domain_description_seed{seed}.json')
+    few_shot_file_react = get_few_shot_ex_file(few_shot_dir=few_shot_dir_react, instance_id=few_shot_id, approach='react', seed=seed)
     output_file = few_shot_file_react
 
     cmd = f'python {create_thoughts_script} --template {template_file} --nl-domain {nl_file} ' \
-          f'--ex-domain {example_domain_nl} --ex-react {example_react} --out {output_file} --llm {llm}'
+          f'--ex-domain {example_domain_nl} --ex-react {example_react} --out {output_file} --llm {llm} --seed {seed}'
     os.system(cmd)
 
 
-def create_few_shot_files(script, domain_dir, few_shot_id: int, encoding: str, react_length: Union[int, None], versions: list):
+def create_few_shot_files(script, domain_dir, nl_domain, few_shot_id: int, encoding: str, react_length: Union[int, None], versions: list, seed: Union[int, None]):
 
     print(f'Setting up few-shot examples')
 
     for planning_version in versions:
         pref = get_example_prefix_mappings(planning_version)
-        is_pb = False if encoding == 'automatic' else True
-        cmd = f'python {script} --dir {domain_dir} --ex-id {few_shot_id} ' \
-              f'--pref \"{pref}\" --version {planning_version} --enc {encoding} --rl {react_length}'
+        cmd = f'python {script} --dir {domain_dir} --nl-domain {nl_domain} --ex-id {few_shot_id} ' \
+              f'--pref \"{pref}\" --version {planning_version} --enc {encoding} --rl {react_length} --seed {seed}'
         print(cmd)
         os.system(cmd)
 

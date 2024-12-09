@@ -31,8 +31,16 @@ def create_long_version(action_description: str,
     else:
         effect_descriptions = add_descriptions + del_descriptions
 
-    action_condition_description = f'I can only {action_description} if {precond_descriptions}.'
-    action_effect_description = f'Once I {action_description}, {effect_descriptions}.'
+    if precond_descriptions == '':
+        # Deal with the special case that action has no preconditions
+        action_condition_description = f'I can always {action_description}.'
+    else:
+        action_condition_description = f'I can only {action_description} if {precond_descriptions}.'
+    if effect_descriptions == '':
+        # Deal with the special case that action has no effects
+        action_effect_description = f'Once I {action_description}, nothing changes.'
+    else:
+        action_effect_description = f'Once I {action_description}, {effect_descriptions}.'
 
     return [action_condition_description], [action_effect_description]
 
@@ -70,6 +78,13 @@ def create_short_version(action_description: str,
     for d_eff in del_effects:
         action_effect_descriptions.append(f'Once I {action_description}, it is not the case anymore that {d_eff}.')
 
+    # Deal with the special case that action has no preconditions
+    if len(action_conditions_descriptions) == 0:
+        action_conditions_descriptions = [f'I can always {action_description}.']
+    # Deal with the special case that action has no effects
+    if len(action_effect_descriptions) == 0:
+        action_effect_descriptions = [f'Once I {action_description}, nothing changes.']
+
     return action_conditions_descriptions, action_effect_descriptions
 
 
@@ -91,6 +106,7 @@ def create_medium_version(action_description: str,
     :param del_effects:
     :return:
     """
+    # Preconditions
     pos_descriptions = ' and '.join(positive_precond_descriptions)
     pos_cond_description = f'I can only {action_description} if it is the case that {pos_descriptions}'
     neg_descriptions = ' and '.join([f'it is not the case that {neg_des}' for neg_des in negative_precond_descriptions])
@@ -101,6 +117,7 @@ def create_medium_version(action_description: str,
     if neg_descriptions != '':
         action_conditions_descriptions.append(neg_cond_description)
 
+    # Effects
     add_descriptions = ' and '.join(add_effects)
     del_descriptions = ' and '.join([f'it is not the case anymore that {del_eff}' for del_eff in del_effects])
     add_effect_description = f'Once I {action_description}, it is the case that {add_descriptions}'
@@ -110,6 +127,13 @@ def create_medium_version(action_description: str,
         action_effect_descriptions.append(add_effect_description)
     if del_descriptions != '':
         action_effect_descriptions.append(del_effect_description)
+
+    # Deal with the special case that action has no preconditions
+    if len(action_conditions_descriptions) == 0:
+        action_conditions_descriptions = [f'I can always {action_description}.']
+    # Deal with the special case that action has no effects
+    if len(action_effect_descriptions) == 0:
+        action_effect_descriptions = [f'Once I {action_description}, nothing changes.']
 
     return action_conditions_descriptions, action_effect_descriptions
 
@@ -152,5 +176,12 @@ def create_schematic_version(action_description: str,
         action_effect_descriptions.append(add_effect_description)
     if del_descriptions != '':
         action_effect_descriptions.append(del_effect_description)
+
+    # Deal with the special case that action has no preconditions
+    if len(action_conditions_descriptions) == 0:
+        action_conditions_descriptions = [f'I can always {action_description}.']
+    # Deal with the special case that action has no effects
+    if len(action_effect_descriptions) == 0:
+        action_effect_descriptions = [f'Once I {action_description}, nothing changes.']
 
     return action_conditions_descriptions, action_effect_descriptions

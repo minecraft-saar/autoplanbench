@@ -3,10 +3,12 @@ import re
 import atexit
 from typing import Dict, List, Tuple, Union
 from collections import OrderedDict, defaultdict
+from pathlib import Path
 from tarski.io import PDDLReader
 from tarski.fstrips import Action, AddEffect, DelEffect
-from tarski.syntax import Atom, CompoundFormula, VariableBinding, Variable, Constant, Predicate
+from tarski.syntax import Atom, CompoundFormula, VariableBinding, Variable, Constant, Predicate, Tautology
 from utils.paths import TEMP_DIR
+
 
 class Domain:
 
@@ -42,7 +44,6 @@ class Domain:
 
         :param domain_file:
         """
-
         self.lower_cased_domain_file = self.create_lowercase_domain(domain_file=domain_file)
         self.reader = PDDLReader(raise_on_error=True)
         self.reader.parse_domain(self.lower_cased_domain_file)
@@ -61,6 +62,9 @@ class Domain:
             os.remove(self.lower_cased_domain_file)
 
     def create_lowercase_domain(self, domain_file):
+        # Make sure temp dir exists
+        TEMP_DIR.mkdir(exist_ok=True, parents=True)
+        # Create temporary domain file
         domain_file_name = os.path.split(domain_file)[-1]
         lowercase_domain_file = os.path.join(TEMP_DIR, f'tmp_{domain_file_name}')
         with open(lowercase_domain_file, 'w') as new:
@@ -236,6 +240,11 @@ class Domain:
     def convert_atom2tup(self, atoms: List[Atom]) -> List[Tuple[str]]:
 
         predicate_tuples = []
+
+        # Special case that precondition is a tautology, i.e. always applicable -> essentially no preconditions
+        if len(atoms) == 1 and isinstance(atoms[0], Tautology):
+            return predicate_tuples
+
         for atom in atoms:
             predicate_name = atom.predicate.symbol
             predicate_list = [predicate_name]
@@ -275,7 +284,4 @@ class Domain:
                         action_annotations[action_name] = action_descr
 
         return domain_annotation, action_annotations
-
-
-
 

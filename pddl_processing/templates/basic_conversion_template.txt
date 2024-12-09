@@ -1,0 +1,18 @@
+{%- block conversion -%}
+{%- if conversion_type == 'predicate' -%}
+{%- if argtype == "zero"  %}
+"{{ predicate_name }}"
+{% elif argtype == "unary" %}
+{{ arguments }} is "{{ predicate_name }}"
+{% else %}
+{{ arguments }} are in the relation "{{ predicate_name }}"
+{% endif -%}
+{% endif -%}
+{%- if conversion_type == 'action' -%}
+{%- if argtype == "zero"  %}
+apply the action "{{ action_name }}"
+{% else %}
+apply the action "{{ action_name }}" to {{ arguments }}
+{% endif -%}
+{% endif -%}
+{%- endblock conversion -%}

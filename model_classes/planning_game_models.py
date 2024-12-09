@@ -9,7 +9,7 @@ from .llm_models import LLMModel
 from .vicuna_models import VicunaModel
 from .openai_models import OpenAIComplModel, OpenAIChatModel
 from .openai_batch_model import OpenAIChatBatch
-from .llama_model import LlamaModel
+# from .llama_model import LlamaModel
 
 
 # TODO think about putting both classes together;
@@ -238,7 +238,7 @@ def create_llm_model(model_type: str, model_param: dict) -> LLMModel:
         batching = False
 
     try:
-        cache_sub_dir = model_param.pop('caching')
+        cache_sub_dir = model_input_param.pop('caching')
     except KeyError:
         cache_sub_dir = 'default'
 
@@ -260,8 +260,8 @@ def create_llm_model(model_type: str, model_param: dict) -> LLMModel:
     elif model_type == 'openai_comp':
         model = OpenAIComplModel(**model_input_param)
     # TODO:
-    elif model_type == 'llama_hf':
-        model = LlamaModel(**model_input_param)
+    #elif model_type == 'llama_hf':
+    #    model = LlamaModel(**model_input_param)
 
     elif model_type in ['vicuna', 'vicuna-x-gpt']:
         model = VicunaModel(**model_input_param)
