@@ -1,0 +1,6 @@
+(jump-new-move location_16 location_21 location_23)
+(jump-continue-move location_23 location_3 location_28)
+(jump-continue-move location_28 location_14 location_29)
+(end-move location_29)
+(jump-new-move location_10 location_29 location_11)
+; cost = 5 (unit cost)

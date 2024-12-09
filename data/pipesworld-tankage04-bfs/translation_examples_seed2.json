@@ -1,0 +1,44 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "frame_9_68",
+        "frame_9",
+        "roof_11",
+        "object_50",
+        "bastion",
+        "star_213_71",
+        "object_260",
+        "dress_red_32",
+        "dress_red",
+        "socket",
+        "kumquat_8",
+        "star_213",
+        "teddy",
+        "rain",
+        "socket_50",
+        "screen",
+        "kumquat",
+        "fire"
+    ],
+    "pos_examples": [
+        [
+            "Now, pop unitary pipe kumquat with batch-atom rain from area object_260 to area screen using batch-atom kumquat_8, product fire, and product roof_11 from tank-slot bastion to tank-slot socket.",
+            "(pop-unitarypipe kumquat rain screen object_260 kumquat_8 fire roof_11 socket bastion)"
+        ],
+        [
+            "Once you are done, please push start pipe teddy from area dress_red to area dress_red_32 with batch-atom frame_9 and batch-atom frame_9_68 using product star_213 and product star_213_71 in tank-slot yew.",
+            "(push-start teddy frame_9 dress_red dress_red_32 frame_9_68 star_213 star_213_71 yew)"
+        ],
+        [
+            "First, push end pipe object_50 from area object_260 to area screen with batch-atom kumquat_8 and batch-atom frame_9_68 using product star_213 in tank-slot socket and then push unitary pipe kumquat with batch-atom kumquat_8 from area object_260 to area screen using batch-atom frame_9, product star_213_71, and product roof_11 from tank-slot socket to tank-slot socket_50.",
+            "(push-end object_50 object_260 screen kumquat_8 frame_9_68 star_213 socket)\n(push-unitarypipe kumquat kumquat_8 object_260 screen frame_9 star_213_71 roof_11 socket socket_50)"
+        ],
+        [
+            "The next step is to pop start pipe kumquat from area dress_red to area screen with batch-atom frame_9 and batch-atom frame_9_68 using product star_213 and product fire in tank-slot bastion.",
+            "(pop-start kumquat frame_9 dress_red screen frame_9_68 star_213 fire bastion)"
+        ]
+    ]
+}

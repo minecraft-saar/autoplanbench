@@ -1,0 +1,152 @@
+{
+    "action_mappings": {
+        "drive": "drive vehicle {} from location {} to location {}",
+        "pick-up": "pick up package {} with vehicle {} at location {} changing capacity from capacity-number {} to capacity-number {}",
+        "drop": "drop package {} from vehicle {} at location {} changing capacity from capacity-number {} to capacity-number {}"
+    },
+    "action_mappings_indef": {
+        "drive": "drive a vehicle {} from a location {} to a location {}",
+        "pick-up": "pick up a package {} with a vehicle {} at a location {} changing capacity from a capacity-number {} to a capacity-number {}",
+        "drop": "drop a package {} from a vehicle {} at a location {} changing capacity from a capacity-number {} to a capacity-number {}"
+    },
+    "predicate_mappings": {
+        "road": "there is a road from {} to {}",
+        "at": "{} is at {}",
+        "in": "{} is in {}",
+        "capacity": "{} has a capacity of {}",
+        "capacity-predecessor": "{} is the capacity predecessor of {}",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "drive": {
+            "annotation": "",
+            "parameter_types": {
+                "?v": "vehicle",
+                "?l1": "location",
+                "?l2": "location"
+            },
+            "pddl": "(drive ?v ?l1 ?l2)",
+            "description": "drive a vehicle A from a location B to a location C",
+            "preconditions": [
+                "I can only drive a vehicle A from a location B to a location C if it is the case that A is at B and there is a road from B to C"
+            ],
+            "effects": [
+                "Once I drive a vehicle A from a location B to a location C, it is the case that A is at C",
+                "Once I drive a vehicle A from a location B to a location C, it is not the case anymore that A is at B"
+            ]
+        },
+        "pick-up": {
+            "annotation": "",
+            "parameter_types": {
+                "?v": "vehicle",
+                "?l": "location",
+                "?p": "package",
+                "?s1": "capacity-number",
+                "?s2": "capacity-number"
+            },
+            "pddl": "(pick-up ?v ?l ?p ?s1 ?s2)",
+            "description": "pick up a package C with a vehicle A at a location B changing capacity from a capacity-number E to a capacity-number D",
+            "preconditions": [
+                "I can only pick up a package C with a vehicle A at a location B changing capacity from a capacity-number E to a capacity-number D if it is the case that A is at B and C is at B and D is the capacity predecessor of E and A has a capacity of E"
+            ],
+            "effects": [
+                "Once I pick up a package C with a vehicle A at a location B changing capacity from a capacity-number E to a capacity-number D, it is the case that C is in A and A has a capacity of D",
+                "Once I pick up a package C with a vehicle A at a location B changing capacity from a capacity-number E to a capacity-number D, it is not the case anymore that C is at B and it is not the case anymore that A has a capacity of E"
+            ]
+        },
+        "drop": {
+            "annotation": "",
+            "parameter_types": {
+                "?v": "vehicle",
+                "?l": "location",
+                "?p": "package",
+                "?s1": "capacity-number",
+                "?s2": "capacity-number"
+            },
+            "pddl": "(drop ?v ?l ?p ?s1 ?s2)",
+            "description": "drop a package C from a vehicle A at a location B changing capacity from a capacity-number D to a capacity-number E",
+            "preconditions": [
+                "I can only drop a package C from a vehicle A at a location B changing capacity from a capacity-number D to a capacity-number E if it is the case that A is at B and C is in A and D is the capacity predecessor of E and A has a capacity of D"
+            ],
+            "effects": [
+                "Once I drop a package C from a vehicle A at a location B changing capacity from a capacity-number D to a capacity-number E, it is the case that C is at B and A has a capacity of E",
+                "Once I drop a package C from a vehicle A at a location B changing capacity from a capacity-number D to a capacity-number E, it is not the case anymore that C is in A and it is not the case anymore that A has a capacity of D"
+            ]
+        }
+    },
+    "predicates": {
+        "road": {
+            "parameter_types": {
+                "?l1": "location",
+                "?l2": "location"
+            },
+            "pddl": "(road ?l1 ?l2)"
+        },
+        "at": {
+            "parameter_types": {
+                "?x": "locatable",
+                "?v": "location"
+            },
+            "pddl": "(at ?x ?v)"
+        },
+        "in": {
+            "parameter_types": {
+                "?x": "package",
+                "?v": "vehicle"
+            },
+            "pddl": "(in ?x ?v)"
+        },
+        "capacity": {
+            "parameter_types": {
+                "?v": "vehicle",
+                "?s1": "capacity-number"
+            },
+            "pddl": "(capacity ?v ?s1)"
+        },
+        "capacity-predecessor": {
+            "parameter_types": {
+                "?s1": "capacity-number",
+                "?s2": "capacity-number"
+            },
+            "pddl": "(capacity-predecessor ?s1 ?s2)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "drive": "drive vehicle {?v} from location {?l1} to location {?l2}",
+        "pick-up": "pick up package {?p} with vehicle {?v} at location {?l} changing capacity from capacity-number {?s2} to capacity-number {?s1}",
+        "drop": "drop package {?p} from vehicle {?v} at location {?l} changing capacity from capacity-number {?s1} to capacity-number {?s2}"
+    },
+    "predicate_nl_templates": {
+        "road": "there is a road from {?l1} to {?l2}",
+        "at": "{?x} is at {?v}",
+        "in": "{?x} is in {?v}",
+        "capacity": "{?v} has a capacity of {?s1}",
+        "capacity-predecessor": "{?s1} is the capacity predecessor of {?s2}",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "drive": "drive a vehicle {?v} from a location {?l1} to a location {?l2}",
+        "pick-up": "pick up a package {?p} with a vehicle {?v} at a location {?l} changing capacity from a capacity-number {?s2} to a capacity-number {?s1}",
+        "drop": "drop a package {?p} from a vehicle {?v} at a location {?l} changing capacity from a capacity-number {?s1} to a capacity-number {?s2}"
+    },
+    "type_hierarchy": [
+        "Everything that is a location or a target or a locatable or a capacity-number is also a object",
+        "Everything that is a vehicle or a package is also a locatable"
+    ]
+}

@@ -1,0 +1,37 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat",
+        "bastion",
+        "screen",
+        "rain",
+        "object_260",
+        "star_213",
+        "object_50",
+        "fire",
+        "teddy",
+        "socket",
+        "dress_red",
+        "kumquat_8",
+        "roof_11",
+        "object_50_49",
+        "frame_9"
+    ],
+    "pos_examples": [
+        [
+            "Now, analyze cycle of length 4 with segment object_260, segment kumquat_8, segment socket, segment fire, car rain, car kumquat, car bastion, and car roof_11.",
+            "(analyze-4 object_260 kumquat_8 socket fire rain kumquat bastion roof_11)"
+        ],
+        [
+            "Once you are done, please rotate cycle of length 2 with segment teddy, segment star_213, car dress_red, and car yew.",
+            "(rotate-2 teddy star_213 dress_red yew)"
+        ],
+        [
+            "First, rotate cycle of length 4 with segment frame_9, segment object_260, segment kumquat_8, segment star_213, car screen, car object_50, car object_50_49, and car rain and then analyze cycle of length 2 with segment socket, segment star_213, car screen, and car yew.",
+            "(rotate-4 frame_9 object_260 kumquat_8 star_213 screen object_50 object_50_49 rain)\n(analyze-2 socket star_213 screen yew)"
+        ]
+    ]
+}

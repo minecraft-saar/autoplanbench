@@ -1,0 +1,28 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "rain",
+        "frame_9"
+    ],
+    "pos_examples": [
+        [
+            "Now, reset the counter.",
+            "(reset-counter )"
+        ],
+        [
+            "Once you are done, please get crackers rain.",
+            "(get-crackers rain)"
+        ],
+        [
+            "First, start the movie and then get pop frame_9.",
+            "(start-movie )\n(get-pop frame_9)"
+        ],
+        [
+            "The next step is to rewind the movie.",
+            "(rewind-movie )"
+        ]
+    ]
+}

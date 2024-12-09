@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_260",
+        "star_213",
+        "frame_9",
+        "dress_red",
+        "roof_11",
+        "bastion",
+        "rain",
+        "kumquat",
+        "fire",
+        "object_50",
+        "screen",
+        "teddy"
+    ],
+    "pos_examples": [
+        [
+            "Now, calibrate camera dress_red on rover bastion using objective frame_9 at waypoint object_260.",
+            "(calibrate bastion dress_red frame_9 object_260)"
+        ],
+        [
+            "Once you are done, please sample soil at waypoint yew using rover teddy and store in store star_213.",
+            "(sample_soil teddy star_213 yew)"
+        ],
+        [
+            "First, drop contents from store rain of rover bastion and then take image of objective roof_11 in mode fire using camera object_50 on rover bastion at waypoint yew.",
+            "(drop bastion rain)\n(take_image bastion yew roof_11 object_50 fire)"
+        ],
+        [
+            "The next step is to communicate image data from rover teddy at waypoint yew to lander kumquat at waypoint object_260 for objective roof_11 in mode screen.",
+            "(communicate_image_data teddy kumquat roof_11 screen yew object_260)"
+        ]
+    ]
+}

@@ -1,0 +1,249 @@
+{
+    "action_mappings": {
+        "load-truck": "load object {} into truck {} at location {}",
+        "unload-truck": "unload object {} from truck {} at location {}",
+        "board-truck": "board driver {} onto truck {} at location {}",
+        "disembark-truck": "disembark driver {} from truck {} at location {}",
+        "drive-truck": "drive truck {} from location {} to location {} with driver {}",
+        "walk": "walk from location {} to location {} with driver {}"
+    },
+    "action_mappings_indef": {
+        "load-truck": "load an object {} into a truck {} at a location {}",
+        "unload-truck": "unload an object {} from a truck {} at a location {}",
+        "board-truck": "board a driver {} onto a truck {} at a location {}",
+        "disembark-truck": "disembark a driver {} from a truck {} at a location {}",
+        "drive-truck": "drive a truck {} from a location {} to a location {} with a driver {}",
+        "walk": "walk from a location {} to a location {} with a driver {}"
+    },
+    "predicate_mappings": {
+        "obj": "{} is an object",
+        "truck": "{} is a truck",
+        "location": "{} is a location",
+        "driver": "{} is a driver",
+        "at": "{} is at {}",
+        "in": "{} is in {}",
+        "driving": "{} is driving {}",
+        "link": "{} is linked to {}",
+        "path": "there is a path from {} to {}",
+        "empty": "{} is empty",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "load-truck": {
+            "annotation": "",
+            "parameter_types": {
+                "?obj": "object",
+                "?truck": "object",
+                "?loc": "object"
+            },
+            "pddl": "(load-truck ?obj ?truck ?loc)",
+            "description": "load an object A into a truck B at a location C",
+            "preconditions": [
+                "I can only load an object A into a truck B at a location C if it is the case that A is an object and B is a truck and C is a location and B is at C and A is at C"
+            ],
+            "effects": [
+                "Once I load an object A into a truck B at a location C, it is the case that A is in B",
+                "Once I load an object A into a truck B at a location C, it is not the case anymore that A is at C"
+            ]
+        },
+        "unload-truck": {
+            "annotation": "",
+            "parameter_types": {
+                "?obj": "object",
+                "?truck": "object",
+                "?loc": "object"
+            },
+            "pddl": "(unload-truck ?obj ?truck ?loc)",
+            "description": "unload an object A from a truck B at a location C",
+            "preconditions": [
+                "I can only unload an object A from a truck B at a location C if it is the case that A is an object and B is a truck and C is a location and B is at C and A is in B"
+            ],
+            "effects": [
+                "Once I unload an object A from a truck B at a location C, it is the case that A is at C",
+                "Once I unload an object A from a truck B at a location C, it is not the case anymore that A is in B"
+            ]
+        },
+        "board-truck": {
+            "annotation": "",
+            "parameter_types": {
+                "?driver": "object",
+                "?truck": "object",
+                "?loc": "object"
+            },
+            "pddl": "(board-truck ?driver ?truck ?loc)",
+            "description": "board a driver A onto a truck B at a location C",
+            "preconditions": [
+                "I can only board a driver A onto a truck B at a location C if it is the case that A is a driver and B is a truck and C is a location and B is at C and A is at C and B is empty"
+            ],
+            "effects": [
+                "Once I board a driver A onto a truck B at a location C, it is the case that A is driving B",
+                "Once I board a driver A onto a truck B at a location C, it is not the case anymore that A is at C and it is not the case anymore that B is empty"
+            ]
+        },
+        "disembark-truck": {
+            "annotation": "",
+            "parameter_types": {
+                "?driver": "object",
+                "?truck": "object",
+                "?loc": "object"
+            },
+            "pddl": "(disembark-truck ?driver ?truck ?loc)",
+            "description": "disembark a driver A from a truck B at a location C",
+            "preconditions": [
+                "I can only disembark a driver A from a truck B at a location C if it is the case that A is a driver and B is a truck and C is a location and B is at C and A is driving B"
+            ],
+            "effects": [
+                "Once I disembark a driver A from a truck B at a location C, it is the case that A is at C and B is empty",
+                "Once I disembark a driver A from a truck B at a location C, it is not the case anymore that A is driving B"
+            ]
+        },
+        "drive-truck": {
+            "annotation": "",
+            "parameter_types": {
+                "?truck": "object",
+                "?loc-from": "object",
+                "?loc-to": "object",
+                "?driver": "object"
+            },
+            "pddl": "(drive-truck ?truck ?loc-from ?loc-to ?driver)",
+            "description": "drive a truck A from a location B to a location C with a driver D",
+            "preconditions": [
+                "I can only drive a truck A from a location B to a location C with a driver D if it is the case that A is a truck and B is a location and C is a location and D is a driver and A is at B and D is driving A and B is linked to C"
+            ],
+            "effects": [
+                "Once I drive a truck A from a location B to a location C with a driver D, it is the case that A is at C",
+                "Once I drive a truck A from a location B to a location C with a driver D, it is not the case anymore that A is at B"
+            ]
+        },
+        "walk": {
+            "annotation": "",
+            "parameter_types": {
+                "?driver": "object",
+                "?loc-from": "object",
+                "?loc-to": "object"
+            },
+            "pddl": "(walk ?driver ?loc-from ?loc-to)",
+            "description": "walk from a location B to a location C with a driver A",
+            "preconditions": [
+                "I can only walk from a location B to a location C with a driver A if it is the case that A is a driver and B is a location and C is a location and A is at B and there is a path from B to C"
+            ],
+            "effects": [
+                "Once I walk from a location B to a location C with a driver A, it is the case that A is at C",
+                "Once I walk from a location B to a location C with a driver A, it is not the case anymore that A is at B"
+            ]
+        }
+    },
+    "predicates": {
+        "obj": {
+            "parameter_types": {
+                "?obj": "object"
+            },
+            "pddl": "(obj ?obj)"
+        },
+        "truck": {
+            "parameter_types": {
+                "?truck": "object"
+            },
+            "pddl": "(truck ?truck)"
+        },
+        "location": {
+            "parameter_types": {
+                "?loc": "object"
+            },
+            "pddl": "(location ?loc)"
+        },
+        "driver": {
+            "parameter_types": {
+                "?d": "object"
+            },
+            "pddl": "(driver ?d)"
+        },
+        "at": {
+            "parameter_types": {
+                "?obj": "object",
+                "?loc": "object"
+            },
+            "pddl": "(at ?obj ?loc)"
+        },
+        "in": {
+            "parameter_types": {
+                "?obj1": "object",
+                "?obj": "object"
+            },
+            "pddl": "(in ?obj1 ?obj)"
+        },
+        "driving": {
+            "parameter_types": {
+                "?d": "object",
+                "?v": "object"
+            },
+            "pddl": "(driving ?d ?v)"
+        },
+        "link": {
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(link ?x ?y)"
+        },
+        "path": {
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(path ?x ?y)"
+        },
+        "empty": {
+            "parameter_types": {
+                "?v": "object"
+            },
+            "pddl": "(empty ?v)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "load-truck": "load object {?obj} into truck {?truck} at location {?loc}",
+        "unload-truck": "unload object {?obj} from truck {?truck} at location {?loc}",
+        "board-truck": "board driver {?driver} onto truck {?truck} at location {?loc}",
+        "disembark-truck": "disembark driver {?driver} from truck {?truck} at location {?loc}",
+        "drive-truck": "drive truck {?truck} from location {?loc-from} to location {?loc-to} with driver {?driver}",
+        "walk": "walk from location {?loc-from} to location {?loc-to} with driver {?driver}"
+    },
+    "predicate_nl_templates": {
+        "obj": "{?obj} is an object",
+        "truck": "{?truck} is a truck",
+        "location": "{?loc} is a location",
+        "driver": "{?d} is a driver",
+        "at": "{?obj} is at {?loc}",
+        "in": "{?obj1} is in {?obj}",
+        "driving": "{?d} is driving {?v}",
+        "link": "{?x} is linked to {?y}",
+        "path": "there is a path from {?x} to {?y}",
+        "empty": "{?v} is empty",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "load-truck": "load an object {?obj} into a truck {?truck} at a location {?loc}",
+        "unload-truck": "unload an object {?obj} from a truck {?truck} at a location {?loc}",
+        "board-truck": "board a driver {?driver} onto a truck {?truck} at a location {?loc}",
+        "disembark-truck": "disembark a driver {?driver} from a truck {?truck} at a location {?loc}",
+        "drive-truck": "drive a truck {?truck} from a location {?loc-from} to a location {?loc-to} with a driver {?driver}",
+        "walk": "walk from a location {?loc-from} to a location {?loc-to} with a driver {?driver}"
+    },
+    "type_hierarchy": []
+}

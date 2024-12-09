@@ -1,0 +1,6 @@
+(pick-up vehicle_0 location_0 package_0 capacity-number_3 capacity-number_1)
+(pick-up vehicle_0 location_0 package_1 capacity-number_2 capacity-number_3)
+(drive vehicle_0 location_0 location_1)
+(drop vehicle_0 location_1 package_0 capacity-number_2 capacity-number_3)
+(drop vehicle_0 location_1 package_1 capacity-number_3 capacity-number_1)
+; cost = 5 (unit cost)

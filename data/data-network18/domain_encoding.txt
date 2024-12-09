@@ -1,0 +1,30 @@
+I can carry out the following actions:
+release a data A from a server B reducing usage from a numbers D to a numbers E with data size a numbers C
+save a data A with size a numbers B on a server C
+load a data A from a server B with size a numbers C, current usage a numbers E, and updated usage a numbers F within capacity limit a numbers D
+send a data A from a server B to a server C with size a numbers D, current usage a numbers F, and updated usage a numbers G within capacity limit a numbers E
+process a data A and a data B using a script D on a server E to produce a data C with size a numbers F, current usage a numbers H, and updated usage a numbers I within capacity limit a numbers G
+
+I have the following restrictions on my actions:
+I can only release a data A from a server B reducing usage from a numbers D to a numbers E with data size a numbers C if it is the case that the data size of A is C and the sum of E and C is D and A is cached by B and B has a usage of D
+I can only save a data A with size a numbers B on a server C if it is the case that the data size of A is B and A is cached by C
+I can only load a data A from a server B with size a numbers C, current usage a numbers E, and updated usage a numbers F within capacity limit a numbers D if it is the case that the data size of A is C and the capacity of B is D and the sum of E and C is F and F is less than or equal to D and A is saved by B and B has a usage of E
+I can only load a data A from a server B with size a numbers C, current usage a numbers E, and updated usage a numbers F within capacity limit a numbers D if it is not the case that A is cached by B
+I can only send a data A from a server B to a server C with size a numbers D, current usage a numbers F, and updated usage a numbers G within capacity limit a numbers E if it is the case that B is connected to C and the data size of A is D and the capacity of C is E and the sum of F and D is G and G is less than or equal to E and A is cached by B and C has a usage of F
+I can only send a data A from a server B to a server C with size a numbers D, current usage a numbers F, and updated usage a numbers G within capacity limit a numbers E if it is not the case that A is cached by C
+I can only process a data A and a data B using a script D on a server E to produce a data C with size a numbers F, current usage a numbers H, and updated usage a numbers I within capacity limit a numbers G if it is the case that the script D takes inputs A and B and produces output C and the data size of C is F and the capacity of E is G and the sum of H and F is I and I is less than or equal to G and A is cached by E and B is cached by E and E has a usage of H
+I can only process a data A and a data B using a script D on a server E to produce a data C with size a numbers F, current usage a numbers H, and updated usage a numbers I within capacity limit a numbers G if it is not the case that C is cached by E
+
+The actions have the following effects on the state:
+Once I release a data A from a server B reducing usage from a numbers D to a numbers E with data size a numbers C, it is the case that B has a usage of E
+Once I release a data A from a server B reducing usage from a numbers D to a numbers E with data size a numbers C, it is not the case anymore that A is cached by B and it is not the case anymore that B has a usage of D
+Once I save a data A with size a numbers B on a server C, it is the case that A is saved by C
+Once I load a data A from a server B with size a numbers C, current usage a numbers E, and updated usage a numbers F within capacity limit a numbers D, it is the case that A is cached by B and B has a usage of F
+Once I load a data A from a server B with size a numbers C, current usage a numbers E, and updated usage a numbers F within capacity limit a numbers D, it is not the case anymore that B has a usage of E
+Once I send a data A from a server B to a server C with size a numbers D, current usage a numbers F, and updated usage a numbers G within capacity limit a numbers E, it is the case that A is cached by C and C has a usage of G
+Once I send a data A from a server B to a server C with size a numbers D, current usage a numbers F, and updated usage a numbers G within capacity limit a numbers E, it is not the case anymore that C has a usage of F
+Once I process a data A and a data B using a script D on a server E to produce a data C with size a numbers F, current usage a numbers H, and updated usage a numbers I within capacity limit a numbers G, it is the case that C is cached by E and E has a usage of I
+Once I process a data A and a data B using a script D on a server E to produce a data C with size a numbers F, current usage a numbers H, and updated usage a numbers I within capacity limit a numbers G, it is not the case anymore that E has a usage of H
+
+
+Everything that is a data or a script or a server or a numbers is also a object

@@ -1,0 +1,16 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "bastion",
+        "dress_red"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"move\" to place bastion and place dress_red.",
+            "(move bastion dress_red)"
+        ]
+    ]
+}

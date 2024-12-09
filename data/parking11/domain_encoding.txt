@@ -1,0 +1,24 @@
+I can carry out the following actions:
+move a car A from curb number a B to curb number a C
+move a car A from curb number a B to behind a car C
+move a car A from behind a car B to curb number a C
+move a car A from behind a car B to behind a car C
+
+I have the following restrictions on my actions:
+I can only move a car A from curb number a B to curb number a C if it is the case that the car A is clear and the curb C is clear and A is at curb number B
+I can only move a car A from curb number a B to behind a car C if it is the case that the car A is clear and the car C is clear and A is at curb number B and C is at the curb
+I can only move a car A from behind a car B to curb number a C if it is the case that the car A is clear and the curb C is clear and A is behind the car B
+I can only move a car A from behind a car B to behind a car C if it is the case that the car A is clear and the car C is clear and A is behind the car B and C is at the curb
+
+The actions have the following effects on the state:
+Once I move a car A from curb number a B to curb number a C, it is the case that the curb B is clear and A is at curb number C
+Once I move a car A from curb number a B to curb number a C, it is not the case anymore that the curb C is clear and it is not the case anymore that A is at curb number B
+Once I move a car A from curb number a B to behind a car C, it is the case that the curb B is clear and A is behind the car C
+Once I move a car A from curb number a B to behind a car C, it is not the case anymore that the car C is clear and it is not the case anymore that A is at curb number B and it is not the case anymore that A is at the curb
+Once I move a car A from behind a car B to curb number a C, it is the case that the car B is clear and A is at curb number C and A is at the curb
+Once I move a car A from behind a car B to curb number a C, it is not the case anymore that the curb C is clear and it is not the case anymore that A is behind the car B
+Once I move a car A from behind a car B to behind a car C, it is the case that the car B is clear and A is behind the car C
+Once I move a car A from behind a car B to behind a car C, it is not the case anymore that the car C is clear and it is not the case anymore that A is behind the car B
+
+
+Everything that is a car or a curb is also a object

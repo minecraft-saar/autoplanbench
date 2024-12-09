@@ -1,0 +1,40 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "dress_red",
+        "star_213",
+        "object_50",
+        "rain",
+        "roof_11",
+        "screen",
+        "teddy",
+        "bastion",
+        "frame_9",
+        "kumquat",
+        "socket",
+        "object_260",
+        "fire",
+        "kumquat_8"
+    ],
+    "pos_examples": [
+        [
+            "Now, zoom aircraft bastion from city yew to city teddy changing fuel level from flight level dress_red to flight level object_260 through flight level screen.",
+            "(zoom bastion yew teddy dress_red screen object_260)"
+        ],
+        [
+            "Once you are done, please refuel aircraft kumquat at city roof_11 changing fuel level from flight level rain to flight level socket.",
+            "(refuel kumquat roof_11 rain socket)"
+        ],
+        [
+            "First, fly aircraft star_213 from city object_50 to city fire changing fuel level from flight level frame_9 to flight level kumquat_8 and then board person frame_9 onto aircraft rain at city object_50.",
+            "(fly star_213 object_50 fire frame_9 kumquat_8)\n(board frame_9 rain object_50)"
+        ],
+        [
+            "The next step is to debark person fire from aircraft kumquat_8 at city rain.",
+            "(debark fire kumquat_8 rain)"
+        ]
+    ]
+}

@@ -1,0 +1,22 @@
+I can carry out the following actions:
+pick up an object A from the table
+put down an object A on the table
+stack an object A on an object B
+unstack an object A from an object B
+
+I have the following restrictions on my actions:
+I can only pick up an object A from the table if it is the case that A is clear and A is on the table and the hand is empty
+I can only put down an object A on the table if it is the case that holding A
+I can only stack an object A on an object B if it is the case that holding A and B is clear
+I can only unstack an object A from an object B if it is the case that A is on B and A is clear and the hand is empty
+
+The actions have the following effects on the state:
+Once I pick up an object A from the table, it is the case that holding A
+Once I pick up an object A from the table, it is not the case anymore that A is on the table and it is not the case anymore that A is clear and it is not the case anymore that the hand is empty
+Once I put down an object A on the table, it is the case that A is clear and the hand is empty and A is on the table
+Once I put down an object A on the table, it is not the case anymore that holding A
+Once I stack an object A on an object B, it is the case that A is clear and the hand is empty and A is on B
+Once I stack an object A on an object B, it is not the case anymore that holding A and it is not the case anymore that B is clear
+Once I unstack an object A from an object B, it is the case that holding A and B is clear
+Once I unstack an object A from an object B, it is not the case anymore that A is clear and it is not the case anymore that the hand is empty and it is not the case anymore that A is on B
+

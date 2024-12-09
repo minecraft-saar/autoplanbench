@@ -1,0 +1,21 @@
+I can carry out the following actions:
+drive a vehicle A from a location B to a location C
+pick up a package C with a vehicle A at a location B changing capacity from a capacity-number E to a capacity-number D
+drop a package C from a vehicle A at a location B changing capacity from a capacity-number D to a capacity-number E
+
+I have the following restrictions on my actions:
+I can only drive a vehicle A from a location B to a location C if it is the case that A is at B and there is a road from B to C
+I can only pick up a package C with a vehicle A at a location B changing capacity from a capacity-number E to a capacity-number D if it is the case that A is at B and C is at B and D is the capacity predecessor of E and A has a capacity of E
+I can only drop a package C from a vehicle A at a location B changing capacity from a capacity-number D to a capacity-number E if it is the case that A is at B and C is in A and D is the capacity predecessor of E and A has a capacity of D
+
+The actions have the following effects on the state:
+Once I drive a vehicle A from a location B to a location C, it is the case that A is at C
+Once I drive a vehicle A from a location B to a location C, it is not the case anymore that A is at B
+Once I pick up a package C with a vehicle A at a location B changing capacity from a capacity-number E to a capacity-number D, it is the case that C is in A and A has a capacity of D
+Once I pick up a package C with a vehicle A at a location B changing capacity from a capacity-number E to a capacity-number D, it is not the case anymore that C is at B and it is not the case anymore that A has a capacity of E
+Once I drop a package C from a vehicle A at a location B changing capacity from a capacity-number D to a capacity-number E, it is the case that C is at B and A has a capacity of E
+Once I drop a package C from a vehicle A at a location B changing capacity from a capacity-number D to a capacity-number E, it is not the case anymore that C is in A and it is not the case anymore that A has a capacity of D
+
+
+Everything that is a location or a target or a locatable or a capacity-number is also a object
+Everything that is a vehicle or a package is also a locatable

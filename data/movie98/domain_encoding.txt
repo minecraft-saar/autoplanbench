@@ -1,0 +1,31 @@
+I can carry out the following actions:
+rewind the movie when the counter is at two hours
+rewind the movie when the counter is at a time other than two hours
+reset the counter to zero
+get an object A which are chips
+get an object A which is a dip
+get an object A which is a pop
+get an object A which is cheese
+get an object A which are crackers
+
+I have the following restrictions on my actions:
+I can only rewind the movie when the counter is at two hours if it is the case that the counter is at two hours
+I can only rewind the movie when the counter is at a time other than two hours if it is the case that the counter is at a time other than two hours
+I can always reset the counter to zero.
+I can only get an object A which are chips if it is the case that A are chips
+I can only get an object A which is a dip if it is the case that A is a dip
+I can only get an object A which is a pop if it is the case that A is a pop
+I can only get an object A which is cheese if it is the case that A is cheese
+I can only get an object A which are crackers if it is the case that A are crackers
+
+The actions have the following effects on the state:
+Once I rewind the movie when the counter is at two hours, it is the case that the movie is rewound
+Once I rewind the movie when the counter is at a time other than two hours, it is the case that the movie is rewound
+Once I rewind the movie when the counter is at a time other than two hours, it is not the case anymore that the counter is at zero
+Once I reset the counter to zero, it is the case that the counter is at zero
+Once I get an object A which are chips, it is the case that there are chips
+Once I get an object A which is a dip, it is the case that there is dip
+Once I get an object A which is a pop, it is the case that there is pop
+Once I get an object A which is cheese, it is the case that there is cheese
+Once I get an object A which are crackers, it is the case that there are crackers
+

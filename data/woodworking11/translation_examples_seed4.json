@@ -1,0 +1,42 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "screen_89_31",
+        "screen_89",
+        "screen_80",
+        "screen_89_95",
+        "frame_9",
+        "dress_red",
+        "star_213",
+        "kumquat_8",
+        "socket",
+        "screen",
+        "object_260",
+        "rain",
+        "teddy",
+        "screen_88",
+        "bastion",
+        "object_260_24"
+    ],
+    "pos_examples": [
+        [
+            "Now, cut board socket into large part bastion using highspeed-saw star_213 with awood rain, surface teddy, changing size from aboardsize screen to aboardsize screen_88 through intermediate sizes aboardsize screen_89 and aboardsize screen_80.",
+            "(cut-board-large socket bastion star_213 rain teddy screen screen_89 screen_80 screen_88)"
+        ],
+        [
+            "Once you are done, please cut board socket into medium part bastion using highspeed-saw star_213 with awood rain, surface teddy, changing size from aboardsize screen_89 to aboardsize screen_89_95 through intermediate size aboardsize screen_88.",
+            "(cut-board-medium socket bastion star_213 rain teddy screen_89 screen_88 screen_89_95)"
+        ],
+        [
+            "First, do grind on part bastion using grinder dress_red to change surface from surface teddy to verysmooth, color from acolour frame_9 to natural, and treatment from treatmentstatus object_260 to treatmentstatus object_260_24 and then cut board socket into small part bastion using highspeed-saw star_213 with awood rain, surface teddy, changing size from aboardsize screen_89 to aboardsize screen_89_31.",
+            "(do-grind bastion dress_red teddy frame_9 object_260 object_260_24)\n(cut-board-small socket bastion star_213 rain teddy screen_89 screen_89_31)"
+        ],
+        [
+            "The next step is to do glaze on part bastion using glazer kumquat_8 to change color to acolour frame_9.",
+            "(do-glaze bastion kumquat_8 frame_9)"
+        ]
+    ]
+}

@@ -1,0 +1,42 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat_8_99_66_26",
+        "kumquat_8_99",
+        "kumquat_8_99_66_26_34",
+        "kumquat_8_99_66",
+        "fire",
+        "bastion",
+        "kumquat_8",
+        "rain",
+        "socket",
+        "kumquat_8_99_66_26_83_51",
+        "kumquat_8_47",
+        "kumquat",
+        "object_260",
+        "dress_red",
+        "roof_11",
+        "screen",
+        "kumquat_8_99_87_81",
+        "kumquat_8_99_66_26_83",
+        "star_213",
+        "kumquat_8_99_87"
+    ],
+    "pos_examples": [
+        [
+            "Now, unload goods rain from truck screen at depot fire from level kumquat_8_99 to level kumquat_8_47 with level kumquat_8_47 next to level kumquat_8_99 and level kumquat_8_99_66 next to level kumquat_8_99_66_26.",
+            "(unload rain screen fire object_260 kumquat_8 kumquat_8_99 kumquat_8)"
+        ],
+        [
+            "Once you are done, please drive truck kumquat from place socket to place star_213.",
+            "(drive kumquat socket star_213)"
+        ],
+        [
+            "First, load goods yew onto truck screen at market bastion from level kumquat_8_99_87 to level kumquat_8_47 with level kumquat_8_99_66_26_34 next to level kumquat_8_99_87 and level kumquat_8_47 next to level kumquat_8_99_87_81 and then buy goods dress_red with truck screen at market roof_11 from level kumquat_8_99_87_81 to level kumquat_8 with level kumquat_8 next to level kumquat_8_99_87_81 and level kumquat_8_99_66_26_83 next to level kumquat_8_99_66_26_83_51.",
+            "(load yew screen bastion kumquat_8_99_66_26_34 kumquat_8_99_66_26 kumquat_8_99 kumquat_8_99)\n(buy screen dress_red roof_11 object_260 kumquat_8_99_66_26 kumquat_8_99_87_81 kumquat_8_99_66_26)"
+        ]
+    ]
+}

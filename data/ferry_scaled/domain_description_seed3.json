@@ -1,0 +1,153 @@
+{
+    "action_mappings": {
+        "sail": "sail from location {} to location {}",
+        "board": "board car {} at location {}",
+        "debark": "debark car {} at location {}"
+    },
+    "action_mappings_indef": {
+        "sail": "sail from a location {} to a location {}",
+        "board": "board a car {} at a location {}",
+        "debark": "debark a car {} at a location {}"
+    },
+    "predicate_mappings": {
+        "not-eq": "{} is not equal to {}",
+        "car": "{} is a car",
+        "location": "{} is a location",
+        "at-ferry": "{} is at the ferry",
+        "at": "{} is at {}",
+        "empty-ferry": "the ferry is empty",
+        "on": "{} is on",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "sail": {
+            "annotation": "",
+            "parameter_types": {
+                "?from": "object",
+                "?to": "object"
+            },
+            "pddl": "(sail ?from ?to)",
+            "description": "sail from a location A to a location B",
+            "preconditions": [
+                "I can only sail from a location A to a location B if it is the case that A is not equal to B and A is a location and B is a location and A is at the ferry"
+            ],
+            "effects": [
+                "Once I sail from a location A to a location B, it is the case that B is at the ferry",
+                "Once I sail from a location A to a location B, it is not the case anymore that A is at the ferry"
+            ]
+        },
+        "board": {
+            "annotation": "",
+            "parameter_types": {
+                "?car": "object",
+                "?loc": "object"
+            },
+            "pddl": "(board ?car ?loc)",
+            "description": "board a car A at a location B",
+            "preconditions": [
+                "I can only board a car A at a location B if it is the case that A is a car and B is a location and A is at B and B is at the ferry and the ferry is empty"
+            ],
+            "effects": [
+                "Once I board a car A at a location B, it is the case that A is on",
+                "Once I board a car A at a location B, it is not the case anymore that A is at B and it is not the case anymore that the ferry is empty"
+            ]
+        },
+        "debark": {
+            "annotation": "",
+            "parameter_types": {
+                "?car": "object",
+                "?loc": "object"
+            },
+            "pddl": "(debark ?car ?loc)",
+            "description": "debark a car A at a location B",
+            "preconditions": [
+                "I can only debark a car A at a location B if it is the case that A is a car and B is a location and A is on and B is at the ferry"
+            ],
+            "effects": [
+                "Once I debark a car A at a location B, it is the case that A is at B and the ferry is empty",
+                "Once I debark a car A at a location B, it is not the case anymore that A is on"
+            ]
+        }
+    },
+    "predicates": {
+        "not-eq": {
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(not-eq ?x ?y)"
+        },
+        "car": {
+            "parameter_types": {
+                "?c": "object"
+            },
+            "pddl": "(car ?c)"
+        },
+        "location": {
+            "parameter_types": {
+                "?l": "object"
+            },
+            "pddl": "(location ?l)"
+        },
+        "at-ferry": {
+            "parameter_types": {
+                "?l": "object"
+            },
+            "pddl": "(at-ferry ?l)"
+        },
+        "at": {
+            "parameter_types": {
+                "?c": "object",
+                "?l": "object"
+            },
+            "pddl": "(at ?c ?l)"
+        },
+        "empty-ferry": {
+            "parameter_types": {},
+            "pddl": "(empty-ferry)"
+        },
+        "on": {
+            "parameter_types": {
+                "?c": "object"
+            },
+            "pddl": "(on ?c)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "sail": "sail from location {?from} to location {?to}",
+        "board": "board car {?car} at location {?loc}",
+        "debark": "debark car {?car} at location {?loc}"
+    },
+    "predicate_nl_templates": {
+        "not-eq": "{?x} is not equal to {?y}",
+        "car": "{?c} is a car",
+        "location": "{?l} is a location",
+        "at-ferry": "{?l} is at the ferry",
+        "at": "{?c} is at {?l}",
+        "empty-ferry": "the ferry is empty",
+        "on": "{?c} is on",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "sail": "sail from a location {?from} to a location {?to}",
+        "board": "board a car {?car} at a location {?loc}",
+        "debark": "debark a car {?car} at a location {?loc}"
+    },
+    "type_hierarchy": []
+}

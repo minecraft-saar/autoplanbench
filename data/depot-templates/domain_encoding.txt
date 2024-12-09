@@ -1,0 +1,31 @@
+I can carry out the following actions:
+apply the action "drive" to a truck A, a place B and a place C
+apply the action "lift" to a hoist A, a crate B, a surface C and a place D
+apply the action "drop" to a hoist A, a crate B, a surface C and a place D
+apply the action "load" to a hoist A, a crate B, a truck C and a place D
+apply the action "unload" to a hoist A, a crate B, a truck C and a place D
+
+I have the following restrictions on my actions:
+I can only apply the action "drive" to a truck A, a place B and a place C if it is the case that A and B are in the relation "at"
+I can only apply the action "lift" to a hoist A, a crate B, a surface C and a place D if it is the case that A and D are in the relation "at" and A is "available" and B and D are in the relation "at" and B and C are in the relation "on" and B is "clear"
+I can only apply the action "drop" to a hoist A, a crate B, a surface C and a place D if it is the case that A and D are in the relation "at" and C and D are in the relation "at" and C is "clear" and A and B are in the relation "lifting"
+I can only apply the action "load" to a hoist A, a crate B, a truck C and a place D if it is the case that A and D are in the relation "at" and C and D are in the relation "at" and A and B are in the relation "lifting"
+I can only apply the action "unload" to a hoist A, a crate B, a truck C and a place D if it is the case that A and D are in the relation "at" and C and D are in the relation "at" and A is "available" and B and C are in the relation "in"
+
+The actions have the following effects on the state:
+Once I apply the action "drive" to a truck A, a place B and a place C, it is the case that A and C are in the relation "at"
+Once I apply the action "drive" to a truck A, a place B and a place C, it is not the case anymore that A and B are in the relation "at"
+Once I apply the action "lift" to a hoist A, a crate B, a surface C and a place D, it is the case that A and B are in the relation "lifting" and C is "clear"
+Once I apply the action "lift" to a hoist A, a crate B, a surface C and a place D, it is not the case anymore that B and D are in the relation "at" and it is not the case anymore that B is "clear" and it is not the case anymore that A is "available" and it is not the case anymore that B and C are in the relation "on"
+Once I apply the action "drop" to a hoist A, a crate B, a surface C and a place D, it is the case that A is "available" and B and D are in the relation "at" and B is "clear" and B and C are in the relation "on"
+Once I apply the action "drop" to a hoist A, a crate B, a surface C and a place D, it is not the case anymore that A and B are in the relation "lifting" and it is not the case anymore that C is "clear"
+Once I apply the action "load" to a hoist A, a crate B, a truck C and a place D, it is the case that B and C are in the relation "in" and A is "available"
+Once I apply the action "load" to a hoist A, a crate B, a truck C and a place D, it is not the case anymore that A and B are in the relation "lifting"
+Once I apply the action "unload" to a hoist A, a crate B, a truck C and a place D, it is the case that A and B are in the relation "lifting"
+Once I apply the action "unload" to a hoist A, a crate B, a truck C and a place D, it is not the case anymore that B and C are in the relation "in" and it is not the case anymore that A is "available"
+
+
+Everything that is a place or a locatable is also a object
+Everything that is a depot or a distributor is also a place
+Everything that is a truck or a hoist or a surface is also a locatable
+Everything that is a pallet or a crate is also a surface

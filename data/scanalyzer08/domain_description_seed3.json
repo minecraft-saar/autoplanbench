@@ -1,0 +1,192 @@
+{
+    "action_mappings": {
+        "analyze-2": "analyze cycle of length 2 with segment {}, segment {}, car {}, and car {}",
+        "analyze-4": "analyze cycle of length 4 with segment {}, segment {}, segment {}, segment {}, car {}, car {}, car {}, and car {}",
+        "rotate-2": "rotate cycle of length 2 with segment {}, segment {}, car {}, and car {}",
+        "rotate-4": "rotate cycle of length 4 with segment {}, segment {}, segment {}, segment {}, car {}, car {}, car {}, and car {}"
+    },
+    "action_mappings_indef": {
+        "analyze-2": "analyze cycle of length 2 with a segment {}, a segment {}, a car {}, and a car {}",
+        "analyze-4": "analyze cycle of length 4 with a segment {}, a segment {}, a segment {}, a segment {}, a car {}, a car {}, a car {}, and a car {}",
+        "rotate-2": "rotate cycle of length 2 with a segment {}, a segment {}, a car {}, and a car {}",
+        "rotate-4": "rotate cycle of length 4 with a segment {}, a segment {}, a segment {}, a segment {}, a car {}, a car {}, a car {}, and a car {}"
+    },
+    "predicate_mappings": {
+        "on": "{} is on {}",
+        "analyzed": "{} is analyzed",
+        "cycle-2": "{} and {} form a cycle of length 2",
+        "cycle-4": "{}, {}, {}, and {} form a cycle of length 4",
+        "cycle-2-with-analysis": "{} and {} form a cycle of length 2 with analysis",
+        "cycle-4-with-analysis": "{}, {}, {}, and {} form a cycle of length 4 with analysis",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "analyze-2": {
+            "annotation": "",
+            "parameter_types": {
+                "?s1": "segment",
+                "?s2": "segment",
+                "?c1": "car",
+                "?c2": "car"
+            },
+            "pddl": "(analyze-2 ?s1 ?s2 ?c1 ?c2)",
+            "description": "analyze cycle of length 2 with a segment A, a segment B, a car C, and a car D",
+            "preconditions": [
+                "I can only analyze cycle of length 2 with a segment A, a segment B, a car C, and a car D if it is the case that A and B form a cycle of length 2 with analysis and C is on A and D is on B"
+            ],
+            "effects": [
+                "Once I analyze cycle of length 2 with a segment A, a segment B, a car C, and a car D, it is the case that C is on B and D is on A and C is analyzed",
+                "Once I analyze cycle of length 2 with a segment A, a segment B, a car C, and a car D, it is not the case anymore that C is on A and it is not the case anymore that D is on B"
+            ]
+        },
+        "analyze-4": {
+            "annotation": "",
+            "parameter_types": {
+                "?s1": "segment",
+                "?s2": "segment",
+                "?s3": "segment",
+                "?s4": "segment",
+                "?c1": "car",
+                "?c2": "car",
+                "?c3": "car",
+                "?c4": "car"
+            },
+            "pddl": "(analyze-4 ?s1 ?s2 ?s3 ?s4 ?c1 ?c2 ?c3 ?c4)",
+            "description": "analyze cycle of length 4 with a segment A, a segment B, a segment C, a segment D, a car E, a car F, a car G, and a car H",
+            "preconditions": [
+                "I can only analyze cycle of length 4 with a segment A, a segment B, a segment C, a segment D, a car E, a car F, a car G, and a car H if it is the case that A, B, C, and D form a cycle of length 4 with analysis and E is on A and F is on B and G is on C and H is on D"
+            ],
+            "effects": [
+                "Once I analyze cycle of length 4 with a segment A, a segment B, a segment C, a segment D, a car E, a car F, a car G, and a car H, it is the case that E is on D and F is on A and G is on B and H is on C and E is analyzed",
+                "Once I analyze cycle of length 4 with a segment A, a segment B, a segment C, a segment D, a car E, a car F, a car G, and a car H, it is not the case anymore that E is on A and it is not the case anymore that F is on B and it is not the case anymore that G is on C and it is not the case anymore that H is on D"
+            ]
+        },
+        "rotate-2": {
+            "annotation": "",
+            "parameter_types": {
+                "?s1": "segment",
+                "?s2": "segment",
+                "?c1": "car",
+                "?c2": "car"
+            },
+            "pddl": "(rotate-2 ?s1 ?s2 ?c1 ?c2)",
+            "description": "rotate cycle of length 2 with a segment A, a segment B, a car C, and a car D",
+            "preconditions": [
+                "I can only rotate cycle of length 2 with a segment A, a segment B, a car C, and a car D if it is the case that A and B form a cycle of length 2 and C is on A and D is on B"
+            ],
+            "effects": [
+                "Once I rotate cycle of length 2 with a segment A, a segment B, a car C, and a car D, it is the case that C is on B and D is on A",
+                "Once I rotate cycle of length 2 with a segment A, a segment B, a car C, and a car D, it is not the case anymore that C is on A and it is not the case anymore that D is on B"
+            ]
+        },
+        "rotate-4": {
+            "annotation": "",
+            "parameter_types": {
+                "?s1": "segment",
+                "?s2": "segment",
+                "?s3": "segment",
+                "?s4": "segment",
+                "?c1": "car",
+                "?c2": "car",
+                "?c3": "car",
+                "?c4": "car"
+            },
+            "pddl": "(rotate-4 ?s1 ?s2 ?s3 ?s4 ?c1 ?c2 ?c3 ?c4)",
+            "description": "rotate cycle of length 4 with a segment A, a segment B, a segment C, a segment D, a car E, a car F, a car G, and a car H",
+            "preconditions": [
+                "I can only rotate cycle of length 4 with a segment A, a segment B, a segment C, a segment D, a car E, a car F, a car G, and a car H if it is the case that A, B, C, and D form a cycle of length 4 and E is on A and F is on B and G is on C and H is on D"
+            ],
+            "effects": [
+                "Once I rotate cycle of length 4 with a segment A, a segment B, a segment C, a segment D, a car E, a car F, a car G, and a car H, it is the case that E is on D and F is on A and G is on B and H is on C",
+                "Once I rotate cycle of length 4 with a segment A, a segment B, a segment C, a segment D, a car E, a car F, a car G, and a car H, it is not the case anymore that E is on A and it is not the case anymore that F is on B and it is not the case anymore that G is on C and it is not the case anymore that H is on D"
+            ]
+        }
+    },
+    "predicates": {
+        "on": {
+            "parameter_types": {
+                "?c": "car",
+                "?s": "segment"
+            },
+            "pddl": "(on ?c ?s)"
+        },
+        "analyzed": {
+            "parameter_types": {
+                "?c": "car"
+            },
+            "pddl": "(analyzed ?c)"
+        },
+        "cycle-2": {
+            "parameter_types": {
+                "?s1": "segment",
+                "?s2": "segment"
+            },
+            "pddl": "(cycle-2 ?s1 ?s2)"
+        },
+        "cycle-4": {
+            "parameter_types": {
+                "?s1": "segment",
+                "?s2": "segment",
+                "?s3": "segment",
+                "?s4": "segment"
+            },
+            "pddl": "(cycle-4 ?s1 ?s2 ?s3 ?s4)"
+        },
+        "cycle-2-with-analysis": {
+            "parameter_types": {
+                "?s1": "segment",
+                "?s2": "segment"
+            },
+            "pddl": "(cycle-2-with-analysis ?s1 ?s2)"
+        },
+        "cycle-4-with-analysis": {
+            "parameter_types": {
+                "?s1": "segment",
+                "?s2": "segment",
+                "?s3": "segment",
+                "?s4": "segment"
+            },
+            "pddl": "(cycle-4-with-analysis ?s1 ?s2 ?s3 ?s4)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "analyze-2": "analyze cycle of length 2 with segment {?s1}, segment {?s2}, car {?c1}, and car {?c2}",
+        "analyze-4": "analyze cycle of length 4 with segment {?s1}, segment {?s2}, segment {?s3}, segment {?s4}, car {?c1}, car {?c2}, car {?c3}, and car {?c4}",
+        "rotate-2": "rotate cycle of length 2 with segment {?s1}, segment {?s2}, car {?c1}, and car {?c2}",
+        "rotate-4": "rotate cycle of length 4 with segment {?s1}, segment {?s2}, segment {?s3}, segment {?s4}, car {?c1}, car {?c2}, car {?c3}, and car {?c4}"
+    },
+    "predicate_nl_templates": {
+        "on": "{?c} is on {?s}",
+        "analyzed": "{?c} is analyzed",
+        "cycle-2": "{?s1} and {?s2} form a cycle of length 2",
+        "cycle-4": "{?s1}, {?s2}, {?s3}, and {?s4} form a cycle of length 4",
+        "cycle-2-with-analysis": "{?s1} and {?s2} form a cycle of length 2 with analysis",
+        "cycle-4-with-analysis": "{?s1}, {?s2}, {?s3}, and {?s4} form a cycle of length 4 with analysis",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "analyze-2": "analyze cycle of length 2 with a segment {?s1}, a segment {?s2}, a car {?c1}, and a car {?c2}",
+        "analyze-4": "analyze cycle of length 4 with a segment {?s1}, a segment {?s2}, a segment {?s3}, a segment {?s4}, a car {?c1}, a car {?c2}, a car {?c3}, and a car {?c4}",
+        "rotate-2": "rotate cycle of length 2 with a segment {?s1}, a segment {?s2}, a car {?c1}, and a car {?c2}",
+        "rotate-4": "rotate cycle of length 4 with a segment {?s1}, a segment {?s2}, a segment {?s3}, a segment {?s4}, a car {?c1}, a car {?c2}, a car {?c3}, and a car {?c4}"
+    },
+    "type_hierarchy": [
+        "Everything that is a segment or a car is also a object"
+    ]
+}

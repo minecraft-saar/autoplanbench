@@ -1,0 +1,24 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat_8",
+        "teddy",
+        "rain",
+        "star_213",
+        "bastion",
+        "screen"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"board\" to object teddy and object bastion.",
+            "(board teddy bastion)"
+        ],
+        [
+            "Once you are done, please apply the action \"debark\" to object rain and object screen.",
+            "(debark rain screen)"
+        ]
+    ]
+}

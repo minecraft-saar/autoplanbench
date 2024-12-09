@@ -1,0 +1,40 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "bastion",
+        "dress_red",
+        "object_50",
+        "teddy",
+        "teddy_41",
+        "frame_9",
+        "screen",
+        "kumquat",
+        "kumquat_8",
+        "roof_11",
+        "rain",
+        "kumquat_34",
+        "star_213",
+        "teddy_81"
+    ],
+    "pos_examples": [
+        [
+            "Now, refill shot dress_red with ingredient rain using dispenser object_50 while hand star_213 holds shot dress_red and hand kumquat is empty.",
+            "(refill-shot teddy rain star_213 dress_red object_50)"
+        ],
+        [
+            "Once you are done, please leave container roof_11 with hand kumquat on the table.",
+            "(leave kumquat roof_11)"
+        ],
+        [
+            "First, empty shot teddy_81 of beverage kumquat_8 while hand kumquat holds shot teddy_81 and then pour ingredient rain from shot teddy_81 held by hand kumquat into used shaker yew at level screen next to level frame_9.",
+            "(empty-shot kumquat teddy kumquat_8)\n(pour-shot-to-used-shaker teddy_81 rain yew kumquat screen frame_9)"
+        ],
+        [
+            "The next step is to clean shot teddy_41 used by beverage bastion with hand kumquat holding shot teddy_41 and hand kumquat_34 having an empty hand.",
+            "(clean-shot teddy bastion kumquat teddy_41)"
+        ]
+    ]
+}

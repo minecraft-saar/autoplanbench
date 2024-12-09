@@ -1,0 +1,271 @@
+{
+    "action_mappings": {
+        "put_down": "put down tent {} at place {} by person {}",
+        "put_up": "put up tent {} at place {} by person {}",
+        "drive_passenger": "drive person {} and person {} in car {} from place {} to place {}",
+        "drive": "drive person {} in car {} from place {} to place {}",
+        "drive_tent": "drive person {} in car {} with tent {} from place {} to place {}",
+        "drive_tent_passenger": "drive person {} and person {} in car {} with tent {} from place {} to place {}",
+        "walk_together": "walk together with tent {} from place {} to place {} with person {}, person {}, and couple {}"
+    },
+    "action_mappings_indef": {
+        "put_down": "put down a tent {} at a place {} by a person {}",
+        "put_up": "put up a tent {} at a place {} by a person {}",
+        "drive_passenger": "drive a person {} and a person {} in a car {} from a place {} to a place {}",
+        "drive": "drive a person {} in a car {} from a place {} to a place {}",
+        "drive_tent": "drive a person {} in a car {} with a tent {} from a place {} to a place {}",
+        "drive_tent_passenger": "drive a person {} and a person {} in a car {} with a tent {} from a place {} to a place {}",
+        "walk_together": "walk together with a tent {} from a place {} to a place {} with a person {}, a person {}, and a couple {}"
+    },
+    "predicate_mappings": {
+        "at_tent": "{} is at the tent {}",
+        "at_person": "{} is at the person {}",
+        "at_car": "{} is at the car {}",
+        "partners": "{}, {}, and {} are partners",
+        "up": "{} is up",
+        "down": "{} is down",
+        "walked": "{} walked to {}",
+        "next": "{} is next to {}",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "put_down": {
+            "annotation": "",
+            "parameter_types": {
+                "?x1": "person",
+                "?x2": "place",
+                "?x3": "tent"
+            },
+            "pddl": "(put_down ?x1 ?x2 ?x3)",
+            "description": "put down a tent C at a place B by a person A",
+            "preconditions": [
+                "I can only put down a tent C at a place B by a person A if it is the case that A is at the person B and C is at the tent B and C is up"
+            ],
+            "effects": [
+                "Once I put down a tent C at a place B by a person A, it is the case that C is down",
+                "Once I put down a tent C at a place B by a person A, it is not the case anymore that C is up"
+            ]
+        },
+        "put_up": {
+            "annotation": "",
+            "parameter_types": {
+                "?x1": "person",
+                "?x2": "place",
+                "?x3": "tent"
+            },
+            "pddl": "(put_up ?x1 ?x2 ?x3)",
+            "description": "put up a tent C at a place B by a person A",
+            "preconditions": [
+                "I can only put up a tent C at a place B by a person A if it is the case that A is at the person B and C is at the tent B and C is down"
+            ],
+            "effects": [
+                "Once I put up a tent C at a place B by a person A, it is the case that C is up",
+                "Once I put up a tent C at a place B by a person A, it is not the case anymore that C is down"
+            ]
+        },
+        "drive_passenger": {
+            "annotation": "",
+            "parameter_types": {
+                "?x1": "person",
+                "?x2": "place",
+                "?x3": "place",
+                "?x4": "car",
+                "?x5": "person"
+            },
+            "pddl": "(drive_passenger ?x1 ?x2 ?x3 ?x4 ?x5)",
+            "description": "drive a person A and a person E in a car D from a place B to a place C",
+            "preconditions": [
+                "I can only drive a person A and a person E in a car D from a place B to a place C if it is the case that A is at the person B and D is at the car B and E is at the person B",
+                "I can only drive a person A and a person E in a car D from a place B to a place C if it is not the case that A is equal to E"
+            ],
+            "effects": [
+                "Once I drive a person A and a person E in a car D from a place B to a place C, it is the case that A is at the person C and D is at the car C and E is at the person C",
+                "Once I drive a person A and a person E in a car D from a place B to a place C, it is not the case anymore that A is at the person B and it is not the case anymore that D is at the car B and it is not the case anymore that E is at the person B"
+            ]
+        },
+        "drive": {
+            "annotation": "",
+            "parameter_types": {
+                "?x1": "person",
+                "?x2": "place",
+                "?x3": "place",
+                "?x4": "car"
+            },
+            "pddl": "(drive ?x1 ?x2 ?x3 ?x4)",
+            "description": "drive a person A in a car D from a place B to a place C",
+            "preconditions": [
+                "I can only drive a person A in a car D from a place B to a place C if it is the case that A is at the person B and D is at the car B"
+            ],
+            "effects": [
+                "Once I drive a person A in a car D from a place B to a place C, it is the case that A is at the person C and D is at the car C",
+                "Once I drive a person A in a car D from a place B to a place C, it is not the case anymore that A is at the person B and it is not the case anymore that D is at the car B"
+            ]
+        },
+        "drive_tent": {
+            "annotation": "",
+            "parameter_types": {
+                "?x1": "person",
+                "?x2": "place",
+                "?x3": "place",
+                "?x4": "car",
+                "?x5": "tent"
+            },
+            "pddl": "(drive_tent ?x1 ?x2 ?x3 ?x4 ?x5)",
+            "description": "drive a person A in a car D with a tent E from a place B to a place C",
+            "preconditions": [
+                "I can only drive a person A in a car D with a tent E from a place B to a place C if it is the case that A is at the person B and D is at the car B and E is at the tent B and E is down"
+            ],
+            "effects": [
+                "Once I drive a person A in a car D with a tent E from a place B to a place C, it is the case that A is at the person C and D is at the car C and E is at the tent C",
+                "Once I drive a person A in a car D with a tent E from a place B to a place C, it is not the case anymore that A is at the person B and it is not the case anymore that D is at the car B and it is not the case anymore that E is at the tent B"
+            ]
+        },
+        "drive_tent_passenger": {
+            "annotation": "",
+            "parameter_types": {
+                "?x1": "person",
+                "?x2": "place",
+                "?x3": "place",
+                "?x4": "car",
+                "?x5": "tent",
+                "?x6": "person"
+            },
+            "pddl": "(drive_tent_passenger ?x1 ?x2 ?x3 ?x4 ?x5 ?x6)",
+            "description": "drive a person A and a person F in a car D with a tent E from a place B to a place C",
+            "preconditions": [
+                "I can only drive a person A and a person F in a car D with a tent E from a place B to a place C if it is the case that A is at the person B and D is at the car B and E is at the tent B and E is down and F is at the person B",
+                "I can only drive a person A and a person F in a car D with a tent E from a place B to a place C if it is not the case that A is equal to F"
+            ],
+            "effects": [
+                "Once I drive a person A and a person F in a car D with a tent E from a place B to a place C, it is the case that A is at the person C and D is at the car C and E is at the tent C and F is at the person C",
+                "Once I drive a person A and a person F in a car D with a tent E from a place B to a place C, it is not the case anymore that A is at the person B and it is not the case anymore that D is at the car B and it is not the case anymore that E is at the tent B and it is not the case anymore that F is at the person B"
+            ]
+        },
+        "walk_together": {
+            "annotation": "",
+            "parameter_types": {
+                "?x1": "tent",
+                "?x2": "place",
+                "?x3": "person",
+                "?x4": "place",
+                "?x5": "person",
+                "?x6": "couple"
+            },
+            "pddl": "(walk_together ?x1 ?x2 ?x3 ?x4 ?x5 ?x6)",
+            "description": "walk together with a tent A from a place D to a place B with a person C, a person E, and a couple F",
+            "preconditions": [
+                "I can only walk together with a tent A from a place D to a place B with a person C, a person E, and a couple F if it is the case that A is at the tent B and A is up and C is at the person D and D is next to B and E is at the person D and F walked to D and F, C, and E are partners",
+                "I can only walk together with a tent A from a place D to a place B with a person C, a person E, and a couple F if it is not the case that C is equal to E"
+            ],
+            "effects": [
+                "Once I walk together with a tent A from a place D to a place B with a person C, a person E, and a couple F, it is the case that C is at the person B and E is at the person B and F walked to B",
+                "Once I walk together with a tent A from a place D to a place B with a person C, a person E, and a couple F, it is not the case anymore that C is at the person D and it is not the case anymore that E is at the person D and it is not the case anymore that F walked to D"
+            ]
+        }
+    },
+    "predicates": {
+        "at_tent": {
+            "parameter_types": {
+                "?x1": "tent",
+                "?x2": "place"
+            },
+            "pddl": "(at_tent ?x1 ?x2)"
+        },
+        "at_person": {
+            "parameter_types": {
+                "?x1": "person",
+                "?x2": "place"
+            },
+            "pddl": "(at_person ?x1 ?x2)"
+        },
+        "at_car": {
+            "parameter_types": {
+                "?x1": "car",
+                "?x2": "place"
+            },
+            "pddl": "(at_car ?x1 ?x2)"
+        },
+        "partners": {
+            "parameter_types": {
+                "?x1": "couple",
+                "?x2": "person",
+                "?x3": "person"
+            },
+            "pddl": "(partners ?x1 ?x2 ?x3)"
+        },
+        "up": {
+            "parameter_types": {
+                "?x1": "tent"
+            },
+            "pddl": "(up ?x1)"
+        },
+        "down": {
+            "parameter_types": {
+                "?x1": "tent"
+            },
+            "pddl": "(down ?x1)"
+        },
+        "walked": {
+            "parameter_types": {
+                "?x1": "couple",
+                "?x2": "place"
+            },
+            "pddl": "(walked ?x1 ?x2)"
+        },
+        "next": {
+            "parameter_types": {
+                "?x1": "place",
+                "?x2": "place"
+            },
+            "pddl": "(next ?x1 ?x2)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "put_down": "put down tent {?x3} at place {?x2} by person {?x1}",
+        "put_up": "put up tent {?x3} at place {?x2} by person {?x1}",
+        "drive_passenger": "drive person {?x1} and person {?x5} in car {?x4} from place {?x2} to place {?x3}",
+        "drive": "drive person {?x1} in car {?x4} from place {?x2} to place {?x3}",
+        "drive_tent": "drive person {?x1} in car {?x4} with tent {?x5} from place {?x2} to place {?x3}",
+        "drive_tent_passenger": "drive person {?x1} and person {?x6} in car {?x4} with tent {?x5} from place {?x2} to place {?x3}",
+        "walk_together": "walk together with tent {?x1} from place {?x4} to place {?x2} with person {?x3}, person {?x5}, and couple {?x6}"
+    },
+    "predicate_nl_templates": {
+        "at_tent": "{?x1} is at the tent {?x2}",
+        "at_person": "{?x1} is at the person {?x2}",
+        "at_car": "{?x1} is at the car {?x2}",
+        "partners": "{?x1}, {?x2}, and {?x3} are partners",
+        "up": "{?x1} is up",
+        "down": "{?x1} is down",
+        "walked": "{?x1} walked to {?x2}",
+        "next": "{?x1} is next to {?x2}",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "put_down": "put down a tent {?x3} at a place {?x2} by a person {?x1}",
+        "put_up": "put up a tent {?x3} at a place {?x2} by a person {?x1}",
+        "drive_passenger": "drive a person {?x1} and a person {?x5} in a car {?x4} from a place {?x2} to a place {?x3}",
+        "drive": "drive a person {?x1} in a car {?x4} from a place {?x2} to a place {?x3}",
+        "drive_tent": "drive a person {?x1} in a car {?x4} with a tent {?x5} from a place {?x2} to a place {?x3}",
+        "drive_tent_passenger": "drive a person {?x1} and a person {?x6} in a car {?x4} with a tent {?x5} from a place {?x2} to a place {?x3}",
+        "walk_together": "walk together with a tent {?x1} from a place {?x4} to a place {?x2} with a person {?x3}, a person {?x5}, and a couple {?x6}"
+    },
+    "type_hierarchy": [
+        "Everything that is a car or a tent or a person or a couple or a place is also a object"
+    ]
+}

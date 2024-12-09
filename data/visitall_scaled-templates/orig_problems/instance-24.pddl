@@ -1,0 +1,218 @@
+(define (problem grid-3)
+(:domain grid-visit-all)
+(:objects 
+	loc-x0-y0
+	loc-x0-y1
+	loc-x0-y2
+	loc-x0-y3
+	loc-x0-y4
+	loc-x0-y5
+	loc-x0-y6
+	loc-x0-y7
+	loc-x0-y8
+	loc-x0-y9
+	loc-x0-y10
+	loc-x0-y11
+	loc-x0-y12
+	loc-x1-y0
+	loc-x1-y1
+	loc-x1-y2
+	loc-x1-y3
+	loc-x1-y4
+	loc-x1-y5
+	loc-x1-y6
+	loc-x1-y7
+	loc-x1-y8
+	loc-x1-y9
+	loc-x1-y10
+	loc-x1-y11
+	loc-x1-y12
+	loc-x2-y0
+	loc-x2-y1
+	loc-x2-y2
+	loc-x2-y3
+	loc-x2-y4
+	loc-x2-y5
+	loc-x2-y6
+	loc-x2-y7
+	loc-x2-y8
+	loc-x2-y9
+	loc-x2-y10
+	loc-x2-y11
+	loc-x2-y12
+- place 
+        
+)
+(:init
+	(at-robot loc-x0-y0)
+	(visited loc-x0-y0)
+	(connected loc-x0-y0 loc-x1-y0)
+ 	(connected loc-x0-y0 loc-x0-y1)
+ 	(connected loc-x0-y1 loc-x1-y1)
+ 	(connected loc-x0-y1 loc-x0-y0)
+ 	(connected loc-x0-y1 loc-x0-y2)
+ 	(connected loc-x0-y2 loc-x1-y2)
+ 	(connected loc-x0-y2 loc-x0-y1)
+ 	(connected loc-x0-y2 loc-x0-y3)
+ 	(connected loc-x0-y3 loc-x1-y3)
+ 	(connected loc-x0-y3 loc-x0-y2)
+ 	(connected loc-x0-y3 loc-x0-y4)
+ 	(connected loc-x0-y4 loc-x1-y4)
+ 	(connected loc-x0-y4 loc-x0-y3)
+ 	(connected loc-x0-y4 loc-x0-y5)
+ 	(connected loc-x0-y5 loc-x1-y5)
+ 	(connected loc-x0-y5 loc-x0-y4)
+ 	(connected loc-x0-y5 loc-x0-y6)
+ 	(connected loc-x0-y6 loc-x1-y6)
+ 	(connected loc-x0-y6 loc-x0-y5)
+ 	(connected loc-x0-y6 loc-x0-y7)
+ 	(connected loc-x0-y7 loc-x1-y7)
+ 	(connected loc-x0-y7 loc-x0-y6)
+ 	(connected loc-x0-y7 loc-x0-y8)
+ 	(connected loc-x0-y8 loc-x1-y8)
+ 	(connected loc-x0-y8 loc-x0-y7)
+ 	(connected loc-x0-y8 loc-x0-y9)
+ 	(connected loc-x0-y9 loc-x1-y9)
+ 	(connected loc-x0-y9 loc-x0-y8)
+ 	(connected loc-x0-y9 loc-x0-y10)
+ 	(connected loc-x0-y10 loc-x1-y10)
+ 	(connected loc-x0-y10 loc-x0-y9)
+ 	(connected loc-x0-y10 loc-x0-y11)
+ 	(connected loc-x0-y11 loc-x1-y11)
+ 	(connected loc-x0-y11 loc-x0-y10)
+ 	(connected loc-x0-y11 loc-x0-y12)
+ 	(connected loc-x0-y12 loc-x1-y12)
+ 	(connected loc-x0-y12 loc-x0-y11)
+ 	(connected loc-x1-y0 loc-x0-y0)
+ 	(connected loc-x1-y0 loc-x2-y0)
+ 	(connected loc-x1-y0 loc-x1-y1)
+ 	(connected loc-x1-y1 loc-x0-y1)
+ 	(connected loc-x1-y1 loc-x2-y1)
+ 	(connected loc-x1-y1 loc-x1-y0)
+ 	(connected loc-x1-y1 loc-x1-y2)
+ 	(connected loc-x1-y2 loc-x0-y2)
+ 	(connected loc-x1-y2 loc-x2-y2)
+ 	(connected loc-x1-y2 loc-x1-y1)
+ 	(connected loc-x1-y2 loc-x1-y3)
+ 	(connected loc-x1-y3 loc-x0-y3)
+ 	(connected loc-x1-y3 loc-x2-y3)
+ 	(connected loc-x1-y3 loc-x1-y2)
+ 	(connected loc-x1-y3 loc-x1-y4)
+ 	(connected loc-x1-y4 loc-x0-y4)
+ 	(connected loc-x1-y4 loc-x2-y4)
+ 	(connected loc-x1-y4 loc-x1-y3)
+ 	(connected loc-x1-y4 loc-x1-y5)
+ 	(connected loc-x1-y5 loc-x0-y5)
+ 	(connected loc-x1-y5 loc-x2-y5)
+ 	(connected loc-x1-y5 loc-x1-y4)
+ 	(connected loc-x1-y5 loc-x1-y6)
+ 	(connected loc-x1-y6 loc-x0-y6)
+ 	(connected loc-x1-y6 loc-x2-y6)
+ 	(connected loc-x1-y6 loc-x1-y5)
+ 	(connected loc-x1-y6 loc-x1-y7)
+ 	(connected loc-x1-y7 loc-x0-y7)
+ 	(connected loc-x1-y7 loc-x2-y7)
+ 	(connected loc-x1-y7 loc-x1-y6)
+ 	(connected loc-x1-y7 loc-x1-y8)
+ 	(connected loc-x1-y8 loc-x0-y8)
+ 	(connected loc-x1-y8 loc-x2-y8)
+ 	(connected loc-x1-y8 loc-x1-y7)
+ 	(connected loc-x1-y8 loc-x1-y9)
+ 	(connected loc-x1-y9 loc-x0-y9)
+ 	(connected loc-x1-y9 loc-x2-y9)
+ 	(connected loc-x1-y9 loc-x1-y8)
+ 	(connected loc-x1-y9 loc-x1-y10)
+ 	(connected loc-x1-y10 loc-x0-y10)
+ 	(connected loc-x1-y10 loc-x2-y10)
+ 	(connected loc-x1-y10 loc-x1-y9)
+ 	(connected loc-x1-y10 loc-x1-y11)
+ 	(connected loc-x1-y11 loc-x0-y11)
+ 	(connected loc-x1-y11 loc-x2-y11)
+ 	(connected loc-x1-y11 loc-x1-y10)
+ 	(connected loc-x1-y11 loc-x1-y12)
+ 	(connected loc-x1-y12 loc-x0-y12)
+ 	(connected loc-x1-y12 loc-x2-y12)
+ 	(connected loc-x1-y12 loc-x1-y11)
+ 	(connected loc-x2-y0 loc-x1-y0)
+ 	(connected loc-x2-y0 loc-x2-y1)
+ 	(connected loc-x2-y1 loc-x1-y1)
+ 	(connected loc-x2-y1 loc-x2-y0)
+ 	(connected loc-x2-y1 loc-x2-y2)
+ 	(connected loc-x2-y2 loc-x1-y2)
+ 	(connected loc-x2-y2 loc-x2-y1)
+ 	(connected loc-x2-y2 loc-x2-y3)
+ 	(connected loc-x2-y3 loc-x1-y3)
+ 	(connected loc-x2-y3 loc-x2-y2)
+ 	(connected loc-x2-y3 loc-x2-y4)
+ 	(connected loc-x2-y4 loc-x1-y4)
+ 	(connected loc-x2-y4 loc-x2-y3)
+ 	(connected loc-x2-y4 loc-x2-y5)
+ 	(connected loc-x2-y5 loc-x1-y5)
+ 	(connected loc-x2-y5 loc-x2-y4)
+ 	(connected loc-x2-y5 loc-x2-y6)
+ 	(connected loc-x2-y6 loc-x1-y6)
+ 	(connected loc-x2-y6 loc-x2-y5)
+ 	(connected loc-x2-y6 loc-x2-y7)
+ 	(connected loc-x2-y7 loc-x1-y7)
+ 	(connected loc-x2-y7 loc-x2-y6)
+ 	(connected loc-x2-y7 loc-x2-y8)
+ 	(connected loc-x2-y8 loc-x1-y8)
+ 	(connected loc-x2-y8 loc-x2-y7)
+ 	(connected loc-x2-y8 loc-x2-y9)
+ 	(connected loc-x2-y9 loc-x1-y9)
+ 	(connected loc-x2-y9 loc-x2-y8)
+ 	(connected loc-x2-y9 loc-x2-y10)
+ 	(connected loc-x2-y10 loc-x1-y10)
+ 	(connected loc-x2-y10 loc-x2-y9)
+ 	(connected loc-x2-y10 loc-x2-y11)
+ 	(connected loc-x2-y11 loc-x1-y11)
+ 	(connected loc-x2-y11 loc-x2-y10)
+ 	(connected loc-x2-y11 loc-x2-y12)
+ 	(connected loc-x2-y12 loc-x1-y12)
+ 	(connected loc-x2-y12 loc-x2-y11)
+ 
+)
+(:goal
+(and 
+	(visited loc-x0-y0)
+	(visited loc-x0-y1)
+	(visited loc-x0-y2)
+	(visited loc-x0-y3)
+	(visited loc-x0-y4)
+	(visited loc-x0-y5)
+	(visited loc-x0-y6)
+	(visited loc-x0-y7)
+	(visited loc-x0-y8)
+	(visited loc-x0-y9)
+	(visited loc-x0-y10)
+	(visited loc-x0-y11)
+	(visited loc-x0-y12)
+	(visited loc-x1-y0)
+	(visited loc-x1-y1)
+	(visited loc-x1-y2)
+	(visited loc-x1-y3)
+	(visited loc-x1-y4)
+	(visited loc-x1-y5)
+	(visited loc-x1-y6)
+	(visited loc-x1-y7)
+	(visited loc-x1-y8)
+	(visited loc-x1-y9)
+	(visited loc-x1-y10)
+	(visited loc-x1-y11)
+	(visited loc-x1-y12)
+	(visited loc-x2-y0)
+	(visited loc-x2-y1)
+	(visited loc-x2-y2)
+	(visited loc-x2-y3)
+	(visited loc-x2-y4)
+	(visited loc-x2-y5)
+	(visited loc-x2-y6)
+	(visited loc-x2-y7)
+	(visited loc-x2-y8)
+	(visited loc-x2-y9)
+	(visited loc-x2-y10)
+	(visited loc-x2-y11)
+	(visited loc-x2-y12)
+)
+)
+)

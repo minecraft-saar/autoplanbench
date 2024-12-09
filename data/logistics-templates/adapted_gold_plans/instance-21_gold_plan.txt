@@ -1,0 +1,5 @@
+(drive-truck object_0 object_4 object_5 object_8)
+(load-truck object_3 object_0 object_5)
+(drive-truck object_0 object_5 object_7 object_8)
+(unload-truck object_3 object_0 object_7)
+; cost = 4 (unit cost)

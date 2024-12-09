@@ -1,0 +1,30 @@
+I can carry out the following actions:
+load an object A into a truck B at a location C
+unload an object A from a truck B at a location C
+board a driver A onto a truck B at a location C
+disembark a driver A from a truck B at a location C
+drive a truck A from a location B to a location C with a driver D
+walk from a location B to a location C with a driver A
+
+I have the following restrictions on my actions:
+I can only load an object A into a truck B at a location C if it is the case that A is an object and B is a truck and C is a location and B is at C and A is at C
+I can only unload an object A from a truck B at a location C if it is the case that A is an object and B is a truck and C is a location and B is at C and A is in B
+I can only board a driver A onto a truck B at a location C if it is the case that A is a driver and B is a truck and C is a location and B is at C and A is at C and B is empty
+I can only disembark a driver A from a truck B at a location C if it is the case that A is a driver and B is a truck and C is a location and B is at C and A is driving B
+I can only drive a truck A from a location B to a location C with a driver D if it is the case that A is a truck and B is a location and C is a location and D is a driver and A is at B and D is driving A and B is linked to C
+I can only walk from a location B to a location C with a driver A if it is the case that A is a driver and B is a location and C is a location and A is at B and there is a path from B to C
+
+The actions have the following effects on the state:
+Once I load an object A into a truck B at a location C, it is the case that A is in B
+Once I load an object A into a truck B at a location C, it is not the case anymore that A is at C
+Once I unload an object A from a truck B at a location C, it is the case that A is at C
+Once I unload an object A from a truck B at a location C, it is not the case anymore that A is in B
+Once I board a driver A onto a truck B at a location C, it is the case that A is driving B
+Once I board a driver A onto a truck B at a location C, it is not the case anymore that A is at C and it is not the case anymore that B is empty
+Once I disembark a driver A from a truck B at a location C, it is the case that A is at C and B is empty
+Once I disembark a driver A from a truck B at a location C, it is not the case anymore that A is driving B
+Once I drive a truck A from a location B to a location C with a driver D, it is the case that A is at C
+Once I drive a truck A from a location B to a location C with a driver D, it is not the case anymore that A is at B
+Once I walk from a location B to a location C with a driver A, it is the case that A is at C
+Once I walk from a location B to a location C with a driver A, it is not the case anymore that A is at B
+

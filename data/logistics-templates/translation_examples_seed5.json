@@ -1,0 +1,40 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "teddy",
+        "fire",
+        "screen",
+        "roof_11",
+        "frame_9",
+        "star_213",
+        "bastion",
+        "socket",
+        "kumquat_8",
+        "dress_red",
+        "object_260",
+        "object_50",
+        "rain",
+        "kumquat"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"load-airplane\" to object dress_red, object yew and object object_260.",
+            "(load-airplane dress_red yew object_260)"
+        ],
+        [
+            "Once you are done, please apply the action \"drive-truck\" to object kumquat_8, object rain, object fire and object kumquat.",
+            "(drive-truck kumquat_8 rain fire kumquat)"
+        ],
+        [
+            "First, apply the action \"unload-airplane\" to object frame_9, object socket and object screen and then apply the action \"load-truck\" to object bastion, object object_50 and object roof_11.",
+            "(unload-airplane frame_9 socket screen)\n(load-truck bastion object_50 roof_11)"
+        ],
+        [
+            "The next step is to apply the action \"unload-truck\" to object star_213, object teddy and object object_260.",
+            "(unload-truck star_213 teddy object_260)"
+        ]
+    ]
+}

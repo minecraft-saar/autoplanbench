@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_260",
+        "fire",
+        "frame_9",
+        "bastion",
+        "object_50",
+        "object_50_49",
+        "kumquat",
+        "star_213",
+        "kumquat_8",
+        "rain",
+        "socket",
+        "teddy"
+    ],
+    "pos_examples": [
+        [
+            "Now, leave container rain with hand object_50 on the table.",
+            "(leave object_50 rain)"
+        ],
+        [
+            "Once you are done, please clean shaker star_213 using hand object_260 while hand object_50 is empty.",
+            "(clean-shaker object_260 object_50 star_213)"
+        ],
+        [
+            "First, shake cocktail teddy using shaker kumquat held by hand object_260 while hand object_50 is empty, with ingredient bastion and ingredient kumquat_8 and then clean shot yew used by beverage frame_9 while hand object_260 holds shot yew and hand object_50 is empty.",
+            "(shake teddy bastion kumquat_8 kumquat object_260 object_50)\n(clean-shot fire frame_9 object_260 yew)"
+        ],
+        [
+            "The next step is to fill shot yew with ingredient bastion using dispenser socket while hand object_50 holds shot yew and hand object_50_49 is empty.",
+            "(fill-shot fire bastion object_50 yew socket)"
+        ]
+    ]
+}

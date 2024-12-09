@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat",
+        "kumquat_8",
+        "object_50",
+        "bastion",
+        "teddy",
+        "star_213",
+        "frame_9",
+        "screen",
+        "object_260",
+        "socket",
+        "roof_11",
+        "object_50_69"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"right\" to robot kumquat, tile roof_11 and tile kumquat_8.",
+            "(right kumquat roof_11 kumquat_8)"
+        ],
+        [
+            "Once you are done, please apply the action \"paint-up\" to robot screen, tile object_50, tile object_260 and color yew.",
+            "(paint-up screen object_50 object_260 yew)"
+        ],
+        [
+            "First, apply the action \"up\" to robot socket, tile bastion and tile kumquat_8 and then apply the action \"paint-down\" to robot star_213, tile object_50, tile object_50_69 and color teddy.",
+            "(up socket bastion kumquat_8)\n(paint-down star_213 object_50 object_50_69 teddy)"
+        ],
+        [
+            "The next step is to apply the action \"down\" to robot frame_9, tile bastion and tile object_50.",
+            "(down frame_9 bastion object_50)"
+        ]
+    ]
+}

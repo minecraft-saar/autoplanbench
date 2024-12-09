@@ -1,0 +1,18 @@
+I can carry out the following actions:
+sail from a location A to a location B
+board a car A at a location B
+debark a car A at a location B
+
+I have the following restrictions on my actions:
+I can only sail from a location A to a location B if it is the case that A is not equal to B and A is a location and B is a location and A is at the ferry
+I can only board a car A at a location B if it is the case that A is a car and B is a location and A is at B and B is at the ferry and the ferry is empty
+I can only debark a car A at a location B if it is the case that A is a car and B is a location and A is on and B is at the ferry
+
+The actions have the following effects on the state:
+Once I sail from a location A to a location B, it is the case that B is at the ferry
+Once I sail from a location A to a location B, it is not the case anymore that A is at the ferry
+Once I board a car A at a location B, it is the case that A is on
+Once I board a car A at a location B, it is not the case anymore that A is at B and it is not the case anymore that the ferry is empty
+Once I debark a car A at a location B, it is the case that A is at B and the ferry is empty
+Once I debark a car A at a location B, it is not the case anymore that A is on
+

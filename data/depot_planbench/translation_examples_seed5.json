@@ -1,0 +1,30 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "crate76",
+        "crate005",
+        "truck84",
+        "pallet299",
+        "hoist232",
+        "hoist102",
+        "crate900",
+        "depot80"
+    ],
+    "pos_examples": [
+        [   "Now, use hoist232 to lift crate900 from pallet229 to depot80.",
+            "(lift hoist232 crate900 pallet299 depot80)"
+        ],
+        [   "Once you are done, please drive truck84 from place410 to depot80.",
+            "(drive truck84 place410 depot80)"
+        ],
+        [   "First, use hoist102 to drop crate76 to crate900 at depot80 and then use hoist232 to unload crate005 from truck84 at depot80.",
+            "(drop hoist102 crate76 crate900 depot80)\n(unload hoist232 crate005 truck84 depot80)"
+        ],
+        [   "The next step is to use hoist232 to load crate76 into truck84 at depot80",
+            "(load hoist232 crate76 truck84 depot80)"
+        ]
+    ]
+}

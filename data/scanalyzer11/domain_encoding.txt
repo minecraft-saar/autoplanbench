@@ -1,0 +1,24 @@
+I can carry out the following actions:
+analyze cycle of length 2 by swapping a car C from a segment A to a segment B and a car D from a segment B to a segment A
+analyze cycle of length 4 by moving a car E from a segment A to a segment D, a car F from a segment B to a segment A, a car G from a segment C to a segment B, and a car H from a segment D to a segment C
+rotate cars by moving a car C from a segment A to a segment B and a car D from a segment B to a segment A
+rotate cars by moving a car E from a segment A to a segment D, a car F from a segment B to a segment A, a car G from a segment C to a segment B, and a car H from a segment D to a segment C
+
+I have the following restrictions on my actions:
+I can only analyze cycle of length 2 by swapping a car C from a segment A to a segment B and a car D from a segment B to a segment A if it is the case that A and B are in a cycle of length 2 with analysis and C is on A and D is on B
+I can only analyze cycle of length 4 by moving a car E from a segment A to a segment D, a car F from a segment B to a segment A, a car G from a segment C to a segment B, and a car H from a segment D to a segment C if it is the case that A, B, C, and D are in a cycle of length 4 with analysis and E is on A and F is on B and G is on C and H is on D
+I can only rotate cars by moving a car C from a segment A to a segment B and a car D from a segment B to a segment A if it is the case that A and B are in a cycle of length 2 and C is on A and D is on B
+I can only rotate cars by moving a car E from a segment A to a segment D, a car F from a segment B to a segment A, a car G from a segment C to a segment B, and a car H from a segment D to a segment C if it is the case that A, B, C, and D are in a cycle of length 4 and E is on A and F is on B and G is on C and H is on D
+
+The actions have the following effects on the state:
+Once I analyze cycle of length 2 by swapping a car C from a segment A to a segment B and a car D from a segment B to a segment A, it is the case that C is on B and D is on A and C is analyzed
+Once I analyze cycle of length 2 by swapping a car C from a segment A to a segment B and a car D from a segment B to a segment A, it is not the case anymore that C is on A and it is not the case anymore that D is on B
+Once I analyze cycle of length 4 by moving a car E from a segment A to a segment D, a car F from a segment B to a segment A, a car G from a segment C to a segment B, and a car H from a segment D to a segment C, it is the case that E is on D and F is on A and G is on B and H is on C and E is analyzed
+Once I analyze cycle of length 4 by moving a car E from a segment A to a segment D, a car F from a segment B to a segment A, a car G from a segment C to a segment B, and a car H from a segment D to a segment C, it is not the case anymore that E is on A and it is not the case anymore that F is on B and it is not the case anymore that G is on C and it is not the case anymore that H is on D
+Once I rotate cars by moving a car C from a segment A to a segment B and a car D from a segment B to a segment A, it is the case that C is on B and D is on A
+Once I rotate cars by moving a car C from a segment A to a segment B and a car D from a segment B to a segment A, it is not the case anymore that C is on A and it is not the case anymore that D is on B
+Once I rotate cars by moving a car E from a segment A to a segment D, a car F from a segment B to a segment A, a car G from a segment C to a segment B, and a car H from a segment D to a segment C, it is the case that E is on D and F is on A and G is on B and H is on C
+Once I rotate cars by moving a car E from a segment A to a segment D, a car F from a segment B to a segment A, a car G from a segment C to a segment B, and a car H from a segment D to a segment C, it is not the case anymore that E is on A and it is not the case anymore that F is on B and it is not the case anymore that G is on C and it is not the case anymore that H is on D
+
+
+Everything that is a segment or a car is also a object

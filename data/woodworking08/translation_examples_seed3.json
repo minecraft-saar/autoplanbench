@@ -1,0 +1,43 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "dress_red",
+        "object_50",
+        "screen",
+        "rain",
+        "kumquat",
+        "socket",
+        "kumquat_8",
+        "teddy",
+        "roof_11",
+        "bastion_34",
+        "bastion_78_76",
+        "socket_31",
+        "object_260",
+        "bastion",
+        "fire",
+        "bastion_78",
+        "bastion_97"
+    ],
+    "pos_examples": [
+        [
+            "Now, saw board fire into large part screen using saw kumquat with awood teddy, surface roof_11, changing size from aboardsize bastion to aboardsize bastion_34 through intermediate sizes aboardsize bastion_97 and aboardsize bastion_78.",
+            "(do-saw-large fire screen kumquat teddy roof_11 bastion bastion_97 bastion_78 bastion_34)"
+        ],
+        [
+            "Once you are done, please saw board fire into medium part screen using saw kumquat with awood teddy, surface roof_11, changing size from aboardsize bastion_78 to aboardsize bastion_34 through intermediate size aboardsize bastion_78_76.",
+            "(do-saw-medium fire screen kumquat teddy roof_11 bastion_78 bastion_78_76 bastion_34)"
+        ],
+        [
+            "First, do plane on part screen using planer object_260 to change surface from surface roof_11 to smooth, color from acolour dress_red to natural, and treatment from treatmentstatus socket to untreated and then do immersion varnish on part screen using immersion-varnisher kumquat_8 to change color to acolour object_50 with surface roof_11.",
+            "(do-plane screen object_260 roof_11 dress_red socket)\n(do-immersion-varnish screen kumquat_8 object_50 roof_11)"
+        ],
+        [
+            "The next step is to do grind on part screen using grinder rain to change surface from surface roof_11 to verysmooth, color from acolour object_50 to natural, and treatment from treatmentstatus socket to treatmentstatus socket_31.",
+            "(do-grind screen rain roof_11 object_50 socket socket_31)"
+        ]
+    ]
+}

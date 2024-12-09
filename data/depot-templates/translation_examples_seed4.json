@@ -1,0 +1,39 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "fire",
+        "kumquat",
+        "bastion",
+        "screen",
+        "star_213",
+        "socket",
+        "object_260",
+        "object_50",
+        "teddy",
+        "frame_9",
+        "rain",
+        "kumquat_8",
+        "roof_11"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"unload\" to hoist kumquat, crate bastion, truck frame_9 and place star_213.",
+            "(unload kumquat bastion frame_9 star_213)"
+        ],
+        [
+            "Once you are done, please apply the action \"drive\" to truck rain, place roof_11 and place fire.",
+            "(drive rain roof_11 fire)"
+        ],
+        [
+            "First, apply the action \"drop\" to hoist teddy, crate yew, surface screen and place star_213 and then apply the action \"load\" to hoist object_50, crate socket, truck kumquat_8 and place roof_11.",
+            "(drop teddy yew screen star_213)\n(load object_50 socket kumquat_8 roof_11)"
+        ],
+        [
+            "The next step is to apply the action \"lift\" to hoist teddy, crate yew, surface object_260 and place star_213.",
+            "(lift teddy yew object_260 star_213)"
+        ]
+    ]
+}

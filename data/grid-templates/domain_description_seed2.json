@@ -1,0 +1,238 @@
+{
+    "action_mappings": {
+        "unlock": "apply the action \"unlock\" to object {}, object {}, object {} and object {}",
+        "move": "apply the action \"move\" to object {} and object {}",
+        "pickup": "apply the action \"pickup\" to object {} and object {}",
+        "pickup-and-loose": "apply the action \"pickup-and-loose\" to object {}, object {} and object {}",
+        "putdown": "apply the action \"putdown\" to object {} and object {}"
+    },
+    "action_mappings_indef": {
+        "unlock": "apply the action \"unlock\" to an object {}, an object {}, an object {} and an object {}",
+        "move": "apply the action \"move\" to an object {} and an object {}",
+        "pickup": "apply the action \"pickup\" to an object {} and an object {}",
+        "pickup-and-loose": "apply the action \"pickup-and-loose\" to an object {}, an object {} and an object {}",
+        "putdown": "apply the action \"putdown\" to an object {} and an object {}"
+    },
+    "predicate_mappings": {
+        "conn": "{} and {} are in the relation \"conn\"",
+        "key-shape": "{} and {} are in the relation \"key-shape\"",
+        "lock-shape": "{} and {} are in the relation \"lock-shape\"",
+        "at": "{} and {} are in the relation \"at\"",
+        "at-robot": "{} is \"at-robot\"",
+        "place": "{} is \"place\"",
+        "key": "{} is \"key\"",
+        "shape": "{} is \"shape\"",
+        "locked": "{} is \"locked\"",
+        "holding": "{} is \"holding\"",
+        "open": "{} is \"open\"",
+        "arm-empty": "\"arm-empty\"",
+        "=": "{} and {} are in the relation \"=\"",
+        "!=": "{} and {} are in the relation \"!=\""
+    },
+    "actions": {
+        "unlock": {
+            "annotation": "",
+            "parameter_types": {
+                "?curpos": "object",
+                "?lockpos": "object",
+                "?key": "object",
+                "?shape": "object"
+            },
+            "pddl": "(unlock ?curpos ?lockpos ?key ?shape)",
+            "description": "apply the action \"unlock\" to an object A, an object B, an object C and an object D",
+            "preconditions": [
+                "I can only apply the action \"unlock\" to an object A, an object B, an object C and an object D if it is the case that A is \"place\" and B is \"place\" and C is \"key\" and D is \"shape\" and A and B are in the relation \"conn\" and C and D are in the relation \"key-shape\" and B and D are in the relation \"lock-shape\" and A is \"at-robot\" and B is \"locked\" and C is \"holding\""
+            ],
+            "effects": [
+                "Once I apply the action \"unlock\" to an object A, an object B, an object C and an object D, it is the case that B is \"open\"",
+                "Once I apply the action \"unlock\" to an object A, an object B, an object C and an object D, it is not the case anymore that B is \"locked\""
+            ]
+        },
+        "move": {
+            "annotation": "",
+            "parameter_types": {
+                "?curpos": "object",
+                "?nextpos": "object"
+            },
+            "pddl": "(move ?curpos ?nextpos)",
+            "description": "apply the action \"move\" to an object A and an object B",
+            "preconditions": [
+                "I can only apply the action \"move\" to an object A and an object B if it is the case that A is \"place\" and B is \"place\" and A is \"at-robot\" and A and B are in the relation \"conn\" and B is \"open\""
+            ],
+            "effects": [
+                "Once I apply the action \"move\" to an object A and an object B, it is the case that B is \"at-robot\"",
+                "Once I apply the action \"move\" to an object A and an object B, it is not the case anymore that A is \"at-robot\""
+            ]
+        },
+        "pickup": {
+            "annotation": "",
+            "parameter_types": {
+                "?curpos": "object",
+                "?key": "object"
+            },
+            "pddl": "(pickup ?curpos ?key)",
+            "description": "apply the action \"pickup\" to an object A and an object B",
+            "preconditions": [
+                "I can only apply the action \"pickup\" to an object A and an object B if it is the case that A is \"place\" and B is \"key\" and A is \"at-robot\" and B and A are in the relation \"at\" and \"arm-empty\""
+            ],
+            "effects": [
+                "Once I apply the action \"pickup\" to an object A and an object B, it is the case that B is \"holding\"",
+                "Once I apply the action \"pickup\" to an object A and an object B, it is not the case anymore that B and A are in the relation \"at\" and it is not the case anymore that \"arm-empty\""
+            ]
+        },
+        "pickup-and-loose": {
+            "annotation": "",
+            "parameter_types": {
+                "?curpos": "object",
+                "?newkey": "object",
+                "?oldkey": "object"
+            },
+            "pddl": "(pickup-and-loose ?curpos ?newkey ?oldkey)",
+            "description": "apply the action \"pickup-and-loose\" to an object A, an object B and an object C",
+            "preconditions": [
+                "I can only apply the action \"pickup-and-loose\" to an object A, an object B and an object C if it is the case that A is \"place\" and B is \"key\" and C is \"key\" and A is \"at-robot\" and C is \"holding\" and B and A are in the relation \"at\""
+            ],
+            "effects": [
+                "Once I apply the action \"pickup-and-loose\" to an object A, an object B and an object C, it is the case that B is \"holding\" and C and A are in the relation \"at\"",
+                "Once I apply the action \"pickup-and-loose\" to an object A, an object B and an object C, it is not the case anymore that C is \"holding\" and it is not the case anymore that B and A are in the relation \"at\""
+            ]
+        },
+        "putdown": {
+            "annotation": "",
+            "parameter_types": {
+                "?curpos": "object",
+                "?key": "object"
+            },
+            "pddl": "(putdown ?curpos ?key)",
+            "description": "apply the action \"putdown\" to an object A and an object B",
+            "preconditions": [
+                "I can only apply the action \"putdown\" to an object A and an object B if it is the case that A is \"place\" and B is \"key\" and A is \"at-robot\" and B is \"holding\""
+            ],
+            "effects": [
+                "Once I apply the action \"putdown\" to an object A and an object B, it is the case that \"arm-empty\" and B and A are in the relation \"at\"",
+                "Once I apply the action \"putdown\" to an object A and an object B, it is not the case anymore that B is \"holding\""
+            ]
+        }
+    },
+    "predicates": {
+        "conn": {
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(conn ?x ?y)"
+        },
+        "key-shape": {
+            "parameter_types": {
+                "?k": "object",
+                "?s": "object"
+            },
+            "pddl": "(key-shape ?k ?s)"
+        },
+        "lock-shape": {
+            "parameter_types": {
+                "?x": "object",
+                "?s": "object"
+            },
+            "pddl": "(lock-shape ?x ?s)"
+        },
+        "at": {
+            "parameter_types": {
+                "?r": "object",
+                "?x": "object"
+            },
+            "pddl": "(at ?r ?x)"
+        },
+        "at-robot": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(at-robot ?x)"
+        },
+        "place": {
+            "parameter_types": {
+                "?p": "object"
+            },
+            "pddl": "(place ?p)"
+        },
+        "key": {
+            "parameter_types": {
+                "?k": "object"
+            },
+            "pddl": "(key ?k)"
+        },
+        "shape": {
+            "parameter_types": {
+                "?s": "object"
+            },
+            "pddl": "(shape ?s)"
+        },
+        "locked": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(locked ?x)"
+        },
+        "holding": {
+            "parameter_types": {
+                "?k": "object"
+            },
+            "pddl": "(holding ?k)"
+        },
+        "open": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(open ?x)"
+        },
+        "arm-empty": {
+            "parameter_types": {},
+            "pddl": "(arm-empty)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "unlock": "apply the action \"unlock\" to object {?curpos}, object {?lockpos}, object {?key} and object {?shape}",
+        "move": "apply the action \"move\" to object {?curpos} and object {?nextpos}",
+        "pickup": "apply the action \"pickup\" to object {?curpos} and object {?key}",
+        "pickup-and-loose": "apply the action \"pickup-and-loose\" to object {?curpos}, object {?newkey} and object {?oldkey}",
+        "putdown": "apply the action \"putdown\" to object {?curpos} and object {?key}"
+    },
+    "predicate_nl_templates": {
+        "conn": "{?x} and {?y} are in the relation \"conn\"",
+        "key-shape": "{?k} and {?s} are in the relation \"key-shape\"",
+        "lock-shape": "{?x} and {?s} are in the relation \"lock-shape\"",
+        "at": "{?r} and {?x} are in the relation \"at\"",
+        "at-robot": "{?x} is \"at-robot\"",
+        "place": "{?p} is \"place\"",
+        "key": "{?k} is \"key\"",
+        "shape": "{?s} is \"shape\"",
+        "locked": "{?x} is \"locked\"",
+        "holding": "{?k} is \"holding\"",
+        "open": "{?x} is \"open\"",
+        "arm-empty": "\"arm-empty\"",
+        "=": "{?x1} and {?x2} are in the relation \"=\"",
+        "!=": "{?x1} and {?x2} are in the relation \"!=\""
+    },
+    "action_nl_templates_indef": {
+        "unlock": "apply the action \"unlock\" to an object {?curpos}, an object {?lockpos}, an object {?key} and an object {?shape}",
+        "move": "apply the action \"move\" to an object {?curpos} and an object {?nextpos}",
+        "pickup": "apply the action \"pickup\" to an object {?curpos} and an object {?key}",
+        "pickup-and-loose": "apply the action \"pickup-and-loose\" to an object {?curpos}, an object {?newkey} and an object {?oldkey}",
+        "putdown": "apply the action \"putdown\" to an object {?curpos} and an object {?key}"
+    },
+    "type_hierarchy": []
+}

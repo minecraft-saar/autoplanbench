@@ -1,0 +1,28 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "teddy",
+        "frame_9"
+    ],
+    "pos_examples": [
+        [
+            "Now, rewind the movie when the counter is at two hours.",
+            "(rewind-movie-2 )"
+        ],
+        [
+            "Once you are done, please get cheese teddy.",
+            "(get-cheese teddy)"
+        ],
+        [
+            "First, reset the counter to zero and then get chips frame_9.",
+            "(reset-counter )\n(get-chips frame_9)"
+        ],
+        [
+            "The next step is to rewind the movie when the counter is at a time other than two hours.",
+            "(rewind-movie )"
+        ]
+    ]
+}

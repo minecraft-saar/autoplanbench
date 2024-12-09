@@ -1,0 +1,24 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "fire",
+        "socket",
+        "roof_11",
+        "frame_9",
+        "object_50",
+        "bastion"
+    ],
+    "pos_examples": [
+        [
+            "Now, board car frame_9 at location fire.",
+            "(board frame_9 fire)"
+        ],
+        [
+            "Once you are done, please sail from location bastion to location roof_11.",
+            "(sail bastion roof_11)"
+        ]
+    ]
+}

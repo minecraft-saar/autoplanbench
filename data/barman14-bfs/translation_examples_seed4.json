@@ -1,0 +1,36 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat_8",
+        "bastion",
+        "dress_red",
+        "object_260",
+        "screen",
+        "fire",
+        "star_213",
+        "socket",
+        "roof_11",
+        "frame_9"
+    ],
+    "pos_examples": [
+        [
+            "Now, fill shot fire with ingredient roof_11 using dispenser dress_red with hand frame_9 and hand screen.",
+            "(fill-shot fire roof_11 frame_9 screen dress_red)"
+        ],
+        [
+            "Once you are done, please leave container object_260 with hand screen.",
+            "(leave screen object_260)"
+        ],
+        [
+            "First, pour beverage socket from shaker star_213 held by hand screen into shot yew moving from level kumquat_8 to level bastion and then empty shot yew of beverage socket using hand frame_9.",
+            "(pour-shaker-to-shot socket yew screen star_213 kumquat_8 bastion)\n(empty-shot frame_9 yew socket)"
+        ],
+        [
+            "The next step is to clean shot fire of beverage socket using hand screen while hand frame_9 is empty.",
+            "(clean-shot fire socket screen frame_9)"
+        ]
+    ]
+}

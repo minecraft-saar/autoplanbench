@@ -1,0 +1,480 @@
+{
+    "action_mappings": {
+        "do-immersion-varnish": "do immersion varnish on part {} using immersion-varnisher {} to change color to acolour {} with surface {}",
+        "do-spray-varnish": "do spray varnish on part {} using spray-varnisher {} to change color to acolour {} with surface {}",
+        "do-glaze": "do glaze on part {} using glazer {} to change color to acolour {}",
+        "do-grind": "do grind on part {} using grinder {} to change surface from surface {} to verysmooth, color from acolour {} to natural, and treatment from treatmentstatus {} to treatmentstatus {}",
+        "do-plane": "do plane on part {} using planer {} to change surface from surface {} to smooth, color from acolour {} to natural, and treatment from treatmentstatus {} to untreated",
+        "load-highspeed-saw": "load board {} into highspeed-saw {}",
+        "unload-highspeed-saw": "unload board {} from highspeed-saw {}",
+        "cut-board-small": "cut board {} into part {} using highspeed-saw {} with awood {}, surface {}, changing size from aboardsize {} to aboardsize {}",
+        "cut-board-medium": "cut board {} into part {} using highspeed-saw {} with awood {}, surface {}, changing size from aboardsize {} to aboardsize {} through intermediate size aboardsize {}",
+        "cut-board-large": "cut board {} into part {} using highspeed-saw {} with awood {}, surface {}, changing size from aboardsize {} to aboardsize {} through intermediate sizes aboardsize {} and aboardsize {}",
+        "do-saw-small": "saw board {} into small part {} using saw {} with awood {}, surface {}, changing size from aboardsize {} to aboardsize {}",
+        "do-saw-medium": "saw board {} into medium part {} using saw {} with awood {}, surface {}, changing size from aboardsize {} to aboardsize {} through intermediate size aboardsize {}",
+        "do-saw-large": "saw board {} into large part {} using saw {} with awood {}, surface {}, changing size from aboardsize {} to aboardsize {} through intermediate sizes aboardsize {} and aboardsize {}"
+    },
+    "action_mappings_indef": {
+        "do-immersion-varnish": "do immersion varnish on a part {} using an immersion-varnisher {} to change color to an acolour {} with a surface {}",
+        "do-spray-varnish": "do spray varnish on a part {} using a spray-varnisher {} to change color to an acolour {} with a surface {}",
+        "do-glaze": "do glaze on a part {} using a glazer {} to change color to an acolour {}",
+        "do-grind": "do grind on a part {} using a grinder {} to change surface from a surface {} to verysmooth, color from an acolour {} to natural, and treatment from a treatmentstatus {} to a treatmentstatus {}",
+        "do-plane": "do plane on a part {} using a planer {} to change surface from a surface {} to smooth, color from an acolour {} to natural, and treatment from a treatmentstatus {} to untreated",
+        "load-highspeed-saw": "load a board {} into a highspeed-saw {}",
+        "unload-highspeed-saw": "unload a board {} from a highspeed-saw {}",
+        "cut-board-small": "cut a board {} into a part {} using a highspeed-saw {} with an awood {}, a surface {}, changing size from an aboardsize {} to an aboardsize {}",
+        "cut-board-medium": "cut a board {} into a part {} using a highspeed-saw {} with an awood {}, a surface {}, changing size from an aboardsize {} to an aboardsize {} through intermediate size an aboardsize {}",
+        "cut-board-large": "cut a board {} into a part {} using a highspeed-saw {} with an awood {}, a surface {}, changing size from an aboardsize {} to an aboardsize {} through intermediate sizes an aboardsize {} and an aboardsize {}",
+        "do-saw-small": "saw a board {} into a small part {} using a saw {} with an awood {}, a surface {}, changing size from an aboardsize {} to an aboardsize {}",
+        "do-saw-medium": "saw a board {} into a medium part {} using a saw {} with an awood {}, a surface {}, changing size from an aboardsize {} to an aboardsize {} through intermediate size an aboardsize {}",
+        "do-saw-large": "saw a board {} into a large part {} using a saw {} with an awood {}, a surface {}, changing size from an aboardsize {} to an aboardsize {} through intermediate sizes an aboardsize {} and an aboardsize {}"
+    },
+    "predicate_mappings": {
+        "unused": "{} is unused",
+        "available": "{} is available",
+        "surface-condition": "{} has a surface condition of {}",
+        "treatment": "{} is undergoing {} treatment",
+        "colour": "{} is the color {}",
+        "wood": "{} is made of {} wood",
+        "boardsize": "the size of {} is {}",
+        "goalsize": "the goal size of {} is {}",
+        "boardsize-successor": "{} is the successor of board size {}",
+        "in-highspeed-saw": "{} is in the high-speed saw {}",
+        "empty": "{} is empty",
+        "has-colour": "{} has the colour {}",
+        "contains-part": "{} contains the part {}",
+        "grind-treatment-change": "the grind treatment changes from {} to {}",
+        "is-smooth": "{} is smooth",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "do-immersion-varnish": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "part",
+                "?m": "immersion-varnisher",
+                "?newcolour": "acolour",
+                "?surface": "surface"
+            },
+            "pddl": "(do-immersion-varnish ?x ?m ?newcolour ?surface)",
+            "description": "do immersion varnish on a part A using an immersion-varnisher B to change color to an acolour C with a surface D",
+            "preconditions": [
+                "I can only do immersion varnish on a part A using an immersion-varnisher B to change color to an acolour C with a surface D if it is the case that A is available and B has the colour C and A has a surface condition of D and D is smooth and A is undergoing untreated treatment"
+            ],
+            "effects": [
+                "Once I do immersion varnish on a part A using an immersion-varnisher B to change color to an acolour C with a surface D, it is the case that A is undergoing varnished treatment and A is the color C",
+                "Once I do immersion varnish on a part A using an immersion-varnisher B to change color to an acolour C with a surface D, it is not the case anymore that A is undergoing untreated treatment and it is not the case anymore that A is the color natural"
+            ]
+        },
+        "do-spray-varnish": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "part",
+                "?m": "spray-varnisher",
+                "?newcolour": "acolour",
+                "?surface": "surface"
+            },
+            "pddl": "(do-spray-varnish ?x ?m ?newcolour ?surface)",
+            "description": "do spray varnish on a part A using a spray-varnisher B to change color to an acolour C with a surface D",
+            "preconditions": [
+                "I can only do spray varnish on a part A using a spray-varnisher B to change color to an acolour C with a surface D if it is the case that A is available and B has the colour C and A has a surface condition of D and D is smooth and A is undergoing untreated treatment"
+            ],
+            "effects": [
+                "Once I do spray varnish on a part A using a spray-varnisher B to change color to an acolour C with a surface D, it is the case that A is undergoing varnished treatment and A is the color C",
+                "Once I do spray varnish on a part A using a spray-varnisher B to change color to an acolour C with a surface D, it is not the case anymore that A is undergoing untreated treatment and it is not the case anymore that A is the color natural"
+            ]
+        },
+        "do-glaze": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "part",
+                "?m": "glazer",
+                "?newcolour": "acolour"
+            },
+            "pddl": "(do-glaze ?x ?m ?newcolour)",
+            "description": "do glaze on a part A using a glazer B to change color to an acolour C",
+            "preconditions": [
+                "I can only do glaze on a part A using a glazer B to change color to an acolour C if it is the case that A is available and B has the colour C and A is undergoing untreated treatment"
+            ],
+            "effects": [
+                "Once I do glaze on a part A using a glazer B to change color to an acolour C, it is the case that A is undergoing glazed treatment and A is the color C",
+                "Once I do glaze on a part A using a glazer B to change color to an acolour C, it is not the case anymore that A is undergoing untreated treatment and it is not the case anymore that A is the color natural"
+            ]
+        },
+        "do-grind": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "part",
+                "?m": "grinder",
+                "?oldsurface": "surface",
+                "?oldcolour": "acolour",
+                "?oldtreatment": "treatmentstatus",
+                "?newtreatment": "treatmentstatus"
+            },
+            "pddl": "(do-grind ?x ?m ?oldsurface ?oldcolour ?oldtreatment ?newtreatment)",
+            "description": "do grind on a part A using a grinder B to change surface from a surface C to verysmooth, color from an acolour D to natural, and treatment from a treatmentstatus E to a treatmentstatus F",
+            "preconditions": [
+                "I can only do grind on a part A using a grinder B to change surface from a surface C to verysmooth, color from an acolour D to natural, and treatment from a treatmentstatus E to a treatmentstatus F if it is the case that A is available and A has a surface condition of C and C is smooth and A is the color D and A is undergoing E treatment and the grind treatment changes from E to F"
+            ],
+            "effects": [
+                "Once I do grind on a part A using a grinder B to change surface from a surface C to verysmooth, color from an acolour D to natural, and treatment from a treatmentstatus E to a treatmentstatus F, it is the case that A has a surface condition of verysmooth and A is undergoing F treatment and A is the color natural",
+                "Once I do grind on a part A using a grinder B to change surface from a surface C to verysmooth, color from an acolour D to natural, and treatment from a treatmentstatus E to a treatmentstatus F, it is not the case anymore that A has a surface condition of C and it is not the case anymore that A is undergoing E treatment and it is not the case anymore that A is the color D"
+            ]
+        },
+        "do-plane": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "part",
+                "?m": "planer",
+                "?oldsurface": "surface",
+                "?oldcolour": "acolour",
+                "?oldtreatment": "treatmentstatus"
+            },
+            "pddl": "(do-plane ?x ?m ?oldsurface ?oldcolour ?oldtreatment)",
+            "description": "do plane on a part A using a planer B to change surface from a surface C to smooth, color from an acolour D to natural, and treatment from a treatmentstatus E to untreated",
+            "preconditions": [
+                "I can only do plane on a part A using a planer B to change surface from a surface C to smooth, color from an acolour D to natural, and treatment from a treatmentstatus E to untreated if it is the case that A is available and A has a surface condition of C and A is undergoing E treatment and A is the color D"
+            ],
+            "effects": [
+                "Once I do plane on a part A using a planer B to change surface from a surface C to smooth, color from an acolour D to natural, and treatment from a treatmentstatus E to untreated, it is the case that A has a surface condition of smooth and A is undergoing untreated treatment and A is the color natural",
+                "Once I do plane on a part A using a planer B to change surface from a surface C to smooth, color from an acolour D to natural, and treatment from a treatmentstatus E to untreated, it is not the case anymore that A has a surface condition of C and it is not the case anymore that A is undergoing E treatment and it is not the case anymore that A is the color D"
+            ]
+        },
+        "load-highspeed-saw": {
+            "annotation": "",
+            "parameter_types": {
+                "?b": "board",
+                "?m": "highspeed-saw"
+            },
+            "pddl": "(load-highspeed-saw ?b ?m)",
+            "description": "load a board A into a highspeed-saw B",
+            "preconditions": [
+                "I can only load a board A into a highspeed-saw B if it is the case that B is empty and A is available"
+            ],
+            "effects": [
+                "Once I load a board A into a highspeed-saw B, it is the case that A is in the high-speed saw B",
+                "Once I load a board A into a highspeed-saw B, it is not the case anymore that A is available and it is not the case anymore that B is empty"
+            ]
+        },
+        "unload-highspeed-saw": {
+            "annotation": "",
+            "parameter_types": {
+                "?b": "board",
+                "?m": "highspeed-saw"
+            },
+            "pddl": "(unload-highspeed-saw ?b ?m)",
+            "description": "unload a board A from a highspeed-saw B",
+            "preconditions": [
+                "I can only unload a board A from a highspeed-saw B if it is the case that A is in the high-speed saw B"
+            ],
+            "effects": [
+                "Once I unload a board A from a highspeed-saw B, it is the case that A is available and B is empty",
+                "Once I unload a board A from a highspeed-saw B, it is not the case anymore that A is in the high-speed saw B"
+            ]
+        },
+        "cut-board-small": {
+            "annotation": "",
+            "parameter_types": {
+                "?b": "board",
+                "?p": "part",
+                "?m": "highspeed-saw",
+                "?w": "awood",
+                "?surface": "surface",
+                "?size_before": "aboardsize",
+                "?size_after": "aboardsize"
+            },
+            "pddl": "(cut-board-small ?b ?p ?m ?w ?surface ?size_before ?size_after)",
+            "description": "cut a board A into a part B using a highspeed-saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize G",
+            "preconditions": [
+                "I can only cut a board A into a part B using a highspeed-saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize G if it is the case that B is unused and the goal size of B is small and A is in the high-speed saw C and A is made of D wood and A has a surface condition of E and the size of A is F and F is the successor of board size G"
+            ],
+            "effects": [
+                "Once I cut a board A into a part B using a highspeed-saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize G, it is the case that B is available and B is made of D wood and B has a surface condition of E and B is the color natural and B is undergoing untreated treatment and the size of A is G",
+                "Once I cut a board A into a part B using a highspeed-saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize G, it is not the case anymore that B is unused"
+            ]
+        },
+        "cut-board-medium": {
+            "annotation": "",
+            "parameter_types": {
+                "?b": "board",
+                "?p": "part",
+                "?m": "highspeed-saw",
+                "?w": "awood",
+                "?surface": "surface",
+                "?size_before": "aboardsize",
+                "?s1": "aboardsize",
+                "?size_after": "aboardsize"
+            },
+            "pddl": "(cut-board-medium ?b ?p ?m ?w ?surface ?size_before ?s1 ?size_after)",
+            "description": "cut a board A into a part B using a highspeed-saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize H through intermediate size an aboardsize G",
+            "preconditions": [
+                "I can only cut a board A into a part B using a highspeed-saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize H through intermediate size an aboardsize G if it is the case that B is unused and the goal size of B is medium and A is in the high-speed saw C and A is made of D wood and A has a surface condition of E and the size of A is F and G is the successor of board size H and F is the successor of board size G"
+            ],
+            "effects": [
+                "Once I cut a board A into a part B using a highspeed-saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize H through intermediate size an aboardsize G, it is the case that B is available and B is made of D wood and B has a surface condition of E and B is the color natural and B is undergoing untreated treatment and the size of A is H",
+                "Once I cut a board A into a part B using a highspeed-saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize H through intermediate size an aboardsize G, it is not the case anymore that B is unused"
+            ]
+        },
+        "cut-board-large": {
+            "annotation": "",
+            "parameter_types": {
+                "?b": "board",
+                "?p": "part",
+                "?m": "highspeed-saw",
+                "?w": "awood",
+                "?surface": "surface",
+                "?size_before": "aboardsize",
+                "?s1": "aboardsize",
+                "?s2": "aboardsize",
+                "?size_after": "aboardsize"
+            },
+            "pddl": "(cut-board-large ?b ?p ?m ?w ?surface ?size_before ?s1 ?s2 ?size_after)",
+            "description": "cut a board A into a part B using a highspeed-saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize I through intermediate sizes an aboardsize H and an aboardsize G",
+            "preconditions": [
+                "I can only cut a board A into a part B using a highspeed-saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize I through intermediate sizes an aboardsize H and an aboardsize G if it is the case that B is unused and the goal size of B is large and A is in the high-speed saw C and A is made of D wood and A has a surface condition of E and the size of A is F and G is the successor of board size I and H is the successor of board size G and F is the successor of board size H"
+            ],
+            "effects": [
+                "Once I cut a board A into a part B using a highspeed-saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize I through intermediate sizes an aboardsize H and an aboardsize G, it is the case that B is available and B is made of D wood and B has a surface condition of E and B is the color natural and B is undergoing untreated treatment and the size of A is I",
+                "Once I cut a board A into a part B using a highspeed-saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize I through intermediate sizes an aboardsize H and an aboardsize G, it is not the case anymore that B is unused"
+            ]
+        },
+        "do-saw-small": {
+            "annotation": "",
+            "parameter_types": {
+                "?b": "board",
+                "?p": "part",
+                "?m": "saw",
+                "?w": "awood",
+                "?surface": "surface",
+                "?size_before": "aboardsize",
+                "?size_after": "aboardsize"
+            },
+            "pddl": "(do-saw-small ?b ?p ?m ?w ?surface ?size_before ?size_after)",
+            "description": "saw a board A into a small part B using a saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize G",
+            "preconditions": [
+                "I can only saw a board A into a small part B using a saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize G if it is the case that B is unused and the goal size of B is small and A is available and A is made of D wood and A has a surface condition of E and the size of A is F and F is the successor of board size G"
+            ],
+            "effects": [
+                "Once I saw a board A into a small part B using a saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize G, it is the case that B is available and B is made of D wood and B has a surface condition of E and B is the color natural and B is undergoing untreated treatment and the size of A is G",
+                "Once I saw a board A into a small part B using a saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize G, it is not the case anymore that B is unused"
+            ]
+        },
+        "do-saw-medium": {
+            "annotation": "",
+            "parameter_types": {
+                "?b": "board",
+                "?p": "part",
+                "?m": "saw",
+                "?w": "awood",
+                "?surface": "surface",
+                "?size_before": "aboardsize",
+                "?s1": "aboardsize",
+                "?size_after": "aboardsize"
+            },
+            "pddl": "(do-saw-medium ?b ?p ?m ?w ?surface ?size_before ?s1 ?size_after)",
+            "description": "saw a board A into a medium part B using a saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize H through intermediate size an aboardsize G",
+            "preconditions": [
+                "I can only saw a board A into a medium part B using a saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize H through intermediate size an aboardsize G if it is the case that B is unused and the goal size of B is medium and A is available and A is made of D wood and A has a surface condition of E and the size of A is F and G is the successor of board size H and F is the successor of board size G"
+            ],
+            "effects": [
+                "Once I saw a board A into a medium part B using a saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize H through intermediate size an aboardsize G, it is the case that B is available and B is made of D wood and B has a surface condition of E and B is the color natural and B is undergoing untreated treatment and the size of A is H",
+                "Once I saw a board A into a medium part B using a saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize H through intermediate size an aboardsize G, it is not the case anymore that B is unused"
+            ]
+        },
+        "do-saw-large": {
+            "annotation": "",
+            "parameter_types": {
+                "?b": "board",
+                "?p": "part",
+                "?m": "saw",
+                "?w": "awood",
+                "?surface": "surface",
+                "?size_before": "aboardsize",
+                "?s1": "aboardsize",
+                "?s2": "aboardsize",
+                "?size_after": "aboardsize"
+            },
+            "pddl": "(do-saw-large ?b ?p ?m ?w ?surface ?size_before ?s1 ?s2 ?size_after)",
+            "description": "saw a board A into a large part B using a saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize I through intermediate sizes an aboardsize G and an aboardsize H",
+            "preconditions": [
+                "I can only saw a board A into a large part B using a saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize I through intermediate sizes an aboardsize G and an aboardsize H if it is the case that B is unused and the goal size of B is large and A is available and A is made of D wood and A has a surface condition of E and the size of A is F and G is the successor of board size I and H is the successor of board size G and F is the successor of board size H"
+            ],
+            "effects": [
+                "Once I saw a board A into a large part B using a saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize I through intermediate sizes an aboardsize G and an aboardsize H, it is the case that B is available and B is made of D wood and B has a surface condition of E and B is the color natural and B is undergoing untreated treatment and the size of A is I",
+                "Once I saw a board A into a large part B using a saw C with an awood D, a surface E, changing size from an aboardsize F to an aboardsize I through intermediate sizes an aboardsize G and an aboardsize H, it is not the case anymore that B is unused"
+            ]
+        }
+    },
+    "predicates": {
+        "unused": {
+            "parameter_types": {
+                "?obj": "part"
+            },
+            "pddl": "(unused ?obj)"
+        },
+        "available": {
+            "parameter_types": {
+                "?obj": "woodobj"
+            },
+            "pddl": "(available ?obj)"
+        },
+        "surface-condition": {
+            "parameter_types": {
+                "?obj": "woodobj",
+                "?surface": "surface"
+            },
+            "pddl": "(surface-condition ?obj ?surface)"
+        },
+        "treatment": {
+            "parameter_types": {
+                "?obj": "part",
+                "?treatment": "treatmentstatus"
+            },
+            "pddl": "(treatment ?obj ?treatment)"
+        },
+        "colour": {
+            "parameter_types": {
+                "?obj": "part",
+                "?colour": "acolour"
+            },
+            "pddl": "(colour ?obj ?colour)"
+        },
+        "wood": {
+            "parameter_types": {
+                "?obj": "woodobj",
+                "?wood": "awood"
+            },
+            "pddl": "(wood ?obj ?wood)"
+        },
+        "boardsize": {
+            "parameter_types": {
+                "?board": "board",
+                "?size": "aboardsize"
+            },
+            "pddl": "(boardsize ?board ?size)"
+        },
+        "goalsize": {
+            "parameter_types": {
+                "?part": "part",
+                "?size": "apartsize"
+            },
+            "pddl": "(goalsize ?part ?size)"
+        },
+        "boardsize-successor": {
+            "parameter_types": {
+                "?size1": "aboardsize",
+                "?size2": "aboardsize"
+            },
+            "pddl": "(boardsize-successor ?size1 ?size2)"
+        },
+        "in-highspeed-saw": {
+            "parameter_types": {
+                "?b": "board",
+                "?m": "highspeed-saw"
+            },
+            "pddl": "(in-highspeed-saw ?b ?m)"
+        },
+        "empty": {
+            "parameter_types": {
+                "?m": "highspeed-saw"
+            },
+            "pddl": "(empty ?m)"
+        },
+        "has-colour": {
+            "parameter_types": {
+                "?machine": "machine",
+                "?colour": "acolour"
+            },
+            "pddl": "(has-colour ?machine ?colour)"
+        },
+        "contains-part": {
+            "parameter_types": {
+                "?b": "board",
+                "?p": "part"
+            },
+            "pddl": "(contains-part ?b ?p)"
+        },
+        "grind-treatment-change": {
+            "parameter_types": {
+                "?old": "treatmentstatus",
+                "?new": "treatmentstatus"
+            },
+            "pddl": "(grind-treatment-change ?old ?new)"
+        },
+        "is-smooth": {
+            "parameter_types": {
+                "?surface": "surface"
+            },
+            "pddl": "(is-smooth ?surface)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "do-immersion-varnish": "do immersion varnish on part {?x} using immersion-varnisher {?m} to change color to acolour {?newcolour} with surface {?surface}",
+        "do-spray-varnish": "do spray varnish on part {?x} using spray-varnisher {?m} to change color to acolour {?newcolour} with surface {?surface}",
+        "do-glaze": "do glaze on part {?x} using glazer {?m} to change color to acolour {?newcolour}",
+        "do-grind": "do grind on part {?x} using grinder {?m} to change surface from surface {?oldsurface} to verysmooth, color from acolour {?oldcolour} to natural, and treatment from treatmentstatus {?oldtreatment} to treatmentstatus {?newtreatment}",
+        "do-plane": "do plane on part {?x} using planer {?m} to change surface from surface {?oldsurface} to smooth, color from acolour {?oldcolour} to natural, and treatment from treatmentstatus {?oldtreatment} to untreated",
+        "load-highspeed-saw": "load board {?b} into highspeed-saw {?m}",
+        "unload-highspeed-saw": "unload board {?b} from highspeed-saw {?m}",
+        "cut-board-small": "cut board {?b} into part {?p} using highspeed-saw {?m} with awood {?w}, surface {?surface}, changing size from aboardsize {?size_before} to aboardsize {?size_after}",
+        "cut-board-medium": "cut board {?b} into part {?p} using highspeed-saw {?m} with awood {?w}, surface {?surface}, changing size from aboardsize {?size_before} to aboardsize {?size_after} through intermediate size aboardsize {?s1}",
+        "cut-board-large": "cut board {?b} into part {?p} using highspeed-saw {?m} with awood {?w}, surface {?surface}, changing size from aboardsize {?size_before} to aboardsize {?size_after} through intermediate sizes aboardsize {?s2} and aboardsize {?s1}",
+        "do-saw-small": "saw board {?b} into small part {?p} using saw {?m} with awood {?w}, surface {?surface}, changing size from aboardsize {?size_before} to aboardsize {?size_after}",
+        "do-saw-medium": "saw board {?b} into medium part {?p} using saw {?m} with awood {?w}, surface {?surface}, changing size from aboardsize {?size_before} to aboardsize {?size_after} through intermediate size aboardsize {?s1}",
+        "do-saw-large": "saw board {?b} into large part {?p} using saw {?m} with awood {?w}, surface {?surface}, changing size from aboardsize {?size_before} to aboardsize {?size_after} through intermediate sizes aboardsize {?s1} and aboardsize {?s2}"
+    },
+    "predicate_nl_templates": {
+        "unused": "{?obj} is unused",
+        "available": "{?obj} is available",
+        "surface-condition": "{?obj} has a surface condition of {?surface}",
+        "treatment": "{?obj} is undergoing {?treatment} treatment",
+        "colour": "{?obj} is the color {?colour}",
+        "wood": "{?obj} is made of {?wood} wood",
+        "boardsize": "the size of {?board} is {?size}",
+        "goalsize": "the goal size of {?part} is {?size}",
+        "boardsize-successor": "{?size2} is the successor of board size {?size1}",
+        "in-highspeed-saw": "{?b} is in the high-speed saw {?m}",
+        "empty": "{?m} is empty",
+        "has-colour": "{?machine} has the colour {?colour}",
+        "contains-part": "{?b} contains the part {?p}",
+        "grind-treatment-change": "the grind treatment changes from {?old} to {?new}",
+        "is-smooth": "{?surface} is smooth",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "do-immersion-varnish": "do immersion varnish on a part {?x} using an immersion-varnisher {?m} to change color to an acolour {?newcolour} with a surface {?surface}",
+        "do-spray-varnish": "do spray varnish on a part {?x} using a spray-varnisher {?m} to change color to an acolour {?newcolour} with a surface {?surface}",
+        "do-glaze": "do glaze on a part {?x} using a glazer {?m} to change color to an acolour {?newcolour}",
+        "do-grind": "do grind on a part {?x} using a grinder {?m} to change surface from a surface {?oldsurface} to verysmooth, color from an acolour {?oldcolour} to natural, and treatment from a treatmentstatus {?oldtreatment} to a treatmentstatus {?newtreatment}",
+        "do-plane": "do plane on a part {?x} using a planer {?m} to change surface from a surface {?oldsurface} to smooth, color from an acolour {?oldcolour} to natural, and treatment from a treatmentstatus {?oldtreatment} to untreated",
+        "load-highspeed-saw": "load a board {?b} into a highspeed-saw {?m}",
+        "unload-highspeed-saw": "unload a board {?b} from a highspeed-saw {?m}",
+        "cut-board-small": "cut a board {?b} into a part {?p} using a highspeed-saw {?m} with an awood {?w}, a surface {?surface}, changing size from an aboardsize {?size_before} to an aboardsize {?size_after}",
+        "cut-board-medium": "cut a board {?b} into a part {?p} using a highspeed-saw {?m} with an awood {?w}, a surface {?surface}, changing size from an aboardsize {?size_before} to an aboardsize {?size_after} through intermediate size an aboardsize {?s1}",
+        "cut-board-large": "cut a board {?b} into a part {?p} using a highspeed-saw {?m} with an awood {?w}, a surface {?surface}, changing size from an aboardsize {?size_before} to an aboardsize {?size_after} through intermediate sizes an aboardsize {?s2} and an aboardsize {?s1}",
+        "do-saw-small": "saw a board {?b} into a small part {?p} using a saw {?m} with an awood {?w}, a surface {?surface}, changing size from an aboardsize {?size_before} to an aboardsize {?size_after}",
+        "do-saw-medium": "saw a board {?b} into a medium part {?p} using a saw {?m} with an awood {?w}, a surface {?surface}, changing size from an aboardsize {?size_before} to an aboardsize {?size_after} through intermediate size an aboardsize {?s1}",
+        "do-saw-large": "saw a board {?b} into a large part {?p} using a saw {?m} with an awood {?w}, a surface {?surface}, changing size from an aboardsize {?size_before} to an aboardsize {?size_after} through intermediate sizes an aboardsize {?s1} and an aboardsize {?s2}"
+    },
+    "type_hierarchy": [
+        "Everything that is a acolour or a awood or a woodobj or a machine or a surface or a treatmentstatus or a aboardsize or a apartsize is also a object",
+        "Everything that is a highspeed-saw or a glazer or a grinder or a immersion-varnisher or a planer or a saw or a spray-varnisher is also a machine",
+        "Everything that is a board or a part is also a woodobj"
+    ]
+}

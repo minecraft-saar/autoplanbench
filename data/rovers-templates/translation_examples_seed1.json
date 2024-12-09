@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_260",
+        "roof_11",
+        "frame_9",
+        "star_213",
+        "socket",
+        "object_50",
+        "teddy",
+        "kumquat",
+        "rain",
+        "kumquat_8",
+        "fire",
+        "bastion"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"take_image\" to rover kumquat_8, waypoint star_213, objective roof_11, camera object_50 and mode teddy.",
+            "(take_image kumquat_8 star_213 roof_11 object_50 teddy)"
+        ],
+        [
+            "Once you are done, please apply the action \"sample_rock\" to rover kumquat, store object_260 and waypoint rain.",
+            "(sample_rock kumquat object_260 rain)"
+        ],
+        [
+            "First, apply the action \"communicate_image_data\" to rover kumquat_8, lander fire, objective frame_9, mode bastion, waypoint star_213 and waypoint rain and then apply the action \"drop\" to rover kumquat_8 and store yew.",
+            "(communicate_image_data kumquat_8 fire frame_9 bastion star_213 rain)\n(drop kumquat_8 yew)"
+        ],
+        [
+            "The next step is to apply the action \"calibrate\" to rover kumquat, camera socket, objective roof_11 and waypoint rain.",
+            "(calibrate kumquat socket roof_11 rain)"
+        ]
+    ]
+}

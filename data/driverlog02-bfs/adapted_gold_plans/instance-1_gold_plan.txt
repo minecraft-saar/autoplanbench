@@ -1,0 +1,8 @@
+(walk object_3 object_10 object_8)
+(walk object_3 object_8 object_0)
+(walk object_3 object_0 object_9)
+(walk object_3 object_9 object_4)
+(board-truck object_3 object_2 object_4)
+(drive-truck object_2 object_4 object_0 object_3)
+(disembark-truck object_3 object_2 object_0)
+; cost = 7 (unit cost)

@@ -1,0 +1,28 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat_8",
+        "star_213",
+        "bastion",
+        "object_260",
+        "screen",
+        "fire",
+        "object_50",
+        "kumquat",
+        "dress_red",
+        "rain"
+    ],
+    "pos_examples": [
+        [
+            "Now, move and eat spawn by moving head snake screen to point kumquat_8 at spawn point rain with next spawn at spawn point dress_red.",
+            "(move-and-eat-spawn screen kumquat_8 rain dress_red)"
+        ],
+        [
+            "Once you are done, please move and eat without spawning by moving head snake bastion to point kumquat.",
+            "(move-and-eat-no-spawn bastion kumquat)"
+        ]
+    ]
+}

@@ -1,0 +1,40 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_260",
+        "frame_9_88",
+        "kumquat",
+        "bastion",
+        "rain",
+        "frame_9",
+        "roof_11",
+        "teddy_52",
+        "teddy_52_45",
+        "teddy_26",
+        "teddy",
+        "star_213",
+        "star_213_42",
+        "dress_red"
+    ],
+    "pos_examples": [
+        [
+            "Now, move card card roof_11 south from position teddy_52, teddy to position teddy_52, star_213 with next moving card card yew at position teddy_52, star_213_42.",
+            "(move-card-south roof_11 object_260 teddy star_213 object_260 frame_9)"
+        ],
+        [
+            "Once you are done, please stop moving card card kumquat north from position teddy, teddy_52 to position teddy, teddy_52_45 with new headtail card card dress_red.",
+            "(stop-move-card-north kumquat star_213_42 teddy_52 teddy teddy_52_45)"
+        ],
+        [
+            "First, move west from kumquat, frame_9, star_213, rain to yew, teddy, frame_9_88, bastion and then leave card roof_11 at position object_260, teddy.",
+            "(move-west kumquat frame_9 star_213 rain yew teddy frame_9_88 bastion)\n(leave roof_11 object_260 teddy)"
+        ],
+        [
+            "The next step is to move card card roof_11 east from position teddy, star_213_42 to position teddy_52_45, star_213_42 and set next moving card to card yew at position teddy_26, star_213_42.",
+            "(move-card-east roof_11 teddy star_213 object_260 yew teddy_52_45)"
+        ]
+    ]
+}

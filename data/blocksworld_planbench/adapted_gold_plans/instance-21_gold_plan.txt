@@ -1,0 +1,2 @@
+(pick-up blue_block)
+(stack blue_block yellow_block)

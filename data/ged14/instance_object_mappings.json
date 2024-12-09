@@ -1,0 +1,167 @@
+{
+    "instance-1.pddl": {
+        "sub3": "object_2",
+        "sub2": "object_0",
+        "sub1": "object_1"
+    },
+    "instance-19.pddl": {
+        "sub8": "object_8",
+        "sub7": "object_4",
+        "sub6": "object_6",
+        "sub5": "object_3",
+        "sub4": "object_7",
+        "sub3": "object_0",
+        "sub2": "object_5",
+        "sub1": "object_2",
+        "g54": "object_1"
+    },
+    "instance-18.pddl": {
+        "sub8": "object_6",
+        "sub7": "object_0",
+        "sub6": "object_8",
+        "sub5": "object_1",
+        "sub4": "object_2",
+        "sub3": "object_4",
+        "sub2": "object_7",
+        "sub1": "object_3",
+        "g54": "object_5"
+    },
+    "instance-14.pddl": {
+        "sub8": "object_5",
+        "sub7": "object_2",
+        "sub6": "object_6",
+        "sub5": "object_7",
+        "sub4": "object_4",
+        "sub3": "object_0",
+        "sub2": "object_1",
+        "sub1": "object_8",
+        "g54": "object_3"
+    },
+    "instance-15.pddl": {
+        "sub6": "object_1",
+        "sub5": "object_0",
+        "sub4": "object_3",
+        "sub3": "object_4",
+        "sub2": "object_5",
+        "sub1": "object_6",
+        "g90": "object_2"
+    },
+    "instance-13.pddl": {
+        "sub6": "object_0",
+        "sub5": "object_4",
+        "sub4": "object_5",
+        "sub3": "object_6",
+        "sub2": "object_2",
+        "sub1": "object_1",
+        "g40": "object_3"
+    },
+    "instance-6.pddl": {
+        "sub4": "object_3",
+        "sub3": "object_2",
+        "sub2": "object_4",
+        "sub1": "object_1",
+        "g40": "object_0"
+    },
+    "instance-12.pddl": {
+        "sub4": "object_3",
+        "sub3": "object_2",
+        "sub2": "object_0",
+        "sub1": "object_1"
+    },
+    "instance-9.pddl": {
+        "sub5": "object_2",
+        "sub4": "object_5",
+        "sub3": "object_4",
+        "sub2": "object_1",
+        "sub1": "object_3",
+        "g40": "object_0"
+    },
+    "instance-11.pddl": {
+        "sub6": "object_2",
+        "sub5": "object_0",
+        "sub4": "object_6",
+        "sub3": "object_3",
+        "sub2": "object_4",
+        "sub1": "object_5",
+        "g40": "object_1"
+    },
+    "instance-5.pddl": {
+        "sub3": "object_2",
+        "sub2": "object_0",
+        "sub1": "object_1"
+    },
+    "instance-4.pddl": {
+        "sub6": "object_4",
+        "sub5": "object_0",
+        "sub4": "object_6",
+        "sub3": "object_3",
+        "sub2": "object_1",
+        "sub1": "object_2",
+        "g54": "object_5"
+    },
+    "instance-10.pddl": {
+        "sub4": "object_0",
+        "sub3": "object_1",
+        "sub2": "object_4",
+        "sub1": "object_3",
+        "g40": "object_2"
+    },
+    "instance-8.pddl": {
+        "sub8": "object_0",
+        "sub7": "object_1",
+        "sub6": "object_2",
+        "sub5": "object_3",
+        "sub4": "object_4",
+        "sub3": "object_7",
+        "sub2": "object_5",
+        "sub1": "object_8",
+        "g54": "object_6"
+    },
+    "instance-3.pddl": {
+        "sub3": "object_1",
+        "sub2": "object_0",
+        "sub1": "object_2"
+    },
+    "instance-17.pddl": {
+        "sub6": "object_2",
+        "sub5": "object_4",
+        "sub4": "object_5",
+        "sub3": "object_0",
+        "sub2": "object_3",
+        "sub1": "object_1",
+        "g54": "object_6"
+    },
+    "instance-16.pddl": {
+        "sub5": "object_2",
+        "sub4": "object_3",
+        "sub3": "object_0",
+        "sub2": "object_5",
+        "sub1": "object_4",
+        "g56": "object_1"
+    },
+    "instance-2.pddl": {
+        "sub5": "object_5",
+        "sub4": "object_2",
+        "sub3": "object_0",
+        "sub2": "object_3",
+        "sub1": "object_4",
+        "g40": "object_1"
+    },
+    "instance-20.pddl": {
+        "sub7": "object_6",
+        "sub6": "object_7",
+        "sub5": "object_2",
+        "sub4": "object_5",
+        "sub3": "object_1",
+        "sub2": "object_8",
+        "sub1": "object_3",
+        "g84": "object_4",
+        "g11": "object_0"
+    },
+    "instance-0.pddl": {
+        "sub4": "object_3",
+        "sub3": "object_0",
+        "sub2": "object_1",
+        "sub1": "object_2"
+    }
+}

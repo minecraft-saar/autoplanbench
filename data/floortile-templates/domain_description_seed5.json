@@ -1,0 +1,275 @@
+{
+    "action_mappings": {
+        "change-color": "apply the action \"change-color\" to robot {}, color {} and color {}",
+        "paint-up": "apply the action \"paint-up\" to robot {}, tile {}, tile {} and color {}",
+        "paint-down": "apply the action \"paint-down\" to robot {}, tile {}, tile {} and color {}",
+        "up": "apply the action \"up\" to robot {}, tile {} and tile {}",
+        "down": "apply the action \"down\" to robot {}, tile {} and tile {}",
+        "right": "apply the action \"right\" to robot {}, tile {} and tile {}",
+        "left": "apply the action \"left\" to robot {}, tile {} and tile {}"
+    },
+    "action_mappings_indef": {
+        "change-color": "apply the action \"change-color\" to a robot {}, a color {} and a color {}",
+        "paint-up": "apply the action \"paint-up\" to a robot {}, a tile {}, a tile {} and a color {}",
+        "paint-down": "apply the action \"paint-down\" to a robot {}, a tile {}, a tile {} and a color {}",
+        "up": "apply the action \"up\" to a robot {}, a tile {} and a tile {}",
+        "down": "apply the action \"down\" to a robot {}, a tile {} and a tile {}",
+        "right": "apply the action \"right\" to a robot {}, a tile {} and a tile {}",
+        "left": "apply the action \"left\" to a robot {}, a tile {} and a tile {}"
+    },
+    "predicate_mappings": {
+        "robot-at": "{} and {} are in the relation \"robot-at\"",
+        "up": "{} and {} are in the relation \"up\"",
+        "down": "{} and {} are in the relation \"down\"",
+        "right": "{} and {} are in the relation \"right\"",
+        "left": "{} and {} are in the relation \"left\"",
+        "clear": "{} is \"clear\"",
+        "painted": "{} and {} are in the relation \"painted\"",
+        "robot-has": "{} and {} are in the relation \"robot-has\"",
+        "available-color": "{} is \"available-color\"",
+        "free-color": "{} is \"free-color\"",
+        "=": "{} and {} are in the relation \"=\"",
+        "!=": "{} and {} are in the relation \"!=\""
+    },
+    "actions": {
+        "change-color": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "robot",
+                "?c": "color",
+                "?c2": "color"
+            },
+            "pddl": "(change-color ?r ?c ?c2)",
+            "description": "apply the action \"change-color\" to a robot A, a color B and a color C",
+            "preconditions": [
+                "I can only apply the action \"change-color\" to a robot A, a color B and a color C if it is the case that A and B are in the relation \"robot-has\" and C is \"available-color\""
+            ],
+            "effects": [
+                "Once I apply the action \"change-color\" to a robot A, a color B and a color C, it is the case that A and C are in the relation \"robot-has\"",
+                "Once I apply the action \"change-color\" to a robot A, a color B and a color C, it is not the case anymore that A and B are in the relation \"robot-has\""
+            ]
+        },
+        "paint-up": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "robot",
+                "?y": "tile",
+                "?x": "tile",
+                "?c": "color"
+            },
+            "pddl": "(paint-up ?r ?y ?x ?c)",
+            "description": "apply the action \"paint-up\" to a robot A, a tile B, a tile C and a color D",
+            "preconditions": [
+                "I can only apply the action \"paint-up\" to a robot A, a tile B, a tile C and a color D if it is the case that A and D are in the relation \"robot-has\" and A and C are in the relation \"robot-at\" and B and C are in the relation \"up\" and B is \"clear\""
+            ],
+            "effects": [
+                "Once I apply the action \"paint-up\" to a robot A, a tile B, a tile C and a color D, it is the case that B and D are in the relation \"painted\"",
+                "Once I apply the action \"paint-up\" to a robot A, a tile B, a tile C and a color D, it is not the case anymore that B is \"clear\""
+            ]
+        },
+        "paint-down": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "robot",
+                "?y": "tile",
+                "?x": "tile",
+                "?c": "color"
+            },
+            "pddl": "(paint-down ?r ?y ?x ?c)",
+            "description": "apply the action \"paint-down\" to a robot A, a tile B, a tile C and a color D",
+            "preconditions": [
+                "I can only apply the action \"paint-down\" to a robot A, a tile B, a tile C and a color D if it is the case that A and D are in the relation \"robot-has\" and A and C are in the relation \"robot-at\" and B and C are in the relation \"down\" and B is \"clear\""
+            ],
+            "effects": [
+                "Once I apply the action \"paint-down\" to a robot A, a tile B, a tile C and a color D, it is the case that B and D are in the relation \"painted\"",
+                "Once I apply the action \"paint-down\" to a robot A, a tile B, a tile C and a color D, it is not the case anymore that B is \"clear\""
+            ]
+        },
+        "up": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "robot",
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(up ?r ?x ?y)",
+            "description": "apply the action \"up\" to a robot A, a tile B and a tile C",
+            "preconditions": [
+                "I can only apply the action \"up\" to a robot A, a tile B and a tile C if it is the case that A and B are in the relation \"robot-at\" and C and B are in the relation \"up\" and C is \"clear\""
+            ],
+            "effects": [
+                "Once I apply the action \"up\" to a robot A, a tile B and a tile C, it is the case that A and C are in the relation \"robot-at\" and B is \"clear\"",
+                "Once I apply the action \"up\" to a robot A, a tile B and a tile C, it is not the case anymore that A and B are in the relation \"robot-at\" and it is not the case anymore that C is \"clear\""
+            ]
+        },
+        "down": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "robot",
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(down ?r ?x ?y)",
+            "description": "apply the action \"down\" to a robot A, a tile B and a tile C",
+            "preconditions": [
+                "I can only apply the action \"down\" to a robot A, a tile B and a tile C if it is the case that A and B are in the relation \"robot-at\" and C and B are in the relation \"down\" and C is \"clear\""
+            ],
+            "effects": [
+                "Once I apply the action \"down\" to a robot A, a tile B and a tile C, it is the case that A and C are in the relation \"robot-at\" and B is \"clear\"",
+                "Once I apply the action \"down\" to a robot A, a tile B and a tile C, it is not the case anymore that A and B are in the relation \"robot-at\" and it is not the case anymore that C is \"clear\""
+            ]
+        },
+        "right": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "robot",
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(right ?r ?x ?y)",
+            "description": "apply the action \"right\" to a robot A, a tile B and a tile C",
+            "preconditions": [
+                "I can only apply the action \"right\" to a robot A, a tile B and a tile C if it is the case that A and B are in the relation \"robot-at\" and C and B are in the relation \"right\" and C is \"clear\""
+            ],
+            "effects": [
+                "Once I apply the action \"right\" to a robot A, a tile B and a tile C, it is the case that A and C are in the relation \"robot-at\" and B is \"clear\"",
+                "Once I apply the action \"right\" to a robot A, a tile B and a tile C, it is not the case anymore that A and B are in the relation \"robot-at\" and it is not the case anymore that C is \"clear\""
+            ]
+        },
+        "left": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "robot",
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(left ?r ?x ?y)",
+            "description": "apply the action \"left\" to a robot A, a tile B and a tile C",
+            "preconditions": [
+                "I can only apply the action \"left\" to a robot A, a tile B and a tile C if it is the case that A and B are in the relation \"robot-at\" and C and B are in the relation \"left\" and C is \"clear\""
+            ],
+            "effects": [
+                "Once I apply the action \"left\" to a robot A, a tile B and a tile C, it is the case that A and C are in the relation \"robot-at\" and B is \"clear\"",
+                "Once I apply the action \"left\" to a robot A, a tile B and a tile C, it is not the case anymore that A and B are in the relation \"robot-at\" and it is not the case anymore that C is \"clear\""
+            ]
+        }
+    },
+    "predicates": {
+        "robot-at": {
+            "parameter_types": {
+                "?r": "robot",
+                "?x": "tile"
+            },
+            "pddl": "(robot-at ?r ?x)"
+        },
+        "up": {
+            "parameter_types": {
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(up ?x ?y)"
+        },
+        "down": {
+            "parameter_types": {
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(down ?x ?y)"
+        },
+        "right": {
+            "parameter_types": {
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(right ?x ?y)"
+        },
+        "left": {
+            "parameter_types": {
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(left ?x ?y)"
+        },
+        "clear": {
+            "parameter_types": {
+                "?x": "tile"
+            },
+            "pddl": "(clear ?x)"
+        },
+        "painted": {
+            "parameter_types": {
+                "?x": "tile",
+                "?c": "color"
+            },
+            "pddl": "(painted ?x ?c)"
+        },
+        "robot-has": {
+            "parameter_types": {
+                "?r": "robot",
+                "?c": "color"
+            },
+            "pddl": "(robot-has ?r ?c)"
+        },
+        "available-color": {
+            "parameter_types": {
+                "?c": "color"
+            },
+            "pddl": "(available-color ?c)"
+        },
+        "free-color": {
+            "parameter_types": {
+                "?r": "robot"
+            },
+            "pddl": "(free-color ?r)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "change-color": "apply the action \"change-color\" to robot {?r}, color {?c} and color {?c2}",
+        "paint-up": "apply the action \"paint-up\" to robot {?r}, tile {?y}, tile {?x} and color {?c}",
+        "paint-down": "apply the action \"paint-down\" to robot {?r}, tile {?y}, tile {?x} and color {?c}",
+        "up": "apply the action \"up\" to robot {?r}, tile {?x} and tile {?y}",
+        "down": "apply the action \"down\" to robot {?r}, tile {?x} and tile {?y}",
+        "right": "apply the action \"right\" to robot {?r}, tile {?x} and tile {?y}",
+        "left": "apply the action \"left\" to robot {?r}, tile {?x} and tile {?y}"
+    },
+    "predicate_nl_templates": {
+        "robot-at": "{?r} and {?x} are in the relation \"robot-at\"",
+        "up": "{?x} and {?y} are in the relation \"up\"",
+        "down": "{?x} and {?y} are in the relation \"down\"",
+        "right": "{?x} and {?y} are in the relation \"right\"",
+        "left": "{?x} and {?y} are in the relation \"left\"",
+        "clear": "{?x} is \"clear\"",
+        "painted": "{?x} and {?c} are in the relation \"painted\"",
+        "robot-has": "{?r} and {?c} are in the relation \"robot-has\"",
+        "available-color": "{?c} is \"available-color\"",
+        "free-color": "{?r} is \"free-color\"",
+        "=": "{?x1} and {?x2} are in the relation \"=\"",
+        "!=": "{?x1} and {?x2} are in the relation \"!=\""
+    },
+    "action_nl_templates_indef": {
+        "change-color": "apply the action \"change-color\" to a robot {?r}, a color {?c} and a color {?c2}",
+        "paint-up": "apply the action \"paint-up\" to a robot {?r}, a tile {?y}, a tile {?x} and a color {?c}",
+        "paint-down": "apply the action \"paint-down\" to a robot {?r}, a tile {?y}, a tile {?x} and a color {?c}",
+        "up": "apply the action \"up\" to a robot {?r}, a tile {?x} and a tile {?y}",
+        "down": "apply the action \"down\" to a robot {?r}, a tile {?x} and a tile {?y}",
+        "right": "apply the action \"right\" to a robot {?r}, a tile {?x} and a tile {?y}",
+        "left": "apply the action \"left\" to a robot {?r}, a tile {?x} and a tile {?y}"
+    },
+    "type_hierarchy": [
+        "Everything that is a robot or a tile or a color is also a object"
+    ]
+}

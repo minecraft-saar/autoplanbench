@@ -1,0 +1,28 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "star_213",
+        "socket"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"undo-rewind\".",
+            "(undo-rewind )"
+        ],
+        [
+            "Once you are done, please apply the action \"get-pop\" to object socket.",
+            "(get-pop socket)"
+        ],
+        [
+            "First, apply the action \"rewind-movie\" and then apply the action \"get-dip\" to object star_213.",
+            "(rewind-movie )\n(get-dip star_213)"
+        ],
+        [
+            "The next step is to apply the action \"start-movie\".",
+            "(start-movie )"
+        ]
+    ]
+}

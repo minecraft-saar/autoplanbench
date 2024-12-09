@@ -1,0 +1,84 @@
+{
+    "action_mappings": {
+        "move": "apply the action \"move\" to place {} and place {}"
+    },
+    "action_mappings_indef": {
+        "move": "apply the action \"move\" to a place {} and a place {}"
+    },
+    "predicate_mappings": {
+        "connected": "{} and {} are in the relation \"connected\"",
+        "at-robot": "{} is \"at-robot\"",
+        "visited": "{} is \"visited\"",
+        "=": "{} and {} are in the relation \"=\"",
+        "!=": "{} and {} are in the relation \"!=\""
+    },
+    "actions": {
+        "move": {
+            "annotation": "",
+            "parameter_types": {
+                "?curpos": "place",
+                "?nextpos": "place"
+            },
+            "pddl": "(move ?curpos ?nextpos)",
+            "description": "apply the action \"move\" to a place A and a place B",
+            "preconditions": [
+                "I can only apply the action \"move\" to a place A and a place B if it is the case that A is \"at-robot\" and A and B are in the relation \"connected\""
+            ],
+            "effects": [
+                "Once I apply the action \"move\" to a place A and a place B, it is the case that B is \"at-robot\" and B is \"visited\"",
+                "Once I apply the action \"move\" to a place A and a place B, it is not the case anymore that A is \"at-robot\""
+            ]
+        }
+    },
+    "predicates": {
+        "connected": {
+            "parameter_types": {
+                "?x": "place",
+                "?y": "place"
+            },
+            "pddl": "(connected ?x ?y)"
+        },
+        "at-robot": {
+            "parameter_types": {
+                "?x": "place"
+            },
+            "pddl": "(at-robot ?x)"
+        },
+        "visited": {
+            "parameter_types": {
+                "?x": "place"
+            },
+            "pddl": "(visited ?x)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "move": "apply the action \"move\" to place {?curpos} and place {?nextpos}"
+    },
+    "predicate_nl_templates": {
+        "connected": "{?x} and {?y} are in the relation \"connected\"",
+        "at-robot": "{?x} is \"at-robot\"",
+        "visited": "{?x} is \"visited\"",
+        "=": "{?x1} and {?x2} are in the relation \"=\"",
+        "!=": "{?x1} and {?x2} are in the relation \"!=\""
+    },
+    "action_nl_templates_indef": {
+        "move": "apply the action \"move\" to a place {?curpos} and a place {?nextpos}"
+    },
+    "type_hierarchy": [
+        "Everything that is a place is also a object"
+    ]
+}

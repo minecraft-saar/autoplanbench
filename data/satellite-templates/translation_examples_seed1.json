@@ -1,0 +1,37 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "star_213",
+        "teddy",
+        "kumquat",
+        "roof_11",
+        "object_260",
+        "frame_9",
+        "screen",
+        "kumquat_8",
+        "dress_red",
+        "socket",
+        "fire"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"take_image\" to satellite star_213, direction socket, instrument roof_11 and mode screen.",
+            "(take_image star_213 socket roof_11 screen)"
+        ],
+        [
+            "Once you are done, please apply the action \"calibrate\" to satellite teddy, instrument kumquat and direction kumquat_8.",
+            "(calibrate teddy kumquat kumquat_8)"
+        ],
+        [
+            "First, apply the action \"switch_off\" to instrument dress_red and satellite frame_9 and then apply the action \"turn_to\" to satellite object_260, direction fire and direction socket.",
+            "(switch_off dress_red frame_9)\n(turn_to object_260 fire socket)"
+        ],
+        [
+            "The next step is to apply the action \"switch_on\" to instrument yew and satellite teddy.",
+            "(switch_on yew teddy)"
+        ]
+    ]
+}

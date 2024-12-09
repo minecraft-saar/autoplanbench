@@ -1,0 +1,30 @@
+I can carry out the following actions:
+apply the action "load-truck" to an object A, an object B and an object C
+apply the action "load-airplane" to an object A, an object B and an object C
+apply the action "unload-truck" to an object A, an object B and an object C
+apply the action "unload-airplane" to an object A, an object B and an object C
+apply the action "drive-truck" to an object A, an object B, an object C and an object D
+apply the action "fly-airplane" to an object A, an object B and an object C
+
+I have the following restrictions on my actions:
+I can only apply the action "load-truck" to an object A, an object B and an object C if it is the case that A is "obj" and B is "truck" and C is "location" and B and C are in the relation "at" and A and C are in the relation "at"
+I can only apply the action "load-airplane" to an object A, an object B and an object C if it is the case that A is "obj" and B is "airplane" and C is "location" and A and C are in the relation "at" and B and C are in the relation "at"
+I can only apply the action "unload-truck" to an object A, an object B and an object C if it is the case that A is "obj" and B is "truck" and C is "location" and B and C are in the relation "at" and A and B are in the relation "in"
+I can only apply the action "unload-airplane" to an object A, an object B and an object C if it is the case that A is "obj" and B is "airplane" and C is "location" and A and B are in the relation "in" and B and C are in the relation "at"
+I can only apply the action "drive-truck" to an object A, an object B, an object C and an object D if it is the case that A is "truck" and B is "location" and C is "location" and D is "city" and A and B are in the relation "at" and B and D are in the relation "in-city" and C and D are in the relation "in-city"
+I can only apply the action "fly-airplane" to an object A, an object B and an object C if it is the case that A is "airplane" and B is "airport" and C is "airport" and A and B are in the relation "at"
+
+The actions have the following effects on the state:
+Once I apply the action "load-truck" to an object A, an object B and an object C, it is the case that A and B are in the relation "in"
+Once I apply the action "load-truck" to an object A, an object B and an object C, it is not the case anymore that A and C are in the relation "at"
+Once I apply the action "load-airplane" to an object A, an object B and an object C, it is the case that A and B are in the relation "in"
+Once I apply the action "load-airplane" to an object A, an object B and an object C, it is not the case anymore that A and C are in the relation "at"
+Once I apply the action "unload-truck" to an object A, an object B and an object C, it is the case that A and C are in the relation "at"
+Once I apply the action "unload-truck" to an object A, an object B and an object C, it is not the case anymore that A and B are in the relation "in"
+Once I apply the action "unload-airplane" to an object A, an object B and an object C, it is the case that A and C are in the relation "at"
+Once I apply the action "unload-airplane" to an object A, an object B and an object C, it is not the case anymore that A and B are in the relation "in"
+Once I apply the action "drive-truck" to an object A, an object B, an object C and an object D, it is the case that A and C are in the relation "at"
+Once I apply the action "drive-truck" to an object A, an object B, an object C and an object D, it is not the case anymore that A and B are in the relation "at"
+Once I apply the action "fly-airplane" to an object A, an object B and an object C, it is the case that A and C are in the relation "at"
+Once I apply the action "fly-airplane" to an object A, an object B and an object C, it is not the case anymore that A and B are in the relation "at"
+

@@ -1,0 +1,8 @@
+(move pos2-1 pos1-1)
+(move pos1-1 pos1-2)
+(move pos1-2 pos0-2)
+(pickup pos0-2 key2)
+(move pos0-2 pos1-2)
+(move pos1-2 pos1-1)
+(putdown pos1-1 key2)
+; cost = 7 (unit cost)

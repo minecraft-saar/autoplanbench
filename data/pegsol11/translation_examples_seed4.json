@@ -1,0 +1,24 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "frame_9",
+        "socket",
+        "dress_red",
+        "roof_11",
+        "rain",
+        "bastion"
+    ],
+    "pos_examples": [
+        [
+            "Now, jump from location rain over location frame_9 to location bastion.",
+            "(jump-new-move rain frame_9 bastion)"
+        ],
+        [
+            "Once you are done, please end move at location socket.",
+            "(end-move socket)"
+        ]
+    ]
+}

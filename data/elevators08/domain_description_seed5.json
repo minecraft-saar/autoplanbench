@@ -1,0 +1,242 @@
+{
+    "action_mappings": {
+        "move-up-slow": "move slow-elevator {} from count {} to count {}",
+        "move-down-slow": "move slow-elevator {} from count {} to count {}",
+        "move-up-fast": "move fast-elevator {} from count {} to count {}",
+        "move-down-fast": "move fast-elevator {} from count {} to count {}",
+        "board": "board passenger {} onto elevator {} at count {} increasing passengers from count {} to count {}",
+        "leave": "leave elevator {} by passenger {} at count {} decreasing passengers from count {} to count {}"
+    },
+    "action_mappings_indef": {
+        "move-up-slow": "move a slow-elevator {} from a count {} to a count {}",
+        "move-down-slow": "move a slow-elevator {} from a count {} to a count {}",
+        "move-up-fast": "move a fast-elevator {} from a count {} to a count {}",
+        "move-down-fast": "move a fast-elevator {} from a count {} to a count {}",
+        "board": "board a passenger {} onto an elevator {} at a count {} increasing passengers from a count {} to a count {}",
+        "leave": "leave an elevator {} by a passenger {} at a count {} decreasing passengers from a count {} to a count {}"
+    },
+    "predicate_mappings": {
+        "passenger-at": "{} is at floor {}",
+        "boarded": "{} has boarded {}",
+        "lift-at": "{} is at {}",
+        "reachable-floor": "{} is reachable by {}",
+        "above": "{} is above {}",
+        "passengers": "{} has {} passengers",
+        "can-hold": "{} can hold {} people",
+        "next": "{} is next to {}",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "move-up-slow": {
+            "annotation": "",
+            "parameter_types": {
+                "?lift": "slow-elevator",
+                "?f1": "count",
+                "?f2": "count"
+            },
+            "pddl": "(move-up-slow ?lift ?f1 ?f2)",
+            "description": "move a slow-elevator A from a count B to a count C",
+            "preconditions": [
+                "I can only move a slow-elevator A from a count B to a count C if it is the case that A is at B and B is above C and C is reachable by A"
+            ],
+            "effects": [
+                "Once I move a slow-elevator A from a count B to a count C, it is the case that A is at C",
+                "Once I move a slow-elevator A from a count B to a count C, it is not the case anymore that A is at B"
+            ]
+        },
+        "move-down-slow": {
+            "annotation": "",
+            "parameter_types": {
+                "?lift": "slow-elevator",
+                "?f1": "count",
+                "?f2": "count"
+            },
+            "pddl": "(move-down-slow ?lift ?f1 ?f2)",
+            "description": "move a slow-elevator A from a count B to a count C",
+            "preconditions": [
+                "I can only move a slow-elevator A from a count B to a count C if it is the case that A is at B and C is above B and C is reachable by A"
+            ],
+            "effects": [
+                "Once I move a slow-elevator A from a count B to a count C, it is the case that A is at C",
+                "Once I move a slow-elevator A from a count B to a count C, it is not the case anymore that A is at B"
+            ]
+        },
+        "move-up-fast": {
+            "annotation": "",
+            "parameter_types": {
+                "?lift": "fast-elevator",
+                "?f1": "count",
+                "?f2": "count"
+            },
+            "pddl": "(move-up-fast ?lift ?f1 ?f2)",
+            "description": "move a fast-elevator A from a count B to a count C",
+            "preconditions": [
+                "I can only move a fast-elevator A from a count B to a count C if it is the case that A is at B and B is above C and C is reachable by A"
+            ],
+            "effects": [
+                "Once I move a fast-elevator A from a count B to a count C, it is the case that A is at C",
+                "Once I move a fast-elevator A from a count B to a count C, it is not the case anymore that A is at B"
+            ]
+        },
+        "move-down-fast": {
+            "annotation": "",
+            "parameter_types": {
+                "?lift": "fast-elevator",
+                "?f1": "count",
+                "?f2": "count"
+            },
+            "pddl": "(move-down-fast ?lift ?f1 ?f2)",
+            "description": "move a fast-elevator A from a count B to a count C",
+            "preconditions": [
+                "I can only move a fast-elevator A from a count B to a count C if it is the case that A is at B and C is above B and C is reachable by A"
+            ],
+            "effects": [
+                "Once I move a fast-elevator A from a count B to a count C, it is the case that A is at C",
+                "Once I move a fast-elevator A from a count B to a count C, it is not the case anymore that A is at B"
+            ]
+        },
+        "board": {
+            "annotation": "",
+            "parameter_types": {
+                "?p": "passenger",
+                "?lift": "elevator",
+                "?f": "count",
+                "?n1": "count",
+                "?n2": "count"
+            },
+            "pddl": "(board ?p ?lift ?f ?n1 ?n2)",
+            "description": "board a passenger A onto an elevator B at a count C increasing passengers from a count D to a count E",
+            "preconditions": [
+                "I can only board a passenger A onto an elevator B at a count C increasing passengers from a count D to a count E if it is the case that B is at C and A is at floor C and B has D passengers and D is next to E and B can hold E people"
+            ],
+            "effects": [
+                "Once I board a passenger A onto an elevator B at a count C increasing passengers from a count D to a count E, it is the case that A has boarded B and B has E passengers",
+                "Once I board a passenger A onto an elevator B at a count C increasing passengers from a count D to a count E, it is not the case anymore that A is at floor C and it is not the case anymore that B has D passengers"
+            ]
+        },
+        "leave": {
+            "annotation": "",
+            "parameter_types": {
+                "?p": "passenger",
+                "?lift": "elevator",
+                "?f": "count",
+                "?n1": "count",
+                "?n2": "count"
+            },
+            "pddl": "(leave ?p ?lift ?f ?n1 ?n2)",
+            "description": "leave an elevator B by a passenger A at a count C decreasing passengers from a count D to a count E",
+            "preconditions": [
+                "I can only leave an elevator B by a passenger A at a count C decreasing passengers from a count D to a count E if it is the case that B is at C and A has boarded B and B has D passengers and E is next to D"
+            ],
+            "effects": [
+                "Once I leave an elevator B by a passenger A at a count C decreasing passengers from a count D to a count E, it is the case that A is at floor C and B has E passengers",
+                "Once I leave an elevator B by a passenger A at a count C decreasing passengers from a count D to a count E, it is not the case anymore that A has boarded B and it is not the case anymore that B has D passengers"
+            ]
+        }
+    },
+    "predicates": {
+        "passenger-at": {
+            "parameter_types": {
+                "?person": "passenger",
+                "?floor": "count"
+            },
+            "pddl": "(passenger-at ?person ?floor)"
+        },
+        "boarded": {
+            "parameter_types": {
+                "?person": "passenger",
+                "?lift": "elevator"
+            },
+            "pddl": "(boarded ?person ?lift)"
+        },
+        "lift-at": {
+            "parameter_types": {
+                "?lift": "elevator",
+                "?floor": "count"
+            },
+            "pddl": "(lift-at ?lift ?floor)"
+        },
+        "reachable-floor": {
+            "parameter_types": {
+                "?lift": "elevator",
+                "?floor": "count"
+            },
+            "pddl": "(reachable-floor ?lift ?floor)"
+        },
+        "above": {
+            "parameter_types": {
+                "?floor1": "count",
+                "?floor2": "count"
+            },
+            "pddl": "(above ?floor1 ?floor2)"
+        },
+        "passengers": {
+            "parameter_types": {
+                "?lift": "elevator",
+                "?n": "count"
+            },
+            "pddl": "(passengers ?lift ?n)"
+        },
+        "can-hold": {
+            "parameter_types": {
+                "?lift": "elevator",
+                "?n": "count"
+            },
+            "pddl": "(can-hold ?lift ?n)"
+        },
+        "next": {
+            "parameter_types": {
+                "?n1": "count",
+                "?n2": "count"
+            },
+            "pddl": "(next ?n1 ?n2)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "move-up-slow": "move slow-elevator {?lift} from count {?f1} to count {?f2}",
+        "move-down-slow": "move slow-elevator {?lift} from count {?f1} to count {?f2}",
+        "move-up-fast": "move fast-elevator {?lift} from count {?f1} to count {?f2}",
+        "move-down-fast": "move fast-elevator {?lift} from count {?f1} to count {?f2}",
+        "board": "board passenger {?p} onto elevator {?lift} at count {?f} increasing passengers from count {?n1} to count {?n2}",
+        "leave": "leave elevator {?lift} by passenger {?p} at count {?f} decreasing passengers from count {?n1} to count {?n2}"
+    },
+    "predicate_nl_templates": {
+        "passenger-at": "{?person} is at floor {?floor}",
+        "boarded": "{?person} has boarded {?lift}",
+        "lift-at": "{?lift} is at {?floor}",
+        "reachable-floor": "{?floor} is reachable by {?lift}",
+        "above": "{?floor1} is above {?floor2}",
+        "passengers": "{?lift} has {?n} passengers",
+        "can-hold": "{?lift} can hold {?n} people",
+        "next": "{?n1} is next to {?n2}",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "move-up-slow": "move a slow-elevator {?lift} from a count {?f1} to a count {?f2}",
+        "move-down-slow": "move a slow-elevator {?lift} from a count {?f1} to a count {?f2}",
+        "move-up-fast": "move a fast-elevator {?lift} from a count {?f1} to a count {?f2}",
+        "move-down-fast": "move a fast-elevator {?lift} from a count {?f1} to a count {?f2}",
+        "board": "board a passenger {?p} onto an elevator {?lift} at a count {?f} increasing passengers from a count {?n1} to a count {?n2}",
+        "leave": "leave an elevator {?lift} by a passenger {?p} at a count {?f} decreasing passengers from a count {?n1} to a count {?n2}"
+    },
+    "type_hierarchy": [
+        "Everything that is a elevator or a passenger or a count is also a object",
+        "Everything that is a slow-elevator or a fast-elevator is also a elevator"
+    ]
+}

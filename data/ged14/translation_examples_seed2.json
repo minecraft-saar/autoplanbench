@@ -1,0 +1,37 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "rain",
+        "screen",
+        "roof_11",
+        "bastion",
+        "socket",
+        "kumquat_8",
+        "frame_9",
+        "object_50",
+        "star_213",
+        "fire",
+        "teddy"
+    ],
+    "pos_examples": [
+        [
+            "Now, continue splicing with object socket and object roof_11 where object roof_11 is at splice point 1.",
+            "(continue-splice-2 socket bastion)"
+        ],
+        [
+            "Once you are done, please begin inverse splicing special case with object star_213.",
+            "(begin-inverse-splice-special-case star_213)"
+        ],
+        [
+            "First, end splicing with object frame_9 and object fire where object fire is at splice point 1 and object frame_9 is both the first and last in the sequence and then invert single gene b for object teddy.",
+            "(end-splice-1 rain yew)\n(invert-single-gene-b teddy)"
+        ],
+        [
+            "The next step is to continue splicing with object screen and object kumquat_8 where object screen is first in the sequence.",
+            "(continue-splice-1 object_50 kumquat_8)"
+        ]
+    ]
+}

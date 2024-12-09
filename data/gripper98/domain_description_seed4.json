@@ -1,0 +1,157 @@
+{
+    "action_mappings": {
+        "move": "move the robot from room {} to room {}",
+        "pick": "pick ball {} in room {} with gripper {}",
+        "drop": "drop ball {} in room {} with gripper {}"
+    },
+    "action_mappings_indef": {
+        "move": "move the robot from a room {} to a room {}",
+        "pick": "pick a ball {} in a room {} with a gripper {}",
+        "drop": "drop a ball {} in a room {} with a gripper {}"
+    },
+    "predicate_mappings": {
+        "room": "{} is a room",
+        "ball": "{} is a ball",
+        "gripper": "{} is a gripper",
+        "at-robby": "the robot is at {}",
+        "at": "{} is at {}",
+        "free": "{} is free",
+        "carry": "{} is carrying {}",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "move": {
+            "annotation": "",
+            "parameter_types": {
+                "?from": "object",
+                "?to": "object"
+            },
+            "pddl": "(move ?from ?to)",
+            "description": "move the robot from a room A to a room B",
+            "preconditions": [
+                "I can only move the robot from a room A to a room B if it is the case that A is a room and B is a room and the robot is at A"
+            ],
+            "effects": [
+                "Once I move the robot from a room A to a room B, it is the case that the robot is at B",
+                "Once I move the robot from a room A to a room B, it is not the case anymore that the robot is at A"
+            ]
+        },
+        "pick": {
+            "annotation": "",
+            "parameter_types": {
+                "?obj": "object",
+                "?room": "object",
+                "?gripper": "object"
+            },
+            "pddl": "(pick ?obj ?room ?gripper)",
+            "description": "pick a ball A in a room B with a gripper C",
+            "preconditions": [
+                "I can only pick a ball A in a room B with a gripper C if it is the case that A is a ball and B is a room and C is a gripper and A is at B and the robot is at B and C is free"
+            ],
+            "effects": [
+                "Once I pick a ball A in a room B with a gripper C, it is the case that C is carrying A",
+                "Once I pick a ball A in a room B with a gripper C, it is not the case anymore that A is at B and it is not the case anymore that C is free"
+            ]
+        },
+        "drop": {
+            "annotation": "",
+            "parameter_types": {
+                "?obj": "object",
+                "?room": "object",
+                "?gripper": "object"
+            },
+            "pddl": "(drop ?obj ?room ?gripper)",
+            "description": "drop a ball A in a room B with a gripper C",
+            "preconditions": [
+                "I can only drop a ball A in a room B with a gripper C if it is the case that A is a ball and B is a room and C is a gripper and C is carrying A and the robot is at B"
+            ],
+            "effects": [
+                "Once I drop a ball A in a room B with a gripper C, it is the case that A is at B and C is free",
+                "Once I drop a ball A in a room B with a gripper C, it is not the case anymore that C is carrying A"
+            ]
+        }
+    },
+    "predicates": {
+        "room": {
+            "parameter_types": {
+                "?r": "object"
+            },
+            "pddl": "(room ?r)"
+        },
+        "ball": {
+            "parameter_types": {
+                "?b": "object"
+            },
+            "pddl": "(ball ?b)"
+        },
+        "gripper": {
+            "parameter_types": {
+                "?g": "object"
+            },
+            "pddl": "(gripper ?g)"
+        },
+        "at-robby": {
+            "parameter_types": {
+                "?r": "object"
+            },
+            "pddl": "(at-robby ?r)"
+        },
+        "at": {
+            "parameter_types": {
+                "?b": "object",
+                "?r": "object"
+            },
+            "pddl": "(at ?b ?r)"
+        },
+        "free": {
+            "parameter_types": {
+                "?g": "object"
+            },
+            "pddl": "(free ?g)"
+        },
+        "carry": {
+            "parameter_types": {
+                "?o": "object",
+                "?g": "object"
+            },
+            "pddl": "(carry ?o ?g)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "move": "move the robot from room {?from} to room {?to}",
+        "pick": "pick ball {?obj} in room {?room} with gripper {?gripper}",
+        "drop": "drop ball {?obj} in room {?room} with gripper {?gripper}"
+    },
+    "predicate_nl_templates": {
+        "room": "{?r} is a room",
+        "ball": "{?b} is a ball",
+        "gripper": "{?g} is a gripper",
+        "at-robby": "the robot is at {?r}",
+        "at": "{?b} is at {?r}",
+        "free": "{?g} is free",
+        "carry": "{?g} is carrying {?o}",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "move": "move the robot from a room {?from} to a room {?to}",
+        "pick": "pick a ball {?obj} in a room {?room} with a gripper {?gripper}",
+        "drop": "drop a ball {?obj} in a room {?room} with a gripper {?gripper}"
+    },
+    "type_hierarchy": []
+}

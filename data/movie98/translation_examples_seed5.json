@@ -1,0 +1,29 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "socket",
+        "object_50",
+        "rain"
+    ],
+    "pos_examples": [
+        [
+            "Now, get object socket which is a pop.",
+            "(get-pop socket)"
+        ],
+        [
+            "Once you are done, please rewind the movie when the counter is at a time other than two hours.",
+            "(rewind-movie )"
+        ],
+        [
+            "First, get object rain which are chips and then rewind the movie when the counter is at two hours.",
+            "(get-chips rain)\n(rewind-movie-2 )"
+        ],
+        [
+            "The next step is to get object object_50 which is cheese.",
+            "(get-cheese object_50)"
+        ]
+    ]
+}

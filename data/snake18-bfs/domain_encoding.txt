@@ -1,0 +1,21 @@
+I can carry out the following actions:
+move an object A to a point B and update an object C to an object D
+move an object A to a point B and eat spawn at an object C and update spawn to an object D
+move an object A to a point B and eat without spawning
+
+I have the following restrictions on my actions:
+I can only move an object A to a point B and update an object C to an object D if it is the case that A is the head of the snake and A is adjacent to B and C is the tail of the snake and D is next to the snake C
+I can only move an object A to a point B and update an object C to an object D if it is not the case that B is blocked and it is not the case that B is a point
+I can only move an object A to a point B and eat spawn at an object C and update spawn to an object D if it is the case that A is the head of the snake and A is adjacent to B and B is a point and C is spawned and C spawns next to D
+I can only move an object A to a point B and eat spawn at an object C and update spawn to an object D if it is not the case that B is blocked and it is not the case that C is equal to dummypoint
+I can only move an object A to a point B and eat without spawning if it is the case that A is the head of the snake and A is adjacent to B and B is a point and dummypoint is spawned
+I can only move an object A to a point B and eat without spawning if it is not the case that B is blocked
+
+The actions have the following effects on the state:
+Once I move an object A to a point B and update an object C to an object D, it is the case that B is blocked and B is the head of the snake and B is next to the snake A and D is the tail of the snake
+Once I move an object A to a point B and update an object C to an object D, it is not the case anymore that A is the head of the snake and it is not the case anymore that C is blocked and it is not the case anymore that C is the tail of the snake and it is not the case anymore that D is next to the snake C
+Once I move an object A to a point B and eat spawn at an object C and update spawn to an object D, it is the case that B is blocked and B is the head of the snake and B is next to the snake A and C is a point and D is spawned
+Once I move an object A to a point B and eat spawn at an object C and update spawn to an object D, it is not the case anymore that A is the head of the snake and it is not the case anymore that B is a point and it is not the case anymore that C is spawned
+Once I move an object A to a point B and eat without spawning, it is the case that B is blocked and B is the head of the snake and B is next to the snake A
+Once I move an object A to a point B and eat without spawning, it is not the case anymore that A is the head of the snake and it is not the case anymore that B is a point
+

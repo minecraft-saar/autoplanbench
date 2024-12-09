@@ -1,0 +1,39 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "dress_red",
+        "star_213",
+        "kumquat_8",
+        "kumquat",
+        "socket",
+        "screen",
+        "bastion",
+        "fire",
+        "frame_9",
+        "teddy",
+        "rain",
+        "roof_11",
+        "object_50"
+    ],
+    "pos_examples": [
+        [
+            "Now, pick up key dress_red at place kumquat_8.",
+            "(pickup kumquat_8 dress_red)"
+        ],
+        [
+            "Once you are done, please unlock place screen to place star_213 using key frame_9 with shape teddy.",
+            "(unlock screen star_213 frame_9 teddy)"
+        ],
+        [
+            "First, pickup and lose place bastion key fire key rain and then put down key kumquat at place roof_11.",
+            "(pickup-and-loose bastion fire rain)\n(putdown roof_11 kumquat)"
+        ],
+        [
+            "The next step is to move the robot from place object_50 to place socket.",
+            "(move object_50 socket)"
+        ]
+    ]
+}

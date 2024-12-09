@@ -1,0 +1,45 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "socket_94",
+        "star_213_58_44",
+        "star_213",
+        "roof_11",
+        "socket",
+        "fire",
+        "teddy",
+        "kumquat_8",
+        "bastion_48",
+        "screen_21",
+        "kumquat",
+        "rain",
+        "object_260",
+        "star_213_58",
+        "bastion",
+        "dress_red",
+        "frame_9",
+        "object_50",
+        "screen"
+    ],
+    "pos_examples": [
+        [
+            "Now, pop unitary pipe frame_9 with batch-atom teddy from area fire to area roof_11 using batch-atom object_50, product bastion, and product yew from tank-slot dress_red to tank-slot screen.",
+            "(pop-unitarypipe frame_9 teddy roof_11 fire object_50 bastion yew screen dress_red)"
+        ],
+        [
+            "Once you are done, please pop start pipe rain from area star_213 to area star_213_58 with batch-atom kumquat and batch-atom teddy using product socket and product yew in tank-slot object_260.",
+            "(pop-start rain kumquat star_213 star_213_58 teddy socket yew object_260)"
+        ],
+        [
+            "First, push end pipe kumquat_8 from area roof_11 to area fire with batch-atom teddy and batch-atom kumquat using product bastion in tank-slot object_260 and then push unitary pipe rain with batch-atom object_50 from area star_213 to area fire using batch-atom teddy, product socket, and product socket_94 from tank-slot screen to tank-slot screen_21.",
+            "(push-end kumquat_8 roof_11 fire teddy kumquat bastion object_260)\n(push-unitarypipe rain object_50 star_213 fire teddy socket socket_94 screen screen_21)"
+        ],
+        [
+            "The next step is to push start pipe kumquat_8 from area star_213_58 to area star_213_58_44 with batch-atom kumquat and batch-atom object_50 using product bastion and product bastion_48 in tank-slot object_260.",
+            "(push-start kumquat_8 kumquat star_213_58 star_213_58_44 object_50 bastion bastion_48 object_260)"
+        ]
+    ]
+}

@@ -1,0 +1,43 @@
+I can carry out the following actions:
+apply the action "navigate" to a rover A, a waypoint B and a waypoint C
+apply the action "sample_soil" to a rover A, a store B and a waypoint C
+apply the action "sample_rock" to a rover A, a store B and a waypoint C
+apply the action "drop" to a rover A and a store B
+apply the action "calibrate" to a rover A, a camera B, an objective C and a waypoint D
+apply the action "take_image" to a rover A, a waypoint B, an objective C, a camera D and a mode E
+apply the action "communicate_soil_data" to a rover A, a lander B, a waypoint C, a waypoint D and a waypoint E
+apply the action "communicate_rock_data" to a rover A, a lander B, a waypoint C, a waypoint D and a waypoint E
+apply the action "communicate_image_data" to a rover A, a lander B, an objective C, a mode D, a waypoint E and a waypoint F
+
+I have the following restrictions on my actions:
+I can only apply the action "navigate" to a rover A, a waypoint B and a waypoint C if it is the case that A, B and C are in the relation "can_traverse" and A is "available" and A and B are in the relation "at" and B and C are in the relation "visible"
+I can only apply the action "sample_soil" to a rover A, a store B and a waypoint C if it is the case that A and C are in the relation "at" and C is "at_soil_sample" and A is "equipped_for_soil_analysis" and B and A are in the relation "store_of" and B is "empty"
+I can only apply the action "sample_rock" to a rover A, a store B and a waypoint C if it is the case that A and C are in the relation "at" and C is "at_rock_sample" and A is "equipped_for_rock_analysis" and B and A are in the relation "store_of" and B is "empty"
+I can only apply the action "drop" to a rover A and a store B if it is the case that B and A are in the relation "store_of" and B is "full"
+I can only apply the action "calibrate" to a rover A, a camera B, an objective C and a waypoint D if it is the case that A is "equipped_for_imaging" and B and C are in the relation "calibration_target" and A and D are in the relation "at" and C and D are in the relation "visible_from" and B and A are in the relation "on_board"
+I can only apply the action "take_image" to a rover A, a waypoint B, an objective C, a camera D and a mode E if it is the case that D and A are in the relation "calibrated" and D and A are in the relation "on_board" and A is "equipped_for_imaging" and D and E are in the relation "supports" and C and B are in the relation "visible_from" and A and B are in the relation "at"
+I can only apply the action "communicate_soil_data" to a rover A, a lander B, a waypoint C, a waypoint D and a waypoint E if it is the case that A and D are in the relation "at" and B and E are in the relation "at_lander" and A and C are in the relation "have_soil_analysis" and D and E are in the relation "visible" and A is "available" and B is "channel_free"
+I can only apply the action "communicate_rock_data" to a rover A, a lander B, a waypoint C, a waypoint D and a waypoint E if it is the case that A and D are in the relation "at" and B and E are in the relation "at_lander" and A and C are in the relation "have_rock_analysis" and D and E are in the relation "visible" and A is "available" and B is "channel_free"
+I can only apply the action "communicate_image_data" to a rover A, a lander B, an objective C, a mode D, a waypoint E and a waypoint F if it is the case that A and E are in the relation "at" and B and F are in the relation "at_lander" and A, C and D are in the relation "have_image" and E and F are in the relation "visible" and A is "available" and B is "channel_free"
+
+The actions have the following effects on the state:
+Once I apply the action "navigate" to a rover A, a waypoint B and a waypoint C, it is the case that A and C are in the relation "at"
+Once I apply the action "navigate" to a rover A, a waypoint B and a waypoint C, it is not the case anymore that A and B are in the relation "at"
+Once I apply the action "sample_soil" to a rover A, a store B and a waypoint C, it is the case that B is "full" and A and C are in the relation "have_soil_analysis"
+Once I apply the action "sample_soil" to a rover A, a store B and a waypoint C, it is not the case anymore that B is "empty" and it is not the case anymore that C is "at_soil_sample"
+Once I apply the action "sample_rock" to a rover A, a store B and a waypoint C, it is the case that B is "full" and A and C are in the relation "have_rock_analysis"
+Once I apply the action "sample_rock" to a rover A, a store B and a waypoint C, it is not the case anymore that B is "empty" and it is not the case anymore that C is "at_rock_sample"
+Once I apply the action "drop" to a rover A and a store B, it is the case that B is "empty"
+Once I apply the action "drop" to a rover A and a store B, it is not the case anymore that B is "full"
+Once I apply the action "calibrate" to a rover A, a camera B, an objective C and a waypoint D, it is the case that B and A are in the relation "calibrated"
+Once I apply the action "take_image" to a rover A, a waypoint B, an objective C, a camera D and a mode E, it is the case that A, C and E are in the relation "have_image"
+Once I apply the action "take_image" to a rover A, a waypoint B, an objective C, a camera D and a mode E, it is not the case anymore that D and A are in the relation "calibrated"
+Once I apply the action "communicate_soil_data" to a rover A, a lander B, a waypoint C, a waypoint D and a waypoint E, it is the case that B is "channel_free" and C is "communicated_soil_data" and A is "available"
+Once I apply the action "communicate_soil_data" to a rover A, a lander B, a waypoint C, a waypoint D and a waypoint E, it is not the case anymore that A is "available" and it is not the case anymore that B is "channel_free"
+Once I apply the action "communicate_rock_data" to a rover A, a lander B, a waypoint C, a waypoint D and a waypoint E, it is the case that B is "channel_free" and C is "communicated_rock_data" and A is "available"
+Once I apply the action "communicate_rock_data" to a rover A, a lander B, a waypoint C, a waypoint D and a waypoint E, it is not the case anymore that A is "available" and it is not the case anymore that B is "channel_free"
+Once I apply the action "communicate_image_data" to a rover A, a lander B, an objective C, a mode D, a waypoint E and a waypoint F, it is the case that B is "channel_free" and C and D are in the relation "communicated_image_data" and A is "available"
+Once I apply the action "communicate_image_data" to a rover A, a lander B, an objective C, a mode D, a waypoint E and a waypoint F, it is not the case anymore that A is "available" and it is not the case anymore that B is "channel_free"
+
+
+Everything that is a rover or a waypoint or a store or a camera or a mode or a lander or a objective is also a object

@@ -1,0 +1,41 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "rain",
+        "roof_11",
+        "screen",
+        "kumquat",
+        "teddy",
+        "bastion",
+        "socket",
+        "roof_11_58",
+        "screen_26",
+        "object_50",
+        "kumquat_8",
+        "kumquat_84",
+        "frame_9",
+        "star_213_30",
+        "bastion_60",
+        "object_260",
+        "fire",
+        "dress_red",
+        "star_213"
+    ],
+    "pos_examples": [
+        [
+            "Now, rotate-2 by moving car fire from segment object_50 to segment kumquat and car star_213 from segment kumquat to segment object_50.",
+            "(rotate-2 roof_11 rain fire star_213)"
+        ],
+        [
+            "Once you are done, please analyze-4 by rotating car kumquat_8 from segment dress_red to segment roof_11_58, car teddy from segment bastion_60 to segment dress_red, car frame_9 from segment screen_26 to segment bastion_60, and car socket from segment roof_11_58 to segment screen_26.",
+            "(analyze-4 bastion screen frame_9 yew kumquat_8 teddy dress_red screen)"
+        ],
+        [
+            "First, analyze-2 by swapping car object_260 from segment screen with car kumquat_8 from segment roof_11 and then rotate-4 by moving car star_213 from segment roof_11_58 to segment bastion_60, car star_213_30 from segment kumquat to segment roof_11_58, car frame_9 from segment kumquat_84 to segment kumquat, and car socket from segment bastion_60 to segment kumquat_84.",
+            "(analyze-2 screen roof_11 object_260 kumquat_8)\n(rotate-4 dress_red screen frame_9 screen_26 star_213 star_213_30 roof_11_58 screen)"
+        ]
+    ]
+}

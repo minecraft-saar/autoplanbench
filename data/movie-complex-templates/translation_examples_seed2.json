@@ -1,0 +1,29 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "star_213",
+        "kumquat_8",
+        "socket"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"get-chips\" to object star_213.",
+            "(get-chips star_213)"
+        ],
+        [
+            "Once you are done, please apply the action \"start-movie\".",
+            "(start-movie )"
+        ],
+        [
+            "First, apply the action \"get-cheese\" to object kumquat_8 and then apply the action \"reset-counter\".",
+            "(get-cheese kumquat_8)\n(reset-counter )"
+        ],
+        [
+            "The next step is to apply the action \"get-crackers\" to object socket.",
+            "(get-crackers socket)"
+        ]
+    ]
+}

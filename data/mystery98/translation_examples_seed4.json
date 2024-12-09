@@ -1,0 +1,32 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat_8",
+        "object_260",
+        "frame_9",
+        "roof_11",
+        "object_50",
+        "kumquat",
+        "dress_red",
+        "rain",
+        "socket",
+        "fire",
+        "bastion",
+        "teddy",
+        "star_213",
+        "screen"
+    ],
+    "pos_examples": [
+        [
+            "Now, feast when pleasure bastion craves food frame_9 and food frame_9 eats food teddy and object dress_red attacks object object_50.",
+            "(feast bastion fire frame_9 teddy dress_red)"
+        ],
+        [
+            "Once you are done, please overcome object socket with object kumquat by object screen from planet star_213 to planet yew.",
+            "(overcome socket kumquat screen star_213 yew)"
+        ]
+    ]
+}

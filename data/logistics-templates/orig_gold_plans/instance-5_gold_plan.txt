@@ -1,0 +1,5 @@
+(fly-airplane a1 l0-0 l1-0)
+(load-airplane p1 a1 l1-0)
+(fly-airplane a1 l1-0 l0-0)
+(unload-airplane p1 a1 l0-0)
+; cost = 4 (unit cost)

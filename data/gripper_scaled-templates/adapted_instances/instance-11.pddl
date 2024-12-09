@@ -1,0 +1,38 @@
+(define (problem gripper-1-2-11)
+(:domain gripper-strips)
+(:objects robot_0 - robot
+gripper_1 gripper_0 - gripper
+room_1 room_0 - room
+object_9 object_0 object_1 object_5 object_4 object_6 object_2 object_8 object_7 object_10 object_3 - object)
+(:init
+(at-robby robot_0 room_1)
+(free robot_0 gripper_1)
+(free robot_0 gripper_0)
+(at object_9 room_1)
+(at object_0 room_1)
+(at object_1 room_1)
+(at object_5 room_1)
+(at object_4 room_1)
+(at object_6 room_1)
+(at object_2 room_1)
+(at object_8 room_1)
+(at object_7 room_1)
+(at object_10 room_1)
+(at object_3 room_1)
+)
+(:goal
+(and
+(at object_9 room_0)
+(at object_0 room_0)
+(at object_1 room_0)
+(at object_5 room_0)
+(at object_4 room_0)
+(at object_6 room_0)
+(at object_2 room_0)
+(at object_8 room_0)
+(at object_7 room_0)
+(at object_10 room_0)
+(at object_3 room_0)
+)
+)
+)

@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "frame_9",
+        "roof_11",
+        "bastion",
+        "object_50",
+        "kumquat",
+        "star_213",
+        "object_260",
+        "dress_red",
+        "teddy",
+        "rain",
+        "kumquat_8",
+        "screen"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"pickup\" to object rain and object kumquat.",
+            "(pickup rain kumquat)"
+        ],
+        [
+            "Once you are done, please apply the action \"unlock\" to object kumquat_8, object yew, object teddy and object object_260.",
+            "(unlock kumquat_8 yew teddy object_260)"
+        ],
+        [
+            "First, apply the action \"pickup-and-loose\" to object dress_red, object roof_11 and object screen and then apply the action \"putdown\" to object star_213 and object frame_9.",
+            "(pickup-and-loose dress_red roof_11 screen)\n(putdown star_213 frame_9)"
+        ],
+        [
+            "The next step is to apply the action \"move\" to object object_50 and object bastion.",
+            "(move object_50 bastion)"
+        ]
+    ]
+}

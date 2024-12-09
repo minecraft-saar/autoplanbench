@@ -1,0 +1,39 @@
+I can carry out the following actions:
+put down a tent C at a place B by a person A
+put up a tent C at a place B by a person A
+drive a person A and a person E from a place B to a place C in a car D
+drive a person A from a place B to a place C in a car D
+drive a person A from a place B to a place C in a car D with a tent E
+drive a person A and a person F from a place B to a place C in a car D with a tent E
+walk together from a place D to a place B with a tent A, a person C, a person E, and a couple F
+
+I have the following restrictions on my actions:
+I can only put down a tent C at a place B by a person A if it is the case that A is at the person B and C is at the tent B and C is up
+I can only put up a tent C at a place B by a person A if it is the case that A is at the person B and C is at the tent B and C is down
+I can only drive a person A and a person E from a place B to a place C in a car D if it is the case that A is at the person B and D is at the car B and E is at the person B
+I can only drive a person A and a person E from a place B to a place C in a car D if it is not the case that A is equal to E
+I can only drive a person A from a place B to a place C in a car D if it is the case that A is at the person B and D is at the car B
+I can only drive a person A from a place B to a place C in a car D with a tent E if it is the case that A is at the person B and D is at the car B and E is at the tent B and E is down
+I can only drive a person A and a person F from a place B to a place C in a car D with a tent E if it is the case that A is at the person B and D is at the car B and E is at the tent B and E is down and F is at the person B
+I can only drive a person A and a person F from a place B to a place C in a car D with a tent E if it is not the case that A is equal to F
+I can only walk together from a place D to a place B with a tent A, a person C, a person E, and a couple F if it is the case that A is at the tent B and A is up and C is at the person D and D is next to B and E is at the person D and F walked to D and F, C, and E are partners
+I can only walk together from a place D to a place B with a tent A, a person C, a person E, and a couple F if it is not the case that C is equal to E
+
+The actions have the following effects on the state:
+Once I put down a tent C at a place B by a person A, it is the case that C is down
+Once I put down a tent C at a place B by a person A, it is not the case anymore that C is up
+Once I put up a tent C at a place B by a person A, it is the case that C is up
+Once I put up a tent C at a place B by a person A, it is not the case anymore that C is down
+Once I drive a person A and a person E from a place B to a place C in a car D, it is the case that A is at the person C and D is at the car C and E is at the person C
+Once I drive a person A and a person E from a place B to a place C in a car D, it is not the case anymore that A is at the person B and it is not the case anymore that D is at the car B and it is not the case anymore that E is at the person B
+Once I drive a person A from a place B to a place C in a car D, it is the case that A is at the person C and D is at the car C
+Once I drive a person A from a place B to a place C in a car D, it is not the case anymore that A is at the person B and it is not the case anymore that D is at the car B
+Once I drive a person A from a place B to a place C in a car D with a tent E, it is the case that A is at the person C and D is at the car C and E is at the tent C
+Once I drive a person A from a place B to a place C in a car D with a tent E, it is not the case anymore that A is at the person B and it is not the case anymore that D is at the car B and it is not the case anymore that E is at the tent B
+Once I drive a person A and a person F from a place B to a place C in a car D with a tent E, it is the case that A is at the person C and D is at the car C and E is at the tent C and F is at the person C
+Once I drive a person A and a person F from a place B to a place C in a car D with a tent E, it is not the case anymore that A is at the person B and it is not the case anymore that D is at the car B and it is not the case anymore that E is at the tent B and it is not the case anymore that F is at the person B
+Once I walk together from a place D to a place B with a tent A, a person C, a person E, and a couple F, it is the case that C is at the person B and E is at the person B and F walked to B
+Once I walk together from a place D to a place B with a tent A, a person C, a person E, and a couple F, it is not the case anymore that C is at the person D and it is not the case anymore that E is at the person D and it is not the case anymore that F walked to D
+
+
+Everything that is a car or a tent or a person or a couple or a place is also a object

@@ -1,0 +1,41 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat_8",
+        "dress_red",
+        "object_260",
+        "fire",
+        "socket",
+        "object_50",
+        "kumquat",
+        "screen_64",
+        "frame_9",
+        "teddy",
+        "star_213",
+        "screen",
+        "rain",
+        "bastion",
+        "roof_11"
+    ],
+    "pos_examples": [
+        [
+            "Now, take image of objective teddy in mode rain using camera frame_9 on rover dress_red at waypoint fire.",
+            "(take_image dress_red fire teddy frame_9 rain)"
+        ],
+        [
+            "Once you are done, please sample rock at waypoint screen using rover socket and store in store kumquat.",
+            "(sample_rock socket kumquat screen)"
+        ],
+        [
+            "First, drop contents from store kumquat_8 of rover object_50 and then communicate image data from rover socket at waypoint screen to lander object_260 at waypoint screen_64 for objective bastion in mode star_213.",
+            "(drop object_50 kumquat_8)\n(communicate_image_data socket object_260 bastion star_213 screen screen_64)"
+        ],
+        [
+            "The next step is to calibrate camera roof_11 on rover socket using objective bastion at waypoint screen.",
+            "(calibrate socket roof_11 bastion screen)"
+        ]
+    ]
+}

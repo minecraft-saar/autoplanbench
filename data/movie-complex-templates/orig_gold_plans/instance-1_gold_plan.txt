@@ -1,0 +1,5 @@
+(get-dip d1)
+(start-movie )
+(rewind-movie )
+(reset-counter )
+; cost = 4 (unit cost)

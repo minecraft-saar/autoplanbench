@@ -1,0 +1,565 @@
+{
+    "action_mappings": {
+        "move-west": "move west from {}, {}, {}, {} to {}, {}, {}, {}",
+        "move-east": "move east from {}, {}, {}, {} to {}, {}, {}, {}",
+        "move-north": "move north from {}, {}, {}, {} to {}, {}, {}, {}",
+        "move-south": "move south from {}, {}, {}, {} to {}, {}, {}, {}",
+        "start-move-card-west": "start moving card card {} west from position {}, {} to next card card {} at position {}",
+        "move-card-west": "move card card {} west from position {}, {} to position {}, {} with next card card {} at position {}",
+        "stop-move-card-west": "stop moving card card {} west from position {}, {} to position {}, {} and set new head-tail card to card {}",
+        "start-move-card-east": "start moving card card {} east from position {}, {} and set next moving card to card {} at position {}, {}",
+        "move-card-east": "move card card {} east from position {}, {} to position {}, {} and set next moving card to card {} at position {}, {}",
+        "stop-move-card-east": "stop moving card card {} east from position {}, {} to position {}, {} and set new head-tail card to card {} at position {}, {}",
+        "start-move-card-north": "start moving card card {} north from position {}, {} with next card card {} at position {}, {}",
+        "move-card-north": "move card card {} north from position {}, {} to position {}, {} with next card card {} at position {}, {}",
+        "stop-move-card-north": "stop moving card card {} north from position {}, {} to position {}, {} and set new head-tail card to card {}",
+        "start-move-card-south": "start moving card card {} south from position {}, {} with next card card {} at position {}, {}",
+        "move-card-south": "move card card {} south from position {}, {} to position {}, {} with next card card {} at position {}, {}",
+        "stop-move-card-south": "stop moving card card {} south from position {}, {} to position {}, {} and set new head-tail card to card {}",
+        "leave": "leave card {} at position {}, {}"
+    },
+    "action_mappings_indef": {
+        "move-west": "move west from a {}, a {}, a {}, a {} to a {}, a {}, a {}, a {}",
+        "move-east": "move east from a {}, a {}, a {}, a {} to a {}, a {}, a {}, a {}",
+        "move-north": "move north from a {}, a {}, a {}, a {} to a {}, a {}, a {}, a {}",
+        "move-south": "move south from a {}, a {}, a {}, a {} to a {}, a {}, a {}, a {}",
+        "start-move-card-west": "start moving card a card {} west from position a {}, a {} to next card a card {} at position a {}",
+        "move-card-west": "move card a card {} west from position a {}, a {} to position a {}, a {} with next card a card {} at position a {}",
+        "stop-move-card-west": "stop moving card a card {} west from position a {}, a {} to position a {}, a {} and set new head-tail card to a card {}",
+        "start-move-card-east": "start moving card a card {} east from position a {}, a {} and set next moving card to a card {} at position a {}, a {}",
+        "move-card-east": "move card a card {} east from position a {}, a {} to position a {}, a {} and set next moving card to a card {} at position a {}, a {}",
+        "stop-move-card-east": "stop moving card a card {} east from position a {}, a {} to position a {}, a {} and set new head-tail card to a card {} at position a {}, a {}",
+        "start-move-card-north": "start moving card a card {} north from position a {}, a {} with next card a card {} at position a {}, a {}",
+        "move-card-north": "move card a card {} north from position a {}, a {} to position a {}, a {} with next card a card {} at position a {}, a {}",
+        "stop-move-card-north": "stop moving card a card {} north from position a {}, a {} to position a {}, a {} and set new head-tail card to a card {}",
+        "start-move-card-south": "start moving card a card {} south from position a {}, a {} with next card a card {} at position a {}, a {}",
+        "move-card-south": "move card a card {} south from position a {}, a {} to position a {}, a {} with next card a card {} at position a {}, a {}",
+        "stop-move-card-south": "stop moving card a card {} south from position a {}, a {} to position a {}, a {} and set new head-tail card to a card {}",
+        "leave": "leave a card {} at position a {}, a {}"
+    },
+    "predicate_mappings": {
+        "next": "{} is next to {}",
+        "max-pos": "{} is the maximum position",
+        "min-pos": "{} is the minimum position",
+        "blocked": "{} is blocked by {}",
+        "robot-at": "the robot is at {}",
+        "card-at": "the card {} is at position {}, {}",
+        "left": "it is on the left",
+        "cards-moving": "the cards are moving",
+        "cards-moving-west": "the cards are moving west",
+        "cards-moving-east": "the cards are moving east",
+        "cards-moving-south": "the cards are moving south",
+        "cards-moving-north": "the cards are moving north",
+        "next-moving-card": "the next moving card is {}",
+        "new-headtail-card": "the new head-tail card is {}",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "move-west": {
+            "annotation": "",
+            "parameter_types": {
+                "?cfrom": "card",
+                "?xfrom": "gridpos",
+                "?yfrom": "gridpos",
+                "?dfrom": "directionh",
+                "?cto": "card",
+                "?xto": "gridpos",
+                "?yto": "gridpos",
+                "?dto": "directionh"
+            },
+            "pddl": "(move-west ?cfrom ?xfrom ?yfrom ?dfrom ?cto ?xto ?yto ?dto)",
+            "description": "move west from a A, a B, a C, a D to a E, a F, a G, a H",
+            "preconditions": [
+                "I can only move west from a A, a B, a C, a D to a E, a F, a G, a H if it is the case that D is equal to w and the robot is at A and the card A is at position B, C and the card E is at position F, G and B is next to F and C is equal to G",
+                "I can only move west from a A, a B, a C, a D to a E, a F, a G, a H if it is not the case that the cards are moving and it is not the case that D is equal to H and it is not the case that A is blocked by D and it is not the case that E is blocked by H"
+            ],
+            "effects": [
+                "Once I move west from a A, a B, a C, a D to a E, a F, a G, a H, it is the case that the robot is at E",
+                "Once I move west from a A, a B, a C, a D to a E, a F, a G, a H, it is not the case anymore that the robot is at A"
+            ]
+        },
+        "move-east": {
+            "annotation": "",
+            "parameter_types": {
+                "?cfrom": "card",
+                "?xfrom": "gridpos",
+                "?yfrom": "gridpos",
+                "?dfrom": "directionh",
+                "?cto": "card",
+                "?xto": "gridpos",
+                "?yto": "gridpos",
+                "?dto": "directionh"
+            },
+            "pddl": "(move-east ?cfrom ?xfrom ?yfrom ?dfrom ?cto ?xto ?yto ?dto)",
+            "description": "move east from a A, a B, a C, a D to a E, a F, a G, a H",
+            "preconditions": [
+                "I can only move east from a A, a B, a C, a D to a E, a F, a G, a H if it is the case that D is equal to e and the robot is at A and the card A is at position B, C and the card E is at position F, G and F is next to B and C is equal to G",
+                "I can only move east from a A, a B, a C, a D to a E, a F, a G, a H if it is not the case that the cards are moving and it is not the case that D is equal to H and it is not the case that A is blocked by D and it is not the case that E is blocked by H"
+            ],
+            "effects": [
+                "Once I move east from a A, a B, a C, a D to a E, a F, a G, a H, it is the case that the robot is at E",
+                "Once I move east from a A, a B, a C, a D to a E, a F, a G, a H, it is not the case anymore that the robot is at A"
+            ]
+        },
+        "move-north": {
+            "annotation": "",
+            "parameter_types": {
+                "?cfrom": "card",
+                "?xfrom": "gridpos",
+                "?yfrom": "gridpos",
+                "?dfrom": "directionv",
+                "?cto": "card",
+                "?xto": "gridpos",
+                "?yto": "gridpos",
+                "?dto": "directionv"
+            },
+            "pddl": "(move-north ?cfrom ?xfrom ?yfrom ?dfrom ?cto ?xto ?yto ?dto)",
+            "description": "move north from a A, a B, a C, a D to a E, a F, a G, a H",
+            "preconditions": [
+                "I can only move north from a A, a B, a C, a D to a E, a F, a G, a H if it is the case that D is equal to n and the robot is at A and the card A is at position B, C and the card E is at position F, G and C is next to G and B is equal to F",
+                "I can only move north from a A, a B, a C, a D to a E, a F, a G, a H if it is not the case that the cards are moving and it is not the case that D is equal to H and it is not the case that A is blocked by D and it is not the case that E is blocked by H"
+            ],
+            "effects": [
+                "Once I move north from a A, a B, a C, a D to a E, a F, a G, a H, it is the case that the robot is at E",
+                "Once I move north from a A, a B, a C, a D to a E, a F, a G, a H, it is not the case anymore that the robot is at A"
+            ]
+        },
+        "move-south": {
+            "annotation": "",
+            "parameter_types": {
+                "?cfrom": "card",
+                "?xfrom": "gridpos",
+                "?yfrom": "gridpos",
+                "?dfrom": "directionv",
+                "?cto": "card",
+                "?xto": "gridpos",
+                "?yto": "gridpos",
+                "?dto": "directionv"
+            },
+            "pddl": "(move-south ?cfrom ?xfrom ?yfrom ?dfrom ?cto ?xto ?yto ?dto)",
+            "description": "move south from a A, a B, a C, a D to a E, a F, a G, a H",
+            "preconditions": [
+                "I can only move south from a A, a B, a C, a D to a E, a F, a G, a H if it is the case that D is equal to s and the robot is at A and the card A is at position B, C and the card E is at position F, G and G is next to C and B is equal to F",
+                "I can only move south from a A, a B, a C, a D to a E, a F, a G, a H if it is not the case that the cards are moving and it is not the case that D is equal to H and it is not the case that A is blocked by D and it is not the case that E is blocked by H"
+            ],
+            "effects": [
+                "Once I move south from a A, a B, a C, a D to a E, a F, a G, a H, it is the case that the robot is at E",
+                "Once I move south from a A, a B, a C, a D to a E, a F, a G, a H, it is not the case anymore that the robot is at A"
+            ]
+        },
+        "start-move-card-west": {
+            "annotation": "",
+            "parameter_types": {
+                "?cm": "card",
+                "?x": "gridpos",
+                "?y": "gridpos",
+                "?cnext": "card",
+                "?nextx": "gridpos"
+            },
+            "pddl": "(start-move-card-west ?cm ?x ?y ?cnext ?nextx)",
+            "description": "start moving card a card A west from position a B, a C to next card a card D at position a E",
+            "preconditions": [
+                "I can only start moving card a card A west from position a B, a C to next card a card D at position a E if it is the case that the card A is at position B, C and B is the minimum position and the card D is at position E, C and E is next to B",
+                "I can only start moving card a card A west from position a B, a C to next card a card D at position a E if it is not the case that the cards are moving and it is not the case that the cards are moving west and it is not the case that the robot is at A"
+            ],
+            "effects": [
+                "Once I start moving card a card A west from position a B, a C to next card a card D at position a E, it is the case that the cards are moving and the cards are moving west and the new head-tail card is A and the next moving card is D",
+                "Once I start moving card a card A west from position a B, a C to next card a card D at position a E, it is not the case anymore that the card A is at position B, C"
+            ]
+        },
+        "move-card-west": {
+            "annotation": "",
+            "parameter_types": {
+                "?cm": "card",
+                "?x": "gridpos",
+                "?y": "gridpos",
+                "?cnext": "card",
+                "?nextx": "gridpos",
+                "?prevx": "gridpos"
+            },
+            "pddl": "(move-card-west ?cm ?x ?y ?cnext ?nextx ?prevx)",
+            "description": "move card a card A west from position a B, a C to position a F, a C with next card a card D at position a E",
+            "preconditions": [
+                "I can only move card a card A west from position a B, a C to position a F, a C with next card a card D at position a E if it is the case that the cards are moving and the cards are moving west and the next moving card is A and the card A is at position B, C and the card D is at position E, C and B is next to F and E is next to B",
+                "I can only move card a card A west from position a B, a C to position a F, a C with next card a card D at position a E if it is not the case that the robot is at A"
+            ],
+            "effects": [
+                "Once I move card a card A west from position a B, a C to position a F, a C with next card a card D at position a E, it is the case that the cards are moving and the cards are moving west and the card A is at position F, C and the next moving card is D",
+                "Once I move card a card A west from position a B, a C to position a F, a C with next card a card D at position a E, it is not the case anymore that the card A is at position B, C and it is not the case anymore that the next moving card is A"
+            ]
+        },
+        "stop-move-card-west": {
+            "annotation": "",
+            "parameter_types": {
+                "?cm": "card",
+                "?x": "gridpos",
+                "?y": "gridpos",
+                "?prevx": "gridpos",
+                "?newtc": "card"
+            },
+            "pddl": "(stop-move-card-west ?cm ?x ?y ?prevx ?newtc)",
+            "description": "stop moving card a card A west from position a B, a C to position a D, a C and set new head-tail card to a card E",
+            "preconditions": [
+                "I can only stop moving card a card A west from position a B, a C to position a D, a C and set new head-tail card to a card E if it is the case that the cards are moving and the cards are moving west and the next moving card is A and the card A is at position B, C and B is next to D and B is the maximum position and the new head-tail card is E",
+                "I can only stop moving card a card A west from position a B, a C to position a D, a C and set new head-tail card to a card E if it is not the case that the robot is at A"
+            ],
+            "effects": [
+                "Once I stop moving card a card A west from position a B, a C to position a D, a C and set new head-tail card to a card E, it is the case that the card A is at position D, C and the card E is at position B, C",
+                "Once I stop moving card a card A west from position a B, a C to position a D, a C and set new head-tail card to a card E, it is not the case anymore that the cards are moving and it is not the case anymore that the cards are moving west and it is not the case anymore that the card A is at position B, C and it is not the case anymore that the new head-tail card is E and it is not the case anymore that the next moving card is A"
+            ]
+        },
+        "start-move-card-east": {
+            "annotation": "",
+            "parameter_types": {
+                "?cm": "card",
+                "?x": "gridpos",
+                "?y": "gridpos",
+                "?cnext": "card",
+                "?nextx": "gridpos"
+            },
+            "pddl": "(start-move-card-east ?cm ?x ?y ?cnext ?nextx)",
+            "description": "start moving card a card A east from position a B, a C and set next moving card to a card D at position a E, a C",
+            "preconditions": [
+                "I can only start moving card a card A east from position a B, a C and set next moving card to a card D at position a E, a C if it is the case that the card A is at position B, C and B is the maximum position and the card D is at position E, C and B is next to E",
+                "I can only start moving card a card A east from position a B, a C and set next moving card to a card D at position a E, a C if it is not the case that the cards are moving and it is not the case that the cards are moving east and it is not the case that the robot is at A"
+            ],
+            "effects": [
+                "Once I start moving card a card A east from position a B, a C and set next moving card to a card D at position a E, a C, it is the case that the cards are moving and the cards are moving east and the new head-tail card is A and the next moving card is D",
+                "Once I start moving card a card A east from position a B, a C and set next moving card to a card D at position a E, a C, it is not the case anymore that the card A is at position B, C"
+            ]
+        },
+        "move-card-east": {
+            "annotation": "",
+            "parameter_types": {
+                "?cm": "card",
+                "?x": "gridpos",
+                "?y": "gridpos",
+                "?cnext": "card",
+                "?nextx": "gridpos",
+                "?prevx": "gridpos"
+            },
+            "pddl": "(move-card-east ?cm ?x ?y ?cnext ?nextx ?prevx)",
+            "description": "move card a card A east from position a B, a C to position a F, a C and set next moving card to a card D at position a E, a C",
+            "preconditions": [
+                "I can only move card a card A east from position a B, a C to position a F, a C and set next moving card to a card D at position a E, a C if it is the case that the cards are moving and the cards are moving east and the next moving card is A and the card A is at position B, C and the card D is at position E, C and F is next to B and B is next to E",
+                "I can only move card a card A east from position a B, a C to position a F, a C and set next moving card to a card D at position a E, a C if it is not the case that the robot is at A"
+            ],
+            "effects": [
+                "Once I move card a card A east from position a B, a C to position a F, a C and set next moving card to a card D at position a E, a C, it is the case that the cards are moving and the cards are moving east and the card A is at position F, C and the next moving card is D",
+                "Once I move card a card A east from position a B, a C to position a F, a C and set next moving card to a card D at position a E, a C, it is not the case anymore that the card A is at position B, C and it is not the case anymore that the next moving card is A"
+            ]
+        },
+        "stop-move-card-east": {
+            "annotation": "",
+            "parameter_types": {
+                "?cm": "card",
+                "?x": "gridpos",
+                "?y": "gridpos",
+                "?prevx": "gridpos",
+                "?newtc": "card"
+            },
+            "pddl": "(stop-move-card-east ?cm ?x ?y ?prevx ?newtc)",
+            "description": "stop moving card a card A east from position a B, a C to position a D, a C and set new head-tail card to a card E at position a B, a C",
+            "preconditions": [
+                "I can only stop moving card a card A east from position a B, a C to position a D, a C and set new head-tail card to a card E at position a B, a C if it is the case that the cards are moving and the cards are moving east and the next moving card is A and the card A is at position B, C and D is next to B and B is the minimum position and the new head-tail card is E",
+                "I can only stop moving card a card A east from position a B, a C to position a D, a C and set new head-tail card to a card E at position a B, a C if it is not the case that the robot is at A"
+            ],
+            "effects": [
+                "Once I stop moving card a card A east from position a B, a C to position a D, a C and set new head-tail card to a card E at position a B, a C, it is the case that the card A is at position D, C and the card E is at position B, C",
+                "Once I stop moving card a card A east from position a B, a C to position a D, a C and set new head-tail card to a card E at position a B, a C, it is not the case anymore that the cards are moving and it is not the case anymore that the cards are moving east and it is not the case anymore that the card A is at position B, C and it is not the case anymore that the new head-tail card is E and it is not the case anymore that the next moving card is A"
+            ]
+        },
+        "start-move-card-north": {
+            "annotation": "",
+            "parameter_types": {
+                "?cm": "card",
+                "?x": "gridpos",
+                "?y": "gridpos",
+                "?cnext": "card",
+                "?nexty": "gridpos"
+            },
+            "pddl": "(start-move-card-north ?cm ?x ?y ?cnext ?nexty)",
+            "description": "start moving card a card A north from position a B, a C with next card a card D at position a B, a E",
+            "preconditions": [
+                "I can only start moving card a card A north from position a B, a C with next card a card D at position a B, a E if it is the case that the card A is at position B, C and C is the minimum position and the card D is at position B, E and E is next to C",
+                "I can only start moving card a card A north from position a B, a C with next card a card D at position a B, a E if it is not the case that the cards are moving and it is not the case that the cards are moving north and it is not the case that the robot is at A"
+            ],
+            "effects": [
+                "Once I start moving card a card A north from position a B, a C with next card a card D at position a B, a E, it is the case that the cards are moving and the cards are moving north and the new head-tail card is A and the next moving card is D",
+                "Once I start moving card a card A north from position a B, a C with next card a card D at position a B, a E, it is not the case anymore that the card A is at position B, C"
+            ]
+        },
+        "move-card-north": {
+            "annotation": "",
+            "parameter_types": {
+                "?cm": "card",
+                "?x": "gridpos",
+                "?y": "gridpos",
+                "?cnext": "card",
+                "?nexty": "gridpos",
+                "?prevy": "gridpos"
+            },
+            "pddl": "(move-card-north ?cm ?x ?y ?cnext ?nexty ?prevy)",
+            "description": "move card a card A north from position a B, a C to position a B, a F with next card a card D at position a B, a E",
+            "preconditions": [
+                "I can only move card a card A north from position a B, a C to position a B, a F with next card a card D at position a B, a E if it is the case that the cards are moving and the cards are moving north and the next moving card is A and the card A is at position B, C and the card D is at position B, E and C is next to F and E is next to C",
+                "I can only move card a card A north from position a B, a C to position a B, a F with next card a card D at position a B, a E if it is not the case that the robot is at A"
+            ],
+            "effects": [
+                "Once I move card a card A north from position a B, a C to position a B, a F with next card a card D at position a B, a E, it is the case that the cards are moving and the cards are moving north and the card A is at position B, F and the next moving card is D",
+                "Once I move card a card A north from position a B, a C to position a B, a F with next card a card D at position a B, a E, it is not the case anymore that the card A is at position B, C and it is not the case anymore that the next moving card is A"
+            ]
+        },
+        "stop-move-card-north": {
+            "annotation": "",
+            "parameter_types": {
+                "?cm": "card",
+                "?x": "gridpos",
+                "?y": "gridpos",
+                "?prevy": "gridpos",
+                "?newtc": "card"
+            },
+            "pddl": "(stop-move-card-north ?cm ?x ?y ?prevy ?newtc)",
+            "description": "stop moving card a card A north from position a B, a C to position a B, a D and set new head-tail card to a card E",
+            "preconditions": [
+                "I can only stop moving card a card A north from position a B, a C to position a B, a D and set new head-tail card to a card E if it is the case that the cards are moving and the cards are moving north and the next moving card is A and the card A is at position B, C and C is next to D and C is the maximum position and the new head-tail card is E",
+                "I can only stop moving card a card A north from position a B, a C to position a B, a D and set new head-tail card to a card E if it is not the case that the robot is at A"
+            ],
+            "effects": [
+                "Once I stop moving card a card A north from position a B, a C to position a B, a D and set new head-tail card to a card E, it is the case that the card A is at position B, D and the card E is at position B, C",
+                "Once I stop moving card a card A north from position a B, a C to position a B, a D and set new head-tail card to a card E, it is not the case anymore that the cards are moving and it is not the case anymore that the cards are moving north and it is not the case anymore that the card A is at position B, C and it is not the case anymore that the new head-tail card is E and it is not the case anymore that the next moving card is A"
+            ]
+        },
+        "start-move-card-south": {
+            "annotation": "",
+            "parameter_types": {
+                "?cm": "card",
+                "?x": "gridpos",
+                "?y": "gridpos",
+                "?cnext": "card",
+                "?nexty": "gridpos"
+            },
+            "pddl": "(start-move-card-south ?cm ?x ?y ?cnext ?nexty)",
+            "description": "start moving card a card A south from position a B, a C with next card a card D at position a B, a E",
+            "preconditions": [
+                "I can only start moving card a card A south from position a B, a C with next card a card D at position a B, a E if it is the case that the card A is at position B, C and C is the maximum position and the card D is at position B, E and C is next to E",
+                "I can only start moving card a card A south from position a B, a C with next card a card D at position a B, a E if it is not the case that the cards are moving and it is not the case that the cards are moving south and it is not the case that the robot is at A"
+            ],
+            "effects": [
+                "Once I start moving card a card A south from position a B, a C with next card a card D at position a B, a E, it is the case that the cards are moving and the cards are moving south and the new head-tail card is A and the next moving card is D",
+                "Once I start moving card a card A south from position a B, a C with next card a card D at position a B, a E, it is not the case anymore that the card A is at position B, C"
+            ]
+        },
+        "move-card-south": {
+            "annotation": "",
+            "parameter_types": {
+                "?cm": "card",
+                "?x": "gridpos",
+                "?y": "gridpos",
+                "?cnext": "card",
+                "?nexty": "gridpos",
+                "?prevy": "gridpos"
+            },
+            "pddl": "(move-card-south ?cm ?x ?y ?cnext ?nexty ?prevy)",
+            "description": "move card a card A south from position a B, a C to position a B, a F with next card a card D at position a B, a E",
+            "preconditions": [
+                "I can only move card a card A south from position a B, a C to position a B, a F with next card a card D at position a B, a E if it is the case that the cards are moving and the cards are moving south and the next moving card is A and the card A is at position B, C and the card D is at position B, E and F is next to C and C is next to E",
+                "I can only move card a card A south from position a B, a C to position a B, a F with next card a card D at position a B, a E if it is not the case that the robot is at A"
+            ],
+            "effects": [
+                "Once I move card a card A south from position a B, a C to position a B, a F with next card a card D at position a B, a E, it is the case that the cards are moving and the cards are moving south and the card A is at position B, F and the next moving card is D",
+                "Once I move card a card A south from position a B, a C to position a B, a F with next card a card D at position a B, a E, it is not the case anymore that the card A is at position B, C and it is not the case anymore that the next moving card is A"
+            ]
+        },
+        "stop-move-card-south": {
+            "annotation": "",
+            "parameter_types": {
+                "?cm": "card",
+                "?x": "gridpos",
+                "?y": "gridpos",
+                "?prevy": "gridpos",
+                "?newtc": "card"
+            },
+            "pddl": "(stop-move-card-south ?cm ?x ?y ?prevy ?newtc)",
+            "description": "stop moving card a card A south from position a B, a C to position a B, a D and set new head-tail card to a card E",
+            "preconditions": [
+                "I can only stop moving card a card A south from position a B, a C to position a B, a D and set new head-tail card to a card E if it is the case that the cards are moving and the cards are moving south and the next moving card is A and the card A is at position B, C and D is next to C and C is the minimum position and the new head-tail card is E",
+                "I can only stop moving card a card A south from position a B, a C to position a B, a D and set new head-tail card to a card E if it is not the case that the robot is at A"
+            ],
+            "effects": [
+                "Once I stop moving card a card A south from position a B, a C to position a B, a D and set new head-tail card to a card E, it is the case that the card A is at position B, D and the card E is at position B, C",
+                "Once I stop moving card a card A south from position a B, a C to position a B, a D and set new head-tail card to a card E, it is not the case anymore that the cards are moving and it is not the case anymore that the cards are moving south and it is not the case anymore that the card A is at position B, C and it is not the case anymore that the new head-tail card is E and it is not the case anymore that the next moving card is A"
+            ]
+        },
+        "leave": {
+            "annotation": "",
+            "parameter_types": {
+                "?c": "card",
+                "?prow": "gridpos",
+                "?pcolumn": "gridpos"
+            },
+            "pddl": "(leave ?c ?prow ?pcolumn)",
+            "description": "leave a card A at position a B, a C",
+            "preconditions": [
+                "I can only leave a card A at position a B, a C if it is the case that the robot is at A and the card A is at position B, C and B is the maximum position and C is the maximum position",
+                "I can only leave a card A at position a B, a C if it is not the case that the cards are moving and it is not the case that A is blocked by s"
+            ],
+            "effects": [
+                "Once I leave a card A at position a B, a C, it is the case that it is on the left"
+            ]
+        }
+    },
+    "predicates": {
+        "next": {
+            "parameter_types": {
+                "?p1": "gridpos",
+                "?p2": "gridpos"
+            },
+            "pddl": "(next ?p1 ?p2)"
+        },
+        "max-pos": {
+            "parameter_types": {
+                "?p": "gridpos"
+            },
+            "pddl": "(max-pos ?p)"
+        },
+        "min-pos": {
+            "parameter_types": {
+                "?p": "gridpos"
+            },
+            "pddl": "(min-pos ?p)"
+        },
+        "blocked": {
+            "parameter_types": {
+                "?c": "card",
+                "?d": "direction"
+            },
+            "pddl": "(blocked ?c ?d)"
+        },
+        "robot-at": {
+            "parameter_types": {
+                "?c": "card"
+            },
+            "pddl": "(robot-at ?c)"
+        },
+        "card-at": {
+            "parameter_types": {
+                "?c": "card",
+                "?x": "gridpos",
+                "?y": "gridpos"
+            },
+            "pddl": "(card-at ?c ?x ?y)"
+        },
+        "left": {
+            "parameter_types": {},
+            "pddl": "(left)"
+        },
+        "cards-moving": {
+            "parameter_types": {},
+            "pddl": "(cards-moving)"
+        },
+        "cards-moving-west": {
+            "parameter_types": {},
+            "pddl": "(cards-moving-west)"
+        },
+        "cards-moving-east": {
+            "parameter_types": {},
+            "pddl": "(cards-moving-east)"
+        },
+        "cards-moving-south": {
+            "parameter_types": {},
+            "pddl": "(cards-moving-south)"
+        },
+        "cards-moving-north": {
+            "parameter_types": {},
+            "pddl": "(cards-moving-north)"
+        },
+        "next-moving-card": {
+            "parameter_types": {
+                "?c": "card"
+            },
+            "pddl": "(next-moving-card ?c)"
+        },
+        "new-headtail-card": {
+            "parameter_types": {
+                "?c": "card"
+            },
+            "pddl": "(new-headtail-card ?c)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "move-west": "move west from {?cfrom}, {?xfrom}, {?yfrom}, {?dfrom} to {?cto}, {?xto}, {?yto}, {?dto}",
+        "move-east": "move east from {?cfrom}, {?xfrom}, {?yfrom}, {?dfrom} to {?cto}, {?xto}, {?yto}, {?dto}",
+        "move-north": "move north from {?cfrom}, {?xfrom}, {?yfrom}, {?dfrom} to {?cto}, {?xto}, {?yto}, {?dto}",
+        "move-south": "move south from {?cfrom}, {?xfrom}, {?yfrom}, {?dfrom} to {?cto}, {?xto}, {?yto}, {?dto}",
+        "start-move-card-west": "start moving card card {?cm} west from position {?x}, {?y} to next card card {?cnext} at position {?nextx}",
+        "move-card-west": "move card card {?cm} west from position {?x}, {?y} to position {?prevx}, {?y} with next card card {?cnext} at position {?nextx}",
+        "stop-move-card-west": "stop moving card card {?cm} west from position {?x}, {?y} to position {?prevx}, {?y} and set new head-tail card to card {?newtc}",
+        "start-move-card-east": "start moving card card {?cm} east from position {?x}, {?y} and set next moving card to card {?cnext} at position {?nextx}, {?y}",
+        "move-card-east": "move card card {?cm} east from position {?x}, {?y} to position {?prevx}, {?y} and set next moving card to card {?cnext} at position {?nextx}, {?y}",
+        "stop-move-card-east": "stop moving card card {?cm} east from position {?x}, {?y} to position {?prevx}, {?y} and set new head-tail card to card {?newtc} at position {?x}, {?y}",
+        "start-move-card-north": "start moving card card {?cm} north from position {?x}, {?y} with next card card {?cnext} at position {?x}, {?nexty}",
+        "move-card-north": "move card card {?cm} north from position {?x}, {?y} to position {?x}, {?prevy} with next card card {?cnext} at position {?x}, {?nexty}",
+        "stop-move-card-north": "stop moving card card {?cm} north from position {?x}, {?y} to position {?x}, {?prevy} and set new head-tail card to card {?newtc}",
+        "start-move-card-south": "start moving card card {?cm} south from position {?x}, {?y} with next card card {?cnext} at position {?x}, {?nexty}",
+        "move-card-south": "move card card {?cm} south from position {?x}, {?y} to position {?x}, {?prevy} with next card card {?cnext} at position {?x}, {?nexty}",
+        "stop-move-card-south": "stop moving card card {?cm} south from position {?x}, {?y} to position {?x}, {?prevy} and set new head-tail card to card {?newtc}",
+        "leave": "leave card {?c} at position {?prow}, {?pcolumn}"
+    },
+    "predicate_nl_templates": {
+        "next": "{?p1} is next to {?p2}",
+        "max-pos": "{?p} is the maximum position",
+        "min-pos": "{?p} is the minimum position",
+        "blocked": "{?c} is blocked by {?d}",
+        "robot-at": "the robot is at {?c}",
+        "card-at": "the card {?c} is at position {?x}, {?y}",
+        "left": "it is on the left",
+        "cards-moving": "the cards are moving",
+        "cards-moving-west": "the cards are moving west",
+        "cards-moving-east": "the cards are moving east",
+        "cards-moving-south": "the cards are moving south",
+        "cards-moving-north": "the cards are moving north",
+        "next-moving-card": "the next moving card is {?c}",
+        "new-headtail-card": "the new head-tail card is {?c}",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "move-west": "move west from a {?cfrom}, a {?xfrom}, a {?yfrom}, a {?dfrom} to a {?cto}, a {?xto}, a {?yto}, a {?dto}",
+        "move-east": "move east from a {?cfrom}, a {?xfrom}, a {?yfrom}, a {?dfrom} to a {?cto}, a {?xto}, a {?yto}, a {?dto}",
+        "move-north": "move north from a {?cfrom}, a {?xfrom}, a {?yfrom}, a {?dfrom} to a {?cto}, a {?xto}, a {?yto}, a {?dto}",
+        "move-south": "move south from a {?cfrom}, a {?xfrom}, a {?yfrom}, a {?dfrom} to a {?cto}, a {?xto}, a {?yto}, a {?dto}",
+        "start-move-card-west": "start moving card a card {?cm} west from position a {?x}, a {?y} to next card a card {?cnext} at position a {?nextx}",
+        "move-card-west": "move card a card {?cm} west from position a {?x}, a {?y} to position a {?prevx}, a {?y} with next card a card {?cnext} at position a {?nextx}",
+        "stop-move-card-west": "stop moving card a card {?cm} west from position a {?x}, a {?y} to position a {?prevx}, a {?y} and set new head-tail card to a card {?newtc}",
+        "start-move-card-east": "start moving card a card {?cm} east from position a {?x}, a {?y} and set next moving card to a card {?cnext} at position a {?nextx}, a {?y}",
+        "move-card-east": "move card a card {?cm} east from position a {?x}, a {?y} to position a {?prevx}, a {?y} and set next moving card to a card {?cnext} at position a {?nextx}, a {?y}",
+        "stop-move-card-east": "stop moving card a card {?cm} east from position a {?x}, a {?y} to position a {?prevx}, a {?y} and set new head-tail card to a card {?newtc} at position a {?x}, a {?y}",
+        "start-move-card-north": "start moving card a card {?cm} north from position a {?x}, a {?y} with next card a card {?cnext} at position a {?x}, a {?nexty}",
+        "move-card-north": "move card a card {?cm} north from position a {?x}, a {?y} to position a {?x}, a {?prevy} with next card a card {?cnext} at position a {?x}, a {?nexty}",
+        "stop-move-card-north": "stop moving card a card {?cm} north from position a {?x}, a {?y} to position a {?x}, a {?prevy} and set new head-tail card to a card {?newtc}",
+        "start-move-card-south": "start moving card a card {?cm} south from position a {?x}, a {?y} with next card a card {?cnext} at position a {?x}, a {?nexty}",
+        "move-card-south": "move card a card {?cm} south from position a {?x}, a {?y} to position a {?x}, a {?prevy} with next card a card {?cnext} at position a {?x}, a {?nexty}",
+        "stop-move-card-south": "stop moving card a card {?cm} south from position a {?x}, a {?y} to position a {?x}, a {?prevy} and set new head-tail card to a card {?newtc}",
+        "leave": "leave a card {?c} at position a {?prow}, a {?pcolumn}"
+    },
+    "type_hierarchy": [
+        "Everything that is a card or a direction or a gridpos is also a object",
+        "Everything that is a directionv or a directionh is also a direction"
+    ]
+}

@@ -1,0 +1,7 @@
+(feast entertainment pepper melon arizona manitoba)
+(feast entertainment melon ham arizona manitoba)
+(feast entertainment ham chocolate arizona manitoba)
+(overcome hangover entertainment chocolate vulcan venus)
+(feast entertainment chocolate ham goias guanabara)
+(succumb hangover entertainment ham vulcan venus)
+; cost = 6 (unit cost)

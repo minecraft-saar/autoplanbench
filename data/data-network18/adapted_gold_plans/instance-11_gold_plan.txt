@@ -1,0 +1,8 @@
+(load data_2 server_3 numbers_1 numbers_8 numbers_16 numbers_1)
+(load data_1 server_2 numbers_4 numbers_5 numbers_16 numbers_4)
+(send data_1 server_2 server_3 numbers_4 numbers_8 numbers_1 numbers_13)
+(process data_2 data_1 data_3 script_7 server_3 numbers_1 numbers_8 numbers_13 numbers_11)
+(process data_3 data_2 data_6 script_2 server_3 numbers_3 numbers_8 numbers_11 numbers_14)
+(send data_6 server_3 server_1 numbers_3 numbers_5 numbers_16 numbers_3)
+(save data_6 numbers_3 server_1)
+; cost = 7 (unit cost)

@@ -1,0 +1,32 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "roof_11",
+        "kumquat",
+        "dress_red",
+        "star_213",
+        "object_260",
+        "fire"
+    ],
+    "pos_examples": [
+        [
+            "Now, begin inverse splice special case with object fire.",
+            "(begin-inverse-splice-special-case fire)"
+        ],
+        [
+            "Once you are done, please end splice 2 with object star_213 at splice point 1 and object yew at splice point 2.",
+            "(end-splice-2 star_213 yew)"
+        ],
+        [
+            "First, invert single gene a for object dress_red and then end inverse splice 1a with object kumquat and object object_260.",
+            "(invert-single-gene-a dress_red)\n(end-inverse-splice-1a kumquat object_260)"
+        ],
+        [
+            "The next step is to invert single gene b for object roof_11.",
+            "(invert-single-gene-b roof_11)"
+        ]
+    ]
+}

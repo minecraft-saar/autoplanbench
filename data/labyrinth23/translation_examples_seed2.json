@@ -1,0 +1,43 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "fire",
+        "bastion_83",
+        "screen",
+        "frame_9",
+        "screen_33",
+        "bastion",
+        "object_50_29_45",
+        "object_50",
+        "object_50_82",
+        "object_50_29",
+        "kumquat_8",
+        "socket_56",
+        "rain",
+        "bastion_79",
+        "socket",
+        "bastion_27",
+        "teddy"
+    ],
+    "pos_examples": [
+        [
+            "Now, move card card fire north from position bastion_27, object_50 to position bastion_27, screen with next card card kumquat_8 at position bastion_27, bastion_79.",
+            "(move-card-north fire bastion object_50 screen bastion rain)"
+        ],
+        [
+            "Once you are done, please stop moving card card socket north from position bastion_83, object_50 to position bastion_83, object_50_82 and set new head-tail card to card socket_56.",
+            "(stop-move-card-north socket bastion object_50 bastion_83 object_50_82)"
+        ],
+        [
+            "First, leave card kumquat_8 at position screen, object_50_82 and then move north from socket_56 at position screen, bastion_83 with direction teddy to socket at position bastion_79, screen_33 with direction frame_9.",
+            "(leave kumquat_8 screen object_50_82)\n(move-north socket_56 screen bastion_83 teddy socket bastion_79 screen_33 frame_9)"
+        ],
+        [
+            "The next step is to move card card kumquat_8 south from position object_50_29, screen to position object_50_29, bastion_27 with next card card socket at position object_50_29, object_50_29_45.",
+            "(move-card-south kumquat_8 bastion_79 screen bastion_27 bastion_79 object_50)"
+        ]
+    ]
+}

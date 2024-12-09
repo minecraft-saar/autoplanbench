@@ -1,0 +1,29 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "rain",
+        "screen",
+        "fire",
+        "frame_9",
+        "bastion",
+        "object_50",
+        "object_260",
+        "kumquat_8",
+        "roof_11",
+        "kumquat",
+        "socket"
+    ],
+    "pos_examples": [
+        [
+            "Now, pick robot kumquat_8 with gripper object_260 to carry object kumquat from room screen.",
+            "(pick kumquat_8 kumquat screen object_260)"
+        ],
+        [
+            "Once you are done, please move robot socket from room object_50 to room rain.",
+            "(move socket object_50 rain)"
+        ]
+    ]
+}

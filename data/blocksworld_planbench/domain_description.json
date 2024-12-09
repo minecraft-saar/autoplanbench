@@ -1,0 +1,32 @@
+{
+    "action_mappings": {
+        "pick-up": "pick up the {}",
+        "put-down": "put down the {}",
+        "stack": "stack the {} on top of the {}",
+        "unstack": "unstack the {} from on top of the {}"
+    },
+    "predicate_mappings": {
+        "ontable": "the {} is on the table",
+        "clear": "the {} is clear",
+        "handempty": "the hand is empty",
+        "holding": "the hand is currently holding {}",
+        "on": "the {} is on top of the {}"
+    },
+    "encoded_objects": {
+        "red_block": "red block",
+        "blue_block": "blue block",
+        "orange_block": "orange block",
+        "yellow_block": "yellow block",
+        "white_block": "white block",
+        "magenta_block": "magenta block",
+        "black_block": "black block",
+        "cyan_block": "cyan block",
+        "green_block": "green block",
+        "violet_block": "violet block",
+        "silver_block": "silver block",
+        "gold_block": "gold block"
+    },
+    "type_hierarchy": [],
+    "domain_intro": "I am playing with a set of blocks where I need to arrange the blocks into stacks. Here are the actions I can do\n\nPick up a block\nUnstack a block from on top of another block\nPut down a block\nStack a block on top of another block\n\nI have the following restrictions on my actions:\nI can only pick up or unstack one block at a time.\nI can only pick up or unstack a block if my hand is empty.\nI can only pick up a block if the block is on the table and the block is clear. A block is clear if the block has no other blocks on top of it and if the block is not picked up.\nI can only unstack a block from on top of another block if the block I am unstacking was really on top of the other block.\nI can only unstack a block from on top of another block if the block I am unstacking is clear.\nOnce I pick up or unstack a block, I am holding the block.\nI can only put down a block that I am holding.\nI can only stack a block on top of another block if I am holding the block being stacked.\nI can only stack a block on top of another block if the block onto which I am stacking the block is clear.\nOnce I put down or stack a block, my hand becomes empty.\nOnce you stack a block on top of a second block, the second block is no longer clear.\n",
+    "action_mappings_indef": {}
+}

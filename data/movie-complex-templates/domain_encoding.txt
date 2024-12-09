@@ -1,0 +1,40 @@
+I can carry out the following actions:
+apply the action "rewind-movie"
+apply the action "reset-counter"
+apply the action "start-movie"
+apply the action "undo-rewind"
+apply the action "get-chips" to an object A
+apply the action "get-dip" to an object A
+apply the action "get-pop" to an object A
+apply the action "get-cheese" to an object A
+apply the action "get-crackers" to an object A
+
+I have the following restrictions on my actions:
+I can only apply the action "rewind-movie" if it is the case that "counter-at-other-than-zero"
+I can only apply the action "reset-counter" if it is the case that "counter-at-other-than-zero"
+I can only apply the action "start-movie" if it is the case that "counter-at-zero"
+I can only apply the action "undo-rewind" if it is the case that "movie-rewound"
+I can only apply the action "get-chips" to an object A if it is the case that A is "chips" and "counter-at-zero"
+I can only apply the action "get-chips" to an object A if it is not the case that "movie-rewound"
+I can only apply the action "get-dip" to an object A if it is the case that A is "dip" and "counter-at-zero"
+I can only apply the action "get-dip" to an object A if it is not the case that "movie-rewound"
+I can only apply the action "get-pop" to an object A if it is the case that A is "pop" and "counter-at-zero"
+I can only apply the action "get-pop" to an object A if it is not the case that "movie-rewound"
+I can only apply the action "get-cheese" to an object A if it is the case that A is "cheese" and "counter-at-zero"
+I can only apply the action "get-cheese" to an object A if it is not the case that "movie-rewound"
+I can only apply the action "get-crackers" to an object A if it is the case that A is "crackers" and "counter-at-zero"
+I can only apply the action "get-crackers" to an object A if it is not the case that "movie-rewound"
+
+The actions have the following effects on the state:
+Once I apply the action "rewind-movie", it is the case that "movie-rewound"
+Once I apply the action "reset-counter", it is the case that "counter-at-zero"
+Once I apply the action "reset-counter", it is not the case anymore that "counter-at-other-than-zero"
+Once I apply the action "start-movie", it is the case that "counter-at-other-than-zero"
+Once I apply the action "start-movie", it is not the case anymore that "counter-at-zero"
+Once I apply the action "undo-rewind", it is not the case anymore that "movie-rewound"
+Once I apply the action "get-chips" to an object A, it is the case that "have-chips"
+Once I apply the action "get-dip" to an object A, it is the case that "have-dip"
+Once I apply the action "get-pop" to an object A, it is the case that "have-pop"
+Once I apply the action "get-cheese" to an object A, it is the case that "have-cheese"
+Once I apply the action "get-crackers" to an object A, it is the case that "have-crackers"
+

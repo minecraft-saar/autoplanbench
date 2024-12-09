@@ -1,0 +1,36 @@
+I can carry out the following actions:
+apply the action "change-color" to a robot A, a color B and a color C
+apply the action "paint-up" to a robot A, a tile B, a tile C and a color D
+apply the action "paint-down" to a robot A, a tile B, a tile C and a color D
+apply the action "up" to a robot A, a tile B and a tile C
+apply the action "down" to a robot A, a tile B and a tile C
+apply the action "right" to a robot A, a tile B and a tile C
+apply the action "left" to a robot A, a tile B and a tile C
+
+I have the following restrictions on my actions:
+I can only apply the action "change-color" to a robot A, a color B and a color C if it is the case that A and B are in the relation "robot-has" and C is "available-color"
+I can only apply the action "paint-up" to a robot A, a tile B, a tile C and a color D if it is the case that A and D are in the relation "robot-has" and A and C are in the relation "robot-at" and B and C are in the relation "up" and B is "clear"
+I can only apply the action "paint-down" to a robot A, a tile B, a tile C and a color D if it is the case that A and D are in the relation "robot-has" and A and C are in the relation "robot-at" and B and C are in the relation "down" and B is "clear"
+I can only apply the action "up" to a robot A, a tile B and a tile C if it is the case that A and B are in the relation "robot-at" and C and B are in the relation "up" and C is "clear"
+I can only apply the action "down" to a robot A, a tile B and a tile C if it is the case that A and B are in the relation "robot-at" and C and B are in the relation "down" and C is "clear"
+I can only apply the action "right" to a robot A, a tile B and a tile C if it is the case that A and B are in the relation "robot-at" and C and B are in the relation "right" and C is "clear"
+I can only apply the action "left" to a robot A, a tile B and a tile C if it is the case that A and B are in the relation "robot-at" and C and B are in the relation "left" and C is "clear"
+
+The actions have the following effects on the state:
+Once I apply the action "change-color" to a robot A, a color B and a color C, it is the case that A and C are in the relation "robot-has"
+Once I apply the action "change-color" to a robot A, a color B and a color C, it is not the case anymore that A and B are in the relation "robot-has"
+Once I apply the action "paint-up" to a robot A, a tile B, a tile C and a color D, it is the case that B and D are in the relation "painted"
+Once I apply the action "paint-up" to a robot A, a tile B, a tile C and a color D, it is not the case anymore that B is "clear"
+Once I apply the action "paint-down" to a robot A, a tile B, a tile C and a color D, it is the case that B and D are in the relation "painted"
+Once I apply the action "paint-down" to a robot A, a tile B, a tile C and a color D, it is not the case anymore that B is "clear"
+Once I apply the action "up" to a robot A, a tile B and a tile C, it is the case that A and C are in the relation "robot-at" and B is "clear"
+Once I apply the action "up" to a robot A, a tile B and a tile C, it is not the case anymore that A and B are in the relation "robot-at" and it is not the case anymore that C is "clear"
+Once I apply the action "down" to a robot A, a tile B and a tile C, it is the case that A and C are in the relation "robot-at" and B is "clear"
+Once I apply the action "down" to a robot A, a tile B and a tile C, it is not the case anymore that A and B are in the relation "robot-at" and it is not the case anymore that C is "clear"
+Once I apply the action "right" to a robot A, a tile B and a tile C, it is the case that A and C are in the relation "robot-at" and B is "clear"
+Once I apply the action "right" to a robot A, a tile B and a tile C, it is not the case anymore that A and B are in the relation "robot-at" and it is not the case anymore that C is "clear"
+Once I apply the action "left" to a robot A, a tile B and a tile C, it is the case that A and C are in the relation "robot-at" and B is "clear"
+Once I apply the action "left" to a robot A, a tile B and a tile C, it is not the case anymore that A and B are in the relation "robot-at" and it is not the case anymore that C is "clear"
+
+
+Everything that is a robot or a tile or a color is also a object

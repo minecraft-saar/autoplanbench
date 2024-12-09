@@ -1,0 +1,659 @@
+{
+    "action_mappings": {
+        "begin-cut": "begin cutting with object {} and object {}",
+        "continue-cut": "continue cutting with object {} and object {}",
+        "end-cut-1": "end cut with object {} and object {}",
+        "end-cut-2": "end cut with object {} at cut point 1 and object {} at cut point 2",
+        "begin-transpose-splice": "begin transpose splice with object {} at splice point 1 and object {} at splice point 2",
+        "continue-splice-1": "continue splice 1 with object {} as the next in the sequence after object {}",
+        "continue-splice-2": "continue splice 2 with object {} at splice point 1 and object {} at splice point 1",
+        "end-splice-1": "end splice 1 with object {} as the first and last in the sequence and object {} at splice point 1",
+        "end-splice-2": "end splice 2 with object {} at splice point 1 and object {} at splice point 2",
+        "begin-transverse-splice": "begin transverse splice with object {} and object {}",
+        "begin-inverse-splice": "begin inverse splice with object {} and object {}",
+        "begin-inverse-splice-special-case": "begin inverse splice special case with object {}",
+        "continue-inverse-splice-1a": "continue inverse splice 1a with object {} and object {}",
+        "continue-inverse-splice-1b": "continue inverse splice 1b with object {} and object {}",
+        "continue-inverse-splice-2": "continue inverse splice 2 with object {} and object {}",
+        "end-inverse-splice-1a": "end inverse splice 1a with object {} and object {}",
+        "end-inverse-splice-1b": "end inverse splice 1b with object {} and object {}",
+        "end-inverse-splice-2": "end inverse splice 2 with object {} at splice point 1 and object {} at splice point 2",
+        "invert-single-gene-a": "invert single gene a for object {}",
+        "invert-single-gene-b": "invert single gene b for object {}",
+        "reset-1": "reset 1 for object {}"
+    },
+    "action_mappings_indef": {
+        "begin-cut": "begin cutting with an object {} and an object {}",
+        "continue-cut": "continue cutting with an object {} and an object {}",
+        "end-cut-1": "end cut with an object {} and an object {}",
+        "end-cut-2": "end cut with an object {} at cut point 1 and an object {} at cut point 2",
+        "begin-transpose-splice": "begin transpose splice with an object {} at splice point 1 and an object {} at splice point 2",
+        "continue-splice-1": "continue splice 1 with an object {} as the next in the sequence after an object {}",
+        "continue-splice-2": "continue splice 2 with an object {} at splice point 1 and an object {} at splice point 1",
+        "end-splice-1": "end splice 1 with an object {} as the first and last in the sequence and an object {} at splice point 1",
+        "end-splice-2": "end splice 2 with an object {} at splice point 1 and an object {} at splice point 2",
+        "begin-transverse-splice": "begin transverse splice with an object {} and an object {}",
+        "begin-inverse-splice": "begin inverse splice with an object {} and an object {}",
+        "begin-inverse-splice-special-case": "begin inverse splice special case with an object {}",
+        "continue-inverse-splice-1a": "continue inverse splice 1a with an object {} and an object {}",
+        "continue-inverse-splice-1b": "continue inverse splice 1b with an object {} and an object {}",
+        "continue-inverse-splice-2": "continue inverse splice 2 with an object {} and an object {}",
+        "end-inverse-splice-1a": "end inverse splice 1a with an object {} and an object {}",
+        "end-inverse-splice-1b": "end inverse splice 1b with an object {} and an object {}",
+        "end-inverse-splice-2": "end inverse splice 2 with an object {} at splice point 1 and an object {} at splice point 2",
+        "invert-single-gene-a": "invert single gene a for an object {}",
+        "invert-single-gene-b": "invert single gene b for an object {}",
+        "reset-1": "reset 1 for an object {}"
+    },
+    "predicate_mappings": {
+        "duplicate": "{} is a duplicate of {}",
+        "swappable": "{} is swappable with {}",
+        "cw": "{} is clockwise to {}",
+        "free": "{} is free",
+        "gone": "{} is gone",
+        "present": "{} is present",
+        "normal": "{} is normal",
+        "inverted": "{} is inverted",
+        "idle": "it is idle",
+        "cutting": "it is being cut",
+        "have-cut": "it has been cut",
+        "splicing": "splicing is happening",
+        "splice-next": "splice the next {}",
+        "splicing-last": "splicing the last one",
+        "inverse-splicing": "performing inverse splicing",
+        "inverse-splice-next": "performing inverse splice next on {}",
+        "inverse-splicing-last": "performing inverse splicing last",
+        "finished": "it is finished",
+        "cut-point-1": "{} is at cut point 1",
+        "cut-point-2": "{} is at cut point 2",
+        "last-cut-point": "{} is at the last cut point",
+        "splice-point-1": "{} is at splice point 1",
+        "splice-point-2": "{} is at splice point 2",
+        "s-first": "{} is the first in the sequence",
+        "s-next": "{} is next in the sequence after {}",
+        "s-last": "{} is the last in the sequence",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "begin-cut": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(begin-cut ?x ?y)",
+            "description": "begin cutting with an object A and an object B",
+            "preconditions": [
+                "I can only begin cutting with an object A and an object B if it is the case that it is idle and A is clockwise to B",
+                "I can only begin cutting with an object A and an object B if it is not the case that A is equal to B"
+            ],
+            "effects": [
+                "Once I begin cutting with an object A and an object B, it is the case that it is being cut and A is at cut point 1 and A is at the last cut point and B is the first in the sequence and B is the last in the sequence",
+                "Once I begin cutting with an object A and an object B, it is not the case anymore that it is idle and it is not the case anymore that A is clockwise to B"
+            ]
+        },
+        "continue-cut": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(continue-cut ?x ?y)",
+            "description": "continue cutting with an object A and an object B",
+            "preconditions": [
+                "I can only continue cutting with an object A and an object B if it is the case that it is being cut and A is the last in the sequence and A is clockwise to B",
+                "I can only continue cutting with an object A and an object B if it is not the case that A is equal to B"
+            ],
+            "effects": [
+                "Once I continue cutting with an object A and an object B, it is the case that A is next in the sequence after B and B is the last in the sequence",
+                "Once I continue cutting with an object A and an object B, it is not the case anymore that A is clockwise to B and it is not the case anymore that A is the last in the sequence"
+            ]
+        },
+        "end-cut-1": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(end-cut-1 ?x ?y)",
+            "description": "end cut with an object A and an object B",
+            "preconditions": [
+                "I can only end cut with an object A and an object B if it is the case that it is being cut and A is the last in the sequence and A is clockwise to B",
+                "I can only end cut with an object A and an object B if it is not the case that A is equal to B"
+            ],
+            "effects": [
+                "Once I end cut with an object A and an object B, it is the case that B is at cut point 2",
+                "Once I end cut with an object A and an object B, it is not the case anymore that A is clockwise to B"
+            ]
+        },
+        "end-cut-2": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(end-cut-2 ?x ?y)",
+            "description": "end cut with an object A at cut point 1 and an object B at cut point 2",
+            "preconditions": [
+                "I can only end cut with an object A at cut point 1 and an object B at cut point 2 if it is the case that it is being cut and A is at cut point 1 and B is at cut point 2"
+            ],
+            "effects": [
+                "Once I end cut with an object A at cut point 1 and an object B at cut point 2, it is the case that it has been cut and A is clockwise to B",
+                "Once I end cut with an object A at cut point 1 and an object B at cut point 2, it is not the case anymore that it is being cut and it is not the case anymore that A is at cut point 1 and it is not the case anymore that B is at cut point 2"
+            ]
+        },
+        "begin-transpose-splice": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(begin-transpose-splice ?x ?y)",
+            "description": "begin transpose splice with an object A at splice point 1 and an object B at splice point 2",
+            "preconditions": [
+                "I can only begin transpose splice with an object A at splice point 1 and an object B at splice point 2 if it is the case that it has been cut and A is clockwise to B",
+                "I can only begin transpose splice with an object A at splice point 1 and an object B at splice point 2 if it is not the case that A is equal to B"
+            ],
+            "effects": [
+                "Once I begin transpose splice with an object A at splice point 1 and an object B at splice point 2, it is the case that splicing is happening and A is at splice point 1 and B is at splice point 2",
+                "Once I begin transpose splice with an object A at splice point 1 and an object B at splice point 2, it is not the case anymore that it has been cut and it is not the case anymore that A is clockwise to B"
+            ]
+        },
+        "continue-splice-1": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(continue-splice-1 ?x ?y)",
+            "description": "continue splice 1 with an object A as the next in the sequence after an object B",
+            "preconditions": [
+                "I can only continue splice 1 with an object A as the next in the sequence after an object B if it is the case that splicing is happening and A is the first in the sequence and A is next in the sequence after B"
+            ],
+            "effects": [
+                "Once I continue splice 1 with an object A as the next in the sequence after an object B, it is the case that B is the first in the sequence and splice the next A",
+                "Once I continue splice 1 with an object A as the next in the sequence after an object B, it is not the case anymore that A is the first in the sequence and it is not the case anymore that A is next in the sequence after B and it is not the case anymore that splicing is happening"
+            ]
+        },
+        "continue-splice-2": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(continue-splice-2 ?x ?y)",
+            "description": "continue splice 2 with an object A at splice point 1 and an object B at splice point 1",
+            "preconditions": [
+                "I can only continue splice 2 with an object A at splice point 1 and an object B at splice point 1 if it is the case that splice the next A and B is at splice point 1"
+            ],
+            "effects": [
+                "Once I continue splice 2 with an object A at splice point 1 and an object B at splice point 1, it is the case that B is clockwise to A and A is at splice point 1 and splicing is happening",
+                "Once I continue splice 2 with an object A at splice point 1 and an object B at splice point 1, it is not the case anymore that B is at splice point 1 and it is not the case anymore that splice the next A"
+            ]
+        },
+        "end-splice-1": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(end-splice-1 ?x ?y)",
+            "description": "end splice 1 with an object A as the first and last in the sequence and an object B at splice point 1",
+            "preconditions": [
+                "I can only end splice 1 with an object A as the first and last in the sequence and an object B at splice point 1 if it is the case that splicing is happening and B is at splice point 1 and A is the first in the sequence and A is the last in the sequence"
+            ],
+            "effects": [
+                "Once I end splice 1 with an object A as the first and last in the sequence and an object B at splice point 1, it is the case that splicing the last one and B is clockwise to A and A is at splice point 1",
+                "Once I end splice 1 with an object A as the first and last in the sequence and an object B at splice point 1, it is not the case anymore that splicing is happening and it is not the case anymore that A is the first in the sequence and it is not the case anymore that A is the last in the sequence and it is not the case anymore that B is at splice point 1"
+            ]
+        },
+        "end-splice-2": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(end-splice-2 ?x ?y)",
+            "description": "end splice 2 with an object A at splice point 1 and an object B at splice point 2",
+            "preconditions": [
+                "I can only end splice 2 with an object A at splice point 1 and an object B at splice point 2 if it is the case that splicing the last one and A is at splice point 1 and B is at splice point 2"
+            ],
+            "effects": [
+                "Once I end splice 2 with an object A at splice point 1 and an object B at splice point 2, it is the case that it is finished and A is clockwise to B",
+                "Once I end splice 2 with an object A at splice point 1 and an object B at splice point 2, it is not the case anymore that splicing the last one and it is not the case anymore that A is at splice point 1 and it is not the case anymore that B is at splice point 2"
+            ]
+        },
+        "begin-transverse-splice": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(begin-transverse-splice ?x ?y)",
+            "description": "begin transverse splice with an object A and an object B",
+            "preconditions": [
+                "I can only begin transverse splice with an object A and an object B if it is the case that it has been cut and A is clockwise to B",
+                "I can only begin transverse splice with an object A and an object B if it is not the case that A is equal to B"
+            ],
+            "effects": [
+                "Once I begin transverse splice with an object A and an object B, it is the case that performing inverse splicing and A is at splice point 1 and B is at splice point 2",
+                "Once I begin transverse splice with an object A and an object B, it is not the case anymore that it has been cut and it is not the case anymore that A is clockwise to B"
+            ]
+        },
+        "begin-inverse-splice": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(begin-inverse-splice ?x ?y)",
+            "description": "begin inverse splice with an object A and an object B",
+            "preconditions": [
+                "I can only begin inverse splice with an object A and an object B if it is the case that it has been cut and A is clockwise to B and A is at the last cut point",
+                "I can only begin inverse splice with an object A and an object B if it is not the case that A is equal to B"
+            ],
+            "effects": [
+                "Once I begin inverse splice with an object A and an object B, it is the case that performing inverse splicing and A is at splice point 1 and B is at splice point 2",
+                "Once I begin inverse splice with an object A and an object B, it is not the case anymore that it has been cut and it is not the case anymore that A is clockwise to B"
+            ]
+        },
+        "begin-inverse-splice-special-case": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(begin-inverse-splice-special-case ?x)",
+            "description": "begin inverse splice special case with an object A",
+            "preconditions": [
+                "I can only begin inverse splice special case with an object A if it is the case that it has been cut and A is clockwise to A and A is at the last cut point"
+            ],
+            "effects": [
+                "Once I begin inverse splice special case with an object A, it is the case that performing inverse splicing and A is at splice point 1 and A is at splice point 2",
+                "Once I begin inverse splice special case with an object A, it is not the case anymore that it has been cut and it is not the case anymore that A is clockwise to A"
+            ]
+        },
+        "continue-inverse-splice-1a": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(continue-inverse-splice-1a ?x ?y)",
+            "description": "continue inverse splice 1a with an object A and an object B",
+            "preconditions": [
+                "I can only continue inverse splice 1a with an object A and an object B if it is the case that performing inverse splicing and A is normal and A is the last in the sequence and B is next in the sequence after A"
+            ],
+            "effects": [
+                "Once I continue inverse splice 1a with an object A and an object B, it is the case that B is the last in the sequence and performing inverse splice next on A and A is inverted",
+                "Once I continue inverse splice 1a with an object A and an object B, it is not the case anymore that A is the last in the sequence and it is not the case anymore that B is next in the sequence after A and it is not the case anymore that A is normal and it is not the case anymore that performing inverse splicing"
+            ]
+        },
+        "continue-inverse-splice-1b": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(continue-inverse-splice-1b ?x ?y)",
+            "description": "continue inverse splice 1b with an object A and an object B",
+            "preconditions": [
+                "I can only continue inverse splice 1b with an object A and an object B if it is the case that performing inverse splicing and A is inverted and A is the last in the sequence and B is next in the sequence after A"
+            ],
+            "effects": [
+                "Once I continue inverse splice 1b with an object A and an object B, it is the case that B is the last in the sequence and performing inverse splice next on A and A is normal",
+                "Once I continue inverse splice 1b with an object A and an object B, it is not the case anymore that A is the last in the sequence and it is not the case anymore that B is next in the sequence after A and it is not the case anymore that A is inverted and it is not the case anymore that performing inverse splicing"
+            ]
+        },
+        "continue-inverse-splice-2": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(continue-inverse-splice-2 ?x ?y)",
+            "description": "continue inverse splice 2 with an object A and an object B",
+            "preconditions": [
+                "I can only continue inverse splice 2 with an object A and an object B if it is the case that performing inverse splice next on A and B is at splice point 1"
+            ],
+            "effects": [
+                "Once I continue inverse splice 2 with an object A and an object B, it is the case that performing inverse splicing and B is clockwise to A and A is at splice point 1",
+                "Once I continue inverse splice 2 with an object A and an object B, it is not the case anymore that performing inverse splice next on A and it is not the case anymore that B is at splice point 1"
+            ]
+        },
+        "end-inverse-splice-1a": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(end-inverse-splice-1a ?x ?y)",
+            "description": "end inverse splice 1a with an object A and an object B",
+            "preconditions": [
+                "I can only end inverse splice 1a with an object A and an object B if it is the case that performing inverse splicing and A is normal and B is at splice point 1 and A is the first in the sequence and A is the last in the sequence"
+            ],
+            "effects": [
+                "Once I end inverse splice 1a with an object A and an object B, it is the case that performing inverse splicing last and B is clockwise to A and A is at splice point 1 and A is inverted",
+                "Once I end inverse splice 1a with an object A and an object B, it is not the case anymore that performing inverse splicing and it is not the case anymore that B is at splice point 1 and it is not the case anymore that A is the first in the sequence and it is not the case anymore that A is the last in the sequence and it is not the case anymore that A is normal"
+            ]
+        },
+        "end-inverse-splice-1b": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(end-inverse-splice-1b ?x ?y)",
+            "description": "end inverse splice 1b with an object A and an object B",
+            "preconditions": [
+                "I can only end inverse splice 1b with an object A and an object B if it is the case that performing inverse splicing and A is inverted and B is at splice point 1 and A is the first in the sequence and A is the last in the sequence"
+            ],
+            "effects": [
+                "Once I end inverse splice 1b with an object A and an object B, it is the case that performing inverse splicing last and B is clockwise to A and A is at splice point 1 and A is normal",
+                "Once I end inverse splice 1b with an object A and an object B, it is not the case anymore that performing inverse splicing and it is not the case anymore that B is at splice point 1 and it is not the case anymore that A is the first in the sequence and it is not the case anymore that A is the last in the sequence and it is not the case anymore that A is inverted"
+            ]
+        },
+        "end-inverse-splice-2": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(end-inverse-splice-2 ?x ?y)",
+            "description": "end inverse splice 2 with an object A at splice point 1 and an object B at splice point 2",
+            "preconditions": [
+                "I can only end inverse splice 2 with an object A at splice point 1 and an object B at splice point 2 if it is the case that performing inverse splicing last and A is at splice point 1 and B is at splice point 2"
+            ],
+            "effects": [
+                "Once I end inverse splice 2 with an object A at splice point 1 and an object B at splice point 2, it is the case that it is finished and A is clockwise to B",
+                "Once I end inverse splice 2 with an object A at splice point 1 and an object B at splice point 2, it is not the case anymore that performing inverse splicing last and it is not the case anymore that A is at splice point 1 and it is not the case anymore that B is at splice point 2"
+            ]
+        },
+        "invert-single-gene-a": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(invert-single-gene-a ?x)",
+            "description": "invert single gene a for an object A",
+            "preconditions": [
+                "I can only invert single gene a for an object A if it is the case that it is idle and A is normal"
+            ],
+            "effects": [
+                "Once I invert single gene a for an object A, it is the case that A is inverted",
+                "Once I invert single gene a for an object A, it is not the case anymore that A is normal"
+            ]
+        },
+        "invert-single-gene-b": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(invert-single-gene-b ?x)",
+            "description": "invert single gene b for an object A",
+            "preconditions": [
+                "I can only invert single gene b for an object A if it is the case that it is idle and A is inverted"
+            ],
+            "effects": [
+                "Once I invert single gene b for an object A, it is the case that A is normal",
+                "Once I invert single gene b for an object A, it is not the case anymore that A is inverted"
+            ]
+        },
+        "reset-1": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(reset-1 ?x)",
+            "description": "reset 1 for an object A",
+            "preconditions": [
+                "I can only reset 1 for an object A if it is the case that it is finished and A is at the last cut point"
+            ],
+            "effects": [
+                "Once I reset 1 for an object A, it is the case that it is idle",
+                "Once I reset 1 for an object A, it is not the case anymore that A is at the last cut point and it is not the case anymore that it is finished"
+            ]
+        }
+    },
+    "predicates": {
+        "duplicate": {
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(duplicate ?x ?y)"
+        },
+        "swappable": {
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(swappable ?x ?y)"
+        },
+        "cw": {
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(cw ?x ?y)"
+        },
+        "free": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(free ?x)"
+        },
+        "gone": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(gone ?x)"
+        },
+        "present": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(present ?x)"
+        },
+        "normal": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(normal ?x)"
+        },
+        "inverted": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(inverted ?x)"
+        },
+        "idle": {
+            "parameter_types": {},
+            "pddl": "(idle)"
+        },
+        "cutting": {
+            "parameter_types": {},
+            "pddl": "(cutting)"
+        },
+        "have-cut": {
+            "parameter_types": {},
+            "pddl": "(have-cut)"
+        },
+        "splicing": {
+            "parameter_types": {},
+            "pddl": "(splicing)"
+        },
+        "splice-next": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(splice-next ?x)"
+        },
+        "splicing-last": {
+            "parameter_types": {},
+            "pddl": "(splicing-last)"
+        },
+        "inverse-splicing": {
+            "parameter_types": {},
+            "pddl": "(inverse-splicing)"
+        },
+        "inverse-splice-next": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(inverse-splice-next ?x)"
+        },
+        "inverse-splicing-last": {
+            "parameter_types": {},
+            "pddl": "(inverse-splicing-last)"
+        },
+        "finished": {
+            "parameter_types": {},
+            "pddl": "(finished)"
+        },
+        "cut-point-1": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(cut-point-1 ?x)"
+        },
+        "cut-point-2": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(cut-point-2 ?x)"
+        },
+        "last-cut-point": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(last-cut-point ?x)"
+        },
+        "splice-point-1": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(splice-point-1 ?x)"
+        },
+        "splice-point-2": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(splice-point-2 ?x)"
+        },
+        "s-first": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(s-first ?x)"
+        },
+        "s-next": {
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(s-next ?x ?y)"
+        },
+        "s-last": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(s-last ?x)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "begin-cut": "begin cutting with object {?x} and object {?y}",
+        "continue-cut": "continue cutting with object {?x} and object {?y}",
+        "end-cut-1": "end cut with object {?x} and object {?y}",
+        "end-cut-2": "end cut with object {?x} at cut point 1 and object {?y} at cut point 2",
+        "begin-transpose-splice": "begin transpose splice with object {?x} at splice point 1 and object {?y} at splice point 2",
+        "continue-splice-1": "continue splice 1 with object {?x} as the next in the sequence after object {?y}",
+        "continue-splice-2": "continue splice 2 with object {?x} at splice point 1 and object {?y} at splice point 1",
+        "end-splice-1": "end splice 1 with object {?x} as the first and last in the sequence and object {?y} at splice point 1",
+        "end-splice-2": "end splice 2 with object {?x} at splice point 1 and object {?y} at splice point 2",
+        "begin-transverse-splice": "begin transverse splice with object {?x} and object {?y}",
+        "begin-inverse-splice": "begin inverse splice with object {?x} and object {?y}",
+        "begin-inverse-splice-special-case": "begin inverse splice special case with object {?x}",
+        "continue-inverse-splice-1a": "continue inverse splice 1a with object {?x} and object {?y}",
+        "continue-inverse-splice-1b": "continue inverse splice 1b with object {?x} and object {?y}",
+        "continue-inverse-splice-2": "continue inverse splice 2 with object {?x} and object {?y}",
+        "end-inverse-splice-1a": "end inverse splice 1a with object {?x} and object {?y}",
+        "end-inverse-splice-1b": "end inverse splice 1b with object {?x} and object {?y}",
+        "end-inverse-splice-2": "end inverse splice 2 with object {?x} at splice point 1 and object {?y} at splice point 2",
+        "invert-single-gene-a": "invert single gene a for object {?x}",
+        "invert-single-gene-b": "invert single gene b for object {?x}",
+        "reset-1": "reset 1 for object {?x}"
+    },
+    "predicate_nl_templates": {
+        "duplicate": "{?x} is a duplicate of {?y}",
+        "swappable": "{?x} is swappable with {?y}",
+        "cw": "{?x} is clockwise to {?y}",
+        "free": "{?x} is free",
+        "gone": "{?x} is gone",
+        "present": "{?x} is present",
+        "normal": "{?x} is normal",
+        "inverted": "{?x} is inverted",
+        "idle": "it is idle",
+        "cutting": "it is being cut",
+        "have-cut": "it has been cut",
+        "splicing": "splicing is happening",
+        "splice-next": "splice the next {?x}",
+        "splicing-last": "splicing the last one",
+        "inverse-splicing": "performing inverse splicing",
+        "inverse-splice-next": "performing inverse splice next on {?x}",
+        "inverse-splicing-last": "performing inverse splicing last",
+        "finished": "it is finished",
+        "cut-point-1": "{?x} is at cut point 1",
+        "cut-point-2": "{?x} is at cut point 2",
+        "last-cut-point": "{?x} is at the last cut point",
+        "splice-point-1": "{?x} is at splice point 1",
+        "splice-point-2": "{?x} is at splice point 2",
+        "s-first": "{?x} is the first in the sequence",
+        "s-next": "{?x} is next in the sequence after {?y}",
+        "s-last": "{?x} is the last in the sequence",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "begin-cut": "begin cutting with an object {?x} and an object {?y}",
+        "continue-cut": "continue cutting with an object {?x} and an object {?y}",
+        "end-cut-1": "end cut with an object {?x} and an object {?y}",
+        "end-cut-2": "end cut with an object {?x} at cut point 1 and an object {?y} at cut point 2",
+        "begin-transpose-splice": "begin transpose splice with an object {?x} at splice point 1 and an object {?y} at splice point 2",
+        "continue-splice-1": "continue splice 1 with an object {?x} as the next in the sequence after an object {?y}",
+        "continue-splice-2": "continue splice 2 with an object {?x} at splice point 1 and an object {?y} at splice point 1",
+        "end-splice-1": "end splice 1 with an object {?x} as the first and last in the sequence and an object {?y} at splice point 1",
+        "end-splice-2": "end splice 2 with an object {?x} at splice point 1 and an object {?y} at splice point 2",
+        "begin-transverse-splice": "begin transverse splice with an object {?x} and an object {?y}",
+        "begin-inverse-splice": "begin inverse splice with an object {?x} and an object {?y}",
+        "begin-inverse-splice-special-case": "begin inverse splice special case with an object {?x}",
+        "continue-inverse-splice-1a": "continue inverse splice 1a with an object {?x} and an object {?y}",
+        "continue-inverse-splice-1b": "continue inverse splice 1b with an object {?x} and an object {?y}",
+        "continue-inverse-splice-2": "continue inverse splice 2 with an object {?x} and an object {?y}",
+        "end-inverse-splice-1a": "end inverse splice 1a with an object {?x} and an object {?y}",
+        "end-inverse-splice-1b": "end inverse splice 1b with an object {?x} and an object {?y}",
+        "end-inverse-splice-2": "end inverse splice 2 with an object {?x} at splice point 1 and an object {?y} at splice point 2",
+        "invert-single-gene-a": "invert single gene a for an object {?x}",
+        "invert-single-gene-b": "invert single gene b for an object {?x}",
+        "reset-1": "reset 1 for an object {?x}"
+    },
+    "type_hierarchy": [
+        "Everything that is a Real is also a object",
+        "Everything that is a Integer is also a Real",
+        "Everything that is a Natural or a number is also a Integer"
+    ]
+}

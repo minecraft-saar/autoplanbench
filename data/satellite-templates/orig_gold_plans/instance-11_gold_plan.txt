@@ -1,0 +1,7 @@
+(switch_on instrument0 satellite0)
+(calibrate satellite0 instrument0 groundstation0)
+(turn_to satellite0 phenomenon3 groundstation0)
+(take_image satellite0 phenomenon3 instrument0 spectrograph2)
+(turn_to satellite0 planet2 phenomenon3)
+(take_image satellite0 planet2 instrument0 spectrograph1)
+; cost = 6 (unit cost)

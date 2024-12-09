@@ -1,0 +1,23 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_50",
+        "rain",
+        "roof_11",
+        "dress_red",
+        "kumquat"
+    ],
+    "pos_examples": [
+        [
+            "Now, debark car kumquat at location roof_11.",
+            "(debark kumquat roof_11)"
+        ],
+        [
+            "Once you are done, please board car dress_red at location yew.",
+            "(board dress_red yew)"
+        ]
+    ]
+}

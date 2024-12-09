@@ -1,0 +1,8 @@
+(invert-single-gene-a object_2)
+(begin-cut object_3 object_2)
+(end-cut-1 object_2 object_1)
+(end-cut-2 object_3 object_1)
+(begin-transpose-splice object_0 object_3)
+(end-splice-1 object_2 object_0)
+(end-splice-2 object_2 object_3)
+; cost = 7 (unit cost)

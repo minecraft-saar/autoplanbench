@@ -1,0 +1,153 @@
+{
+    "action_mappings": {
+        "sail": "apply the action \"sail\" to object {} and object {}",
+        "board": "apply the action \"board\" to object {} and object {}",
+        "debark": "apply the action \"debark\" to object {} and object {}"
+    },
+    "action_mappings_indef": {
+        "sail": "apply the action \"sail\" to an object {} and an object {}",
+        "board": "apply the action \"board\" to an object {} and an object {}",
+        "debark": "apply the action \"debark\" to an object {} and an object {}"
+    },
+    "predicate_mappings": {
+        "not-eq": "{} and {} are in the relation \"not-eq\"",
+        "car": "{} is \"car\"",
+        "location": "{} is \"location\"",
+        "at-ferry": "{} is \"at-ferry\"",
+        "at": "{} and {} are in the relation \"at\"",
+        "empty-ferry": "\"empty-ferry\"",
+        "on": "{} is \"on\"",
+        "=": "{} and {} are in the relation \"=\"",
+        "!=": "{} and {} are in the relation \"!=\""
+    },
+    "actions": {
+        "sail": {
+            "annotation": "",
+            "parameter_types": {
+                "?from": "object",
+                "?to": "object"
+            },
+            "pddl": "(sail ?from ?to)",
+            "description": "apply the action \"sail\" to an object A and an object B",
+            "preconditions": [
+                "I can only apply the action \"sail\" to an object A and an object B if it is the case that A and B are in the relation \"not-eq\" and A is \"location\" and B is \"location\" and A is \"at-ferry\""
+            ],
+            "effects": [
+                "Once I apply the action \"sail\" to an object A and an object B, it is the case that B is \"at-ferry\"",
+                "Once I apply the action \"sail\" to an object A and an object B, it is not the case anymore that A is \"at-ferry\""
+            ]
+        },
+        "board": {
+            "annotation": "",
+            "parameter_types": {
+                "?car": "object",
+                "?loc": "object"
+            },
+            "pddl": "(board ?car ?loc)",
+            "description": "apply the action \"board\" to an object A and an object B",
+            "preconditions": [
+                "I can only apply the action \"board\" to an object A and an object B if it is the case that A is \"car\" and B is \"location\" and A and B are in the relation \"at\" and B is \"at-ferry\" and \"empty-ferry\""
+            ],
+            "effects": [
+                "Once I apply the action \"board\" to an object A and an object B, it is the case that A is \"on\"",
+                "Once I apply the action \"board\" to an object A and an object B, it is not the case anymore that A and B are in the relation \"at\" and it is not the case anymore that \"empty-ferry\""
+            ]
+        },
+        "debark": {
+            "annotation": "",
+            "parameter_types": {
+                "?car": "object",
+                "?loc": "object"
+            },
+            "pddl": "(debark ?car ?loc)",
+            "description": "apply the action \"debark\" to an object A and an object B",
+            "preconditions": [
+                "I can only apply the action \"debark\" to an object A and an object B if it is the case that A is \"car\" and B is \"location\" and A is \"on\" and B is \"at-ferry\""
+            ],
+            "effects": [
+                "Once I apply the action \"debark\" to an object A and an object B, it is the case that A and B are in the relation \"at\" and \"empty-ferry\"",
+                "Once I apply the action \"debark\" to an object A and an object B, it is not the case anymore that A is \"on\""
+            ]
+        }
+    },
+    "predicates": {
+        "not-eq": {
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(not-eq ?x ?y)"
+        },
+        "car": {
+            "parameter_types": {
+                "?c": "object"
+            },
+            "pddl": "(car ?c)"
+        },
+        "location": {
+            "parameter_types": {
+                "?l": "object"
+            },
+            "pddl": "(location ?l)"
+        },
+        "at-ferry": {
+            "parameter_types": {
+                "?l": "object"
+            },
+            "pddl": "(at-ferry ?l)"
+        },
+        "at": {
+            "parameter_types": {
+                "?c": "object",
+                "?l": "object"
+            },
+            "pddl": "(at ?c ?l)"
+        },
+        "empty-ferry": {
+            "parameter_types": {},
+            "pddl": "(empty-ferry)"
+        },
+        "on": {
+            "parameter_types": {
+                "?c": "object"
+            },
+            "pddl": "(on ?c)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "sail": "apply the action \"sail\" to object {?from} and object {?to}",
+        "board": "apply the action \"board\" to object {?car} and object {?loc}",
+        "debark": "apply the action \"debark\" to object {?car} and object {?loc}"
+    },
+    "predicate_nl_templates": {
+        "not-eq": "{?x} and {?y} are in the relation \"not-eq\"",
+        "car": "{?c} is \"car\"",
+        "location": "{?l} is \"location\"",
+        "at-ferry": "{?l} is \"at-ferry\"",
+        "at": "{?c} and {?l} are in the relation \"at\"",
+        "empty-ferry": "\"empty-ferry\"",
+        "on": "{?c} is \"on\"",
+        "=": "{?x1} and {?x2} are in the relation \"=\"",
+        "!=": "{?x1} and {?x2} are in the relation \"!=\""
+    },
+    "action_nl_templates_indef": {
+        "sail": "apply the action \"sail\" to an object {?from} and an object {?to}",
+        "board": "apply the action \"board\" to an object {?car} and an object {?loc}",
+        "debark": "apply the action \"debark\" to an object {?car} and an object {?loc}"
+    },
+    "type_hierarchy": []
+}

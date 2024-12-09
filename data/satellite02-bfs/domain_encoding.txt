@@ -1,0 +1,24 @@
+I can carry out the following actions:
+turn a satellite A from a direction C to a direction B
+switch on an instrument A on a satellite B
+switch off an instrument A on a satellite B
+calibrate an instrument B on a satellite A pointing at a direction C
+take image of a direction B using an instrument C in a mode D on a satellite A
+
+I have the following restrictions on my actions:
+I can only turn a satellite A from a direction C to a direction B if it is the case that A is a satellite and B is a direction and C is a direction and A is pointing at C
+I can only switch on an instrument A on a satellite B if it is the case that A is an instrument and B is a satellite and A is on board B and power is available for B
+I can only switch off an instrument A on a satellite B if it is the case that A is an instrument and B is a satellite and A is on board B and power is on for A
+I can only calibrate an instrument B on a satellite A pointing at a direction C if it is the case that A is a satellite and B is an instrument and C is a direction and B is on board A and B is a calibration target for C and A is pointing at C and power is on for B
+I can only take image of a direction B using an instrument C in a mode D on a satellite A if it is the case that A is a satellite and B is a direction and C is an instrument and D is a mode and C is calibrated and C is on board A and C supports D and power is on for C and A is pointing at B and power is on for C
+
+The actions have the following effects on the state:
+Once I turn a satellite A from a direction C to a direction B, it is the case that A is pointing at B
+Once I turn a satellite A from a direction C to a direction B, it is not the case anymore that A is pointing at C
+Once I switch on an instrument A on a satellite B, it is the case that power is on for A
+Once I switch on an instrument A on a satellite B, it is not the case anymore that A is calibrated and it is not the case anymore that power is available for B
+Once I switch off an instrument A on a satellite B, it is the case that power is available for B
+Once I switch off an instrument A on a satellite B, it is not the case anymore that power is on for A
+Once I calibrate an instrument B on a satellite A pointing at a direction C, it is the case that B is calibrated
+Once I take image of a direction B using an instrument C in a mode D on a satellite A, it is the case that B has an image of D
+

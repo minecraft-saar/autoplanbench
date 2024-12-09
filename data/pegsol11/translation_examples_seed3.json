@@ -1,0 +1,24 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "roof_11",
+        "socket",
+        "kumquat_8",
+        "star_213",
+        "rain",
+        "screen"
+    ],
+    "pos_examples": [
+        [
+            "Now, continue jump from location yew over location screen to location star_213.",
+            "(jump-continue-move yew screen star_213)"
+        ],
+        [
+            "Once you are done, please end move at location rain.",
+            "(end-move rain)"
+        ]
+    ]
+}

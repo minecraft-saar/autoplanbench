@@ -1,0 +1,37 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "rain",
+        "fire",
+        "frame_9",
+        "object_260",
+        "dress_red",
+        "teddy",
+        "bastion",
+        "kumquat",
+        "roof_11",
+        "rain_45",
+        "star_213"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"drop\" to rover yew and store fire.",
+            "(drop yew fire)"
+        ],
+        [
+            "Once you are done, please apply the action \"communicate_image_data\" to rover object_260, lander frame_9, objective teddy, mode dress_red, waypoint star_213 and waypoint rain.",
+            "(communicate_image_data object_260 frame_9 teddy dress_red star_213 rain)"
+        ],
+        [
+            "First, apply the action \"communicate_soil_data\" to rover yew, lander roof_11, waypoint rain, waypoint rain_45 and waypoint star_213 and then apply the action \"calibrate\" to rover yew, camera kumquat, objective bastion and waypoint rain_45.",
+            "(communicate_soil_data yew roof_11 rain rain_45 star_213)\n(calibrate yew kumquat bastion rain_45)"
+        ],
+        [
+            "The next step is to apply the action \"navigate\" to rover yew, waypoint star_213 and waypoint rain_45.",
+            "(navigate yew star_213 rain_45)"
+        ]
+    ]
+}

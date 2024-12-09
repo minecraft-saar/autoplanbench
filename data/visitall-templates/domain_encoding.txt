@@ -1,0 +1,12 @@
+I can carry out the following actions:
+apply the action "move" to a place A and a place B
+
+I have the following restrictions on my actions:
+I can only apply the action "move" to a place A and a place B if it is the case that A is "at-robot" and A and B are in the relation "connected"
+
+The actions have the following effects on the state:
+Once I apply the action "move" to a place A and a place B, it is the case that B is "at-robot" and B is "visited"
+Once I apply the action "move" to a place A and a place B, it is not the case anymore that A is "at-robot"
+
+
+Everything that is a place is also a object

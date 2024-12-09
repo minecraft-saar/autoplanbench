@@ -1,0 +1,100 @@
+I can carry out the following actions:
+begin cutting with an object A and an object B
+continue cutting with an object A and an object B
+end cut with an object A and an object B
+end cut with an object A at cut point 1 and an object B at cut point 2
+begin transpose splice with an object A at splice point 1 and an object B at splice point 2
+continue splice 1 with an object A as the next in the sequence after an object B
+continue splice 2 with an object A and an object B at splice point 1
+end splice 1 with an object A and an object B at splice point 1
+end splice 2 with an object A at splice point 1 and an object B at splice point 2
+begin transverse splice with an object A and an object B
+begin inverse splice with an object A and an object B
+begin inverse splice special case with an object A
+continue inverse splice 1a with an object A and an object B
+continue inverse splice 1b with an object A and an object B
+continue inverse splice 2 with an object A and an object B
+end inverse splice 1a with an object A and an object B
+end inverse splice 1b with an object A and an object B
+end inverse splice 2 with an object A and an object B
+invert single gene a for an object A
+invert single gene b for an object A
+reset 1 for an object A
+
+I have the following restrictions on my actions:
+I can only begin cutting with an object A and an object B if it is the case that it is idle and A is clockwise to B
+I can only begin cutting with an object A and an object B if it is not the case that A is equal to B
+I can only continue cutting with an object A and an object B if it is the case that it is being cut and A is the last in the sequence and A is clockwise to B
+I can only continue cutting with an object A and an object B if it is not the case that A is equal to B
+I can only end cut with an object A and an object B if it is the case that it is being cut and A is the last in the sequence and A is clockwise to B
+I can only end cut with an object A and an object B if it is not the case that A is equal to B
+I can only end cut with an object A at cut point 1 and an object B at cut point 2 if it is the case that it is being cut and A is at cut point 1 and B is at cut point 2
+I can only begin transpose splice with an object A at splice point 1 and an object B at splice point 2 if it is the case that it has been cut and A is clockwise to B
+I can only begin transpose splice with an object A at splice point 1 and an object B at splice point 2 if it is not the case that A is equal to B
+I can only continue splice 1 with an object A as the next in the sequence after an object B if it is the case that splicing is happening and A is the first in the sequence and A is next in the sequence after B
+I can only continue splice 2 with an object A and an object B at splice point 1 if it is the case that splice the next A and B is at splice point 1
+I can only end splice 1 with an object A and an object B at splice point 1 if it is the case that splicing is happening and B is at splice point 1 and A is the first in the sequence and A is the last in the sequence
+I can only end splice 2 with an object A at splice point 1 and an object B at splice point 2 if it is the case that splicing the last one and A is at splice point 1 and B is at splice point 2
+I can only begin transverse splice with an object A and an object B if it is the case that it has been cut and A is clockwise to B
+I can only begin transverse splice with an object A and an object B if it is not the case that A is equal to B
+I can only begin inverse splice with an object A and an object B if it is the case that it has been cut and A is clockwise to B and A is at the last cut point
+I can only begin inverse splice with an object A and an object B if it is not the case that A is equal to B
+I can only begin inverse splice special case with an object A if it is the case that it has been cut and A is clockwise to A and A is at the last cut point
+I can only continue inverse splice 1a with an object A and an object B if it is the case that performing inverse splicing and A is normal and A is the last in the sequence and B is next in the sequence after A
+I can only continue inverse splice 1b with an object A and an object B if it is the case that performing inverse splicing and A is inverted and A is the last in the sequence and B is next in the sequence after A
+I can only continue inverse splice 2 with an object A and an object B if it is the case that performing inverse splice next on A and B is at splice point 1
+I can only end inverse splice 1a with an object A and an object B if it is the case that performing inverse splicing and A is normal and B is at splice point 1 and A is the first in the sequence and A is the last in the sequence
+I can only end inverse splice 1b with an object A and an object B if it is the case that performing inverse splicing and A is inverted and B is at splice point 1 and A is the first in the sequence and A is the last in the sequence
+I can only end inverse splice 2 with an object A and an object B if it is the case that performing inverse splicing last and A is at splice point 1 and B is at splice point 2
+I can only invert single gene a for an object A if it is the case that it is idle and A is normal
+I can only invert single gene b for an object A if it is the case that it is idle and A is inverted
+I can only reset 1 for an object A if it is the case that it is finished and A is at the last cut point
+
+The actions have the following effects on the state:
+Once I begin cutting with an object A and an object B, it is the case that it is being cut and A is at cut point 1 and A is at the last cut point and B is the first in the sequence and B is the last in the sequence
+Once I begin cutting with an object A and an object B, it is not the case anymore that it is idle and it is not the case anymore that A is clockwise to B
+Once I continue cutting with an object A and an object B, it is the case that A is next in the sequence after B and B is the last in the sequence
+Once I continue cutting with an object A and an object B, it is not the case anymore that A is clockwise to B and it is not the case anymore that A is the last in the sequence
+Once I end cut with an object A and an object B, it is the case that B is at cut point 2
+Once I end cut with an object A and an object B, it is not the case anymore that A is clockwise to B
+Once I end cut with an object A at cut point 1 and an object B at cut point 2, it is the case that it has been cut and A is clockwise to B
+Once I end cut with an object A at cut point 1 and an object B at cut point 2, it is not the case anymore that it is being cut and it is not the case anymore that A is at cut point 1 and it is not the case anymore that B is at cut point 2
+Once I begin transpose splice with an object A at splice point 1 and an object B at splice point 2, it is the case that splicing is happening and A is at splice point 1 and B is at splice point 2
+Once I begin transpose splice with an object A at splice point 1 and an object B at splice point 2, it is not the case anymore that it has been cut and it is not the case anymore that A is clockwise to B
+Once I continue splice 1 with an object A as the next in the sequence after an object B, it is the case that B is the first in the sequence and splice the next A
+Once I continue splice 1 with an object A as the next in the sequence after an object B, it is not the case anymore that A is the first in the sequence and it is not the case anymore that A is next in the sequence after B and it is not the case anymore that splicing is happening
+Once I continue splice 2 with an object A and an object B at splice point 1, it is the case that B is clockwise to A and A is at splice point 1 and splicing is happening
+Once I continue splice 2 with an object A and an object B at splice point 1, it is not the case anymore that B is at splice point 1 and it is not the case anymore that splice the next A
+Once I end splice 1 with an object A and an object B at splice point 1, it is the case that splicing the last one and B is clockwise to A and A is at splice point 1
+Once I end splice 1 with an object A and an object B at splice point 1, it is not the case anymore that splicing is happening and it is not the case anymore that A is the first in the sequence and it is not the case anymore that A is the last in the sequence and it is not the case anymore that B is at splice point 1
+Once I end splice 2 with an object A at splice point 1 and an object B at splice point 2, it is the case that it is finished and A is clockwise to B
+Once I end splice 2 with an object A at splice point 1 and an object B at splice point 2, it is not the case anymore that splicing the last one and it is not the case anymore that A is at splice point 1 and it is not the case anymore that B is at splice point 2
+Once I begin transverse splice with an object A and an object B, it is the case that performing inverse splicing and A is at splice point 1 and B is at splice point 2
+Once I begin transverse splice with an object A and an object B, it is not the case anymore that it has been cut and it is not the case anymore that A is clockwise to B
+Once I begin inverse splice with an object A and an object B, it is the case that performing inverse splicing and A is at splice point 1 and B is at splice point 2
+Once I begin inverse splice with an object A and an object B, it is not the case anymore that it has been cut and it is not the case anymore that A is clockwise to B
+Once I begin inverse splice special case with an object A, it is the case that performing inverse splicing and A is at splice point 1 and A is at splice point 2
+Once I begin inverse splice special case with an object A, it is not the case anymore that it has been cut and it is not the case anymore that A is clockwise to A
+Once I continue inverse splice 1a with an object A and an object B, it is the case that B is the last in the sequence and performing inverse splice next on A and A is inverted
+Once I continue inverse splice 1a with an object A and an object B, it is not the case anymore that A is the last in the sequence and it is not the case anymore that B is next in the sequence after A and it is not the case anymore that A is normal and it is not the case anymore that performing inverse splicing
+Once I continue inverse splice 1b with an object A and an object B, it is the case that B is the last in the sequence and performing inverse splice next on A and A is normal
+Once I continue inverse splice 1b with an object A and an object B, it is not the case anymore that A is the last in the sequence and it is not the case anymore that B is next in the sequence after A and it is not the case anymore that A is inverted and it is not the case anymore that performing inverse splicing
+Once I continue inverse splice 2 with an object A and an object B, it is the case that performing inverse splicing and B is clockwise to A and A is at splice point 1
+Once I continue inverse splice 2 with an object A and an object B, it is not the case anymore that performing inverse splice next on A and it is not the case anymore that B is at splice point 1
+Once I end inverse splice 1a with an object A and an object B, it is the case that performing inverse splicing last and B is clockwise to A and A is at splice point 1 and A is inverted
+Once I end inverse splice 1a with an object A and an object B, it is not the case anymore that performing inverse splicing and it is not the case anymore that B is at splice point 1 and it is not the case anymore that A is the first in the sequence and it is not the case anymore that A is the last in the sequence and it is not the case anymore that A is normal
+Once I end inverse splice 1b with an object A and an object B, it is the case that performing inverse splicing last and B is clockwise to A and A is at splice point 1 and A is normal
+Once I end inverse splice 1b with an object A and an object B, it is not the case anymore that performing inverse splicing and it is not the case anymore that B is at splice point 1 and it is not the case anymore that A is the first in the sequence and it is not the case anymore that A is the last in the sequence and it is not the case anymore that A is inverted
+Once I end inverse splice 2 with an object A and an object B, it is the case that it is finished and A is clockwise to B
+Once I end inverse splice 2 with an object A and an object B, it is not the case anymore that performing inverse splicing last and it is not the case anymore that A is at splice point 1 and it is not the case anymore that B is at splice point 2
+Once I invert single gene a for an object A, it is the case that A is inverted
+Once I invert single gene a for an object A, it is not the case anymore that A is normal
+Once I invert single gene b for an object A, it is the case that A is normal
+Once I invert single gene b for an object A, it is not the case anymore that A is inverted
+Once I reset 1 for an object A, it is the case that it is idle
+Once I reset 1 for an object A, it is not the case anymore that A is at the last cut point and it is not the case anymore that it is finished
+
+
+Everything that is a Real is also a object
+Everything that is a Integer is also a Real
+Everything that is a Natural or a number is also a Integer

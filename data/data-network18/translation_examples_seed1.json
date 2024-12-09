@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "roof_11",
+        "kumquat",
+        "object_260",
+        "dress_red",
+        "frame_9",
+        "kumquat_8",
+        "socket",
+        "fire",
+        "frame_9_74",
+        "bastion",
+        "teddy",
+        "star_213"
+    ],
+    "pos_examples": [
+        [
+            "Now, process data socket and data fire using script bastion to produce data kumquat_8 on server yew with output size numbers frame_9 and update usage from numbers teddy to numbers object_260 within limit numbers star_213.",
+            "(process socket fire kumquat_8 bastion yew frame_9 star_213 teddy object_260)"
+        ],
+        [
+            "Once you are done, please send data fire from server roof_11 to server dress_red with size numbers frame_9 and update usage from numbers object_260 to numbers frame_9_74 within limit numbers teddy.",
+            "(send fire roof_11 dress_red frame_9 teddy object_260 frame_9_74)"
+        ],
+        [
+            "First, load data kumquat_8 from server kumquat with size numbers object_260 and update usage from numbers frame_9 to numbers frame_9_74 within limit numbers star_213 and then release data kumquat_8 from server dress_red reducing usage from numbers frame_9 to numbers frame_9_74 with data size numbers teddy.",
+            "(load kumquat_8 kumquat object_260 star_213 frame_9 frame_9_74)\n(release kumquat_8 dress_red teddy frame_9 frame_9_74)"
+        ],
+        [
+            "The next step is to save data socket with size numbers frame_9_74 to server dress_red.",
+            "(save socket frame_9_74 dress_red)"
+        ]
+    ]
+}

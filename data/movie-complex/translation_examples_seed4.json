@@ -1,0 +1,29 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_260",
+        "screen",
+        "bastion"
+    ],
+    "pos_examples": [
+        [
+            "Now, get chips object_260.",
+            "(get-chips object_260)"
+        ],
+        [
+            "Once you are done, please start the movie.",
+            "(start-movie )"
+        ],
+        [
+            "First, get object bastion to pop and then reset the counter.",
+            "(get-pop bastion)\n(reset-counter )"
+        ],
+        [
+            "The next step is to get cheese screen.",
+            "(get-cheese screen)"
+        ]
+    ]
+}

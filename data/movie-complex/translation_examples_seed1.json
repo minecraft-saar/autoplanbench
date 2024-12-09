@@ -1,0 +1,29 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "dress_red",
+        "rain",
+        "fire"
+    ],
+    "pos_examples": [
+        [
+            "Now, get chips fire.",
+            "(get-chips fire)"
+        ],
+        [
+            "Once you are done, please rewind the movie.",
+            "(rewind-movie )"
+        ],
+        [
+            "First, get object dress_red to pop and then undo rewind the movie.",
+            "(get-pop dress_red)\n(undo-rewind )"
+        ],
+        [
+            "The next step is to get crackers rain.",
+            "(get-crackers rain)"
+        ]
+    ]
+}

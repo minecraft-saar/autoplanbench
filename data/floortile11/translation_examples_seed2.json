@@ -1,0 +1,37 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "fire",
+        "star_213",
+        "bastion",
+        "roof_11",
+        "object_260",
+        "screen",
+        "dress_red",
+        "kumquat_8",
+        "object_50",
+        "rain",
+        "teddy"
+    ],
+    "pos_examples": [
+        [
+            "Now, paint tile dress_red up from tile yew with color screen using robot object_260.",
+            "(paint-up object_260 dress_red yew screen)"
+        ],
+        [
+            "Once you are done, please move robot bastion left from tile rain to tile fire.",
+            "(left bastion rain fire)"
+        ],
+        [
+            "First, paint tile teddy down from tile rain with color star_213 using robot roof_11 and then move robot kumquat_8 up from tile teddy to tile yew.",
+            "(paint-down roof_11 teddy rain star_213)\n(up kumquat_8 teddy yew)"
+        ],
+        [
+            "The next step is to move robot object_50 down from tile dress_red to tile rain.",
+            "(down object_50 dress_red rain)"
+        ]
+    ]
+}

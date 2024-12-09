@@ -1,0 +1,32 @@
+I can carry out the following actions:
+make no gluten sandwich a sandwich A using a bread-portion B and a content-portion C
+make sandwich a sandwich A using a bread-portion B and a content-portion C
+put a sandwich A on a tray B
+serve a no gluten sandwich A to a child B at a place D using a tray C
+serve a sandwich A to a child B at a place D using a tray C
+move a tray A from a place B to a place C
+
+I have the following restrictions on my actions:
+I can only make no gluten sandwich a sandwich A using a bread-portion B and a content-portion C if it is the case that B is at the kitchen bread and C is at the kitchen content and B is no gluten bread and C has no gluten content and A does not exist
+I can only make sandwich a sandwich A using a bread-portion B and a content-portion C if it is the case that B is at the kitchen bread and C is at the kitchen content and A does not exist
+I can only put a sandwich A on a tray B if it is the case that A is at the kitchen sandwich and B is at kitchen
+I can only serve a no gluten sandwich A to a child B at a place D using a tray C if it is the case that B is allergic to gluten and A is on the tray C and B is waiting for D and A is a no gluten sandwich and C is at D
+I can only serve a sandwich A to a child B at a place D using a tray C if it is the case that B is not allergic to gluten and B is waiting for D and A is on the tray C and C is at D
+I can only move a tray A from a place B to a place C if it is the case that A is at B
+
+The actions have the following effects on the state:
+Once I make no gluten sandwich a sandwich A using a bread-portion B and a content-portion C, it is the case that A is at the kitchen sandwich and A is a no gluten sandwich
+Once I make no gluten sandwich a sandwich A using a bread-portion B and a content-portion C, it is not the case anymore that B is at the kitchen bread and it is not the case anymore that C is at the kitchen content and it is not the case anymore that A does not exist
+Once I make sandwich a sandwich A using a bread-portion B and a content-portion C, it is the case that A is at the kitchen sandwich
+Once I make sandwich a sandwich A using a bread-portion B and a content-portion C, it is not the case anymore that B is at the kitchen bread and it is not the case anymore that C is at the kitchen content and it is not the case anymore that A does not exist
+Once I put a sandwich A on a tray B, it is the case that A is on the tray B
+Once I put a sandwich A on a tray B, it is not the case anymore that A is at the kitchen sandwich
+Once I serve a no gluten sandwich A to a child B at a place D using a tray C, it is the case that B is served
+Once I serve a no gluten sandwich A to a child B at a place D using a tray C, it is not the case anymore that A is on the tray C
+Once I serve a sandwich A to a child B at a place D using a tray C, it is the case that B is served
+Once I serve a sandwich A to a child B at a place D using a tray C, it is not the case anymore that A is on the tray C
+Once I move a tray A from a place B to a place C, it is the case that A is at C
+Once I move a tray A from a place B to a place C, it is not the case anymore that A is at B
+
+
+Everything that is a child or a bread-portion or a content-portion or a sandwich or a tray or a place is also a object

@@ -1,0 +1,27 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_50",
+        "rain",
+        "kumquat",
+        "teddy",
+        "object_260"
+    ],
+    "pos_examples": [
+        [
+            "Now, stack object rain on object yew.",
+            "(stack rain yew)"
+        ],
+        [
+            "Once you are done, please put down object kumquat on the table.",
+            "(put-down kumquat)"
+        ],
+        [
+            "First, unstack object object_260 from object object_50 and then pick up object teddy from the table.",
+            "(unstack object_260 object_50)\n(pick-up teddy)"
+        ]
+    ]
+}

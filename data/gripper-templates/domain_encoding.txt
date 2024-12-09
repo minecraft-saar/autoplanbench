@@ -1,0 +1,20 @@
+I can carry out the following actions:
+apply the action "move" to a robot A, a room B and a room C
+apply the action "pick" to a robot A, an object B, a room C and a gripper D
+apply the action "drop" to a robot A, an object B, a room C and a gripper D
+
+I have the following restrictions on my actions:
+I can only apply the action "move" to a robot A, a room B and a room C if it is the case that A and B are in the relation "at-robby"
+I can only apply the action "pick" to a robot A, an object B, a room C and a gripper D if it is the case that B and C are in the relation "at" and A and C are in the relation "at-robby" and A and D are in the relation "free"
+I can only apply the action "drop" to a robot A, an object B, a room C and a gripper D if it is the case that A, B and D are in the relation "carry" and A and C are in the relation "at-robby"
+
+The actions have the following effects on the state:
+Once I apply the action "move" to a robot A, a room B and a room C, it is the case that A and C are in the relation "at-robby"
+Once I apply the action "move" to a robot A, a room B and a room C, it is not the case anymore that A and B are in the relation "at-robby"
+Once I apply the action "pick" to a robot A, an object B, a room C and a gripper D, it is the case that A, B and D are in the relation "carry"
+Once I apply the action "pick" to a robot A, an object B, a room C and a gripper D, it is not the case anymore that B and C are in the relation "at" and it is not the case anymore that A and D are in the relation "free"
+Once I apply the action "drop" to a robot A, an object B, a room C and a gripper D, it is the case that B and C are in the relation "at" and A and D are in the relation "free"
+Once I apply the action "drop" to a robot A, an object B, a room C and a gripper D, it is not the case anymore that A, B and D are in the relation "carry"
+
+
+Everything that is a room or a robot or a gripper is also a object

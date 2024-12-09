@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "screen",
+        "kumquat_8",
+        "object_260",
+        "rain",
+        "roof_11",
+        "dress_red",
+        "object_50",
+        "frame_9",
+        "kumquat",
+        "socket",
+        "bastion",
+        "fire"
+    ],
+    "pos_examples": [
+        [
+            "Now, remove block from position screen with height numb kumquat_8 to position dress_red with height numb fire.",
+            "(remove-block dress_red screen kumquat_8 fire)"
+        ],
+        [
+            "Once you are done, please create block at position bastion.",
+            "(create-block bastion)"
+        ],
+        [
+            "First, move from position roof_11 to position yew with height numb object_260 and then place block from position rain with height numb frame_9 to position kumquat with height numb socket.",
+            "(move roof_11 yew object_260)\n(place-block rain kumquat frame_9 socket)"
+        ],
+        [
+            "The next step is to destroy block at position object_50.",
+            "(destroy-block object_50)"
+        ]
+    ]
+}

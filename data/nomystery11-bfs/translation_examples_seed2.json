@@ -1,0 +1,29 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat",
+        "dress_red",
+        "roof_11",
+        "rain",
+        "kumquat_8",
+        "fire",
+        "screen",
+        "teddy",
+        "socket",
+        "star_213",
+        "frame_9"
+    ],
+    "pos_examples": [
+        [
+            "Now, drive truck kumquat_8 from location roof_11 to location yew with initial fuel level fuellevel frame_9, fuel cost fuellevel teddy, and resulting fuel level fuellevel star_213.",
+            "(drive kumquat_8 roof_11 yew star_213 teddy frame_9)"
+        ],
+        [
+            "Once you are done, please unload package rain from truck fire at location dress_red.",
+            "(unload rain fire dress_red)"
+        ]
+    ]
+}

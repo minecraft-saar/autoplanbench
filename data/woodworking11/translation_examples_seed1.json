@@ -1,0 +1,41 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat_8",
+        "rain_94_21",
+        "star_213",
+        "bastion",
+        "rain_31",
+        "object_50",
+        "rain_94",
+        "object_260",
+        "rain",
+        "teddy",
+        "screen",
+        "frame_9",
+        "roof_11",
+        "object_260_76",
+        "kumquat"
+    ],
+    "pos_examples": [
+        [
+            "Now, cut board teddy into part frame_9 using highspeed-saw star_213 with awood kumquat, surface roof_11, changing size from aboardsize rain to aboardsize rain_94 through intermediate sizes aboardsize rain_94_21 and aboardsize rain_31.",
+            "(cut-board-large teddy frame_9 star_213 kumquat roof_11 rain rain_31 rain_94_21 rain_94)"
+        ],
+        [
+            "Once you are done, please saw board teddy into medium part frame_9 using saw screen with awood kumquat, surface roof_11, changing size from aboardsize rain to aboardsize rain_94 through intermediate size aboardsize rain_31.",
+            "(do-saw-medium teddy frame_9 screen kumquat roof_11 rain rain_31 rain_94)"
+        ],
+        [
+            "First, load board teddy into highspeed-saw star_213 and then do spray varnish on part frame_9 using spray-varnisher object_50 to change color to acolour bastion with surface roof_11.",
+            "(load-highspeed-saw teddy star_213)\n(do-spray-varnish frame_9 object_50 bastion roof_11)"
+        ],
+        [
+            "The next step is to do grind on part frame_9 using grinder kumquat_8 to change surface from surface roof_11 to verysmooth, color from acolour bastion to natural, and treatment from treatmentstatus object_260 to treatmentstatus object_260_76.",
+            "(do-grind frame_9 kumquat_8 roof_11 bastion object_260 object_260_76)"
+        ]
+    ]
+}

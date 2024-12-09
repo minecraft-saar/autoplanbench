@@ -1,0 +1,203 @@
+{
+    "action_mappings": {
+        "drive": "apply the action \"drive\" to truck {}, place {} and place {}",
+        "lift": "apply the action \"lift\" to hoist {}, crate {}, surface {} and place {}",
+        "drop": "apply the action \"drop\" to hoist {}, crate {}, surface {} and place {}",
+        "load": "apply the action \"load\" to hoist {}, crate {}, truck {} and place {}",
+        "unload": "apply the action \"unload\" to hoist {}, crate {}, truck {} and place {}"
+    },
+    "action_mappings_indef": {
+        "drive": "apply the action \"drive\" to a truck {}, a place {} and a place {}",
+        "lift": "apply the action \"lift\" to a hoist {}, a crate {}, a surface {} and a place {}",
+        "drop": "apply the action \"drop\" to a hoist {}, a crate {}, a surface {} and a place {}",
+        "load": "apply the action \"load\" to a hoist {}, a crate {}, a truck {} and a place {}",
+        "unload": "apply the action \"unload\" to a hoist {}, a crate {}, a truck {} and a place {}"
+    },
+    "predicate_mappings": {
+        "at": "{} and {} are in the relation \"at\"",
+        "on": "{} and {} are in the relation \"on\"",
+        "in": "{} and {} are in the relation \"in\"",
+        "lifting": "{} and {} are in the relation \"lifting\"",
+        "available": "{} is \"available\"",
+        "clear": "{} is \"clear\"",
+        "=": "{} and {} are in the relation \"=\"",
+        "!=": "{} and {} are in the relation \"!=\""
+    },
+    "actions": {
+        "drive": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "truck",
+                "?y": "place",
+                "?z": "place"
+            },
+            "pddl": "(drive ?x ?y ?z)",
+            "description": "apply the action \"drive\" to a truck A, a place B and a place C",
+            "preconditions": [
+                "I can only apply the action \"drive\" to a truck A, a place B and a place C if it is the case that A and B are in the relation \"at\""
+            ],
+            "effects": [
+                "Once I apply the action \"drive\" to a truck A, a place B and a place C, it is the case that A and C are in the relation \"at\"",
+                "Once I apply the action \"drive\" to a truck A, a place B and a place C, it is not the case anymore that A and B are in the relation \"at\""
+            ]
+        },
+        "lift": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "hoist",
+                "?y": "crate",
+                "?z": "surface",
+                "?p": "place"
+            },
+            "pddl": "(lift ?x ?y ?z ?p)",
+            "description": "apply the action \"lift\" to a hoist A, a crate B, a surface C and a place D",
+            "preconditions": [
+                "I can only apply the action \"lift\" to a hoist A, a crate B, a surface C and a place D if it is the case that A and D are in the relation \"at\" and A is \"available\" and B and D are in the relation \"at\" and B and C are in the relation \"on\" and B is \"clear\""
+            ],
+            "effects": [
+                "Once I apply the action \"lift\" to a hoist A, a crate B, a surface C and a place D, it is the case that A and B are in the relation \"lifting\" and C is \"clear\"",
+                "Once I apply the action \"lift\" to a hoist A, a crate B, a surface C and a place D, it is not the case anymore that B and D are in the relation \"at\" and it is not the case anymore that B is \"clear\" and it is not the case anymore that A is \"available\" and it is not the case anymore that B and C are in the relation \"on\""
+            ]
+        },
+        "drop": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "hoist",
+                "?y": "crate",
+                "?z": "surface",
+                "?p": "place"
+            },
+            "pddl": "(drop ?x ?y ?z ?p)",
+            "description": "apply the action \"drop\" to a hoist A, a crate B, a surface C and a place D",
+            "preconditions": [
+                "I can only apply the action \"drop\" to a hoist A, a crate B, a surface C and a place D if it is the case that A and D are in the relation \"at\" and C and D are in the relation \"at\" and C is \"clear\" and A and B are in the relation \"lifting\""
+            ],
+            "effects": [
+                "Once I apply the action \"drop\" to a hoist A, a crate B, a surface C and a place D, it is the case that A is \"available\" and B and D are in the relation \"at\" and B is \"clear\" and B and C are in the relation \"on\"",
+                "Once I apply the action \"drop\" to a hoist A, a crate B, a surface C and a place D, it is not the case anymore that A and B are in the relation \"lifting\" and it is not the case anymore that C is \"clear\""
+            ]
+        },
+        "load": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "hoist",
+                "?y": "crate",
+                "?z": "truck",
+                "?p": "place"
+            },
+            "pddl": "(load ?x ?y ?z ?p)",
+            "description": "apply the action \"load\" to a hoist A, a crate B, a truck C and a place D",
+            "preconditions": [
+                "I can only apply the action \"load\" to a hoist A, a crate B, a truck C and a place D if it is the case that A and D are in the relation \"at\" and C and D are in the relation \"at\" and A and B are in the relation \"lifting\""
+            ],
+            "effects": [
+                "Once I apply the action \"load\" to a hoist A, a crate B, a truck C and a place D, it is the case that B and C are in the relation \"in\" and A is \"available\"",
+                "Once I apply the action \"load\" to a hoist A, a crate B, a truck C and a place D, it is not the case anymore that A and B are in the relation \"lifting\""
+            ]
+        },
+        "unload": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "hoist",
+                "?y": "crate",
+                "?z": "truck",
+                "?p": "place"
+            },
+            "pddl": "(unload ?x ?y ?z ?p)",
+            "description": "apply the action \"unload\" to a hoist A, a crate B, a truck C and a place D",
+            "preconditions": [
+                "I can only apply the action \"unload\" to a hoist A, a crate B, a truck C and a place D if it is the case that A and D are in the relation \"at\" and C and D are in the relation \"at\" and A is \"available\" and B and C are in the relation \"in\""
+            ],
+            "effects": [
+                "Once I apply the action \"unload\" to a hoist A, a crate B, a truck C and a place D, it is the case that A and B are in the relation \"lifting\"",
+                "Once I apply the action \"unload\" to a hoist A, a crate B, a truck C and a place D, it is not the case anymore that B and C are in the relation \"in\" and it is not the case anymore that A is \"available\""
+            ]
+        }
+    },
+    "predicates": {
+        "at": {
+            "parameter_types": {
+                "?x": "locatable",
+                "?y": "place"
+            },
+            "pddl": "(at ?x ?y)"
+        },
+        "on": {
+            "parameter_types": {
+                "?x": "crate",
+                "?y": "surface"
+            },
+            "pddl": "(on ?x ?y)"
+        },
+        "in": {
+            "parameter_types": {
+                "?x": "crate",
+                "?y": "truck"
+            },
+            "pddl": "(in ?x ?y)"
+        },
+        "lifting": {
+            "parameter_types": {
+                "?x": "hoist",
+                "?y": "crate"
+            },
+            "pddl": "(lifting ?x ?y)"
+        },
+        "available": {
+            "parameter_types": {
+                "?x": "hoist"
+            },
+            "pddl": "(available ?x)"
+        },
+        "clear": {
+            "parameter_types": {
+                "?x": "surface"
+            },
+            "pddl": "(clear ?x)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "drive": "apply the action \"drive\" to truck {?x}, place {?y} and place {?z}",
+        "lift": "apply the action \"lift\" to hoist {?x}, crate {?y}, surface {?z} and place {?p}",
+        "drop": "apply the action \"drop\" to hoist {?x}, crate {?y}, surface {?z} and place {?p}",
+        "load": "apply the action \"load\" to hoist {?x}, crate {?y}, truck {?z} and place {?p}",
+        "unload": "apply the action \"unload\" to hoist {?x}, crate {?y}, truck {?z} and place {?p}"
+    },
+    "predicate_nl_templates": {
+        "at": "{?x} and {?y} are in the relation \"at\"",
+        "on": "{?x} and {?y} are in the relation \"on\"",
+        "in": "{?x} and {?y} are in the relation \"in\"",
+        "lifting": "{?x} and {?y} are in the relation \"lifting\"",
+        "available": "{?x} is \"available\"",
+        "clear": "{?x} is \"clear\"",
+        "=": "{?x1} and {?x2} are in the relation \"=\"",
+        "!=": "{?x1} and {?x2} are in the relation \"!=\""
+    },
+    "action_nl_templates_indef": {
+        "drive": "apply the action \"drive\" to a truck {?x}, a place {?y} and a place {?z}",
+        "lift": "apply the action \"lift\" to a hoist {?x}, a crate {?y}, a surface {?z} and a place {?p}",
+        "drop": "apply the action \"drop\" to a hoist {?x}, a crate {?y}, a surface {?z} and a place {?p}",
+        "load": "apply the action \"load\" to a hoist {?x}, a crate {?y}, a truck {?z} and a place {?p}",
+        "unload": "apply the action \"unload\" to a hoist {?x}, a crate {?y}, a truck {?z} and a place {?p}"
+    },
+    "type_hierarchy": [
+        "Everything that is a place or a locatable is also a object",
+        "Everything that is a depot or a distributor is also a place",
+        "Everything that is a truck or a hoist or a surface is also a locatable",
+        "Everything that is a pallet or a crate is also a surface"
+    ]
+}

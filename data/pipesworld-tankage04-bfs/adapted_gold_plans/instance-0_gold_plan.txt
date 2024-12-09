@@ -1,0 +1,6 @@
+(pop-unitarypipe pipe_1 batch-atom_1 area_0 area_2 batch-atom_0 lco oca1 tank-slot_10 tank-slot_4)
+(push-unitarypipe pipe_0 batch-atom_0 area_0 area_1 batch-atom_5 oca1 lco tank-slot_10 tank-slot_9)
+(push-unitarypipe pipe_0 batch-atom_2 area_0 area_1 batch-atom_0 oc1b oca1 tank-slot_5 tank-slot_6)
+(push-unitarypipe pipe_1 batch-atom_4 area_0 area_2 batch-atom_1 gasoleo lco tank-slot_13 tank-slot_4)
+(push-unitarypipe pipe_1 batch-atom_3 area_0 area_2 batch-atom_4 rat-a gasoleo tank-slot_2 tank-slot_12)
+; cost = 5 (unit cost)

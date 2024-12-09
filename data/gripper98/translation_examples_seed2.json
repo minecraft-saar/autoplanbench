@@ -1,0 +1,26 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "dress_red",
+        "socket",
+        "object_260",
+        "teddy",
+        "frame_9",
+        "bastion",
+        "star_213",
+        "roof_11"
+    ],
+    "pos_examples": [
+        [
+            "Now, pick ball teddy from room roof_11 using gripper star_213.",
+            "(pick teddy roof_11 star_213)"
+        ],
+        [
+            "Once you are done, please move the robot from room dress_red to room socket.",
+            "(move dress_red socket)"
+        ]
+    ]
+}

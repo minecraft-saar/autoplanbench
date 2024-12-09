@@ -1,0 +1,29 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "rain",
+        "frame_9",
+        "object_50"
+    ],
+    "pos_examples": [
+        [
+            "Now, get dip object rain.",
+            "(get-dip rain)"
+        ],
+        [
+            "Once you are done, please undo rewind the movie.",
+            "(undo-rewind )"
+        ],
+        [
+            "First, get chips object_50 and then reset the counter.",
+            "(get-chips object_50)\n(reset-counter )"
+        ],
+        [
+            "The next step is to get object frame_9 popping.",
+            "(get-pop frame_9)"
+        ]
+    ]
+}

@@ -1,0 +1,42 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_50",
+        "bastion",
+        "rain",
+        "kumquat_8",
+        "star_213",
+        "frame_9",
+        "roof_11",
+        "kumquat",
+        "teddy",
+        "object_50_95",
+        "dress_red",
+        "kumquat_52",
+        "screen",
+        "kumquat_25",
+        "kumquat_95",
+        "object_260"
+    ],
+    "pos_examples": [
+        [
+            "Now, pour ingredient dress_red from shot star_213 held by hand object_260 into clean shaker roof_11 at level frame_9 next to level screen.",
+            "(pour-shot-to-clean-shaker star_213 dress_red roof_11 object_260 frame_9 screen)"
+        ],
+        [
+            "Once you are done, please refill shot kumquat_95 with ingredient teddy using dispenser rain while hand object_50 holds shot kumquat_95 and hand object_50_95 is empty.",
+            "(refill-shot kumquat teddy object_50 kumquat_95 rain)"
+        ],
+        [
+            "First, grasp container yew with hand object_50 and then empty shot kumquat_52 of beverage kumquat_8 while hand object_50_95 holds shot kumquat_52.",
+            "(grasp object_50 yew)\n(empty-shot object_50_95 kumquat kumquat_8)"
+        ],
+        [
+            "The next step is to clean shot kumquat_25 used by beverage bastion with hand object_260 holding shot kumquat_25 and hand object_50_95 having an empty hand.",
+            "(clean-shot kumquat bastion object_260 kumquat_25)"
+        ]
+    ]
+}

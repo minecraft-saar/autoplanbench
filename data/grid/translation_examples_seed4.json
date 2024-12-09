@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "star_213",
+        "object_50",
+        "kumquat_8",
+        "object_260",
+        "teddy",
+        "screen",
+        "bastion",
+        "kumquat",
+        "socket",
+        "dress_red",
+        "roof_11",
+        "frame_9"
+    ],
+    "pos_examples": [
+        [
+            "Now, pick up key dress_red at place yew.",
+            "(pickup yew dress_red)"
+        ],
+        [
+            "Once you are done, please pickup and lose place object_50 by exchanging key teddy with key object_260.",
+            "(pickup-and-loose object_50 object_260 teddy)"
+        ],
+        [
+            "First, unlock place socket to place screen using key roof_11 with shape bastion and then put down key kumquat_8 at place frame_9.",
+            "(unlock socket screen roof_11 bastion)\n(putdown frame_9 kumquat_8)"
+        ],
+        [
+            "The next step is to move from place kumquat to place star_213.",
+            "(move kumquat star_213)"
+        ]
+    ]
+}

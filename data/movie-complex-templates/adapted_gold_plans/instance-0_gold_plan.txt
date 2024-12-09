@@ -1,0 +1,6 @@
+(get-crackers object_2)
+(get-dip object_1)
+(start-movie )
+(rewind-movie )
+(reset-counter )
+; cost = 5 (unit cost)

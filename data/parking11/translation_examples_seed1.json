@@ -1,0 +1,33 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_260",
+        "kumquat",
+        "roof_11",
+        "frame_9",
+        "screen",
+        "rain",
+        "dress_red",
+        "teddy",
+        "object_50",
+        "fire",
+        "bastion"
+    ],
+    "pos_examples": [
+        [
+            "Now, move car rain from behind car screen to curb teddy.",
+            "(move-car-to-curb rain screen teddy)"
+        ],
+        [
+            "Once you are done, please move car kumquat from curb object_260 to curb fire.",
+            "(move-curb-to-curb kumquat object_260 fire)"
+        ],
+        [
+            "First, move car roof_11 from curb frame_9 to behind car dress_red and then move car object_50 from behind car yew to behind car bastion.",
+            "(move-curb-to-car roof_11 frame_9 dress_red)\n(move-car-to-car object_50 yew bastion)"
+        ]
+    ]
+}

@@ -1,0 +1,39 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_50",
+        "kumquat",
+        "dress_red",
+        "roof_11",
+        "bastion",
+        "screen",
+        "rain",
+        "kumquat_8",
+        "socket",
+        "frame_9",
+        "star_213",
+        "fire",
+        "object_260"
+    ],
+    "pos_examples": [
+        [
+            "Now, lift crate roof_11 from surface kumquat at place yew using hoist object_260.",
+            "(lift object_260 roof_11 kumquat yew)"
+        ],
+        [
+            "Once you are done, please drive truck rain from place socket to place bastion.",
+            "(drive rain socket bastion)"
+        ],
+        [
+            "First, drop crate star_213 onto surface object_50 at place yew using hoist screen and then load hoist dress_red with crate fire into truck kumquat_8 at place socket.",
+            "(drop screen star_213 object_50 yew)\n(load dress_red fire kumquat_8 socket)"
+        ],
+        [
+            "The next step is to unload hoist screen lifting crate roof_11 from truck frame_9 at place yew.",
+            "(unload screen roof_11 frame_9 yew)"
+        ]
+    ]
+}

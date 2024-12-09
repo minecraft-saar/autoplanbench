@@ -1,0 +1,7 @@
+(begin-cut sub2 sub3)
+(end-cut-1 sub3 sub4)
+(end-cut-2 sub2 sub4)
+(begin-transverse-splice sub4 sub1)
+(end-inverse-splice-1a sub3 sub4)
+(end-inverse-splice-2 sub3 sub1)
+; cost = 6 (unit cost)

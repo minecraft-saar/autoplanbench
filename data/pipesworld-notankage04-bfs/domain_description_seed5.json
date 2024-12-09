@@ -1,0 +1,289 @@
+{
+    "action_mappings": {
+        "push-start": "push start pipe {} with batch-atom {} from area {} to area {} using batch-atom {} and product {} and product {}",
+        "push-end": "push end pipe {} from area {} to area {} with batch-atom {} and batch-atom {}",
+        "pop-start": "pop start pipe {} from area {} to area {} with batch-atom {}, batch-atom {}, product {}, and product {}",
+        "pop-end": "pop end pipe {} from area {} to area {} with batch-atom {} and batch-atom {}",
+        "push-unitarypipe": "push unitary pipe {} with batch-atom {} from area {} to area {} replacing batch-atom {} using product {} and product {}",
+        "pop-unitarypipe": "pop unitary pipe {} with batch-atom {} from area {} to area {} replacing batch-atom {} using product {} and product {}"
+    },
+    "action_mappings_indef": {
+        "push-start": "push start a pipe {} with a batch-atom {} from an area {} to an area {} using a batch-atom {} and a product {} and a product {}",
+        "push-end": "push end a pipe {} from an area {} to an area {} with a batch-atom {} and a batch-atom {}",
+        "pop-start": "pop start a pipe {} from an area {} to an area {} with a batch-atom {}, a batch-atom {}, a product {}, and a product {}",
+        "pop-end": "pop end a pipe {} from an area {} to an area {} with a batch-atom {} and a batch-atom {}",
+        "push-unitarypipe": "push an unitary pipe {} with a batch-atom {} from an area {} to an area {} replacing a batch-atom {} using a product {} and a product {}",
+        "pop-unitarypipe": "pop an unitary pipe {} with a batch-atom {} from an area {} to an area {} replacing a batch-atom {} using a product {} and a product {}"
+    },
+    "predicate_mappings": {
+        "connect": "connect {} to {} using {}",
+        "unitary": "{} is unitary",
+        "not-unitary": "{} is not unitary",
+        "last": "{} is the last in {}",
+        "first": "{} is the first in {}",
+        "follow": "{} follows {}",
+        "is-product": "{} is a product of {}",
+        "on": "{} is on {}",
+        "may-interface": "{} may interface with {}",
+        "normal": "{} is normal",
+        "push-updating": "{} is being push-updated",
+        "pop-updating": "{} is being pop-updated",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "push-start": {
+            "annotation": "",
+            "parameter_types": {
+                "?pipe": "pipe",
+                "?batch-atom-in": "batch-atom",
+                "?from-area": "area",
+                "?to-area": "area",
+                "?first-batch-atom": "batch-atom",
+                "?product-batch-atom-in": "product",
+                "?product-first-batch": "product"
+            },
+            "pddl": "(push-start ?pipe ?batch-atom-in ?from-area ?to-area ?first-batch-atom ?product-batch-atom-in ?product-first-batch)",
+            "description": "push start a pipe A with a batch-atom B from an area C to an area D using a batch-atom E and a product F and a product G",
+            "preconditions": [
+                "I can only push start a pipe A with a batch-atom B from an area C to an area D using a batch-atom E and a product F and a product G if it is the case that A is normal and E is the first in A and connect C to D using A and B is on C and A is not unitary and B is a product of F and E is a product of G and F may interface with G"
+            ],
+            "effects": [
+                "Once I push start a pipe A with a batch-atom B from an area C to an area D using a batch-atom E and a product F and a product G, it is the case that A is being push-updated and B is the first in A and E follows B",
+                "Once I push start a pipe A with a batch-atom B from an area C to an area D using a batch-atom E and a product F and a product G, it is not the case anymore that A is normal and it is not the case anymore that E is the first in A and it is not the case anymore that B is on C"
+            ]
+        },
+        "push-end": {
+            "annotation": "",
+            "parameter_types": {
+                "?pipe": "pipe",
+                "?from-area": "area",
+                "?to-area": "area",
+                "?last-batch-atom": "batch-atom",
+                "?next-last-batch-atom": "batch-atom"
+            },
+            "pddl": "(push-end ?pipe ?from-area ?to-area ?last-batch-atom ?next-last-batch-atom)",
+            "description": "push end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E",
+            "preconditions": [
+                "I can only push end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E if it is the case that A is being push-updated and D is the last in A and connect B to C using A and A is not unitary and D follows E"
+            ],
+            "effects": [
+                "Once I push end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E, it is the case that A is normal and E is the last in A and D is on C",
+                "Once I push end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E, it is not the case anymore that A is being push-updated and it is not the case anymore that D follows E and it is not the case anymore that D is the last in A"
+            ]
+        },
+        "pop-start": {
+            "annotation": "",
+            "parameter_types": {
+                "?pipe": "pipe",
+                "?batch-atom-in": "batch-atom",
+                "?from-area": "area",
+                "?to-area": "area",
+                "?last-batch-atom": "batch-atom",
+                "?product-batch-atom-in": "product",
+                "?product-last-batch": "product"
+            },
+            "pddl": "(pop-start ?pipe ?batch-atom-in ?from-area ?to-area ?last-batch-atom ?product-batch-atom-in ?product-last-batch)",
+            "description": "pop start a pipe A from an area C to an area D with a batch-atom B, a batch-atom E, a product F, and a product G",
+            "preconditions": [
+                "I can only pop start a pipe A from an area C to an area D with a batch-atom B, a batch-atom E, a product F, and a product G if it is the case that A is normal and E is the last in A and connect C to D using A and B is on D and A is not unitary and B is a product of F and E is a product of G and F may interface with G"
+            ],
+            "effects": [
+                "Once I pop start a pipe A from an area C to an area D with a batch-atom B, a batch-atom E, a product F, and a product G, it is the case that A is being pop-updated and B is the last in A and B follows E",
+                "Once I pop start a pipe A from an area C to an area D with a batch-atom B, a batch-atom E, a product F, and a product G, it is not the case anymore that A is normal and it is not the case anymore that E is the last in A and it is not the case anymore that B is on D"
+            ]
+        },
+        "pop-end": {
+            "annotation": "",
+            "parameter_types": {
+                "?pipe": "pipe",
+                "?from-area": "area",
+                "?to-area": "area",
+                "?first-batch-atom": "batch-atom",
+                "?next-first-batch-atom": "batch-atom"
+            },
+            "pddl": "(pop-end ?pipe ?from-area ?to-area ?first-batch-atom ?next-first-batch-atom)",
+            "description": "pop end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E",
+            "preconditions": [
+                "I can only pop end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E if it is the case that A is being pop-updated and D is the first in A and connect B to C using A and A is not unitary and E follows D"
+            ],
+            "effects": [
+                "Once I pop end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E, it is the case that A is normal and E is the first in A and D is on B",
+                "Once I pop end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E, it is not the case anymore that A is being pop-updated and it is not the case anymore that E follows D and it is not the case anymore that D is the first in A"
+            ]
+        },
+        "push-unitarypipe": {
+            "annotation": "",
+            "parameter_types": {
+                "?pipe": "pipe",
+                "?batch-atom-in": "batch-atom",
+                "?from-area": "area",
+                "?to-area": "area",
+                "?first-batch-atom": "batch-atom",
+                "?product-batch-atom-in": "product",
+                "?product-first-batch": "product"
+            },
+            "pddl": "(push-unitarypipe ?pipe ?batch-atom-in ?from-area ?to-area ?first-batch-atom ?product-batch-atom-in ?product-first-batch)",
+            "description": "push an unitary pipe A with a batch-atom B from an area C to an area D replacing a batch-atom E using a product F and a product G",
+            "preconditions": [
+                "I can only push an unitary pipe A with a batch-atom B from an area C to an area D replacing a batch-atom E using a product F and a product G if it is the case that E is the first in A and connect C to D using A and B is on C and A is unitary and B is a product of F and E is a product of G and F may interface with G"
+            ],
+            "effects": [
+                "Once I push an unitary pipe A with a batch-atom B from an area C to an area D replacing a batch-atom E using a product F and a product G, it is the case that B is the first in A and B is the last in A and E is on D",
+                "Once I push an unitary pipe A with a batch-atom B from an area C to an area D replacing a batch-atom E using a product F and a product G, it is not the case anymore that E is the first in A and it is not the case anymore that E is the last in A and it is not the case anymore that B is on C"
+            ]
+        },
+        "pop-unitarypipe": {
+            "annotation": "",
+            "parameter_types": {
+                "?pipe": "pipe",
+                "?batch-atom-in": "batch-atom",
+                "?from-area": "area",
+                "?to-area": "area",
+                "?last-batch-atom": "batch-atom",
+                "?product-batch-atom-in": "product",
+                "?product-last-batch": "product"
+            },
+            "pddl": "(pop-unitarypipe ?pipe ?batch-atom-in ?from-area ?to-area ?last-batch-atom ?product-batch-atom-in ?product-last-batch)",
+            "description": "pop an unitary pipe A with a batch-atom B from an area D to an area C replacing a batch-atom E using a product F and a product G",
+            "preconditions": [
+                "I can only pop an unitary pipe A with a batch-atom B from an area D to an area C replacing a batch-atom E using a product F and a product G if it is the case that E is the last in A and connect C to D using A and B is on D and A is unitary and B is a product of F and E is a product of G and F may interface with G"
+            ],
+            "effects": [
+                "Once I pop an unitary pipe A with a batch-atom B from an area D to an area C replacing a batch-atom E using a product F and a product G, it is the case that B is the last in A and B is the first in A and E is on C",
+                "Once I pop an unitary pipe A with a batch-atom B from an area D to an area C replacing a batch-atom E using a product F and a product G, it is not the case anymore that E is the last in A and it is not the case anymore that E is the first in A and it is not the case anymore that B is on D"
+            ]
+        }
+    },
+    "predicates": {
+        "connect": {
+            "parameter_types": {
+                "?from": "area",
+                "?to": "area",
+                "?pipe": "pipe"
+            },
+            "pddl": "(connect ?from ?to ?pipe)"
+        },
+        "unitary": {
+            "parameter_types": {
+                "?pipe": "pipe"
+            },
+            "pddl": "(unitary ?pipe)"
+        },
+        "not-unitary": {
+            "parameter_types": {
+                "?pipe": "pipe"
+            },
+            "pddl": "(not-unitary ?pipe)"
+        },
+        "last": {
+            "parameter_types": {
+                "?batch-atom": "batch-atom",
+                "?pipe": "pipe"
+            },
+            "pddl": "(last ?batch-atom ?pipe)"
+        },
+        "first": {
+            "parameter_types": {
+                "?batch-atom": "batch-atom",
+                "?pipe": "pipe"
+            },
+            "pddl": "(first ?batch-atom ?pipe)"
+        },
+        "follow": {
+            "parameter_types": {
+                "?next": "batch-atom",
+                "?previous": "batch-atom"
+            },
+            "pddl": "(follow ?next ?previous)"
+        },
+        "is-product": {
+            "parameter_types": {
+                "?batch-atom": "batch-atom",
+                "?product": "product"
+            },
+            "pddl": "(is-product ?batch-atom ?product)"
+        },
+        "on": {
+            "parameter_types": {
+                "?batch-atom": "batch-atom",
+                "?area": "area"
+            },
+            "pddl": "(on ?batch-atom ?area)"
+        },
+        "may-interface": {
+            "parameter_types": {
+                "?product-a": "product",
+                "?product-b": "product"
+            },
+            "pddl": "(may-interface ?product-a ?product-b)"
+        },
+        "normal": {
+            "parameter_types": {
+                "?pipe": "pipe"
+            },
+            "pddl": "(normal ?pipe)"
+        },
+        "push-updating": {
+            "parameter_types": {
+                "?pipe": "pipe"
+            },
+            "pddl": "(push-updating ?pipe)"
+        },
+        "pop-updating": {
+            "parameter_types": {
+                "?pipe": "pipe"
+            },
+            "pddl": "(pop-updating ?pipe)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "push-start": "push start pipe {?pipe} with batch-atom {?batch-atom-in} from area {?from-area} to area {?to-area} using batch-atom {?first-batch-atom} and product {?product-batch-atom-in} and product {?product-first-batch}",
+        "push-end": "push end pipe {?pipe} from area {?from-area} to area {?to-area} with batch-atom {?last-batch-atom} and batch-atom {?next-last-batch-atom}",
+        "pop-start": "pop start pipe {?pipe} from area {?from-area} to area {?to-area} with batch-atom {?batch-atom-in}, batch-atom {?last-batch-atom}, product {?product-batch-atom-in}, and product {?product-last-batch}",
+        "pop-end": "pop end pipe {?pipe} from area {?from-area} to area {?to-area} with batch-atom {?first-batch-atom} and batch-atom {?next-first-batch-atom}",
+        "push-unitarypipe": "push unitary pipe {?pipe} with batch-atom {?batch-atom-in} from area {?from-area} to area {?to-area} replacing batch-atom {?first-batch-atom} using product {?product-batch-atom-in} and product {?product-first-batch}",
+        "pop-unitarypipe": "pop unitary pipe {?pipe} with batch-atom {?batch-atom-in} from area {?to-area} to area {?from-area} replacing batch-atom {?last-batch-atom} using product {?product-batch-atom-in} and product {?product-last-batch}"
+    },
+    "predicate_nl_templates": {
+        "connect": "connect {?from} to {?to} using {?pipe}",
+        "unitary": "{?pipe} is unitary",
+        "not-unitary": "{?pipe} is not unitary",
+        "last": "{?batch-atom} is the last in {?pipe}",
+        "first": "{?batch-atom} is the first in {?pipe}",
+        "follow": "{?next} follows {?previous}",
+        "is-product": "{?batch-atom} is a product of {?product}",
+        "on": "{?batch-atom} is on {?area}",
+        "may-interface": "{?product-a} may interface with {?product-b}",
+        "normal": "{?pipe} is normal",
+        "push-updating": "{?pipe} is being push-updated",
+        "pop-updating": "{?pipe} is being pop-updated",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "push-start": "push start a pipe {?pipe} with a batch-atom {?batch-atom-in} from an area {?from-area} to an area {?to-area} using a batch-atom {?first-batch-atom} and a product {?product-batch-atom-in} and a product {?product-first-batch}",
+        "push-end": "push end a pipe {?pipe} from an area {?from-area} to an area {?to-area} with a batch-atom {?last-batch-atom} and a batch-atom {?next-last-batch-atom}",
+        "pop-start": "pop start a pipe {?pipe} from an area {?from-area} to an area {?to-area} with a batch-atom {?batch-atom-in}, a batch-atom {?last-batch-atom}, a product {?product-batch-atom-in}, and a product {?product-last-batch}",
+        "pop-end": "pop end a pipe {?pipe} from an area {?from-area} to an area {?to-area} with a batch-atom {?first-batch-atom} and a batch-atom {?next-first-batch-atom}",
+        "push-unitarypipe": "push an unitary pipe {?pipe} with a batch-atom {?batch-atom-in} from an area {?from-area} to an area {?to-area} replacing a batch-atom {?first-batch-atom} using a product {?product-batch-atom-in} and a product {?product-first-batch}",
+        "pop-unitarypipe": "pop an unitary pipe {?pipe} with a batch-atom {?batch-atom-in} from an area {?to-area} to an area {?from-area} replacing a batch-atom {?last-batch-atom} using a product {?product-batch-atom-in} and a product {?product-last-batch}"
+    },
+    "type_hierarchy": [
+        "Everything that is a pipe or a area or a product or a batch-atom is also a object"
+    ]
+}

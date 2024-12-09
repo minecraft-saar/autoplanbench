@@ -1,0 +1,41 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "teddy",
+        "kumquat_8_44",
+        "socket",
+        "screen",
+        "kumquat_8_78",
+        "star_213",
+        "kumquat_8_78_96",
+        "kumquat_8",
+        "bastion",
+        "object_50",
+        "kumquat_8_78_96_97_74",
+        "object_260",
+        "fire",
+        "kumquat_8_78_96_97",
+        "kumquat"
+    ],
+    "pos_examples": [
+        [
+            "Now, saw board fire into medium part kumquat using saw teddy with awood socket, surface object_260, changing size from aboardsize kumquat_8 to aboardsize kumquat_8_78 through intermediate size aboardsize kumquat_8_78_96.",
+            "(do-saw-medium fire kumquat teddy socket object_260 kumquat_8 kumquat_8_78_96 kumquat_8_78)"
+        ],
+        [
+            "Once you are done, please cut board fire into part kumquat using highspeed-saw bastion with awood socket, surface object_260, changing size from aboardsize kumquat_8 to aboardsize kumquat_8_78_96 through intermediate sizes aboardsize kumquat_8_78_96_97 and aboardsize kumquat_8_78_96_97_74.",
+            "(cut-board-large fire kumquat bastion socket object_260 kumquat_8 kumquat_8_78_96_97_74 kumquat_8_78_96_97 kumquat_8_78_96)"
+        ],
+        [
+            "First, do immersion varnish on part kumquat using immersion-varnisher yew to change color to acolour screen with surface object_260 and then cut board fire into part kumquat using highspeed-saw bastion with awood socket, surface object_260, changing size from aboardsize kumquat_8 to aboardsize kumquat_8_44.",
+            "(do-immersion-varnish kumquat yew screen object_260)\n(cut-board-small fire kumquat bastion socket object_260 kumquat_8 kumquat_8_44)"
+        ],
+        [
+            "The next step is to do plane on part kumquat using planer object_50 to change surface from surface object_260 to smooth, color from acolour screen to natural, and treatment from treatmentstatus star_213 to untreated.",
+            "(do-plane kumquat object_50 object_260 screen star_213)"
+        ]
+    ]
+}

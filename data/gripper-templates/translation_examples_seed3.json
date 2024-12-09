@@ -1,0 +1,28 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "dress_red",
+        "star_213",
+        "object_260",
+        "roof_11",
+        "screen",
+        "kumquat_8",
+        "teddy",
+        "frame_9",
+        "object_50",
+        "socket"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"drop\" to robot yew, object socket, room star_213 and gripper screen.",
+            "(drop yew socket star_213 screen)"
+        ],
+        [
+            "Once you are done, please apply the action \"move\" to robot roof_11, room object_260 and room frame_9.",
+            "(move roof_11 object_260 frame_9)"
+        ]
+    ]
+}

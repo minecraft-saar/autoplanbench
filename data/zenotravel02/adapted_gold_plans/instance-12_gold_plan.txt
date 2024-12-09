@@ -1,0 +1,7 @@
+(fly object_0 object_4 object_10 object_7 object_2)
+(board object_12 object_0 object_10)
+(fly object_0 object_10 object_6 object_2 object_3)
+(refuel object_0 object_6 object_3 object_2)
+(debark object_12 object_0 object_6)
+(fly object_0 object_6 object_10 object_2 object_3)
+; cost = 6 (unit cost)

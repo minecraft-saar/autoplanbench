@@ -1,0 +1,40 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_50_85_76",
+        "object_50_77",
+        "object_50",
+        "roof_11_56",
+        "roof_11",
+        "object_50_85_20",
+        "star_213",
+        "dress_red",
+        "object_50_85_50",
+        "screen",
+        "fire",
+        "object_50_85_50_26",
+        "object_50_85",
+        "kumquat_8",
+        "object_260",
+        "kumquat",
+        "bastion",
+        "teddy"
+    ],
+    "pos_examples": [
+        [
+            "Now, load goods object_260 onto truck teddy at market screen from level object_50_85 to level object_50_77 with level object_50 next to level object_50_85 and level object_50_77 next to level object_50_85_50.",
+            "(load object_260 teddy screen object_50 bastion roof_11 roof_11)"
+        ],
+        [
+            "Once you are done, please drive truck fire from place dress_red to place yew.",
+            "(drive fire dress_red yew)"
+        ],
+        [
+            "First, buy goods kumquat_8 with truck fire at market kumquat from level object_50_85_50_26 to level object_50_85 with level object_50_85 next to level object_50_85_50_26 and level object_50_85_76 next to level object_50_85_20 and then unload goods object_260 from truck fire at depot star_213 from level object_50_85 to level object_50_85_20 with level object_50_85_20 next to level object_50_85 and level object_50_85_76 next to level roof_11_56.",
+            "(buy fire kumquat_8 kumquat object_50_85_50 roof_11 object_50_85_50_26 roof_11)\n(unload object_260 fire star_213 object_50 roof_11 object_50_85 roof_11)"
+        ]
+    ]
+}

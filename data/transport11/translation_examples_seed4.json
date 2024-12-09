@@ -1,0 +1,30 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "fire",
+        "object_260",
+        "kumquat_8",
+        "frame_9",
+        "object_50",
+        "rain",
+        "dress_red",
+        "screen",
+        "kumquat",
+        "roof_11",
+        "bastion",
+        "socket"
+    ],
+    "pos_examples": [
+        [
+            "Now, pick up package object_260 with vehicle fire at location screen changing capacity from capacity-number yew to capacity-number roof_11.",
+            "(pick-up fire screen object_260 roof_11 yew)"
+        ],
+        [
+            "Once you are done, please drive vehicle kumquat_8 from location bastion to location rain.",
+            "(drive kumquat_8 bastion rain)"
+        ]
+    ]
+}

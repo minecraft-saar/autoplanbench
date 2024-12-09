@@ -1,0 +1,154 @@
+{
+    "action_mappings": {
+        "pick-up": "apply the action \"pick-up\" to object {}",
+        "put-down": "apply the action \"put-down\" to object {}",
+        "stack": "apply the action \"stack\" to object {} and object {}",
+        "unstack": "apply the action \"unstack\" to object {} and object {}"
+    },
+    "action_mappings_indef": {
+        "pick-up": "apply the action \"pick-up\" to an object {}",
+        "put-down": "apply the action \"put-down\" to an object {}",
+        "stack": "apply the action \"stack\" to an object {} and an object {}",
+        "unstack": "apply the action \"unstack\" to an object {} and an object {}"
+    },
+    "predicate_mappings": {
+        "clear": "{} is \"clear\"",
+        "ontable": "{} is \"ontable\"",
+        "handempty": "\"handempty\"",
+        "holding": "{} is \"holding\"",
+        "on": "{} and {} are in the relation \"on\"",
+        "=": "{} and {} are in the relation \"=\"",
+        "!=": "{} and {} are in the relation \"!=\""
+    },
+    "actions": {
+        "pick-up": {
+            "annotation": "",
+            "parameter_types": {
+                "?ob": "object"
+            },
+            "pddl": "(pick-up ?ob)",
+            "description": "apply the action \"pick-up\" to an object A",
+            "preconditions": [
+                "I can only apply the action \"pick-up\" to an object A if it is the case that A is \"clear\" and A is \"ontable\" and \"handempty\""
+            ],
+            "effects": [
+                "Once I apply the action \"pick-up\" to an object A, it is the case that A is \"holding\"",
+                "Once I apply the action \"pick-up\" to an object A, it is not the case anymore that A is \"clear\" and it is not the case anymore that A is \"ontable\" and it is not the case anymore that \"handempty\""
+            ]
+        },
+        "put-down": {
+            "annotation": "",
+            "parameter_types": {
+                "?ob": "object"
+            },
+            "pddl": "(put-down ?ob)",
+            "description": "apply the action \"put-down\" to an object A",
+            "preconditions": [
+                "I can only apply the action \"put-down\" to an object A if it is the case that A is \"holding\""
+            ],
+            "effects": [
+                "Once I apply the action \"put-down\" to an object A, it is the case that A is \"clear\" and \"handempty\" and A is \"ontable\"",
+                "Once I apply the action \"put-down\" to an object A, it is not the case anymore that A is \"holding\""
+            ]
+        },
+        "stack": {
+            "annotation": "",
+            "parameter_types": {
+                "?ob": "object",
+                "?underob": "object"
+            },
+            "pddl": "(stack ?ob ?underob)",
+            "description": "apply the action \"stack\" to an object A and an object B",
+            "preconditions": [
+                "I can only apply the action \"stack\" to an object A and an object B if it is the case that B is \"clear\" and A is \"holding\""
+            ],
+            "effects": [
+                "Once I apply the action \"stack\" to an object A and an object B, it is the case that \"handempty\" and A is \"clear\" and A and B are in the relation \"on\"",
+                "Once I apply the action \"stack\" to an object A and an object B, it is not the case anymore that B is \"clear\" and it is not the case anymore that A is \"holding\""
+            ]
+        },
+        "unstack": {
+            "annotation": "",
+            "parameter_types": {
+                "?ob": "object",
+                "?underob": "object"
+            },
+            "pddl": "(unstack ?ob ?underob)",
+            "description": "apply the action \"unstack\" to an object A and an object B",
+            "preconditions": [
+                "I can only apply the action \"unstack\" to an object A and an object B if it is the case that A and B are in the relation \"on\" and A is \"clear\" and \"handempty\""
+            ],
+            "effects": [
+                "Once I apply the action \"unstack\" to an object A and an object B, it is the case that A is \"holding\" and B is \"clear\"",
+                "Once I apply the action \"unstack\" to an object A and an object B, it is not the case anymore that A and B are in the relation \"on\" and it is not the case anymore that A is \"clear\" and it is not the case anymore that \"handempty\""
+            ]
+        }
+    },
+    "predicates": {
+        "clear": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(clear ?x)"
+        },
+        "ontable": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(ontable ?x)"
+        },
+        "handempty": {
+            "parameter_types": {},
+            "pddl": "(handempty)"
+        },
+        "holding": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(holding ?x)"
+        },
+        "on": {
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(on ?x ?y)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "pick-up": "apply the action \"pick-up\" to object {?ob}",
+        "put-down": "apply the action \"put-down\" to object {?ob}",
+        "stack": "apply the action \"stack\" to object {?ob} and object {?underob}",
+        "unstack": "apply the action \"unstack\" to object {?ob} and object {?underob}"
+    },
+    "predicate_nl_templates": {
+        "clear": "{?x} is \"clear\"",
+        "ontable": "{?x} is \"ontable\"",
+        "handempty": "\"handempty\"",
+        "holding": "{?x} is \"holding\"",
+        "on": "{?x} and {?y} are in the relation \"on\"",
+        "=": "{?x1} and {?x2} are in the relation \"=\"",
+        "!=": "{?x1} and {?x2} are in the relation \"!=\""
+    },
+    "action_nl_templates_indef": {
+        "pick-up": "apply the action \"pick-up\" to an object {?ob}",
+        "put-down": "apply the action \"put-down\" to an object {?ob}",
+        "stack": "apply the action \"stack\" to an object {?ob} and an object {?underob}",
+        "unstack": "apply the action \"unstack\" to an object {?ob} and an object {?underob}"
+    },
+    "type_hierarchy": []
+}

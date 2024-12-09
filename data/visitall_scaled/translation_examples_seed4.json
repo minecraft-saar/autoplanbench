@@ -1,0 +1,16 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat_8",
+        "teddy"
+    ],
+    "pos_examples": [
+        [
+            "Now, move the robot from place teddy to place kumquat_8.",
+            "(move teddy kumquat_8)"
+        ]
+    ]
+}

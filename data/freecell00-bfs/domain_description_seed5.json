@@ -1,0 +1,359 @@
+{
+    "action_mappings": {
+        "move": "move object {} from object {} to object {}",
+        "move-b": "move object {} from object {} to object {} on object {}",
+        "sendtofree": "send object {} from object {} to object {} in object {}",
+        "sendtofree-b": "send object {} to free cell object {} with successor object {} and column object {} with successor object {}",
+        "sendtonewcol": "send object {} to new column with object {} in object {} and successor object {}",
+        "sendtohome": "send object {} to home with object {} and object {} in suit object {} with value object {} and home value object {}",
+        "sendtohome-b": "send object {} of suit object {} with value object {} to home with homecard object {} and home value object {} from column space object {} to new column space object {}",
+        "homefromfreecell": "send object {} of suit object {} with value object {} to home with homecard object {} and home value object {} from cell space object {} to new cell space object {}",
+        "colfromfreecell": "move object {} from cell to stack on object {} updating cell space from object {} to object {}",
+        "newcolfromfreecell": "move object {} from cell to start new column updating column space from object {} to object {} and cell space from object {} to object {}"
+    },
+    "action_mappings_indef": {
+        "move": "move an object {} from an object {} to an object {}",
+        "move-b": "move an object {} from an object {} to an object {} on an object {}",
+        "sendtofree": "send an object {} from an object {} to an object {} in an object {}",
+        "sendtofree-b": "send an object {} to free cell an object {} with successor an object {} and column an object {} with successor an object {}",
+        "sendtonewcol": "send an object {} to new column with an object {} in an object {} and successor an object {}",
+        "sendtohome": "send an object {} to home with an object {} and an object {} in suit an object {} with value an object {} and home value an object {}",
+        "sendtohome-b": "send an object {} of suit an object {} with value an object {} to home with homecard an object {} and home value an object {} from column space an object {} to new column space an object {}",
+        "homefromfreecell": "send an object {} of suit an object {} with value an object {} to home with homecard an object {} and home value an object {} from cell space an object {} to new cell space an object {}",
+        "colfromfreecell": "move an object {} from cell to stack on an object {} updating cell space from an object {} to an object {}",
+        "newcolfromfreecell": "move an object {} from cell to start new column updating column space from an object {} to an object {} and cell space from an object {} to an object {}"
+    },
+    "predicate_mappings": {
+        "on": "{} is on {}",
+        "incell": "{} is in the cell",
+        "clear": "{} is clear",
+        "cellspace": "{} is a cell space",
+        "colspace": "{} is a column space",
+        "home": "{} is home",
+        "bottomcol": "{} is the bottom color",
+        "canstack": "{} can be stacked on {}",
+        "suit": "{} is a suit of {}",
+        "value": "{} has a value of {}",
+        "successor": "{} is the successor of {}",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "move": {
+            "annotation": "",
+            "parameter_types": {
+                "?card": "object",
+                "?oldcard": "object",
+                "?newcard": "object"
+            },
+            "pddl": "(move ?card ?oldcard ?newcard)",
+            "description": "move an object A from an object B to an object C",
+            "preconditions": [
+                "I can only move an object A from an object B to an object C if it is the case that A is clear and C is clear and A can be stacked on C and A is on B"
+            ],
+            "effects": [
+                "Once I move an object A from an object B to an object C, it is the case that A is on C and B is clear",
+                "Once I move an object A from an object B to an object C, it is not the case anymore that A is on B and it is not the case anymore that C is clear"
+            ]
+        },
+        "move-b": {
+            "annotation": "",
+            "parameter_types": {
+                "?card": "object",
+                "?newcard": "object",
+                "?cols": "object",
+                "?ncols": "object"
+            },
+            "pddl": "(move-b ?card ?newcard ?cols ?ncols)",
+            "description": "move an object A from an object C to an object D on an object B",
+            "preconditions": [
+                "I can only move an object A from an object C to an object D on an object B if it is the case that A is clear and A is the bottom color and B is clear and A can be stacked on B and C is a column space and D is the successor of C"
+            ],
+            "effects": [
+                "Once I move an object A from an object C to an object D on an object B, it is the case that A is on B and D is a column space",
+                "Once I move an object A from an object C to an object D on an object B, it is not the case anymore that A is the bottom color and it is not the case anymore that B is clear and it is not the case anymore that C is a column space"
+            ]
+        },
+        "sendtofree": {
+            "annotation": "",
+            "parameter_types": {
+                "?card": "object",
+                "?oldcard": "object",
+                "?cells": "object",
+                "?ncells": "object"
+            },
+            "pddl": "(sendtofree ?card ?oldcard ?cells ?ncells)",
+            "description": "send an object A from an object B to an object D in an object C",
+            "preconditions": [
+                "I can only send an object A from an object B to an object D in an object C if it is the case that A is clear and A is on B and C is a cell space and C is the successor of D"
+            ],
+            "effects": [
+                "Once I send an object A from an object B to an object D in an object C, it is the case that A is in the cell and B is clear and D is a cell space",
+                "Once I send an object A from an object B to an object D in an object C, it is not the case anymore that A is on B and it is not the case anymore that A is clear and it is not the case anymore that C is a cell space"
+            ]
+        },
+        "sendtofree-b": {
+            "annotation": "",
+            "parameter_types": {
+                "?card": "object",
+                "?cells": "object",
+                "?ncells": "object",
+                "?cols": "object",
+                "?ncols": "object"
+            },
+            "pddl": "(sendtofree-b ?card ?cells ?ncells ?cols ?ncols)",
+            "description": "send an object A to free cell an object B with successor an object C and column an object D with successor an object E",
+            "preconditions": [
+                "I can only send an object A to free cell an object B with successor an object C and column an object D with successor an object E if it is the case that A is clear and A is the bottom color and B is a cell space and B is the successor of C and D is a column space and E is the successor of D"
+            ],
+            "effects": [
+                "Once I send an object A to free cell an object B with successor an object C and column an object D with successor an object E, it is the case that A is in the cell and E is a column space and C is a cell space",
+                "Once I send an object A to free cell an object B with successor an object C and column an object D with successor an object E, it is not the case anymore that A is the bottom color and it is not the case anymore that A is clear and it is not the case anymore that D is a column space and it is not the case anymore that B is a cell space"
+            ]
+        },
+        "sendtonewcol": {
+            "annotation": "",
+            "parameter_types": {
+                "?card": "object",
+                "?oldcard": "object",
+                "?cols": "object",
+                "?ncols": "object"
+            },
+            "pddl": "(sendtonewcol ?card ?oldcard ?cols ?ncols)",
+            "description": "send an object A to new column with an object B in an object C and successor an object D",
+            "preconditions": [
+                "I can only send an object A to new column with an object B in an object C and successor an object D if it is the case that A is clear and C is a column space and C is the successor of D and A is on B"
+            ],
+            "effects": [
+                "Once I send an object A to new column with an object B in an object C and successor an object D, it is the case that A is the bottom color and B is clear and D is a column space",
+                "Once I send an object A to new column with an object B in an object C and successor an object D, it is not the case anymore that A is on B and it is not the case anymore that C is a column space"
+            ]
+        },
+        "sendtohome": {
+            "annotation": "",
+            "parameter_types": {
+                "?card": "object",
+                "?oldcard": "object",
+                "?suit": "object",
+                "?vcard": "object",
+                "?homecard": "object",
+                "?vhomecard": "object"
+            },
+            "pddl": "(sendtohome ?card ?oldcard ?suit ?vcard ?homecard ?vhomecard)",
+            "description": "send an object A to home with an object B and an object E in suit an object C with value an object D and home value an object F",
+            "preconditions": [
+                "I can only send an object A to home with an object B and an object E in suit an object C with value an object D and home value an object F if it is the case that A is clear and A is on B and E is home and A is a suit of C and E is a suit of C and A has a value of D and E has a value of F and D is the successor of F"
+            ],
+            "effects": [
+                "Once I send an object A to home with an object B and an object E in suit an object C with value an object D and home value an object F, it is the case that A is home and B is clear",
+                "Once I send an object A to home with an object B and an object E in suit an object C with value an object D and home value an object F, it is not the case anymore that A is on B and it is not the case anymore that E is home and it is not the case anymore that A is clear"
+            ]
+        },
+        "sendtohome-b": {
+            "annotation": "",
+            "parameter_types": {
+                "?card": "object",
+                "?suit": "object",
+                "?vcard": "object",
+                "?homecard": "object",
+                "?vhomecard": "object",
+                "?cols": "object",
+                "?ncols": "object"
+            },
+            "pddl": "(sendtohome-b ?card ?suit ?vcard ?homecard ?vhomecard ?cols ?ncols)",
+            "description": "send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from column space an object F to new column space an object G",
+            "preconditions": [
+                "I can only send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from column space an object F to new column space an object G if it is the case that A is clear and A is the bottom color and D is home and A is a suit of B and D is a suit of B and A has a value of C and D has a value of E and C is the successor of E and F is a column space and G is the successor of F"
+            ],
+            "effects": [
+                "Once I send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from column space an object F to new column space an object G, it is the case that A is home and G is a column space",
+                "Once I send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from column space an object F to new column space an object G, it is not the case anymore that D is home and it is not the case anymore that A is clear and it is not the case anymore that A is the bottom color and it is not the case anymore that F is a column space"
+            ]
+        },
+        "homefromfreecell": {
+            "annotation": "",
+            "parameter_types": {
+                "?card": "object",
+                "?suit": "object",
+                "?vcard": "object",
+                "?homecard": "object",
+                "?vhomecard": "object",
+                "?cells": "object",
+                "?ncells": "object"
+            },
+            "pddl": "(homefromfreecell ?card ?suit ?vcard ?homecard ?vhomecard ?cells ?ncells)",
+            "description": "send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from cell space an object F to new cell space an object G",
+            "preconditions": [
+                "I can only send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from cell space an object F to new cell space an object G if it is the case that A is in the cell and D is home and A is a suit of B and D is a suit of B and A has a value of C and D has a value of E and C is the successor of E and F is a cell space and G is the successor of F"
+            ],
+            "effects": [
+                "Once I send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from cell space an object F to new cell space an object G, it is the case that A is home and G is a cell space",
+                "Once I send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from cell space an object F to new cell space an object G, it is not the case anymore that A is in the cell and it is not the case anymore that F is a cell space and it is not the case anymore that D is home"
+            ]
+        },
+        "colfromfreecell": {
+            "annotation": "",
+            "parameter_types": {
+                "?card": "object",
+                "?newcard": "object",
+                "?cells": "object",
+                "?ncells": "object"
+            },
+            "pddl": "(colfromfreecell ?card ?newcard ?cells ?ncells)",
+            "description": "move an object A from cell to stack on an object B updating cell space from an object C to an object D",
+            "preconditions": [
+                "I can only move an object A from cell to stack on an object B updating cell space from an object C to an object D if it is the case that A is in the cell and B is clear and A can be stacked on B and C is a cell space and D is the successor of C"
+            ],
+            "effects": [
+                "Once I move an object A from cell to stack on an object B updating cell space from an object C to an object D, it is the case that D is a cell space and A is clear and A is on B",
+                "Once I move an object A from cell to stack on an object B updating cell space from an object C to an object D, it is not the case anymore that A is in the cell and it is not the case anymore that C is a cell space and it is not the case anymore that B is clear"
+            ]
+        },
+        "newcolfromfreecell": {
+            "annotation": "",
+            "parameter_types": {
+                "?card": "object",
+                "?cols": "object",
+                "?ncols": "object",
+                "?cells": "object",
+                "?ncells": "object"
+            },
+            "pddl": "(newcolfromfreecell ?card ?cols ?ncols ?cells ?ncells)",
+            "description": "move an object A from cell to start new column updating column space from an object B to an object C and cell space from an object D to an object E",
+            "preconditions": [
+                "I can only move an object A from cell to start new column updating column space from an object B to an object C and cell space from an object D to an object E if it is the case that A is in the cell and B is a column space and D is a cell space and B is the successor of C and E is the successor of D"
+            ],
+            "effects": [
+                "Once I move an object A from cell to start new column updating column space from an object B to an object C and cell space from an object D to an object E, it is the case that A is the bottom color and A is clear and C is a column space and E is a cell space",
+                "Once I move an object A from cell to start new column updating column space from an object B to an object C and cell space from an object D to an object E, it is not the case anymore that A is in the cell and it is not the case anymore that B is a column space and it is not the case anymore that D is a cell space"
+            ]
+        }
+    },
+    "predicates": {
+        "on": {
+            "parameter_types": {
+                "?c1": "object",
+                "?c2": "object"
+            },
+            "pddl": "(on ?c1 ?c2)"
+        },
+        "incell": {
+            "parameter_types": {
+                "?c": "object"
+            },
+            "pddl": "(incell ?c)"
+        },
+        "clear": {
+            "parameter_types": {
+                "?c": "object"
+            },
+            "pddl": "(clear ?c)"
+        },
+        "cellspace": {
+            "parameter_types": {
+                "?n": "object"
+            },
+            "pddl": "(cellspace ?n)"
+        },
+        "colspace": {
+            "parameter_types": {
+                "?n": "object"
+            },
+            "pddl": "(colspace ?n)"
+        },
+        "home": {
+            "parameter_types": {
+                "?c": "object"
+            },
+            "pddl": "(home ?c)"
+        },
+        "bottomcol": {
+            "parameter_types": {
+                "?c": "object"
+            },
+            "pddl": "(bottomcol ?c)"
+        },
+        "canstack": {
+            "parameter_types": {
+                "?c1": "object",
+                "?c2": "object"
+            },
+            "pddl": "(canstack ?c1 ?c2)"
+        },
+        "suit": {
+            "parameter_types": {
+                "?c": "object",
+                "?s": "object"
+            },
+            "pddl": "(suit ?c ?s)"
+        },
+        "value": {
+            "parameter_types": {
+                "?c": "object",
+                "?v": "object"
+            },
+            "pddl": "(value ?c ?v)"
+        },
+        "successor": {
+            "parameter_types": {
+                "?n1": "object",
+                "?n0": "object"
+            },
+            "pddl": "(successor ?n1 ?n0)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "move": "move object {?card} from object {?oldcard} to object {?newcard}",
+        "move-b": "move object {?card} from object {?cols} to object {?ncols} on object {?newcard}",
+        "sendtofree": "send object {?card} from object {?oldcard} to object {?ncells} in object {?cells}",
+        "sendtofree-b": "send object {?card} to free cell object {?cells} with successor object {?ncells} and column object {?cols} with successor object {?ncols}",
+        "sendtonewcol": "send object {?card} to new column with object {?oldcard} in object {?cols} and successor object {?ncols}",
+        "sendtohome": "send object {?card} to home with object {?oldcard} and object {?homecard} in suit object {?suit} with value object {?vcard} and home value object {?vhomecard}",
+        "sendtohome-b": "send object {?card} of suit object {?suit} with value object {?vcard} to home with homecard object {?homecard} and home value object {?vhomecard} from column space object {?cols} to new column space object {?ncols}",
+        "homefromfreecell": "send object {?card} of suit object {?suit} with value object {?vcard} to home with homecard object {?homecard} and home value object {?vhomecard} from cell space object {?cells} to new cell space object {?ncells}",
+        "colfromfreecell": "move object {?card} from cell to stack on object {?newcard} updating cell space from object {?cells} to object {?ncells}",
+        "newcolfromfreecell": "move object {?card} from cell to start new column updating column space from object {?cols} to object {?ncols} and cell space from object {?cells} to object {?ncells}"
+    },
+    "predicate_nl_templates": {
+        "on": "{?c1} is on {?c2}",
+        "incell": "{?c} is in the cell",
+        "clear": "{?c} is clear",
+        "cellspace": "{?n} is a cell space",
+        "colspace": "{?n} is a column space",
+        "home": "{?c} is home",
+        "bottomcol": "{?c} is the bottom color",
+        "canstack": "{?c1} can be stacked on {?c2}",
+        "suit": "{?c} is a suit of {?s}",
+        "value": "{?c} has a value of {?v}",
+        "successor": "{?n1} is the successor of {?n0}",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "move": "move an object {?card} from an object {?oldcard} to an object {?newcard}",
+        "move-b": "move an object {?card} from an object {?cols} to an object {?ncols} on an object {?newcard}",
+        "sendtofree": "send an object {?card} from an object {?oldcard} to an object {?ncells} in an object {?cells}",
+        "sendtofree-b": "send an object {?card} to free cell an object {?cells} with successor an object {?ncells} and column an object {?cols} with successor an object {?ncols}",
+        "sendtonewcol": "send an object {?card} to new column with an object {?oldcard} in an object {?cols} and successor an object {?ncols}",
+        "sendtohome": "send an object {?card} to home with an object {?oldcard} and an object {?homecard} in suit an object {?suit} with value an object {?vcard} and home value an object {?vhomecard}",
+        "sendtohome-b": "send an object {?card} of suit an object {?suit} with value an object {?vcard} to home with homecard an object {?homecard} and home value an object {?vhomecard} from column space an object {?cols} to new column space an object {?ncols}",
+        "homefromfreecell": "send an object {?card} of suit an object {?suit} with value an object {?vcard} to home with homecard an object {?homecard} and home value an object {?vhomecard} from cell space an object {?cells} to new cell space an object {?ncells}",
+        "colfromfreecell": "move an object {?card} from cell to stack on an object {?newcard} updating cell space from an object {?cells} to an object {?ncells}",
+        "newcolfromfreecell": "move an object {?card} from cell to start new column updating column space from an object {?cols} to an object {?ncols} and cell space from an object {?cells} to an object {?ncells}"
+    },
+    "type_hierarchy": []
+}

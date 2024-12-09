@@ -1,0 +1,33 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "dress_red",
+        "fire",
+        "roof_11",
+        "frame_9",
+        "rain",
+        "object_260",
+        "socket"
+    ],
+    "pos_examples": [
+        [
+            "Now, fire laser from loc fire to loc socket.",
+            "(fire-laser fire socket)"
+        ],
+        [
+            "Once you are done, please pick up bomb at loc object_260.",
+            "(pickup-bomb object_260)"
+        ],
+        [
+            "First, detonate bomb at loc roof_11 to clear loc frame_9 and then put down laser at loc dress_red.",
+            "(detonate-bomb roof_11 frame_9)\n(putdown-laser dress_red)"
+        ],
+        [
+            "The next step is to move the robot from loc yew to loc rain.",
+            "(move yew rain)"
+        ]
+    ]
+}

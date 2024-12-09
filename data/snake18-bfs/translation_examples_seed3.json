@@ -1,0 +1,27 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "rain",
+        "object_260",
+        "teddy",
+        "dress_red",
+        "fire",
+        "kumquat_8",
+        "frame_9",
+        "bastion",
+        "star_213"
+    ],
+    "pos_examples": [
+        [
+            "Now, move and eat spawn by moving head snake rain to point dress_red from object kumquat_8 to object yew.",
+            "(move-and-eat-spawn rain dress_red kumquat_8 yew)"
+        ],
+        [
+            "Once you are done, please move and eat without spawning by moving head snake object_260 to point teddy.",
+            "(move-and-eat-no-spawn object_260 teddy)"
+        ]
+    ]
+}

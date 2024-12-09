@@ -1,0 +1,203 @@
+{
+    "action_mappings": {
+        "drive": "drive truck {} from place {} to place {}",
+        "lift": "lift hoist {} to lift crate {} from surface {} at place {}",
+        "drop": "drop crate {} with hoist {} onto surface {} at place {}",
+        "load": "load crate {} with hoist {} into truck {} at place {}",
+        "unload": "unload crate {} with hoist {} from truck {} at place {}"
+    },
+    "action_mappings_indef": {
+        "drive": "drive a truck {} from a place {} to a place {}",
+        "lift": "lift a hoist {} to lift a crate {} from a surface {} at a place {}",
+        "drop": "drop a crate {} with a hoist {} onto a surface {} at a place {}",
+        "load": "load a crate {} with a hoist {} into a truck {} at a place {}",
+        "unload": "unload a crate {} with a hoist {} from a truck {} at a place {}"
+    },
+    "predicate_mappings": {
+        "at": "{} is at {}",
+        "on": "{} is on {}",
+        "in": "{} is in {}",
+        "lifting": "{} is lifting {}",
+        "available": "{} is available",
+        "clear": "{} is clear",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "drive": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "truck",
+                "?y": "place",
+                "?z": "place"
+            },
+            "pddl": "(drive ?x ?y ?z)",
+            "description": "drive a truck A from a place B to a place C",
+            "preconditions": [
+                "I can only drive a truck A from a place B to a place C if it is the case that A is at B"
+            ],
+            "effects": [
+                "Once I drive a truck A from a place B to a place C, it is the case that A is at C",
+                "Once I drive a truck A from a place B to a place C, it is not the case anymore that A is at B"
+            ]
+        },
+        "lift": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "hoist",
+                "?y": "crate",
+                "?z": "surface",
+                "?p": "place"
+            },
+            "pddl": "(lift ?x ?y ?z ?p)",
+            "description": "lift a hoist A to lift a crate B from a surface C at a place D",
+            "preconditions": [
+                "I can only lift a hoist A to lift a crate B from a surface C at a place D if it is the case that A is at D and A is available and B is at D and B is on C and B is clear"
+            ],
+            "effects": [
+                "Once I lift a hoist A to lift a crate B from a surface C at a place D, it is the case that A is lifting B and C is clear",
+                "Once I lift a hoist A to lift a crate B from a surface C at a place D, it is not the case anymore that B is at D and it is not the case anymore that B is clear and it is not the case anymore that A is available and it is not the case anymore that B is on C"
+            ]
+        },
+        "drop": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "hoist",
+                "?y": "crate",
+                "?z": "surface",
+                "?p": "place"
+            },
+            "pddl": "(drop ?x ?y ?z ?p)",
+            "description": "drop a crate B with a hoist A onto a surface C at a place D",
+            "preconditions": [
+                "I can only drop a crate B with a hoist A onto a surface C at a place D if it is the case that A is at D and C is at D and C is clear and A is lifting B"
+            ],
+            "effects": [
+                "Once I drop a crate B with a hoist A onto a surface C at a place D, it is the case that A is available and B is at D and B is clear and B is on C",
+                "Once I drop a crate B with a hoist A onto a surface C at a place D, it is not the case anymore that A is lifting B and it is not the case anymore that C is clear"
+            ]
+        },
+        "load": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "hoist",
+                "?y": "crate",
+                "?z": "truck",
+                "?p": "place"
+            },
+            "pddl": "(load ?x ?y ?z ?p)",
+            "description": "load a crate B with a hoist A into a truck C at a place D",
+            "preconditions": [
+                "I can only load a crate B with a hoist A into a truck C at a place D if it is the case that A is at D and C is at D and A is lifting B"
+            ],
+            "effects": [
+                "Once I load a crate B with a hoist A into a truck C at a place D, it is the case that B is in C and A is available",
+                "Once I load a crate B with a hoist A into a truck C at a place D, it is not the case anymore that A is lifting B"
+            ]
+        },
+        "unload": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "hoist",
+                "?y": "crate",
+                "?z": "truck",
+                "?p": "place"
+            },
+            "pddl": "(unload ?x ?y ?z ?p)",
+            "description": "unload a crate B with a hoist A from a truck C at a place D",
+            "preconditions": [
+                "I can only unload a crate B with a hoist A from a truck C at a place D if it is the case that A is at D and C is at D and A is available and B is in C"
+            ],
+            "effects": [
+                "Once I unload a crate B with a hoist A from a truck C at a place D, it is the case that A is lifting B",
+                "Once I unload a crate B with a hoist A from a truck C at a place D, it is not the case anymore that B is in C and it is not the case anymore that A is available"
+            ]
+        }
+    },
+    "predicates": {
+        "at": {
+            "parameter_types": {
+                "?x": "locatable",
+                "?y": "place"
+            },
+            "pddl": "(at ?x ?y)"
+        },
+        "on": {
+            "parameter_types": {
+                "?x": "crate",
+                "?y": "surface"
+            },
+            "pddl": "(on ?x ?y)"
+        },
+        "in": {
+            "parameter_types": {
+                "?x": "crate",
+                "?y": "truck"
+            },
+            "pddl": "(in ?x ?y)"
+        },
+        "lifting": {
+            "parameter_types": {
+                "?x": "hoist",
+                "?y": "crate"
+            },
+            "pddl": "(lifting ?x ?y)"
+        },
+        "available": {
+            "parameter_types": {
+                "?x": "hoist"
+            },
+            "pddl": "(available ?x)"
+        },
+        "clear": {
+            "parameter_types": {
+                "?x": "surface"
+            },
+            "pddl": "(clear ?x)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "drive": "drive truck {?x} from place {?y} to place {?z}",
+        "lift": "lift hoist {?x} to lift crate {?y} from surface {?z} at place {?p}",
+        "drop": "drop crate {?y} with hoist {?x} onto surface {?z} at place {?p}",
+        "load": "load crate {?y} with hoist {?x} into truck {?z} at place {?p}",
+        "unload": "unload crate {?y} with hoist {?x} from truck {?z} at place {?p}"
+    },
+    "predicate_nl_templates": {
+        "at": "{?x} is at {?y}",
+        "on": "{?x} is on {?y}",
+        "in": "{?x} is in {?y}",
+        "lifting": "{?x} is lifting {?y}",
+        "available": "{?x} is available",
+        "clear": "{?x} is clear",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "drive": "drive a truck {?x} from a place {?y} to a place {?z}",
+        "lift": "lift a hoist {?x} to lift a crate {?y} from a surface {?z} at a place {?p}",
+        "drop": "drop a crate {?y} with a hoist {?x} onto a surface {?z} at a place {?p}",
+        "load": "load a crate {?y} with a hoist {?x} into a truck {?z} at a place {?p}",
+        "unload": "unload a crate {?y} with a hoist {?x} from a truck {?z} at a place {?p}"
+    },
+    "type_hierarchy": [
+        "Everything that is a place or a locatable is also a object",
+        "Everything that is a depot or a distributor is also a place",
+        "Everything that is a truck or a hoist or a surface is also a locatable",
+        "Everything that is a pallet or a crate is also a surface"
+    ]
+}

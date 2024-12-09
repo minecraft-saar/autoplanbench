@@ -1,0 +1,2 @@
+(invert-single-gene-a object_1)
+; cost = 1 (unit cost)

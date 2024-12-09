@@ -1,0 +1,203 @@
+{
+    "action_mappings": {
+        "drive": "drive truck {} from place {} to place {}",
+        "load": "load goods {} onto truck {} at market {} from level {} to level {}, with level {} next to level {} and level {} next to level {}",
+        "unload": "unload goods {} from truck {} at depot {} from level {} to level {}, with level {} next to level {} and level {} next to level {}",
+        "buy": "buy goods {} with truck {} at market {} from level {} to level {}, with level {} next to level {} and level {} next to level {}"
+    },
+    "action_mappings_indef": {
+        "drive": "drive a truck {} from a place {} to a place {}",
+        "load": "load a goods {} onto a truck {} at a market {} from a level {} to a level {}, with a level {} next to a level {} and a level {} next to a level {}",
+        "unload": "unload a goods {} from a truck {} at a depot {} from a level {} to a level {}, with a level {} next to a level {} and a level {} next to a level {}",
+        "buy": "buy a goods {} with a truck {} at a market {} from a level {} to a level {}, with a level {} next to a level {} and a level {} next to a level {}"
+    },
+    "predicate_mappings": {
+        "loaded": "{} is loaded onto {} at {}",
+        "ready-to-load": "{} is ready to load onto {} at {}",
+        "stored": "{} is stored at {}",
+        "on-sale": "{} is on sale for {} at {}",
+        "next": "{} is next to {}",
+        "at": "{} is at {}",
+        "connected": "{} is connected to {}",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "drive": {
+            "annotation": "",
+            "parameter_types": {
+                "?t": "truck",
+                "?from": "place",
+                "?to": "place"
+            },
+            "pddl": "(drive ?t ?from ?to)",
+            "description": "drive a truck A from a place B to a place C",
+            "preconditions": [
+                "I can only drive a truck A from a place B to a place C if it is the case that A is at B and B is connected to C"
+            ],
+            "effects": [
+                "Once I drive a truck A from a place B to a place C, it is the case that A is at C",
+                "Once I drive a truck A from a place B to a place C, it is not the case anymore that A is at B"
+            ]
+        },
+        "load": {
+            "annotation": "",
+            "parameter_types": {
+                "?g": "goods",
+                "?t": "truck",
+                "?m": "market",
+                "?l1": "level",
+                "?l2": "level",
+                "?l3": "level",
+                "?l4": "level"
+            },
+            "pddl": "(load ?g ?t ?m ?l1 ?l2 ?l3 ?l4)",
+            "description": "load a goods A onto a truck B at a market C from a level E to a level G, with a level D next to a level E and a level G next to a level F",
+            "preconditions": [
+                "I can only load a goods A onto a truck B at a market C from a level E to a level G, with a level D next to a level E and a level G next to a level F if it is the case that B is at C and A is loaded onto B at F and A is ready to load onto C at E and E is next to D and G is next to F"
+            ],
+            "effects": [
+                "Once I load a goods A onto a truck B at a market C from a level E to a level G, with a level D next to a level E and a level G next to a level F, it is the case that A is loaded onto B at G and A is ready to load onto C at D",
+                "Once I load a goods A onto a truck B at a market C from a level E to a level G, with a level D next to a level E and a level G next to a level F, it is not the case anymore that A is loaded onto B at F and it is not the case anymore that A is ready to load onto C at E"
+            ]
+        },
+        "unload": {
+            "annotation": "",
+            "parameter_types": {
+                "?g": "goods",
+                "?t": "truck",
+                "?d": "depot",
+                "?l1": "level",
+                "?l2": "level",
+                "?l3": "level",
+                "?l4": "level"
+            },
+            "pddl": "(unload ?g ?t ?d ?l1 ?l2 ?l3 ?l4)",
+            "description": "unload a goods A from a truck B at a depot C from a level E to a level D, with a level D next to a level E and a level G next to a level F",
+            "preconditions": [
+                "I can only unload a goods A from a truck B at a depot C from a level E to a level D, with a level D next to a level E and a level G next to a level F if it is the case that B is at C and A is loaded onto B at E and A is stored at F and E is next to D and G is next to F"
+            ],
+            "effects": [
+                "Once I unload a goods A from a truck B at a depot C from a level E to a level D, with a level D next to a level E and a level G next to a level F, it is the case that A is loaded onto B at D and A is stored at G",
+                "Once I unload a goods A from a truck B at a depot C from a level E to a level D, with a level D next to a level E and a level G next to a level F, it is not the case anymore that A is loaded onto B at E and it is not the case anymore that A is stored at F"
+            ]
+        },
+        "buy": {
+            "annotation": "",
+            "parameter_types": {
+                "?t": "truck",
+                "?g": "goods",
+                "?m": "market",
+                "?l1": "level",
+                "?l2": "level",
+                "?l3": "level",
+                "?l4": "level"
+            },
+            "pddl": "(buy ?t ?g ?m ?l1 ?l2 ?l3 ?l4)",
+            "description": "buy a goods B with a truck A at a market C from a level E to a level D, with a level D next to a level E and a level G next to a level F",
+            "preconditions": [
+                "I can only buy a goods B with a truck A at a market C from a level E to a level D, with a level D next to a level E and a level G next to a level F if it is the case that A is at C and B is on sale for C at E and B is ready to load onto C at F and E is next to D and G is next to F"
+            ],
+            "effects": [
+                "Once I buy a goods B with a truck A at a market C from a level E to a level D, with a level D next to a level E and a level G next to a level F, it is the case that B is on sale for C at D and B is ready to load onto C at G",
+                "Once I buy a goods B with a truck A at a market C from a level E to a level D, with a level D next to a level E and a level G next to a level F, it is not the case anymore that B is on sale for C at E and it is not the case anymore that B is ready to load onto C at F"
+            ]
+        }
+    },
+    "predicates": {
+        "loaded": {
+            "parameter_types": {
+                "?g": "goods",
+                "?t": "truck",
+                "?l": "level"
+            },
+            "pddl": "(loaded ?g ?t ?l)"
+        },
+        "ready-to-load": {
+            "parameter_types": {
+                "?g": "goods",
+                "?m": "market",
+                "?l": "level"
+            },
+            "pddl": "(ready-to-load ?g ?m ?l)"
+        },
+        "stored": {
+            "parameter_types": {
+                "?g": "goods",
+                "?l": "level"
+            },
+            "pddl": "(stored ?g ?l)"
+        },
+        "on-sale": {
+            "parameter_types": {
+                "?g": "goods",
+                "?m": "market",
+                "?l": "level"
+            },
+            "pddl": "(on-sale ?g ?m ?l)"
+        },
+        "next": {
+            "parameter_types": {
+                "?l1": "level",
+                "?l2": "level"
+            },
+            "pddl": "(next ?l1 ?l2)"
+        },
+        "at": {
+            "parameter_types": {
+                "?t": "truck",
+                "?p": "place"
+            },
+            "pddl": "(at ?t ?p)"
+        },
+        "connected": {
+            "parameter_types": {
+                "?p1": "place",
+                "?p2": "place"
+            },
+            "pddl": "(connected ?p1 ?p2)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "drive": "drive truck {?t} from place {?from} to place {?to}",
+        "load": "load goods {?g} onto truck {?t} at market {?m} from level {?l2} to level {?l4}, with level {?l1} next to level {?l2} and level {?l4} next to level {?l3}",
+        "unload": "unload goods {?g} from truck {?t} at depot {?d} from level {?l2} to level {?l1}, with level {?l1} next to level {?l2} and level {?l4} next to level {?l3}",
+        "buy": "buy goods {?g} with truck {?t} at market {?m} from level {?l2} to level {?l1}, with level {?l1} next to level {?l2} and level {?l4} next to level {?l3}"
+    },
+    "predicate_nl_templates": {
+        "loaded": "{?g} is loaded onto {?t} at {?l}",
+        "ready-to-load": "{?g} is ready to load onto {?m} at {?l}",
+        "stored": "{?g} is stored at {?l}",
+        "on-sale": "{?g} is on sale for {?m} at {?l}",
+        "next": "{?l1} is next to {?l2}",
+        "at": "{?t} is at {?p}",
+        "connected": "{?p1} is connected to {?p2}",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "drive": "drive a truck {?t} from a place {?from} to a place {?to}",
+        "load": "load a goods {?g} onto a truck {?t} at a market {?m} from a level {?l2} to a level {?l4}, with a level {?l1} next to a level {?l2} and a level {?l4} next to a level {?l3}",
+        "unload": "unload a goods {?g} from a truck {?t} at a depot {?d} from a level {?l2} to a level {?l1}, with a level {?l1} next to a level {?l2} and a level {?l4} next to a level {?l3}",
+        "buy": "buy a goods {?g} with a truck {?t} at a market {?m} from a level {?l2} to a level {?l1}, with a level {?l1} next to a level {?l2} and a level {?l4} next to a level {?l3}"
+    },
+    "type_hierarchy": [
+        "Everything that is a place or a locatable or a level is also a object",
+        "Everything that is a depot or a market is also a place",
+        "Everything that is a truck or a goods is also a locatable"
+    ]
+}

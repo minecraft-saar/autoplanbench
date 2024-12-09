@@ -1,0 +1,154 @@
+{
+    "action_mappings": {
+        "pick-up": "pick up object {} from the table",
+        "put-down": "put down object {} on the table",
+        "stack": "stack object {} on object {}",
+        "unstack": "unstack object {} from object {}"
+    },
+    "action_mappings_indef": {
+        "pick-up": "pick up an object {} from the table",
+        "put-down": "put down an object {} on the table",
+        "stack": "stack an object {} on an object {}",
+        "unstack": "unstack an object {} from an object {}"
+    },
+    "predicate_mappings": {
+        "clear": "{} is clear",
+        "ontable": "{} is on the table",
+        "handempty": "the hand is empty",
+        "holding": "holding {}",
+        "on": "{} is on {}",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "pick-up": {
+            "annotation": "",
+            "parameter_types": {
+                "?ob": "object"
+            },
+            "pddl": "(pick-up ?ob)",
+            "description": "pick up an object A from the table",
+            "preconditions": [
+                "I can only pick up an object A from the table if it is the case that A is clear and A is on the table and the hand is empty"
+            ],
+            "effects": [
+                "Once I pick up an object A from the table, it is the case that holding A",
+                "Once I pick up an object A from the table, it is not the case anymore that A is clear and it is not the case anymore that A is on the table and it is not the case anymore that the hand is empty"
+            ]
+        },
+        "put-down": {
+            "annotation": "",
+            "parameter_types": {
+                "?ob": "object"
+            },
+            "pddl": "(put-down ?ob)",
+            "description": "put down an object A on the table",
+            "preconditions": [
+                "I can only put down an object A on the table if it is the case that holding A"
+            ],
+            "effects": [
+                "Once I put down an object A on the table, it is the case that A is clear and the hand is empty and A is on the table",
+                "Once I put down an object A on the table, it is not the case anymore that holding A"
+            ]
+        },
+        "stack": {
+            "annotation": "",
+            "parameter_types": {
+                "?ob": "object",
+                "?underob": "object"
+            },
+            "pddl": "(stack ?ob ?underob)",
+            "description": "stack an object A on an object B",
+            "preconditions": [
+                "I can only stack an object A on an object B if it is the case that B is clear and holding A"
+            ],
+            "effects": [
+                "Once I stack an object A on an object B, it is the case that the hand is empty and A is clear and A is on B",
+                "Once I stack an object A on an object B, it is not the case anymore that B is clear and it is not the case anymore that holding A"
+            ]
+        },
+        "unstack": {
+            "annotation": "",
+            "parameter_types": {
+                "?ob": "object",
+                "?underob": "object"
+            },
+            "pddl": "(unstack ?ob ?underob)",
+            "description": "unstack an object A from an object B",
+            "preconditions": [
+                "I can only unstack an object A from an object B if it is the case that A is on B and A is clear and the hand is empty"
+            ],
+            "effects": [
+                "Once I unstack an object A from an object B, it is the case that holding A and B is clear",
+                "Once I unstack an object A from an object B, it is not the case anymore that A is on B and it is not the case anymore that A is clear and it is not the case anymore that the hand is empty"
+            ]
+        }
+    },
+    "predicates": {
+        "clear": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(clear ?x)"
+        },
+        "ontable": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(ontable ?x)"
+        },
+        "handempty": {
+            "parameter_types": {},
+            "pddl": "(handempty)"
+        },
+        "holding": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(holding ?x)"
+        },
+        "on": {
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(on ?x ?y)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "pick-up": "pick up object {?ob} from the table",
+        "put-down": "put down object {?ob} on the table",
+        "stack": "stack object {?ob} on object {?underob}",
+        "unstack": "unstack object {?ob} from object {?underob}"
+    },
+    "predicate_nl_templates": {
+        "clear": "{?x} is clear",
+        "ontable": "{?x} is on the table",
+        "handempty": "the hand is empty",
+        "holding": "holding {?x}",
+        "on": "{?x} is on {?y}",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "pick-up": "pick up an object {?ob} from the table",
+        "put-down": "put down an object {?ob} on the table",
+        "stack": "stack an object {?ob} on an object {?underob}",
+        "unstack": "unstack an object {?ob} from an object {?underob}"
+    },
+    "type_hierarchy": []
+}

@@ -1,0 +1,6 @@
+(pop-unitarypipe pipe_1 batch-atom_4 area_2 area_0 batch-atom_3 lco oca1)
+(push-unitarypipe pipe_0 batch-atom_3 area_2 area_1 batch-atom_5 oca1 lco)
+(push-unitarypipe pipe_1 batch-atom_0 area_2 area_0 batch-atom_4 gasoleo lco)
+(push-unitarypipe pipe_0 batch-atom_1 area_2 area_1 batch-atom_3 oc1b oca1)
+(push-unitarypipe pipe_1 batch-atom_2 area_2 area_0 batch-atom_0 rat-a gasoleo)
+; cost = 5 (unit cost)

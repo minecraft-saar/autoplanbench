@@ -1,0 +1,18 @@
+I can carry out the following actions:
+move the robot from a room A to a room B
+pick a ball A from a room B using a gripper C
+drop a ball A in a room B using a gripper C
+
+I have the following restrictions on my actions:
+I can only move the robot from a room A to a room B if it is the case that A is a room and B is a room and the robot A is at a location
+I can only pick a ball A from a room B using a gripper C if it is the case that A is a ball and B is a room and C is a gripper and A is at B and the robot B is at a location and C is free
+I can only drop a ball A in a room B using a gripper C if it is the case that A is a ball and B is a room and C is a gripper and C is carrying A and the robot B is at a location
+
+The actions have the following effects on the state:
+Once I move the robot from a room A to a room B, it is the case that the robot B is at a location
+Once I move the robot from a room A to a room B, it is not the case anymore that the robot A is at a location
+Once I pick a ball A from a room B using a gripper C, it is the case that C is carrying A
+Once I pick a ball A from a room B using a gripper C, it is not the case anymore that A is at B and it is not the case anymore that C is free
+Once I drop a ball A in a room B using a gripper C, it is the case that A is at B and C is free
+Once I drop a ball A in a room B using a gripper C, it is not the case anymore that C is carrying A
+

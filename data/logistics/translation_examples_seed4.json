@@ -1,0 +1,40 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "star_213",
+        "teddy",
+        "frame_9",
+        "kumquat_8",
+        "socket",
+        "screen",
+        "bastion",
+        "object_50",
+        "rain",
+        "roof_11",
+        "kumquat",
+        "fire",
+        "dress_red",
+        "object_260"
+    ],
+    "pos_examples": [
+        [
+            "Now, load obj dress_red into airplane fire at location teddy.",
+            "(load-airplane dress_red fire teddy)"
+        ],
+        [
+            "Once you are done, please drive truck rain from location frame_9 to location yew within city object_50.",
+            "(drive-truck rain frame_9 yew object_50)"
+        ],
+        [
+            "First, unload object roof_11 from airplane bastion at location screen and then unload object object_260 from truck kumquat at location socket.",
+            "(unload-airplane roof_11 bastion screen)\n(unload-truck object_260 kumquat socket)"
+        ],
+        [
+            "The next step is to fly airplane star_213 from airport kumquat_8 to airport kumquat.",
+            "(fly-airplane star_213 kumquat_8 kumquat)"
+        ]
+    ]
+}

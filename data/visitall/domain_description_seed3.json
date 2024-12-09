@@ -1,0 +1,84 @@
+{
+    "action_mappings": {
+        "move": "move the robot from place {} to place {}"
+    },
+    "action_mappings_indef": {
+        "move": "move the robot from a place {} to a place {}"
+    },
+    "predicate_mappings": {
+        "connected": "{} is connected to {}",
+        "at-robot": "the robot is at {}",
+        "visited": "{} has been visited",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "move": {
+            "annotation": "",
+            "parameter_types": {
+                "?curpos": "place",
+                "?nextpos": "place"
+            },
+            "pddl": "(move ?curpos ?nextpos)",
+            "description": "move the robot from a place A to a place B",
+            "preconditions": [
+                "I can only move the robot from a place A to a place B if it is the case that the robot is at A and A is connected to B"
+            ],
+            "effects": [
+                "Once I move the robot from a place A to a place B, it is the case that the robot is at B and B has been visited",
+                "Once I move the robot from a place A to a place B, it is not the case anymore that the robot is at A"
+            ]
+        }
+    },
+    "predicates": {
+        "connected": {
+            "parameter_types": {
+                "?x": "place",
+                "?y": "place"
+            },
+            "pddl": "(connected ?x ?y)"
+        },
+        "at-robot": {
+            "parameter_types": {
+                "?x": "place"
+            },
+            "pddl": "(at-robot ?x)"
+        },
+        "visited": {
+            "parameter_types": {
+                "?x": "place"
+            },
+            "pddl": "(visited ?x)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "move": "move the robot from place {?curpos} to place {?nextpos}"
+    },
+    "predicate_nl_templates": {
+        "connected": "{?x} is connected to {?y}",
+        "at-robot": "the robot is at {?x}",
+        "visited": "{?x} has been visited",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "move": "move the robot from a place {?curpos} to a place {?nextpos}"
+    },
+    "type_hierarchy": [
+        "Everything that is a place is also a object"
+    ]
+}

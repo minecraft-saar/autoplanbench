@@ -1,0 +1,238 @@
+{
+    "action_mappings": {
+        "unlock": "unlock place {} with key {} from place {} using shape {}",
+        "move": "move from place {} to place {}",
+        "pickup": "pick up key {} at place {}",
+        "pickup-and-loose": "pick up key {} and drop key {} at place {}",
+        "putdown": "put down key {} at place {}"
+    },
+    "action_mappings_indef": {
+        "unlock": "unlock a place {} with a key {} from a place {} using a shape {}",
+        "move": "move from a place {} to a place {}",
+        "pickup": "pick up a key {} at a place {}",
+        "pickup-and-loose": "pick up a key {} and drop a key {} at a place {}",
+        "putdown": "put down a key {} at a place {}"
+    },
+    "predicate_mappings": {
+        "conn": "{} is connected to {}",
+        "key-shape": "{} is in the shape of {}",
+        "lock-shape": "{} is in the shape of {}",
+        "at": "{} is at {}",
+        "at-robot": "the robot is at {}",
+        "place": "{} is a place",
+        "key": "{} is a key",
+        "shape": "{} is a shape",
+        "locked": "{} is locked",
+        "holding": "holding {}",
+        "open": "{} is open",
+        "arm-empty": "the arm is empty",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "unlock": {
+            "annotation": "",
+            "parameter_types": {
+                "?curpos": "object",
+                "?lockpos": "object",
+                "?key": "object",
+                "?shape": "object"
+            },
+            "pddl": "(unlock ?curpos ?lockpos ?key ?shape)",
+            "description": "unlock a place B with a key C from a place A using a shape D",
+            "preconditions": [
+                "I can only unlock a place B with a key C from a place A using a shape D if it is the case that A is a place and B is a place and C is a key and D is a shape and A is connected to B and C is in the shape of D and B is in the shape of D and the robot is at A and B is locked and holding C"
+            ],
+            "effects": [
+                "Once I unlock a place B with a key C from a place A using a shape D, it is the case that B is open",
+                "Once I unlock a place B with a key C from a place A using a shape D, it is not the case anymore that B is locked"
+            ]
+        },
+        "move": {
+            "annotation": "",
+            "parameter_types": {
+                "?curpos": "object",
+                "?nextpos": "object"
+            },
+            "pddl": "(move ?curpos ?nextpos)",
+            "description": "move from a place A to a place B",
+            "preconditions": [
+                "I can only move from a place A to a place B if it is the case that A is a place and B is a place and the robot is at A and A is connected to B and B is open"
+            ],
+            "effects": [
+                "Once I move from a place A to a place B, it is the case that the robot is at B",
+                "Once I move from a place A to a place B, it is not the case anymore that the robot is at A"
+            ]
+        },
+        "pickup": {
+            "annotation": "",
+            "parameter_types": {
+                "?curpos": "object",
+                "?key": "object"
+            },
+            "pddl": "(pickup ?curpos ?key)",
+            "description": "pick up a key B at a place A",
+            "preconditions": [
+                "I can only pick up a key B at a place A if it is the case that A is a place and B is a key and the robot is at A and B is at A and the arm is empty"
+            ],
+            "effects": [
+                "Once I pick up a key B at a place A, it is the case that holding B",
+                "Once I pick up a key B at a place A, it is not the case anymore that B is at A and it is not the case anymore that the arm is empty"
+            ]
+        },
+        "pickup-and-loose": {
+            "annotation": "",
+            "parameter_types": {
+                "?curpos": "object",
+                "?newkey": "object",
+                "?oldkey": "object"
+            },
+            "pddl": "(pickup-and-loose ?curpos ?newkey ?oldkey)",
+            "description": "pick up a key B and drop a key C at a place A",
+            "preconditions": [
+                "I can only pick up a key B and drop a key C at a place A if it is the case that A is a place and B is a key and C is a key and the robot is at A and holding C and B is at A"
+            ],
+            "effects": [
+                "Once I pick up a key B and drop a key C at a place A, it is the case that holding B and C is at A",
+                "Once I pick up a key B and drop a key C at a place A, it is not the case anymore that holding C and it is not the case anymore that B is at A"
+            ]
+        },
+        "putdown": {
+            "annotation": "",
+            "parameter_types": {
+                "?curpos": "object",
+                "?key": "object"
+            },
+            "pddl": "(putdown ?curpos ?key)",
+            "description": "put down a key B at a place A",
+            "preconditions": [
+                "I can only put down a key B at a place A if it is the case that A is a place and B is a key and the robot is at A and holding B"
+            ],
+            "effects": [
+                "Once I put down a key B at a place A, it is the case that the arm is empty and B is at A",
+                "Once I put down a key B at a place A, it is not the case anymore that holding B"
+            ]
+        }
+    },
+    "predicates": {
+        "conn": {
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(conn ?x ?y)"
+        },
+        "key-shape": {
+            "parameter_types": {
+                "?k": "object",
+                "?s": "object"
+            },
+            "pddl": "(key-shape ?k ?s)"
+        },
+        "lock-shape": {
+            "parameter_types": {
+                "?x": "object",
+                "?s": "object"
+            },
+            "pddl": "(lock-shape ?x ?s)"
+        },
+        "at": {
+            "parameter_types": {
+                "?r": "object",
+                "?x": "object"
+            },
+            "pddl": "(at ?r ?x)"
+        },
+        "at-robot": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(at-robot ?x)"
+        },
+        "place": {
+            "parameter_types": {
+                "?p": "object"
+            },
+            "pddl": "(place ?p)"
+        },
+        "key": {
+            "parameter_types": {
+                "?k": "object"
+            },
+            "pddl": "(key ?k)"
+        },
+        "shape": {
+            "parameter_types": {
+                "?s": "object"
+            },
+            "pddl": "(shape ?s)"
+        },
+        "locked": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(locked ?x)"
+        },
+        "holding": {
+            "parameter_types": {
+                "?k": "object"
+            },
+            "pddl": "(holding ?k)"
+        },
+        "open": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(open ?x)"
+        },
+        "arm-empty": {
+            "parameter_types": {},
+            "pddl": "(arm-empty)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "unlock": "unlock place {?lockpos} with key {?key} from place {?curpos} using shape {?shape}",
+        "move": "move from place {?curpos} to place {?nextpos}",
+        "pickup": "pick up key {?key} at place {?curpos}",
+        "pickup-and-loose": "pick up key {?newkey} and drop key {?oldkey} at place {?curpos}",
+        "putdown": "put down key {?key} at place {?curpos}"
+    },
+    "predicate_nl_templates": {
+        "conn": "{?x} is connected to {?y}",
+        "key-shape": "{?k} is in the shape of {?s}",
+        "lock-shape": "{?x} is in the shape of {?s}",
+        "at": "{?r} is at {?x}",
+        "at-robot": "the robot is at {?x}",
+        "place": "{?p} is a place",
+        "key": "{?k} is a key",
+        "shape": "{?s} is a shape",
+        "locked": "{?x} is locked",
+        "holding": "holding {?k}",
+        "open": "{?x} is open",
+        "arm-empty": "the arm is empty",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "unlock": "unlock a place {?lockpos} with a key {?key} from a place {?curpos} using a shape {?shape}",
+        "move": "move from a place {?curpos} to a place {?nextpos}",
+        "pickup": "pick up a key {?key} at a place {?curpos}",
+        "pickup-and-loose": "pick up a key {?newkey} and drop a key {?oldkey} at a place {?curpos}",
+        "putdown": "put down a key {?key} at a place {?curpos}"
+    },
+    "type_hierarchy": []
+}

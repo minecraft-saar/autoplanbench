@@ -1,0 +1,17 @@
+{
+  "prefixes": {"input": "Input:", "output": "Output:", "wrong": "Wrong output:"},
+  "example_objs": [
+    "block_1",
+    "block_2",
+    "block_3",
+    "block_4",
+    "block_5",
+    "block_6"
+  ],
+  "pos_examples": [
+      ["Now, unstack the block_5 from the block_6.", "(unstack block_5 block_6)"],
+      ["Once you are done, pick up the block_6 from the table.", "(pick-up block_6)"],
+      ["First, stack the block_3 on top of the block_1 and then put down the block_2.", "(stack block_3 block_1)\n(put-down block_2)"],
+      ["The next step is to unstack the block_4 from the block_1.", "(unstack block_4 block_1)"]
+    ]
+}

@@ -1,0 +1,26 @@
+I can carry out the following actions:
+apply the action "unlock" to an object A, an object B, an object C and an object D
+apply the action "move" to an object A and an object B
+apply the action "pickup" to an object A and an object B
+apply the action "pickup-and-loose" to an object A, an object B and an object C
+apply the action "putdown" to an object A and an object B
+
+I have the following restrictions on my actions:
+I can only apply the action "unlock" to an object A, an object B, an object C and an object D if it is the case that A is "place" and B is "place" and C is "key" and D is "shape" and A and B are in the relation "conn" and C and D are in the relation "key-shape" and B and D are in the relation "lock-shape" and A is "at-robot" and B is "locked" and C is "holding"
+I can only apply the action "move" to an object A and an object B if it is the case that A is "place" and B is "place" and A is "at-robot" and A and B are in the relation "conn" and B is "open"
+I can only apply the action "pickup" to an object A and an object B if it is the case that A is "place" and B is "key" and A is "at-robot" and B and A are in the relation "at" and "arm-empty"
+I can only apply the action "pickup-and-loose" to an object A, an object B and an object C if it is the case that A is "place" and B is "key" and C is "key" and A is "at-robot" and C is "holding" and B and A are in the relation "at"
+I can only apply the action "putdown" to an object A and an object B if it is the case that A is "place" and B is "key" and A is "at-robot" and B is "holding"
+
+The actions have the following effects on the state:
+Once I apply the action "unlock" to an object A, an object B, an object C and an object D, it is the case that B is "open"
+Once I apply the action "unlock" to an object A, an object B, an object C and an object D, it is not the case anymore that B is "locked"
+Once I apply the action "move" to an object A and an object B, it is the case that B is "at-robot"
+Once I apply the action "move" to an object A and an object B, it is not the case anymore that A is "at-robot"
+Once I apply the action "pickup" to an object A and an object B, it is the case that B is "holding"
+Once I apply the action "pickup" to an object A and an object B, it is not the case anymore that B and A are in the relation "at" and it is not the case anymore that "arm-empty"
+Once I apply the action "pickup-and-loose" to an object A, an object B and an object C, it is the case that B is "holding" and C and A are in the relation "at"
+Once I apply the action "pickup-and-loose" to an object A, an object B and an object C, it is not the case anymore that C is "holding" and it is not the case anymore that B and A are in the relation "at"
+Once I apply the action "putdown" to an object A and an object B, it is the case that "arm-empty" and B and A are in the relation "at"
+Once I apply the action "putdown" to an object A and an object B, it is not the case anymore that B is "holding"
+

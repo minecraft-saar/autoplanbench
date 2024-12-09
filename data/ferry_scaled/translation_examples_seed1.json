@@ -1,0 +1,24 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "fire",
+        "rain",
+        "teddy",
+        "socket",
+        "frame_9",
+        "bastion"
+    ],
+    "pos_examples": [
+        [
+            "Now, sail from location teddy to location frame_9.",
+            "(sail teddy frame_9)"
+        ],
+        [
+            "Once you are done, please debark car fire at location rain.",
+            "(debark fire rain)"
+        ]
+    ]
+}

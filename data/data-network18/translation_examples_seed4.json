@@ -1,0 +1,40 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "socket",
+        "screen_22_64",
+        "object_260",
+        "screen",
+        "frame_9",
+        "teddy",
+        "screen_22",
+        "object_50_40",
+        "kumquat_8",
+        "rain",
+        "object_50",
+        "fire",
+        "star_213",
+        "bastion"
+    ],
+    "pos_examples": [
+        [
+            "Now, load data object_260 from server fire with size numbers bastion, current usage numbers object_50, and updated usage numbers rain within capacity limit numbers screen.",
+            "(load object_260 fire bastion screen object_50 rain)"
+        ],
+        [
+            "Once you are done, please send data teddy from server socket to server kumquat_8 with size numbers object_50, current usage numbers screen, and updated usage numbers object_50_40 within capacity limit numbers rain.",
+            "(send teddy socket kumquat_8 object_50 rain screen object_50_40)"
+        ],
+        [
+            "First, process data star_213 and data frame_9 using script yew on server socket to produce data teddy with size numbers screen, current usage numbers object_50_40, and updated usage numbers screen_22 within capacity limit numbers screen_22_64 and then release data frame_9 from server socket reducing usage from numbers rain to numbers object_50_40 with data size numbers object_50.",
+            "(process star_213 frame_9 teddy yew socket screen screen_22_64 object_50_40 screen_22)\n(release frame_9 socket object_50 rain object_50_40)"
+        ],
+        [
+            "The next step is to save data frame_9 with size numbers rain on server fire.",
+            "(save frame_9 rain fire)"
+        ]
+    ]
+}

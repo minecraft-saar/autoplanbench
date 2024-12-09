@@ -1,0 +1,18 @@
+I can carry out the following actions:
+apply the action "sail" to an object A and an object B
+apply the action "board" to an object A and an object B
+apply the action "debark" to an object A and an object B
+
+I have the following restrictions on my actions:
+I can only apply the action "sail" to an object A and an object B if it is the case that A and B are in the relation "not-eq" and A is "location" and B is "location" and A is "at-ferry"
+I can only apply the action "board" to an object A and an object B if it is the case that A is "car" and B is "location" and A and B are in the relation "at" and B is "at-ferry" and "empty-ferry"
+I can only apply the action "debark" to an object A and an object B if it is the case that A is "car" and B is "location" and A is "on" and B is "at-ferry"
+
+The actions have the following effects on the state:
+Once I apply the action "sail" to an object A and an object B, it is the case that B is "at-ferry"
+Once I apply the action "sail" to an object A and an object B, it is not the case anymore that A is "at-ferry"
+Once I apply the action "board" to an object A and an object B, it is the case that A is "on"
+Once I apply the action "board" to an object A and an object B, it is not the case anymore that A and B are in the relation "at" and it is not the case anymore that "empty-ferry"
+Once I apply the action "debark" to an object A and an object B, it is the case that A and B are in the relation "at" and "empty-ferry"
+Once I apply the action "debark" to an object A and an object B, it is not the case anymore that A is "on"
+

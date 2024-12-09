@@ -1,0 +1,39 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "roof_11",
+        "dress_red",
+        "object_50",
+        "rain",
+        "object_50_51",
+        "teddy",
+        "kumquat",
+        "fire",
+        "object_260",
+        "socket",
+        "object_50_29",
+        "object_50_93",
+        "bastion"
+    ],
+    "pos_examples": [
+        [
+            "Now, leave elevator roof_11 at count kumquat by passenger bastion changing passenger count from count object_50 to count teddy.",
+            "(leave bastion roof_11 kumquat object_50 teddy)"
+        ],
+        [
+            "Once you are done, please move fast-elevator rain from count object_50 to count object_50_51.",
+            "(move-up-fast rain object_50 object_50_51)"
+        ],
+        [
+            "First, board passenger socket onto elevator fire at count object_50 changing passenger count from count object_50_29 to count object_50_93 and then move slow-elevator object_260 from count object_50 to count object_50_93.",
+            "(board socket fire object_50 object_50_29 object_50_93)\n(move-up-slow object_260 object_50 object_50_93)"
+        ],
+        [
+            "The next step is to move slow-elevator dress_red from count object_50 to count object_50_93.",
+            "(move-down-slow dress_red object_50 object_50_93)"
+        ]
+    ]
+}

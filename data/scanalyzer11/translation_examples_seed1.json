@@ -1,0 +1,36 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "fire",
+        "kumquat_8",
+        "kumquat",
+        "teddy",
+        "frame_9",
+        "screen",
+        "bastion",
+        "star_213",
+        "roof_11",
+        "rain",
+        "dress_red",
+        "socket",
+        "object_260",
+        "object_50"
+    ],
+    "pos_examples": [
+        [
+            "Now, analyze-4 with segment socket, segment fire, segment teddy, segment kumquat_8, car object_50, car bastion, car kumquat, and car yew.",
+            "(analyze-4 socket fire teddy kumquat_8 object_50 bastion kumquat yew)"
+        ],
+        [
+            "Once you are done, please rotate-2 with segment object_260, segment frame_9, car dress_red, and car screen.",
+            "(rotate-2 object_260 frame_9 dress_red screen)"
+        ],
+        [
+            "First, rotate-4 with segment star_213, segment socket, segment teddy, segment object_260, car rain, car roof_11, car kumquat, and car object_50 and then analyze-2 with segment frame_9, segment socket, car bastion, and car screen.",
+            "(rotate-4 star_213 socket teddy object_260 rain roof_11 kumquat object_50)\n(analyze-2 frame_9 socket bastion screen)"
+        ]
+    ]
+}

@@ -1,0 +1,7 @@
+(get-chips c1)
+(get-crackers k1)
+(get-dip d1)
+(start-movie )
+(rewind-movie )
+(reset-counter )
+; cost = 6 (unit cost)

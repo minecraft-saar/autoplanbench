@@ -1,0 +1,29 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat",
+        "frame_9",
+        "object_260"
+    ],
+    "pos_examples": [
+        [
+            "Now, get object object_260 dip.",
+            "(get-dip object_260)"
+        ],
+        [
+            "Once you are done, please start the movie.",
+            "(start-movie )"
+        ],
+        [
+            "First, get pop frame_9 and then rewind the movie.",
+            "(get-pop frame_9)\n(rewind-movie )"
+        ],
+        [
+            "The next step is to get cracker kumquat when the counter is at zero and the movie is not rewound.",
+            "(get-crackers kumquat)"
+        ]
+    ]
+}

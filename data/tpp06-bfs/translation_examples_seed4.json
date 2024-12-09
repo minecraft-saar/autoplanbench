@@ -1,0 +1,41 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "socket",
+        "screen_49_38",
+        "object_50",
+        "screen_49_58",
+        "fire",
+        "screen_98",
+        "screen_49",
+        "dress_red",
+        "screen",
+        "kumquat_58",
+        "kumquat_8",
+        "frame_9",
+        "roof_11",
+        "kumquat",
+        "bastion",
+        "kumquat_85",
+        "kumquat_37",
+        "object_260",
+        "screen_49_31"
+    ],
+    "pos_examples": [
+        [
+            "Now, load goods object_50 onto truck object_260 at market frame_9 from level screen_49 to level kumquat_85, with level kumquat_37 next to level screen_49 and level kumquat_85 next to level screen_49_31.",
+            "(load object_50 object_260 frame_9 kumquat_37 kumquat screen screen)"
+        ],
+        [
+            "Once you are done, please drive truck kumquat_8 from place dress_red to place yew.",
+            "(drive kumquat_8 dress_red yew)"
+        ],
+        [
+            "First, unload goods bastion from truck kumquat_8 at depot fire from level screen_49_38 to level screen_49_58, with level screen_49_58 next to level screen_49_38 and level kumquat_37 next to level kumquat and then buy goods roof_11 with truck object_260 at market socket from level kumquat_58 to level kumquat, with level kumquat next to level kumquat_58 and level screen_98 next to level screen_49.",
+            "(unload bastion kumquat_8 fire kumquat_85 screen_49 screen_49_38 screen_49)\n(buy object_260 roof_11 socket screen screen_49_58 kumquat_58 screen_49_58)"
+        ]
+    ]
+}

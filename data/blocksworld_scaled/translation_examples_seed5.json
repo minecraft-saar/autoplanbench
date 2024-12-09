@@ -1,0 +1,28 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "star_213",
+        "bastion",
+        "socket",
+        "fire",
+        "teddy",
+        "object_260"
+    ],
+    "pos_examples": [
+        [
+            "Now, put down object socket on the table.",
+            "(put-down socket)"
+        ],
+        [
+            "Once you are done, please stack object bastion on object object_260.",
+            "(stack bastion object_260)"
+        ],
+        [
+            "First, pick up object fire from the table and then unstack object teddy from object star_213.",
+            "(pick-up fire)\n(unstack teddy star_213)"
+        ]
+    ]
+}

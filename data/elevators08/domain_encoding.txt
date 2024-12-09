@@ -1,0 +1,33 @@
+I can carry out the following actions:
+move a slow-elevator A from a count B to a count C
+move a slow-elevator A from a count B to a count C
+move a fast-elevator A from a count B to a count C
+move a fast-elevator A from a count B to a count C
+board a passenger A onto an elevator B at a count C increasing passengers from a count D to a count E
+leave an elevator B by a passenger A at a count C decreasing passengers from a count D to a count E
+
+I have the following restrictions on my actions:
+I can only move a slow-elevator A from a count B to a count C if it is the case that A is at B and B is above C and C is reachable by A
+I can only move a slow-elevator A from a count B to a count C if it is the case that A is at B and C is above B and C is reachable by A
+I can only move a fast-elevator A from a count B to a count C if it is the case that A is at B and B is above C and C is reachable by A
+I can only move a fast-elevator A from a count B to a count C if it is the case that A is at B and C is above B and C is reachable by A
+I can only board a passenger A onto an elevator B at a count C increasing passengers from a count D to a count E if it is the case that B is at C and A is at floor C and B has D passengers and D is next to E and B can hold E people
+I can only leave an elevator B by a passenger A at a count C decreasing passengers from a count D to a count E if it is the case that B is at C and A has boarded B and B has D passengers and E is next to D
+
+The actions have the following effects on the state:
+Once I move a slow-elevator A from a count B to a count C, it is the case that A is at C
+Once I move a slow-elevator A from a count B to a count C, it is not the case anymore that A is at B
+Once I move a slow-elevator A from a count B to a count C, it is the case that A is at C
+Once I move a slow-elevator A from a count B to a count C, it is not the case anymore that A is at B
+Once I move a fast-elevator A from a count B to a count C, it is the case that A is at C
+Once I move a fast-elevator A from a count B to a count C, it is not the case anymore that A is at B
+Once I move a fast-elevator A from a count B to a count C, it is the case that A is at C
+Once I move a fast-elevator A from a count B to a count C, it is not the case anymore that A is at B
+Once I board a passenger A onto an elevator B at a count C increasing passengers from a count D to a count E, it is the case that A has boarded B and B has E passengers
+Once I board a passenger A onto an elevator B at a count C increasing passengers from a count D to a count E, it is not the case anymore that A is at floor C and it is not the case anymore that B has D passengers
+Once I leave an elevator B by a passenger A at a count C decreasing passengers from a count D to a count E, it is the case that A is at floor C and B has E passengers
+Once I leave an elevator B by a passenger A at a count C decreasing passengers from a count D to a count E, it is not the case anymore that A has boarded B and it is not the case anymore that B has D passengers
+
+
+Everything that is a elevator or a passenger or a count is also a object
+Everything that is a slow-elevator or a fast-elevator is also a elevator

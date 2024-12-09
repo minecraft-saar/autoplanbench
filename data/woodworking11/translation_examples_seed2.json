@@ -1,0 +1,42 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "dress_red",
+        "fire",
+        "object_50_81",
+        "teddy",
+        "roof_11",
+        "dress_red_34",
+        "star_213",
+        "kumquat",
+        "socket",
+        "kumquat_8",
+        "object_50",
+        "object_50_29",
+        "frame_9",
+        "kumquat_62",
+        "bastion",
+        "object_260"
+    ],
+    "pos_examples": [
+        [
+            "Now, cut board bastion into large part object_260 using highspeed-saw frame_9 with awood yew, surface fire, changing size from aboardsize object_50 to aboardsize dress_red through intermediate sizes aboardsize dress_red_34 and aboardsize object_50_29.",
+            "(cut-board-large bastion object_260 frame_9 yew fire object_50 dress_red_34 object_50_29 dress_red)"
+        ],
+        [
+            "Once you are done, please saw board bastion into medium part object_260 using saw star_213 with awood yew, surface fire, changing size from aboardsize object_50 to aboardsize dress_red_34 through aboardsize object_50_81.",
+            "(do-saw-medium bastion object_260 star_213 yew fire object_50 object_50_81 dress_red_34)"
+        ],
+        [
+            "First, do immersion varnish on part object_260 using immersion-varnisher socket to change color to acolour roof_11 with surface fire and then do grind on part object_260 using grinder kumquat_8 to change surface from surface fire to verysmooth, color from acolour roof_11 to natural, and treatment from treatmentstatus kumquat to treatmentstatus kumquat_62.",
+            "(do-immersion-varnish object_260 socket roof_11 fire)\n(do-grind object_260 kumquat_8 fire roof_11 kumquat kumquat_62)"
+        ],
+        [
+            "The next step is to do plane on part object_260 using planer teddy to change surface from surface fire to smooth, color from acolour roof_11 to natural, and treatment from treatmentstatus kumquat_62 to untreated.",
+            "(do-plane object_260 teddy fire roof_11 kumquat_62)"
+        ]
+    ]
+}

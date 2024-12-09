@@ -1,0 +1,438 @@
+{
+    "action_mappings": {
+        "grasp": "grasp container {} with hand {}",
+        "leave": "leave container {} with hand {}",
+        "fill-shot": "fill shot {} with ingredient {} using dispenser {} with hand {} and hand {}",
+        "refill-shot": "refill shot {} with ingredient {} using dispenser {} with hand {} and hand {}",
+        "empty-shot": "empty shot {} of beverage {} using hand {}",
+        "clean-shot": "clean shot {} of beverage {} using hand {} while hand {} is empty",
+        "pour-shot-to-clean-shaker": "pour ingredient {} from shot {} into clean shaker {} using hand {} from level {} to level {}",
+        "pour-shot-to-used-shaker": "pour ingredient {} from shot {} into used shaker {} using hand {} from level {} to level {}",
+        "empty-shaker": "empty shaker {} of cocktail {} using hand {} from level {} to empty level {}",
+        "clean-shaker": "clean shaker {} using hand {} and hand {}",
+        "shake": "shake cocktail {} using shaker {} held by hand {} with assistance from hand {} containing ingredient {} and ingredient {}",
+        "pour-shaker-to-shot": "pour beverage {} from shaker {} held by hand {} into shot {} moving from level {} to level {}"
+    },
+    "action_mappings_indef": {
+        "grasp": "grasp a container {} with a hand {}",
+        "leave": "leave a container {} with a hand {}",
+        "fill-shot": "fill a shot {} with an ingredient {} using a dispenser {} with a hand {} and a hand {}",
+        "refill-shot": "refill a shot {} with an ingredient {} using a dispenser {} with a hand {} and a hand {}",
+        "empty-shot": "empty a shot {} of a beverage {} using a hand {}",
+        "clean-shot": "clean a shot {} of a beverage {} using a hand {} while a hand {} is empty",
+        "pour-shot-to-clean-shaker": "pour an ingredient {} from a shot {} into a clean shaker {} using a hand {} from a level {} to a level {}",
+        "pour-shot-to-used-shaker": "pour an ingredient {} from a shot {} into an used shaker {} using a hand {} from a level {} to a level {}",
+        "empty-shaker": "empty a shaker {} of a cocktail {} using a hand {} from a level {} to an empty level {}",
+        "clean-shaker": "clean a shaker {} using a hand {} and a hand {}",
+        "shake": "shake a cocktail {} using a shaker {} held by a hand {} with assistance from a hand {} containing an ingredient {} and an ingredient {}",
+        "pour-shaker-to-shot": "pour a beverage {} from a shaker {} held by a hand {} into a shot {} moving from a level {} to a level {}"
+    },
+    "predicate_mappings": {
+        "ontable": "{} is on the table",
+        "holding": "{} is holding {}",
+        "handempty": "{} has an empty hand",
+        "empty": "{} is empty",
+        "contains": "{} contains {}",
+        "clean": "{} is clean",
+        "used": "{} is used by {}",
+        "dispenses": "{} dispenses {}",
+        "shaker-empty-level": "the shaker {} is at empty level {}",
+        "shaker-level": "the shaker {} is at level {}",
+        "next": "{} is next to {}",
+        "unshaked": "{} is unshaken",
+        "shaked": "{} is shaken",
+        "cocktail-part1": "{} is part of the cocktail {}",
+        "cocktail-part2": "{} is another part of the cocktail {}",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "grasp": {
+            "annotation": "",
+            "parameter_types": {
+                "?h": "hand",
+                "?c": "container"
+            },
+            "pddl": "(grasp ?h ?c)",
+            "description": "grasp a container B with a hand A",
+            "preconditions": [
+                "I can only grasp a container B with a hand A if it is the case that B is on the table and A has an empty hand"
+            ],
+            "effects": [
+                "Once I grasp a container B with a hand A, it is the case that A is holding B",
+                "Once I grasp a container B with a hand A, it is not the case anymore that B is on the table and it is not the case anymore that A has an empty hand"
+            ]
+        },
+        "leave": {
+            "annotation": "",
+            "parameter_types": {
+                "?h": "hand",
+                "?c": "container"
+            },
+            "pddl": "(leave ?h ?c)",
+            "description": "leave a container B with a hand A",
+            "preconditions": [
+                "I can only leave a container B with a hand A if it is the case that A is holding B"
+            ],
+            "effects": [
+                "Once I leave a container B with a hand A, it is the case that A has an empty hand and B is on the table",
+                "Once I leave a container B with a hand A, it is not the case anymore that A is holding B"
+            ]
+        },
+        "fill-shot": {
+            "annotation": "",
+            "parameter_types": {
+                "?s": "shot",
+                "?i": "ingredient",
+                "?h1": "hand",
+                "?h2": "hand",
+                "?d": "dispenser"
+            },
+            "pddl": "(fill-shot ?s ?i ?h1 ?h2 ?d)",
+            "description": "fill a shot A with an ingredient B using a dispenser E with a hand C and a hand D",
+            "preconditions": [
+                "I can only fill a shot A with an ingredient B using a dispenser E with a hand C and a hand D if it is the case that C is holding A and D has an empty hand and E dispenses B and A is empty and A is clean"
+            ],
+            "effects": [
+                "Once I fill a shot A with an ingredient B using a dispenser E with a hand C and a hand D, it is the case that A contains B and A is used by B",
+                "Once I fill a shot A with an ingredient B using a dispenser E with a hand C and a hand D, it is not the case anymore that A is empty and it is not the case anymore that A is clean"
+            ]
+        },
+        "refill-shot": {
+            "annotation": "",
+            "parameter_types": {
+                "?s": "shot",
+                "?i": "ingredient",
+                "?h1": "hand",
+                "?h2": "hand",
+                "?d": "dispenser"
+            },
+            "pddl": "(refill-shot ?s ?i ?h1 ?h2 ?d)",
+            "description": "refill a shot A with an ingredient B using a dispenser E with a hand C and a hand D",
+            "preconditions": [
+                "I can only refill a shot A with an ingredient B using a dispenser E with a hand C and a hand D if it is the case that C is holding A and D has an empty hand and E dispenses B and A is empty and A is used by B"
+            ],
+            "effects": [
+                "Once I refill a shot A with an ingredient B using a dispenser E with a hand C and a hand D, it is the case that A contains B",
+                "Once I refill a shot A with an ingredient B using a dispenser E with a hand C and a hand D, it is not the case anymore that A is empty"
+            ]
+        },
+        "empty-shot": {
+            "annotation": "",
+            "parameter_types": {
+                "?h": "hand",
+                "?p": "shot",
+                "?b": "beverage"
+            },
+            "pddl": "(empty-shot ?h ?p ?b)",
+            "description": "empty a shot B of a beverage C using a hand A",
+            "preconditions": [
+                "I can only empty a shot B of a beverage C using a hand A if it is the case that A is holding B and B contains C"
+            ],
+            "effects": [
+                "Once I empty a shot B of a beverage C using a hand A, it is the case that B is empty",
+                "Once I empty a shot B of a beverage C using a hand A, it is not the case anymore that B contains C"
+            ]
+        },
+        "clean-shot": {
+            "annotation": "",
+            "parameter_types": {
+                "?s": "shot",
+                "?b": "beverage",
+                "?h1": "hand",
+                "?h2": "hand"
+            },
+            "pddl": "(clean-shot ?s ?b ?h1 ?h2)",
+            "description": "clean a shot A of a beverage B using a hand C while a hand D is empty",
+            "preconditions": [
+                "I can only clean a shot A of a beverage B using a hand C while a hand D is empty if it is the case that C is holding A and D has an empty hand and A is empty and A is used by B"
+            ],
+            "effects": [
+                "Once I clean a shot A of a beverage B using a hand C while a hand D is empty, it is the case that A is clean",
+                "Once I clean a shot A of a beverage B using a hand C while a hand D is empty, it is not the case anymore that A is used by B"
+            ]
+        },
+        "pour-shot-to-clean-shaker": {
+            "annotation": "",
+            "parameter_types": {
+                "?s": "shot",
+                "?i": "ingredient",
+                "?d": "shaker",
+                "?h1": "hand",
+                "?l": "level",
+                "?l1": "level"
+            },
+            "pddl": "(pour-shot-to-clean-shaker ?s ?i ?d ?h1 ?l ?l1)",
+            "description": "pour an ingredient B from a shot A into a clean shaker C using a hand D from a level E to a level F",
+            "preconditions": [
+                "I can only pour an ingredient B from a shot A into a clean shaker C using a hand D from a level E to a level F if it is the case that D is holding A and A contains B and C is empty and C is clean and the shaker C is at level E and F is next to E"
+            ],
+            "effects": [
+                "Once I pour an ingredient B from a shot A into a clean shaker C using a hand D from a level E to a level F, it is the case that A is empty and C contains B and C is unshaken and the shaker C is at level F",
+                "Once I pour an ingredient B from a shot A into a clean shaker C using a hand D from a level E to a level F, it is not the case anymore that A contains B and it is not the case anymore that C is empty and it is not the case anymore that C is clean and it is not the case anymore that the shaker C is at level E"
+            ]
+        },
+        "pour-shot-to-used-shaker": {
+            "annotation": "",
+            "parameter_types": {
+                "?s": "shot",
+                "?i": "ingredient",
+                "?d": "shaker",
+                "?h1": "hand",
+                "?l": "level",
+                "?l1": "level"
+            },
+            "pddl": "(pour-shot-to-used-shaker ?s ?i ?d ?h1 ?l ?l1)",
+            "description": "pour an ingredient B from a shot A into an used shaker C using a hand D from a level E to a level F",
+            "preconditions": [
+                "I can only pour an ingredient B from a shot A into an used shaker C using a hand D from a level E to a level F if it is the case that D is holding A and A contains B and C is unshaken and the shaker C is at level E and F is next to E"
+            ],
+            "effects": [
+                "Once I pour an ingredient B from a shot A into an used shaker C using a hand D from a level E to a level F, it is the case that C contains B and A is empty and the shaker C is at level F",
+                "Once I pour an ingredient B from a shot A into an used shaker C using a hand D from a level E to a level F, it is not the case anymore that A contains B and it is not the case anymore that the shaker C is at level E"
+            ]
+        },
+        "empty-shaker": {
+            "annotation": "",
+            "parameter_types": {
+                "?h": "hand",
+                "?s": "shaker",
+                "?b": "cocktail",
+                "?l": "level",
+                "?l1": "level"
+            },
+            "pddl": "(empty-shaker ?h ?s ?b ?l ?l1)",
+            "description": "empty a shaker B of a cocktail C using a hand A from a level D to an empty level E",
+            "preconditions": [
+                "I can only empty a shaker B of a cocktail C using a hand A from a level D to an empty level E if it is the case that A is holding B and B contains C and B is shaken and the shaker B is at level D and the shaker B is at empty level E"
+            ],
+            "effects": [
+                "Once I empty a shaker B of a cocktail C using a hand A from a level D to an empty level E, it is the case that the shaker B is at level E and B is empty",
+                "Once I empty a shaker B of a cocktail C using a hand A from a level D to an empty level E, it is not the case anymore that B is shaken and it is not the case anymore that the shaker B is at level D and it is not the case anymore that B contains C"
+            ]
+        },
+        "clean-shaker": {
+            "annotation": "",
+            "parameter_types": {
+                "?h1": "hand",
+                "?h2": "hand",
+                "?s": "shaker"
+            },
+            "pddl": "(clean-shaker ?h1 ?h2 ?s)",
+            "description": "clean a shaker C using a hand A and a hand B",
+            "preconditions": [
+                "I can only clean a shaker C using a hand A and a hand B if it is the case that A is holding C and B has an empty hand and C is empty"
+            ],
+            "effects": [
+                "Once I clean a shaker C using a hand A and a hand B, it is the case that C is clean"
+            ]
+        },
+        "shake": {
+            "annotation": "",
+            "parameter_types": {
+                "?b": "cocktail",
+                "?d1": "ingredient",
+                "?d2": "ingredient",
+                "?s": "shaker",
+                "?h1": "hand",
+                "?h2": "hand"
+            },
+            "pddl": "(shake ?b ?d1 ?d2 ?s ?h1 ?h2)",
+            "description": "shake a cocktail A using a shaker D held by a hand E with assistance from a hand F containing an ingredient B and an ingredient C",
+            "preconditions": [
+                "I can only shake a cocktail A using a shaker D held by a hand E with assistance from a hand F containing an ingredient B and an ingredient C if it is the case that E is holding D and F has an empty hand and D contains B and D contains C and B is part of the cocktail A and C is another part of the cocktail A and D is unshaken"
+            ],
+            "effects": [
+                "Once I shake a cocktail A using a shaker D held by a hand E with assistance from a hand F containing an ingredient B and an ingredient C, it is the case that D is shaken and D contains A",
+                "Once I shake a cocktail A using a shaker D held by a hand E with assistance from a hand F containing an ingredient B and an ingredient C, it is not the case anymore that D is unshaken and it is not the case anymore that D contains B and it is not the case anymore that D contains C"
+            ]
+        },
+        "pour-shaker-to-shot": {
+            "annotation": "",
+            "parameter_types": {
+                "?b": "beverage",
+                "?d": "shot",
+                "?h": "hand",
+                "?s": "shaker",
+                "?l": "level",
+                "?l1": "level"
+            },
+            "pddl": "(pour-shaker-to-shot ?b ?d ?h ?s ?l ?l1)",
+            "description": "pour a beverage A from a shaker D held by a hand C into a shot B moving from a level E to a level F",
+            "preconditions": [
+                "I can only pour a beverage A from a shaker D held by a hand C into a shot B moving from a level E to a level F if it is the case that C is holding D and D is shaken and B is empty and B is clean and D contains A and the shaker D is at level E and E is next to F"
+            ],
+            "effects": [
+                "Once I pour a beverage A from a shaker D held by a hand C into a shot B moving from a level E to a level F, it is the case that B contains A and the shaker D is at level F",
+                "Once I pour a beverage A from a shaker D held by a hand C into a shot B moving from a level E to a level F, it is not the case anymore that B is clean and it is not the case anymore that B is empty and it is not the case anymore that the shaker D is at level E"
+            ]
+        }
+    },
+    "predicates": {
+        "ontable": {
+            "parameter_types": {
+                "?c": "container"
+            },
+            "pddl": "(ontable ?c)"
+        },
+        "holding": {
+            "parameter_types": {
+                "?h": "hand",
+                "?c": "container"
+            },
+            "pddl": "(holding ?h ?c)"
+        },
+        "handempty": {
+            "parameter_types": {
+                "?h": "hand"
+            },
+            "pddl": "(handempty ?h)"
+        },
+        "empty": {
+            "parameter_types": {
+                "?c": "container"
+            },
+            "pddl": "(empty ?c)"
+        },
+        "contains": {
+            "parameter_types": {
+                "?c": "container",
+                "?b": "beverage"
+            },
+            "pddl": "(contains ?c ?b)"
+        },
+        "clean": {
+            "parameter_types": {
+                "?c": "container"
+            },
+            "pddl": "(clean ?c)"
+        },
+        "used": {
+            "parameter_types": {
+                "?c": "container",
+                "?b": "beverage"
+            },
+            "pddl": "(used ?c ?b)"
+        },
+        "dispenses": {
+            "parameter_types": {
+                "?d": "dispenser",
+                "?i": "ingredient"
+            },
+            "pddl": "(dispenses ?d ?i)"
+        },
+        "shaker-empty-level": {
+            "parameter_types": {
+                "?s": "shaker",
+                "?l": "level"
+            },
+            "pddl": "(shaker-empty-level ?s ?l)"
+        },
+        "shaker-level": {
+            "parameter_types": {
+                "?s": "shaker",
+                "?l": "level"
+            },
+            "pddl": "(shaker-level ?s ?l)"
+        },
+        "next": {
+            "parameter_types": {
+                "?l1": "level",
+                "?l2": "level"
+            },
+            "pddl": "(next ?l1 ?l2)"
+        },
+        "unshaked": {
+            "parameter_types": {
+                "?s": "shaker"
+            },
+            "pddl": "(unshaked ?s)"
+        },
+        "shaked": {
+            "parameter_types": {
+                "?s": "shaker"
+            },
+            "pddl": "(shaked ?s)"
+        },
+        "cocktail-part1": {
+            "parameter_types": {
+                "?c": "cocktail",
+                "?i": "ingredient"
+            },
+            "pddl": "(cocktail-part1 ?c ?i)"
+        },
+        "cocktail-part2": {
+            "parameter_types": {
+                "?c": "cocktail",
+                "?i": "ingredient"
+            },
+            "pddl": "(cocktail-part2 ?c ?i)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "grasp": "grasp container {?c} with hand {?h}",
+        "leave": "leave container {?c} with hand {?h}",
+        "fill-shot": "fill shot {?s} with ingredient {?i} using dispenser {?d} with hand {?h1} and hand {?h2}",
+        "refill-shot": "refill shot {?s} with ingredient {?i} using dispenser {?d} with hand {?h1} and hand {?h2}",
+        "empty-shot": "empty shot {?p} of beverage {?b} using hand {?h}",
+        "clean-shot": "clean shot {?s} of beverage {?b} using hand {?h1} while hand {?h2} is empty",
+        "pour-shot-to-clean-shaker": "pour ingredient {?i} from shot {?s} into clean shaker {?d} using hand {?h1} from level {?l} to level {?l1}",
+        "pour-shot-to-used-shaker": "pour ingredient {?i} from shot {?s} into used shaker {?d} using hand {?h1} from level {?l} to level {?l1}",
+        "empty-shaker": "empty shaker {?s} of cocktail {?b} using hand {?h} from level {?l} to empty level {?l1}",
+        "clean-shaker": "clean shaker {?s} using hand {?h1} and hand {?h2}",
+        "shake": "shake cocktail {?b} using shaker {?s} held by hand {?h1} with assistance from hand {?h2} containing ingredient {?d1} and ingredient {?d2}",
+        "pour-shaker-to-shot": "pour beverage {?b} from shaker {?s} held by hand {?h} into shot {?d} moving from level {?l} to level {?l1}"
+    },
+    "predicate_nl_templates": {
+        "ontable": "{?c} is on the table",
+        "holding": "{?h} is holding {?c}",
+        "handempty": "{?h} has an empty hand",
+        "empty": "{?c} is empty",
+        "contains": "{?c} contains {?b}",
+        "clean": "{?c} is clean",
+        "used": "{?c} is used by {?b}",
+        "dispenses": "{?d} dispenses {?i}",
+        "shaker-empty-level": "the shaker {?s} is at empty level {?l}",
+        "shaker-level": "the shaker {?s} is at level {?l}",
+        "next": "{?l2} is next to {?l1}",
+        "unshaked": "{?s} is unshaken",
+        "shaked": "{?s} is shaken",
+        "cocktail-part1": "{?i} is part of the cocktail {?c}",
+        "cocktail-part2": "{?i} is another part of the cocktail {?c}",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "grasp": "grasp a container {?c} with a hand {?h}",
+        "leave": "leave a container {?c} with a hand {?h}",
+        "fill-shot": "fill a shot {?s} with an ingredient {?i} using a dispenser {?d} with a hand {?h1} and a hand {?h2}",
+        "refill-shot": "refill a shot {?s} with an ingredient {?i} using a dispenser {?d} with a hand {?h1} and a hand {?h2}",
+        "empty-shot": "empty a shot {?p} of a beverage {?b} using a hand {?h}",
+        "clean-shot": "clean a shot {?s} of a beverage {?b} using a hand {?h1} while a hand {?h2} is empty",
+        "pour-shot-to-clean-shaker": "pour an ingredient {?i} from a shot {?s} into a clean shaker {?d} using a hand {?h1} from a level {?l} to a level {?l1}",
+        "pour-shot-to-used-shaker": "pour an ingredient {?i} from a shot {?s} into an used shaker {?d} using a hand {?h1} from a level {?l} to a level {?l1}",
+        "empty-shaker": "empty a shaker {?s} of a cocktail {?b} using a hand {?h} from a level {?l} to an empty level {?l1}",
+        "clean-shaker": "clean a shaker {?s} using a hand {?h1} and a hand {?h2}",
+        "shake": "shake a cocktail {?b} using a shaker {?s} held by a hand {?h1} with assistance from a hand {?h2} containing an ingredient {?d1} and an ingredient {?d2}",
+        "pour-shaker-to-shot": "pour a beverage {?b} from a shaker {?s} held by a hand {?h} into a shot {?d} moving from a level {?l} to a level {?l1}"
+    },
+    "type_hierarchy": [
+        "Everything that is a hand or a level or a beverage or a dispenser or a container is also a object",
+        "Everything that is a ingredient or a cocktail is also a beverage",
+        "Everything that is a shot or a shaker is also a container"
+    ]
+}

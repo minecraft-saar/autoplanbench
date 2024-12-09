@@ -1,0 +1,41 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "fire",
+        "rain",
+        "kumquat_8",
+        "bastion",
+        "kumquat",
+        "object_260",
+        "screen",
+        "frame_9",
+        "kumquat_8_95_61",
+        "kumquat_8_95",
+        "teddy",
+        "kumquat_8_71",
+        "dress_red",
+        "kumquat_8_30_69",
+        "object_50",
+        "kumquat_8_30",
+        "kumquat_8_25",
+        "object_260_37",
+        "kumquat_8_71_47"
+    ],
+    "pos_examples": [
+        [
+            "Now, buy goods fire with truck rain at market kumquat from level kumquat_8_25 to level kumquat_8_95 and prepare to load from level kumquat_8_95_61 to level kumquat_8_30 with level kumquat_8_95 next to level kumquat_8_25 and level kumquat_8_30 next to level kumquat_8_95_61.",
+            "(buy rain fire kumquat kumquat_8 object_260 kumquat_8_71 object_260_37)"
+        ],
+        [
+            "Once you are done, please drive truck yew from place bastion to place object_50.",
+            "(drive yew bastion object_50)"
+        ],
+        [
+            "First, load goods teddy onto truck dress_red at market screen from level kumquat_8_71 to level kumquat_8_30_69 with level kumquat_8_30 next to level kumquat_8_71 and level kumquat_8_30_69 next to level kumquat_8 and then unload goods fire from truck dress_red at depot frame_9 from level kumquat_8_71_47 to level kumquat_8_71 with level kumquat_8_71 next to level kumquat_8_71_47 and level kumquat_8 next to level kumquat_8_30.",
+            "(load teddy dress_red screen kumquat_8_30 kumquat_8_25 object_260 object_260)\n(unload fire dress_red frame_9 object_260 object_260_37 kumquat_8_71_47 object_260_37)"
+        ]
+    ]
+}

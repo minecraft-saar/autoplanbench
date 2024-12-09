@@ -1,0 +1,28 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "fire",
+        "star_213",
+        "object_260",
+        "teddy",
+        "bastion",
+        "screen"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"put-down\" to object bastion.",
+            "(put-down bastion)"
+        ],
+        [
+            "Once you are done, please apply the action \"unstack\" to object screen and object star_213.",
+            "(unstack screen star_213)"
+        ],
+        [
+            "First, apply the action \"pick-up\" to object teddy and then apply the action \"stack\" to object object_260 and object fire.",
+            "(pick-up teddy)\n(stack object_260 fire)"
+        ]
+    ]
+}

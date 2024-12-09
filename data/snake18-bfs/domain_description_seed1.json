@@ -1,0 +1,171 @@
+{
+    "action_mappings": {
+        "move": "move object {} to point {} and update object {} to object {}",
+        "move-and-eat-spawn": "move object {} to point {} and eat spawn at object {} with next spawn at object {}",
+        "move-and-eat-no-spawn": "move object {} to point {} and eat without spawn"
+    },
+    "action_mappings_indef": {
+        "move": "move an object {} to a point {} and update an object {} to an object {}",
+        "move-and-eat-spawn": "move an object {} to a point {} and eat spawn at an object {} with next spawn at an object {}",
+        "move-and-eat-no-spawn": "move an object {} to a point {} and eat without spawn"
+    },
+    "predicate_mappings": {
+        "isadjacent": "{} is adjacent to {}",
+        "tailsnake": "{} is the tail of the snake",
+        "headsnake": "{} is the head of the snake",
+        "nextsnake": "{} is next to the snake {}",
+        "blocked": "{} is blocked",
+        "spawn": "{} has spawned",
+        "nextspawn": "the next spawn after {} is {}",
+        "ispoint": "{} is a point",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "move": {
+            "annotation": "",
+            "parameter_types": {
+                "?head": "object",
+                "?newhead": "object",
+                "?tail": "object",
+                "?newtail": "object"
+            },
+            "pddl": "(move ?head ?newhead ?tail ?newtail)",
+            "description": "move an object A to a point B and update an object C to an object D",
+            "preconditions": [
+                "I can only move an object A to a point B and update an object C to an object D if it is the case that A is the head of the snake and A is adjacent to B and C is the tail of the snake and D is next to the snake C",
+                "I can only move an object A to a point B and update an object C to an object D if it is not the case that B is blocked and it is not the case that B is a point"
+            ],
+            "effects": [
+                "Once I move an object A to a point B and update an object C to an object D, it is the case that B is blocked and B is the head of the snake and B is next to the snake A and D is the tail of the snake",
+                "Once I move an object A to a point B and update an object C to an object D, it is not the case anymore that A is the head of the snake and it is not the case anymore that C is blocked and it is not the case anymore that C is the tail of the snake and it is not the case anymore that D is next to the snake C"
+            ]
+        },
+        "move-and-eat-spawn": {
+            "annotation": "",
+            "parameter_types": {
+                "?head": "object",
+                "?newhead": "object",
+                "?spawnpoint": "object",
+                "?nextspawnpoint": "object"
+            },
+            "pddl": "(move-and-eat-spawn ?head ?newhead ?spawnpoint ?nextspawnpoint)",
+            "description": "move an object A to a point B and eat spawn at an object C with next spawn at an object D",
+            "preconditions": [
+                "I can only move an object A to a point B and eat spawn at an object C with next spawn at an object D if it is the case that A is the head of the snake and A is adjacent to B and B is a point and C has spawned and the next spawn after C is D",
+                "I can only move an object A to a point B and eat spawn at an object C with next spawn at an object D if it is not the case that B is blocked and it is not the case that C is equal to dummypoint"
+            ],
+            "effects": [
+                "Once I move an object A to a point B and eat spawn at an object C with next spawn at an object D, it is the case that B is blocked and B is the head of the snake and B is next to the snake A and C is a point and D has spawned",
+                "Once I move an object A to a point B and eat spawn at an object C with next spawn at an object D, it is not the case anymore that A is the head of the snake and it is not the case anymore that B is a point and it is not the case anymore that C has spawned"
+            ]
+        },
+        "move-and-eat-no-spawn": {
+            "annotation": "",
+            "parameter_types": {
+                "?head": "object",
+                "?newhead": "object"
+            },
+            "pddl": "(move-and-eat-no-spawn ?head ?newhead)",
+            "description": "move an object A to a point B and eat without spawn",
+            "preconditions": [
+                "I can only move an object A to a point B and eat without spawn if it is the case that A is the head of the snake and A is adjacent to B and B is a point and dummypoint has spawned",
+                "I can only move an object A to a point B and eat without spawn if it is not the case that B is blocked"
+            ],
+            "effects": [
+                "Once I move an object A to a point B and eat without spawn, it is the case that B is blocked and B is the head of the snake and B is next to the snake A",
+                "Once I move an object A to a point B and eat without spawn, it is not the case anymore that A is the head of the snake and it is not the case anymore that B is a point"
+            ]
+        }
+    },
+    "predicates": {
+        "isadjacent": {
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(isadjacent ?x ?y)"
+        },
+        "tailsnake": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(tailsnake ?x)"
+        },
+        "headsnake": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(headsnake ?x)"
+        },
+        "nextsnake": {
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(nextsnake ?x ?y)"
+        },
+        "blocked": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(blocked ?x)"
+        },
+        "spawn": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(spawn ?x)"
+        },
+        "nextspawn": {
+            "parameter_types": {
+                "?x": "object",
+                "?y": "object"
+            },
+            "pddl": "(nextspawn ?x ?y)"
+        },
+        "ispoint": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(ispoint ?x)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "move": "move object {?head} to point {?newhead} and update object {?tail} to object {?newtail}",
+        "move-and-eat-spawn": "move object {?head} to point {?newhead} and eat spawn at object {?spawnpoint} with next spawn at object {?nextspawnpoint}",
+        "move-and-eat-no-spawn": "move object {?head} to point {?newhead} and eat without spawn"
+    },
+    "predicate_nl_templates": {
+        "isadjacent": "{?x} is adjacent to {?y}",
+        "tailsnake": "{?x} is the tail of the snake",
+        "headsnake": "{?x} is the head of the snake",
+        "nextsnake": "{?x} is next to the snake {?y}",
+        "blocked": "{?x} is blocked",
+        "spawn": "{?x} has spawned",
+        "nextspawn": "the next spawn after {?x} is {?y}",
+        "ispoint": "{?x} is a point",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "move": "move an object {?head} to a point {?newhead} and update an object {?tail} to an object {?newtail}",
+        "move-and-eat-spawn": "move an object {?head} to a point {?newhead} and eat spawn at an object {?spawnpoint} with next spawn at an object {?nextspawnpoint}",
+        "move-and-eat-no-spawn": "move an object {?head} to a point {?newhead} and eat without spawn"
+    },
+    "type_hierarchy": []
+}

@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "fire",
+        "roof_11",
+        "kumquat_94",
+        "bastion",
+        "kumquat_8",
+        "star_213",
+        "object_50",
+        "screen",
+        "socket",
+        "dress_red",
+        "kumquat",
+        "star_213_29",
+        "object_260",
+        "frame_9",
+        "teddy",
+        "rain"
+    ],
+    "pos_examples": [
+        [
+            "Now, drink from object frame_9 in object fire to object object_50 and from object socket in object dress_red to object rain with object screen attacking object object_50.",
+            "(drink frame_9 socket fire star_213 screen dress_red rain)"
+        ],
+        [
+            "Once you are done, please feast with pleasure yew on food object_260 and food bastion moving from location roof_11 to location teddy.",
+            "(feast yew object_260 bastion teddy roof_11)"
+        ],
+        [
+            "First, succumb to pleasure kumquat_8 with pain kumquat craving food kumquat_94 transitioning harmony from object frame_9 to object dress_red and then overcome pain socket with pleasure star_213 by using food kumquat_94 from planet yew orbiting planet star_213_29.",
+            "(succumb kumquat kumquat_8 kumquat_94 frame_9 dress_red)\n(overcome socket star_213 kumquat_94 yew star_213_29)"
+        ]
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat_8",
+        "star_213",
+        "frame_9",
+        "socket",
+        "teddy",
+        "object_260",
+        "fire",
+        "dress_red",
+        "rain",
+        "screen",
+        "roof_11",
+        "kumquat",
+        "bastion",
+        "object_50"
+    ],
+    "pos_examples": [
+        [
+            "Now, feast pleasure teddy on food rain and food object_260 at location fire attacking location roof_11.",
+            "(feast teddy rain object_260 fire roof_11)"
+        ],
+        [
+            "Once you are done, please succumb pain object_50 to pleasure screen craving food kumquat_8 in harmony with object kumquat orbiting object bastion.",
+            "(succumb object_50 screen kumquat_8 kumquat bastion)"
+        ]
+    ]
+}

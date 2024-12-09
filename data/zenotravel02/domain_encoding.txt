@@ -1,0 +1,26 @@
+I can carry out the following actions:
+board a person A onto an aircraft B in a city C
+debark a person A from an aircraft B in a city C
+fly an aircraft A from a city B to a city C changing fuel level from a flight level D to a flight level E
+zoom an aircraft A from a city B to a city C changing fuel level from a flight level D to a flight level F through a flight level E
+refuel an aircraft A at a city B changing fuel level from a flight level C to a flight level D
+
+I have the following restrictions on my actions:
+I can only board a person A onto an aircraft B in a city C if it is the case that A is a person and B is an aircraft and C is a city and A is at C and B is at C
+I can only debark a person A from an aircraft B in a city C if it is the case that A is a person and B is an aircraft and C is a city and A is in B and B is at C
+I can only fly an aircraft A from a city B to a city C changing fuel level from a flight level D to a flight level E if it is the case that A is an aircraft and B is a city and C is a city and D is a flight level and E is a flight level and A is at B and the fuel level of A is D and D is next to E
+I can only zoom an aircraft A from a city B to a city C changing fuel level from a flight level D to a flight level F through a flight level E if it is the case that A is an aircraft and B is a city and C is a city and D is a flight level and E is a flight level and F is a flight level and A is at B and the fuel level of A is D and D is next to E and E is next to F
+I can only refuel an aircraft A at a city B changing fuel level from a flight level C to a flight level D if it is the case that A is an aircraft and B is a city and C is a flight level and D is a flight level and the fuel level of A is C and D is next to C and A is at B
+
+The actions have the following effects on the state:
+Once I board a person A onto an aircraft B in a city C, it is the case that A is in B
+Once I board a person A onto an aircraft B in a city C, it is not the case anymore that A is at C
+Once I debark a person A from an aircraft B in a city C, it is the case that A is at C
+Once I debark a person A from an aircraft B in a city C, it is not the case anymore that A is in B
+Once I fly an aircraft A from a city B to a city C changing fuel level from a flight level D to a flight level E, it is the case that A is at C and the fuel level of A is E
+Once I fly an aircraft A from a city B to a city C changing fuel level from a flight level D to a flight level E, it is not the case anymore that A is at B and it is not the case anymore that the fuel level of A is D
+Once I zoom an aircraft A from a city B to a city C changing fuel level from a flight level D to a flight level F through a flight level E, it is the case that A is at C and the fuel level of A is F
+Once I zoom an aircraft A from a city B to a city C changing fuel level from a flight level D to a flight level F through a flight level E, it is not the case anymore that A is at B and it is not the case anymore that the fuel level of A is D
+Once I refuel an aircraft A at a city B changing fuel level from a flight level C to a flight level D, it is the case that the fuel level of A is D
+Once I refuel an aircraft A at a city B changing fuel level from a flight level C to a flight level D, it is not the case anymore that the fuel level of A is C
+

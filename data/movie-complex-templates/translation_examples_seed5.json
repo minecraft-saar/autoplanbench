@@ -1,0 +1,29 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "roof_11",
+        "rain",
+        "kumquat"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"get-chips\" to object kumquat.",
+            "(get-chips kumquat)"
+        ],
+        [
+            "Once you are done, please apply the action \"rewind-movie\".",
+            "(rewind-movie )"
+        ],
+        [
+            "First, apply the action \"get-pop\" to object rain and then apply the action \"reset-counter\".",
+            "(get-pop rain)\n(reset-counter )"
+        ],
+        [
+            "The next step is to apply the action \"get-crackers\" to object roof_11.",
+            "(get-crackers roof_11)"
+        ]
+    ]
+}

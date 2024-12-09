@@ -1,0 +1,7 @@
+(board object_2 object_7 object_3)
+(fly object_7 object_3 object_0 object_14 object_8)
+(board object_15 object_7 object_0)
+(debark object_2 object_7 object_0)
+(fly object_7 object_0 object_3 object_8 object_13)
+(debark object_15 object_7 object_3)
+; cost = 6 (unit cost)

@@ -1,0 +1,39 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "roof_11",
+        "teddy",
+        "star_213",
+        "socket",
+        "kumquat",
+        "bastion",
+        "kumquat_8",
+        "frame_9",
+        "screen",
+        "dress_red",
+        "fire",
+        "object_260",
+        "object_50"
+    ],
+    "pos_examples": [
+        [
+            "Now, remove block from position teddy changing height from numb bastion to numb kumquat and place it at position fire with height numb kumquat.",
+            "(remove-block fire teddy bastion roof_11)"
+        ],
+        [
+            "Once you are done, please move from position object_260 to position kumquat_8 with height numb screen.",
+            "(move object_260 kumquat_8 screen)"
+        ],
+        [
+            "First, create block at position frame_9 which is a depot and then place block from position socket at height numb dress_red to position star_213 changing height from numb dress_red to numb object_50.",
+            "(create-block frame_9)\n(place-block socket star_213 yew dress_red)"
+        ],
+        [
+            "The next step is to destroy block at position kumquat_8 which is a depot.",
+            "(destroy-block kumquat_8)"
+        ]
+    ]
+}

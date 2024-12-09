@@ -1,0 +1,264 @@
+{
+    "action_mappings": {
+        "move": "apply the action \"move\" to loc {} and loc {}",
+        "pickup-laser": "apply the action \"pickup-laser\" to loc {}",
+        "pickup-bomb": "apply the action \"pickup-bomb\" to loc {}",
+        "putdown-laser": "apply the action \"putdown-laser\" to loc {}",
+        "detonate-bomb": "apply the action \"detonate-bomb\" to loc {} and loc {}",
+        "fire-laser": "apply the action \"fire-laser\" to loc {} and loc {}",
+        "pick-gold": "apply the action \"pick-gold\" to loc {}"
+    },
+    "action_mappings_indef": {
+        "move": "apply the action \"move\" to a loc {} and a loc {}",
+        "pickup-laser": "apply the action \"pickup-laser\" to a loc {}",
+        "pickup-bomb": "apply the action \"pickup-bomb\" to a loc {}",
+        "putdown-laser": "apply the action \"putdown-laser\" to a loc {}",
+        "detonate-bomb": "apply the action \"detonate-bomb\" to a loc {} and a loc {}",
+        "fire-laser": "apply the action \"fire-laser\" to a loc {} and a loc {}",
+        "pick-gold": "apply the action \"pick-gold\" to a loc {}"
+    },
+    "predicate_mappings": {
+        "robot-at": "{} is \"robot-at\"",
+        "bomb-at": "{} is \"bomb-at\"",
+        "laser-at": "{} is \"laser-at\"",
+        "soft-rock-at": "{} is \"soft-rock-at\"",
+        "hard-rock-at": "{} is \"hard-rock-at\"",
+        "gold-at": "{} is \"gold-at\"",
+        "arm-empty": "\"arm-empty\"",
+        "holds-bomb": "\"holds-bomb\"",
+        "holds-laser": "\"holds-laser\"",
+        "holds-gold": "\"holds-gold\"",
+        "clear": "{} is \"clear\"",
+        "connected": "{} and {} are in the relation \"connected\"",
+        "=": "{} and {} are in the relation \"=\"",
+        "!=": "{} and {} are in the relation \"!=\""
+    },
+    "actions": {
+        "move": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "loc",
+                "?y": "loc"
+            },
+            "pddl": "(move ?x ?y)",
+            "description": "apply the action \"move\" to a loc A and a loc B",
+            "preconditions": [
+                "I can only apply the action \"move\" to a loc A and a loc B if it is the case that A is \"robot-at\" and A and B are in the relation \"connected\" and B is \"clear\""
+            ],
+            "effects": [
+                "Once I apply the action \"move\" to a loc A and a loc B, it is the case that B is \"robot-at\"",
+                "Once I apply the action \"move\" to a loc A and a loc B, it is not the case anymore that A is \"robot-at\""
+            ]
+        },
+        "pickup-laser": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(pickup-laser ?x)",
+            "description": "apply the action \"pickup-laser\" to a loc A",
+            "preconditions": [
+                "I can only apply the action \"pickup-laser\" to a loc A if it is the case that A is \"robot-at\" and A is \"laser-at\" and \"arm-empty\""
+            ],
+            "effects": [
+                "Once I apply the action \"pickup-laser\" to a loc A, it is the case that \"holds-laser\"",
+                "Once I apply the action \"pickup-laser\" to a loc A, it is not the case anymore that \"arm-empty\" and it is not the case anymore that A is \"laser-at\""
+            ]
+        },
+        "pickup-bomb": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(pickup-bomb ?x)",
+            "description": "apply the action \"pickup-bomb\" to a loc A",
+            "preconditions": [
+                "I can only apply the action \"pickup-bomb\" to a loc A if it is the case that A is \"robot-at\" and A is \"bomb-at\" and \"arm-empty\""
+            ],
+            "effects": [
+                "Once I apply the action \"pickup-bomb\" to a loc A, it is the case that \"holds-bomb\"",
+                "Once I apply the action \"pickup-bomb\" to a loc A, it is not the case anymore that \"arm-empty\""
+            ]
+        },
+        "putdown-laser": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(putdown-laser ?x)",
+            "description": "apply the action \"putdown-laser\" to a loc A",
+            "preconditions": [
+                "I can only apply the action \"putdown-laser\" to a loc A if it is the case that A is \"robot-at\" and \"holds-laser\""
+            ],
+            "effects": [
+                "Once I apply the action \"putdown-laser\" to a loc A, it is the case that \"arm-empty\" and A is \"laser-at\"",
+                "Once I apply the action \"putdown-laser\" to a loc A, it is not the case anymore that \"holds-laser\""
+            ]
+        },
+        "detonate-bomb": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "loc",
+                "?y": "loc"
+            },
+            "pddl": "(detonate-bomb ?x ?y)",
+            "description": "apply the action \"detonate-bomb\" to a loc A and a loc B",
+            "preconditions": [
+                "I can only apply the action \"detonate-bomb\" to a loc A and a loc B if it is the case that A is \"robot-at\" and \"holds-bomb\" and A and B are in the relation \"connected\" and B is \"soft-rock-at\""
+            ],
+            "effects": [
+                "Once I apply the action \"detonate-bomb\" to a loc A and a loc B, it is the case that \"arm-empty\" and B is \"clear\"",
+                "Once I apply the action \"detonate-bomb\" to a loc A and a loc B, it is not the case anymore that \"holds-bomb\" and it is not the case anymore that B is \"soft-rock-at\""
+            ]
+        },
+        "fire-laser": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "loc",
+                "?y": "loc"
+            },
+            "pddl": "(fire-laser ?x ?y)",
+            "description": "apply the action \"fire-laser\" to a loc A and a loc B",
+            "preconditions": [
+                "I can only apply the action \"fire-laser\" to a loc A and a loc B if it is the case that A is \"robot-at\" and \"holds-laser\" and A and B are in the relation \"connected\""
+            ],
+            "effects": [
+                "Once I apply the action \"fire-laser\" to a loc A and a loc B, it is the case that B is \"clear\"",
+                "Once I apply the action \"fire-laser\" to a loc A and a loc B, it is not the case anymore that B is \"soft-rock-at\" and it is not the case anymore that B is \"gold-at\" and it is not the case anymore that B is \"hard-rock-at\""
+            ]
+        },
+        "pick-gold": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(pick-gold ?x)",
+            "description": "apply the action \"pick-gold\" to a loc A",
+            "preconditions": [
+                "I can only apply the action \"pick-gold\" to a loc A if it is the case that A is \"robot-at\" and \"arm-empty\" and A is \"gold-at\""
+            ],
+            "effects": [
+                "Once I apply the action \"pick-gold\" to a loc A, it is the case that \"holds-gold\"",
+                "Once I apply the action \"pick-gold\" to a loc A, it is not the case anymore that \"arm-empty\""
+            ]
+        }
+    },
+    "predicates": {
+        "robot-at": {
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(robot-at ?x)"
+        },
+        "bomb-at": {
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(bomb-at ?x)"
+        },
+        "laser-at": {
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(laser-at ?x)"
+        },
+        "soft-rock-at": {
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(soft-rock-at ?x)"
+        },
+        "hard-rock-at": {
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(hard-rock-at ?x)"
+        },
+        "gold-at": {
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(gold-at ?x)"
+        },
+        "arm-empty": {
+            "parameter_types": {},
+            "pddl": "(arm-empty)"
+        },
+        "holds-bomb": {
+            "parameter_types": {},
+            "pddl": "(holds-bomb)"
+        },
+        "holds-laser": {
+            "parameter_types": {},
+            "pddl": "(holds-laser)"
+        },
+        "holds-gold": {
+            "parameter_types": {},
+            "pddl": "(holds-gold)"
+        },
+        "clear": {
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(clear ?x)"
+        },
+        "connected": {
+            "parameter_types": {
+                "?x": "loc",
+                "?y": "loc"
+            },
+            "pddl": "(connected ?x ?y)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "move": "apply the action \"move\" to loc {?x} and loc {?y}",
+        "pickup-laser": "apply the action \"pickup-laser\" to loc {?x}",
+        "pickup-bomb": "apply the action \"pickup-bomb\" to loc {?x}",
+        "putdown-laser": "apply the action \"putdown-laser\" to loc {?x}",
+        "detonate-bomb": "apply the action \"detonate-bomb\" to loc {?x} and loc {?y}",
+        "fire-laser": "apply the action \"fire-laser\" to loc {?x} and loc {?y}",
+        "pick-gold": "apply the action \"pick-gold\" to loc {?x}"
+    },
+    "predicate_nl_templates": {
+        "robot-at": "{?x} is \"robot-at\"",
+        "bomb-at": "{?x} is \"bomb-at\"",
+        "laser-at": "{?x} is \"laser-at\"",
+        "soft-rock-at": "{?x} is \"soft-rock-at\"",
+        "hard-rock-at": "{?x} is \"hard-rock-at\"",
+        "gold-at": "{?x} is \"gold-at\"",
+        "arm-empty": "\"arm-empty\"",
+        "holds-bomb": "\"holds-bomb\"",
+        "holds-laser": "\"holds-laser\"",
+        "holds-gold": "\"holds-gold\"",
+        "clear": "{?x} is \"clear\"",
+        "connected": "{?x} and {?y} are in the relation \"connected\"",
+        "=": "{?x1} and {?x2} are in the relation \"=\"",
+        "!=": "{?x1} and {?x2} are in the relation \"!=\""
+    },
+    "action_nl_templates_indef": {
+        "move": "apply the action \"move\" to a loc {?x} and a loc {?y}",
+        "pickup-laser": "apply the action \"pickup-laser\" to a loc {?x}",
+        "pickup-bomb": "apply the action \"pickup-bomb\" to a loc {?x}",
+        "putdown-laser": "apply the action \"putdown-laser\" to a loc {?x}",
+        "detonate-bomb": "apply the action \"detonate-bomb\" to a loc {?x} and a loc {?y}",
+        "fire-laser": "apply the action \"fire-laser\" to a loc {?x} and a loc {?y}",
+        "pick-gold": "apply the action \"pick-gold\" to a loc {?x}"
+    },
+    "type_hierarchy": [
+        "Everything that is a loc is also a object"
+    ]
+}

@@ -1,0 +1,8 @@
+(drive-truck t0 l0-0 l0-1 c0)
+(load-truck p0 t0 l0-1)
+(drive-truck t0 l0-1 l0-0 c0)
+(unload-truck p0 t0 l0-0)
+(load-airplane p0 a0 l0-0)
+(fly-airplane a0 l0-0 l1-0)
+(unload-airplane p0 a0 l1-0)
+; cost = 7 (unit cost)

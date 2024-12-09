@@ -1,0 +1,28 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "star_213",
+        "dress_red",
+        "socket",
+        "kumquat_8",
+        "object_260",
+        "kumquat"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"stack\" to object object_260 and object kumquat.",
+            "(stack object_260 kumquat)"
+        ],
+        [
+            "Once you are done, please apply the action \"pick-up\" to object dress_red.",
+            "(pick-up dress_red)"
+        ],
+        [
+            "First, apply the action \"unstack\" to object star_213 and object kumquat_8 and then apply the action \"put-down\" to object socket.",
+            "(unstack star_213 kumquat_8)\n(put-down socket)"
+        ]
+    ]
+}

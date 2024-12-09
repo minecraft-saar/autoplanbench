@@ -1,0 +1,46 @@
+I can carry out the following actions:
+move an object A from an object B to an object C
+move an object A from an object C to an object D on an object B
+send an object A from an object B to an object D in an object C
+send an object A to free cell an object B with successor an object C and column an object D with successor an object E
+send an object A to new column with an object B in an object C and successor an object D
+send an object A to home with an object B and an object E in suit an object C with value an object D and home value an object F
+send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from column space an object F to new column space an object G
+send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from cell space an object F to new cell space an object G
+move an object A from cell to stack on an object B updating cell space from an object C to an object D
+move an object A from cell to start new column updating column space from an object B to an object C and cell space from an object D to an object E
+
+I have the following restrictions on my actions:
+I can only move an object A from an object B to an object C if it is the case that A is clear and C is clear and A can be stacked on C and A is on B
+I can only move an object A from an object C to an object D on an object B if it is the case that A is clear and A is the bottom color and B is clear and A can be stacked on B and C is a column space and D is the successor of C
+I can only send an object A from an object B to an object D in an object C if it is the case that A is clear and A is on B and C is a cell space and C is the successor of D
+I can only send an object A to free cell an object B with successor an object C and column an object D with successor an object E if it is the case that A is clear and A is the bottom color and B is a cell space and B is the successor of C and D is a column space and E is the successor of D
+I can only send an object A to new column with an object B in an object C and successor an object D if it is the case that A is clear and C is a column space and C is the successor of D and A is on B
+I can only send an object A to home with an object B and an object E in suit an object C with value an object D and home value an object F if it is the case that A is clear and A is on B and E is home and A is a suit of C and E is a suit of C and A has a value of D and E has a value of F and D is the successor of F
+I can only send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from column space an object F to new column space an object G if it is the case that A is clear and A is the bottom color and D is home and A is a suit of B and D is a suit of B and A has a value of C and D has a value of E and C is the successor of E and F is a column space and G is the successor of F
+I can only send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from cell space an object F to new cell space an object G if it is the case that A is in the cell and D is home and A is a suit of B and D is a suit of B and A has a value of C and D has a value of E and C is the successor of E and F is a cell space and G is the successor of F
+I can only move an object A from cell to stack on an object B updating cell space from an object C to an object D if it is the case that A is in the cell and B is clear and A can be stacked on B and C is a cell space and D is the successor of C
+I can only move an object A from cell to start new column updating column space from an object B to an object C and cell space from an object D to an object E if it is the case that A is in the cell and B is a column space and D is a cell space and B is the successor of C and E is the successor of D
+
+The actions have the following effects on the state:
+Once I move an object A from an object B to an object C, it is the case that A is on C and B is clear
+Once I move an object A from an object B to an object C, it is not the case anymore that A is on B and it is not the case anymore that C is clear
+Once I move an object A from an object C to an object D on an object B, it is the case that A is on B and D is a column space
+Once I move an object A from an object C to an object D on an object B, it is not the case anymore that A is the bottom color and it is not the case anymore that B is clear and it is not the case anymore that C is a column space
+Once I send an object A from an object B to an object D in an object C, it is the case that A is in the cell and B is clear and D is a cell space
+Once I send an object A from an object B to an object D in an object C, it is not the case anymore that A is on B and it is not the case anymore that A is clear and it is not the case anymore that C is a cell space
+Once I send an object A to free cell an object B with successor an object C and column an object D with successor an object E, it is the case that A is in the cell and E is a column space and C is a cell space
+Once I send an object A to free cell an object B with successor an object C and column an object D with successor an object E, it is not the case anymore that A is the bottom color and it is not the case anymore that A is clear and it is not the case anymore that D is a column space and it is not the case anymore that B is a cell space
+Once I send an object A to new column with an object B in an object C and successor an object D, it is the case that A is the bottom color and B is clear and D is a column space
+Once I send an object A to new column with an object B in an object C and successor an object D, it is not the case anymore that A is on B and it is not the case anymore that C is a column space
+Once I send an object A to home with an object B and an object E in suit an object C with value an object D and home value an object F, it is the case that A is home and B is clear
+Once I send an object A to home with an object B and an object E in suit an object C with value an object D and home value an object F, it is not the case anymore that A is on B and it is not the case anymore that E is home and it is not the case anymore that A is clear
+Once I send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from column space an object F to new column space an object G, it is the case that A is home and G is a column space
+Once I send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from column space an object F to new column space an object G, it is not the case anymore that D is home and it is not the case anymore that A is clear and it is not the case anymore that A is the bottom color and it is not the case anymore that F is a column space
+Once I send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from cell space an object F to new cell space an object G, it is the case that A is home and G is a cell space
+Once I send an object A of suit an object B with value an object C to home with homecard an object D and home value an object E from cell space an object F to new cell space an object G, it is not the case anymore that A is in the cell and it is not the case anymore that F is a cell space and it is not the case anymore that D is home
+Once I move an object A from cell to stack on an object B updating cell space from an object C to an object D, it is the case that D is a cell space and A is clear and A is on B
+Once I move an object A from cell to stack on an object B updating cell space from an object C to an object D, it is not the case anymore that A is in the cell and it is not the case anymore that C is a cell space and it is not the case anymore that B is clear
+Once I move an object A from cell to start new column updating column space from an object B to an object C and cell space from an object D to an object E, it is the case that A is the bottom color and A is clear and C is a column space and E is a cell space
+Once I move an object A from cell to start new column updating column space from an object B to an object C and cell space from an object D to an object E, it is not the case anymore that A is in the cell and it is not the case anymore that B is a column space and it is not the case anymore that D is a cell space
+

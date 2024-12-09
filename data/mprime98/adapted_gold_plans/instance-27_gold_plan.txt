@@ -1,0 +1,6 @@
+(overcome object_4 object_10 object_11 object_1 object_30)
+(overcome object_7 object_10 object_11 object_6 object_1)
+(feast object_10 object_11 object_9 object_27 object_17)
+(succumb object_4 object_10 object_9 object_6 object_1)
+(succumb object_7 object_10 object_9 object_1 object_30)
+; cost = 5 (unit cost)

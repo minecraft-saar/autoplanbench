@@ -1,0 +1,239 @@
+{
+    "action_mappings": {
+        "load-truck": "load package {} into truck {} at location {}",
+        "load-airplane": "load package {} into airplane {} at location {}",
+        "unload-truck": "unload package {} from truck {} at location {}",
+        "unload-airplane": "unload package {} from airplane {} at location {}",
+        "drive-truck": "drive truck {} from location {} to location {} within city {}",
+        "fly-airplane": "fly airplane {} from airport {} to airport {}"
+    },
+    "action_mappings_indef": {
+        "load-truck": "load a package {} into a truck {} at a location {}",
+        "load-airplane": "load a package {} into an airplane {} at a location {}",
+        "unload-truck": "unload a package {} from a truck {} at a location {}",
+        "unload-airplane": "unload a package {} from an airplane {} at a location {}",
+        "drive-truck": "drive a truck {} from a location {} to a location {} within a city {}",
+        "fly-airplane": "fly an airplane {} from an airport {} to an airport {}"
+    },
+    "predicate_mappings": {
+        "package": "{} is a package",
+        "truck": "{} is a truck",
+        "airplane": "{} is an airplane",
+        "airport": "{} is an airport",
+        "location": "{} is a location",
+        "in-city": "{} is in the city {}",
+        "city": "{} is a city",
+        "at": "{} is at {}",
+        "in": "{} is in {}",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "load-truck": {
+            "annotation": "",
+            "parameter_types": {
+                "?obj": "object",
+                "?truck": "object",
+                "?loc": "object"
+            },
+            "pddl": "(load-truck ?obj ?truck ?loc)",
+            "description": "load a package A into a truck B at a location C",
+            "preconditions": [
+                "I can only load a package A into a truck B at a location C if it is the case that A is a package and B is a truck and C is a location and B is at C and A is at C"
+            ],
+            "effects": [
+                "Once I load a package A into a truck B at a location C, it is the case that A is in B",
+                "Once I load a package A into a truck B at a location C, it is not the case anymore that A is at C"
+            ]
+        },
+        "load-airplane": {
+            "annotation": "",
+            "parameter_types": {
+                "?obj": "object",
+                "?airplane": "object",
+                "?loc": "object"
+            },
+            "pddl": "(load-airplane ?obj ?airplane ?loc)",
+            "description": "load a package A into an airplane B at a location C",
+            "preconditions": [
+                "I can only load a package A into an airplane B at a location C if it is the case that A is a package and B is an airplane and C is a location and A is at C and B is at C"
+            ],
+            "effects": [
+                "Once I load a package A into an airplane B at a location C, it is the case that A is in B",
+                "Once I load a package A into an airplane B at a location C, it is not the case anymore that A is at C"
+            ]
+        },
+        "unload-truck": {
+            "annotation": "",
+            "parameter_types": {
+                "?obj": "object",
+                "?truck": "object",
+                "?loc": "object"
+            },
+            "pddl": "(unload-truck ?obj ?truck ?loc)",
+            "description": "unload a package A from a truck B at a location C",
+            "preconditions": [
+                "I can only unload a package A from a truck B at a location C if it is the case that A is a package and B is a truck and C is a location and B is at C and A is in B"
+            ],
+            "effects": [
+                "Once I unload a package A from a truck B at a location C, it is the case that A is at C",
+                "Once I unload a package A from a truck B at a location C, it is not the case anymore that A is in B"
+            ]
+        },
+        "unload-airplane": {
+            "annotation": "",
+            "parameter_types": {
+                "?obj": "object",
+                "?airplane": "object",
+                "?loc": "object"
+            },
+            "pddl": "(unload-airplane ?obj ?airplane ?loc)",
+            "description": "unload a package A from an airplane B at a location C",
+            "preconditions": [
+                "I can only unload a package A from an airplane B at a location C if it is the case that A is a package and B is an airplane and C is a location and A is in B and B is at C"
+            ],
+            "effects": [
+                "Once I unload a package A from an airplane B at a location C, it is the case that A is at C",
+                "Once I unload a package A from an airplane B at a location C, it is not the case anymore that A is in B"
+            ]
+        },
+        "drive-truck": {
+            "annotation": "",
+            "parameter_types": {
+                "?truck": "object",
+                "?loc-from": "object",
+                "?loc-to": "object",
+                "?city": "object"
+            },
+            "pddl": "(drive-truck ?truck ?loc-from ?loc-to ?city)",
+            "description": "drive a truck A from a location B to a location C within a city D",
+            "preconditions": [
+                "I can only drive a truck A from a location B to a location C within a city D if it is the case that A is a truck and B is a location and C is a location and D is a city and A is at B and B is in the city D and C is in the city D"
+            ],
+            "effects": [
+                "Once I drive a truck A from a location B to a location C within a city D, it is the case that A is at C",
+                "Once I drive a truck A from a location B to a location C within a city D, it is not the case anymore that A is at B"
+            ]
+        },
+        "fly-airplane": {
+            "annotation": "",
+            "parameter_types": {
+                "?airplane": "object",
+                "?loc-from": "object",
+                "?loc-to": "object"
+            },
+            "pddl": "(fly-airplane ?airplane ?loc-from ?loc-to)",
+            "description": "fly an airplane A from an airport B to an airport C",
+            "preconditions": [
+                "I can only fly an airplane A from an airport B to an airport C if it is the case that A is an airplane and B is an airport and C is an airport and A is at B"
+            ],
+            "effects": [
+                "Once I fly an airplane A from an airport B to an airport C, it is the case that A is at C",
+                "Once I fly an airplane A from an airport B to an airport C, it is not the case anymore that A is at B"
+            ]
+        }
+    },
+    "predicates": {
+        "package": {
+            "parameter_types": {
+                "?obj": "object"
+            },
+            "pddl": "(package ?obj)"
+        },
+        "truck": {
+            "parameter_types": {
+                "?truck": "object"
+            },
+            "pddl": "(truck ?truck)"
+        },
+        "airplane": {
+            "parameter_types": {
+                "?airplane": "object"
+            },
+            "pddl": "(airplane ?airplane)"
+        },
+        "airport": {
+            "parameter_types": {
+                "?airport": "object"
+            },
+            "pddl": "(airport ?airport)"
+        },
+        "location": {
+            "parameter_types": {
+                "?loc": "object"
+            },
+            "pddl": "(location ?loc)"
+        },
+        "in-city": {
+            "parameter_types": {
+                "?obj": "object",
+                "?city": "object"
+            },
+            "pddl": "(in-city ?obj ?city)"
+        },
+        "city": {
+            "parameter_types": {
+                "?city": "object"
+            },
+            "pddl": "(city ?city)"
+        },
+        "at": {
+            "parameter_types": {
+                "?obj": "object",
+                "?loc": "object"
+            },
+            "pddl": "(at ?obj ?loc)"
+        },
+        "in": {
+            "parameter_types": {
+                "?obj": "object",
+                "?obj2": "object"
+            },
+            "pddl": "(in ?obj ?obj2)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "load-truck": "load package {?obj} into truck {?truck} at location {?loc}",
+        "load-airplane": "load package {?obj} into airplane {?airplane} at location {?loc}",
+        "unload-truck": "unload package {?obj} from truck {?truck} at location {?loc}",
+        "unload-airplane": "unload package {?obj} from airplane {?airplane} at location {?loc}",
+        "drive-truck": "drive truck {?truck} from location {?loc-from} to location {?loc-to} within city {?city}",
+        "fly-airplane": "fly airplane {?airplane} from airport {?loc-from} to airport {?loc-to}"
+    },
+    "predicate_nl_templates": {
+        "package": "{?obj} is a package",
+        "truck": "{?truck} is a truck",
+        "airplane": "{?airplane} is an airplane",
+        "airport": "{?airport} is an airport",
+        "location": "{?loc} is a location",
+        "in-city": "{?obj} is in the city {?city}",
+        "city": "{?city} is a city",
+        "at": "{?obj} is at {?loc}",
+        "in": "{?obj} is in {?obj2}",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "load-truck": "load a package {?obj} into a truck {?truck} at a location {?loc}",
+        "load-airplane": "load a package {?obj} into an airplane {?airplane} at a location {?loc}",
+        "unload-truck": "unload a package {?obj} from a truck {?truck} at a location {?loc}",
+        "unload-airplane": "unload a package {?obj} from an airplane {?airplane} at a location {?loc}",
+        "drive-truck": "drive a truck {?truck} from a location {?loc-from} to a location {?loc-to} within a city {?city}",
+        "fly-airplane": "fly an airplane {?airplane} from an airport {?loc-from} to an airport {?loc-to}"
+    },
+    "type_hierarchy": []
+}

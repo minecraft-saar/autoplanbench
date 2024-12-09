@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "socket",
+        "rain",
+        "roof_11_25",
+        "screen",
+        "fire",
+        "roof_11",
+        "kumquat_8",
+        "dress_red",
+        "fire_79",
+        "teddy",
+        "bastion",
+        "object_50"
+    ],
+    "pos_examples": [
+        [
+            "Now, empty shot fire of beverage rain while hand roof_11 holds shot fire.",
+            "(empty-shot roof_11 yew rain)"
+        ],
+        [
+            "Once you are done, please clean shot fire_79 used by beverage rain while hand roof_11 holds shot fire_79 and hand roof_11_25 is empty.",
+            "(clean-shot fire rain roof_11 fire_79)"
+        ],
+        [
+            "First, pour ingredient socket from shot yew into clean shaker kumquat_8 using hand roof_11_25 while moving from level dress_red to level teddy and then grasp container screen with hand roof_11_25.",
+            "(pour-shot-to-clean-shaker yew socket kumquat_8 roof_11_25 dress_red teddy)\n(grasp roof_11_25 screen)"
+        ],
+        [
+            "The next step is to empty shaker bastion of cocktail object_50 using hand roof_11 while moving from level dress_red to empty level teddy.",
+            "(empty-shaker roof_11 bastion object_50 dress_red teddy)"
+        ]
+    ]
+}

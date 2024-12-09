@@ -1,0 +1,37 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "roof_11",
+        "kumquat_8",
+        "socket",
+        "object_50",
+        "object_260",
+        "dress_red",
+        "teddy",
+        "kumquat",
+        "fire",
+        "screen",
+        "bastion"
+    ],
+    "pos_examples": [
+        [
+            "Now, serve no gluten sandwich teddy to child kumquat_8 at place roof_11 from tray screen.",
+            "(serve_sandwich_no_gluten teddy kumquat_8 screen roof_11)"
+        ],
+        [
+            "Once you are done, please put sandwich fire on tray kumquat.",
+            "(put_on_tray fire kumquat)"
+        ],
+        [
+            "First, make sandwich fire using bread-portion socket and content-portion dress_red and then serve sandwich fire to child object_260 at place object_50 from tray screen.",
+            "(make_sandwich fire socket dress_red)\n(serve_sandwich fire object_260 screen object_50)"
+        ],
+        [
+            "The next step is to move tray kumquat from place bastion to place roof_11.",
+            "(move_tray kumquat bastion roof_11)"
+        ]
+    ]
+}

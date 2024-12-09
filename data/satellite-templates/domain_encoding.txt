@@ -1,0 +1,26 @@
+I can carry out the following actions:
+apply the action "turn_to" to a satellite A, a direction B and a direction C
+apply the action "switch_on" to an instrument A and a satellite B
+apply the action "switch_off" to an instrument A and a satellite B
+apply the action "calibrate" to a satellite A, an instrument B and a direction C
+apply the action "take_image" to a satellite A, a direction B, an instrument C and a mode D
+
+I have the following restrictions on my actions:
+I can only apply the action "turn_to" to a satellite A, a direction B and a direction C if it is the case that A and C are in the relation "pointing"
+I can only apply the action "switch_on" to an instrument A and a satellite B if it is the case that A and B are in the relation "on_board" and B is "power_avail"
+I can only apply the action "switch_off" to an instrument A and a satellite B if it is the case that A and B are in the relation "on_board" and A is "power_on"
+I can only apply the action "calibrate" to a satellite A, an instrument B and a direction C if it is the case that B and A are in the relation "on_board" and B and C are in the relation "calibration_target" and A and C are in the relation "pointing" and B is "power_on"
+I can only apply the action "take_image" to a satellite A, a direction B, an instrument C and a mode D if it is the case that C is "calibrated" and C and A are in the relation "on_board" and C and D are in the relation "supports" and C is "power_on" and A and B are in the relation "pointing"
+
+The actions have the following effects on the state:
+Once I apply the action "turn_to" to a satellite A, a direction B and a direction C, it is the case that A and B are in the relation "pointing"
+Once I apply the action "turn_to" to a satellite A, a direction B and a direction C, it is not the case anymore that A and C are in the relation "pointing"
+Once I apply the action "switch_on" to an instrument A and a satellite B, it is the case that A is "power_on"
+Once I apply the action "switch_on" to an instrument A and a satellite B, it is not the case anymore that A is "calibrated" and it is not the case anymore that B is "power_avail"
+Once I apply the action "switch_off" to an instrument A and a satellite B, it is the case that B is "power_avail"
+Once I apply the action "switch_off" to an instrument A and a satellite B, it is not the case anymore that A is "power_on"
+Once I apply the action "calibrate" to a satellite A, an instrument B and a direction C, it is the case that B is "calibrated"
+Once I apply the action "take_image" to a satellite A, a direction B, an instrument C and a mode D, it is the case that B and D are in the relation "have_image"
+
+
+Everything that is a satellite or a direction or a instrument or a mode is also a object

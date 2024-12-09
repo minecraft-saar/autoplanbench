@@ -1,0 +1,7 @@
+(overcome boils entertainment haroset earth neptune)
+(feast entertainment haroset rice oregon bavaria)
+(feast entertainment rice pistachio manitoba oregon)
+(feast entertainment pistachio turkey moravia kentucky)
+(feast entertainment turkey papaya manitoba oregon)
+(succumb boils entertainment papaya earth neptune)
+; cost = 6 (unit cost)

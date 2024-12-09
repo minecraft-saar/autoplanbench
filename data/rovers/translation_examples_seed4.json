@@ -1,0 +1,39 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "rain",
+        "roof_11",
+        "object_50",
+        "screen",
+        "teddy",
+        "star_213",
+        "object_260",
+        "kumquat_8",
+        "frame_9",
+        "bastion",
+        "kumquat_8_21",
+        "kumquat",
+        "dress_red"
+    ],
+    "pos_examples": [
+        [
+            "Now, sample rock at waypoint kumquat with rover rain storing in store roof_11.",
+            "(sample_rock rain roof_11 kumquat)"
+        ],
+        [
+            "Once you are done, please communicate soil data from rover star_213 at waypoint kumquat_8 to lander object_50 at waypoint kumquat with soil analysis from waypoint kumquat_8_21.",
+            "(communicate_soil_data star_213 object_50 kumquat_8_21 kumquat_8 kumquat)"
+        ],
+        [
+            "First, communicate image data from rover star_213 at waypoint kumquat_8 to lander dress_red at waypoint kumquat_8_21 of objective teddy in mode screen and then calibrate rover star_213 with camera object_260 on objective bastion at waypoint kumquat_8_21.",
+            "(communicate_image_data star_213 dress_red teddy screen kumquat_8 kumquat_8_21)\n(calibrate star_213 object_260 bastion kumquat_8_21)"
+        ],
+        [
+            "The next step is to drop rover star_213 from store frame_9.",
+            "(drop star_213 frame_9)"
+        ]
+    ]
+}

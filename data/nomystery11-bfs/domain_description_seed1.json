@@ -1,0 +1,162 @@
+{
+    "action_mappings": {
+        "load": "load package {} into truck {} at location {}",
+        "unload": "unload package {} from truck {} at location {}",
+        "drive": "drive truck {} from location {} to location {} with initial fuel level fuellevel {}, fuel cost fuellevel {}, and resulting fuel level fuellevel {}"
+    },
+    "action_mappings_indef": {
+        "load": "load a package {} into a truck {} at a location {}",
+        "unload": "unload a package {} from a truck {} at a location {}",
+        "drive": "drive a truck {} from a location {} to a location {} with initial fuel level a fuellevel {}, fuel cost a fuellevel {}, and resulting fuel level a fuellevel {}"
+    },
+    "predicate_mappings": {
+        "connected": "{} is connected to {}",
+        "at": "{} is at {}",
+        "in": "{} is in {}",
+        "fuel": "{} has a fuel level of {}",
+        "fuelcost": "the fuel cost from {} to {} is {}",
+        "sum": "the sum of {} and {} is {}",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "load": {
+            "annotation": "",
+            "parameter_types": {
+                "?p": "package",
+                "?t": "truck",
+                "?l": "location"
+            },
+            "pddl": "(load ?p ?t ?l)",
+            "description": "load a package A into a truck B at a location C",
+            "preconditions": [
+                "I can only load a package A into a truck B at a location C if it is the case that B is at C and A is at C"
+            ],
+            "effects": [
+                "Once I load a package A into a truck B at a location C, it is the case that A is in B",
+                "Once I load a package A into a truck B at a location C, it is not the case anymore that A is at C"
+            ]
+        },
+        "unload": {
+            "annotation": "",
+            "parameter_types": {
+                "?p": "package",
+                "?t": "truck",
+                "?l": "location"
+            },
+            "pddl": "(unload ?p ?t ?l)",
+            "description": "unload a package A from a truck B at a location C",
+            "preconditions": [
+                "I can only unload a package A from a truck B at a location C if it is the case that B is at C and A is in B"
+            ],
+            "effects": [
+                "Once I unload a package A from a truck B at a location C, it is the case that A is at C",
+                "Once I unload a package A from a truck B at a location C, it is not the case anymore that A is in B"
+            ]
+        },
+        "drive": {
+            "annotation": "",
+            "parameter_types": {
+                "?t": "truck",
+                "?l1": "location",
+                "?l2": "location",
+                "?fuelpost": "fuellevel",
+                "?fueldelta": "fuellevel",
+                "?fuelpre": "fuellevel"
+            },
+            "pddl": "(drive ?t ?l1 ?l2 ?fuelpost ?fueldelta ?fuelpre)",
+            "description": "drive a truck A from a location B to a location C with initial fuel level a fuellevel F, fuel cost a fuellevel E, and resulting fuel level a fuellevel D",
+            "preconditions": [
+                "I can only drive a truck A from a location B to a location C with initial fuel level a fuellevel F, fuel cost a fuellevel E, and resulting fuel level a fuellevel D if it is the case that B is connected to C and the fuel cost from E to B is C and A has a fuel level of F and the sum of D and E is F and A is at B"
+            ],
+            "effects": [
+                "Once I drive a truck A from a location B to a location C with initial fuel level a fuellevel F, fuel cost a fuellevel E, and resulting fuel level a fuellevel D, it is the case that A is at C and A has a fuel level of D",
+                "Once I drive a truck A from a location B to a location C with initial fuel level a fuellevel F, fuel cost a fuellevel E, and resulting fuel level a fuellevel D, it is not the case anymore that A is at B and it is not the case anymore that A has a fuel level of F"
+            ]
+        }
+    },
+    "predicates": {
+        "connected": {
+            "parameter_types": {
+                "?l1": "location",
+                "?l2": "location"
+            },
+            "pddl": "(connected ?l1 ?l2)"
+        },
+        "at": {
+            "parameter_types": {
+                "?o": "locatable",
+                "?l": "location"
+            },
+            "pddl": "(at ?o ?l)"
+        },
+        "in": {
+            "parameter_types": {
+                "?p": "package",
+                "?t": "truck"
+            },
+            "pddl": "(in ?p ?t)"
+        },
+        "fuel": {
+            "parameter_types": {
+                "?t": "truck",
+                "?level": "fuellevel"
+            },
+            "pddl": "(fuel ?t ?level)"
+        },
+        "fuelcost": {
+            "parameter_types": {
+                "?level": "fuellevel",
+                "?l1": "location",
+                "?l2": "location"
+            },
+            "pddl": "(fuelcost ?level ?l1 ?l2)"
+        },
+        "sum": {
+            "parameter_types": {
+                "?a": "fuellevel",
+                "?b": "fuellevel",
+                "?c": "fuellevel"
+            },
+            "pddl": "(sum ?a ?b ?c)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "load": "load package {?p} into truck {?t} at location {?l}",
+        "unload": "unload package {?p} from truck {?t} at location {?l}",
+        "drive": "drive truck {?t} from location {?l1} to location {?l2} with initial fuel level fuellevel {?fuelpre}, fuel cost fuellevel {?fueldelta}, and resulting fuel level fuellevel {?fuelpost}"
+    },
+    "predicate_nl_templates": {
+        "connected": "{?l1} is connected to {?l2}",
+        "at": "{?o} is at {?l}",
+        "in": "{?p} is in {?t}",
+        "fuel": "{?t} has a fuel level of {?level}",
+        "fuelcost": "the fuel cost from {?level} to {?l1} is {?l2}",
+        "sum": "the sum of {?a} and {?b} is {?c}",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "load": "load a package {?p} into a truck {?t} at a location {?l}",
+        "unload": "unload a package {?p} from a truck {?t} at a location {?l}",
+        "drive": "drive a truck {?t} from a location {?l1} to a location {?l2} with initial fuel level a fuellevel {?fuelpre}, fuel cost a fuellevel {?fueldelta}, and resulting fuel level a fuellevel {?fuelpost}"
+    },
+    "type_hierarchy": [
+        "Everything that is a location or a fuellevel or a locatable is also a object",
+        "Everything that is a package or a truck is also a locatable"
+    ]
+}

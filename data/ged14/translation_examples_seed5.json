@@ -1,0 +1,33 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "screen",
+        "socket",
+        "dress_red",
+        "star_213",
+        "kumquat_8",
+        "object_50",
+        "teddy"
+    ],
+    "pos_examples": [
+        [
+            "Now, begin transverse splice with object screen and object dress_red.",
+            "(begin-transverse-splice screen dress_red)"
+        ],
+        [
+            "Once you are done, please reset 1 for object yew.",
+            "(reset-1 yew)"
+        ],
+        [
+            "First, end inverse splice 1a with object star_213 and object object_50 and then begin inverse splice special case with object socket.",
+            "(end-inverse-splice-1a star_213 object_50)\n(begin-inverse-splice-special-case socket)"
+        ],
+        [
+            "The next step is to continue splice 2 with object kumquat_8 and object teddy at splice point 1.",
+            "(continue-splice-2 kumquat_8 teddy)"
+        ]
+    ]
+}

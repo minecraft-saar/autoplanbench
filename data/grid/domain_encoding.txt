@@ -1,0 +1,26 @@
+I can carry out the following actions:
+unlock a place B from a place A using a key C with a shape D
+move from a place A to a place B
+pick up a key B at a place A
+pick up a key B and drop a key C at a place A
+put down a key B at a place A
+
+I have the following restrictions on my actions:
+I can only unlock a place B from a place A using a key C with a shape D if it is the case that A is a place and B is a place and C is a key and D is a shape and A is connected to B and C has the shape D and B has the lock shape D and the robot is at A and B is locked and holding C
+I can only move from a place A to a place B if it is the case that A is a place and B is a place and the robot is at A and A is connected to B and B is open
+I can only pick up a key B at a place A if it is the case that A is a place and B is a key and the robot is at A and B is at A and the arm is empty
+I can only pick up a key B and drop a key C at a place A if it is the case that A is a place and B is a key and C is a key and the robot is at A and holding C and B is at A
+I can only put down a key B at a place A if it is the case that A is a place and B is a key and the robot is at A and holding B
+
+The actions have the following effects on the state:
+Once I unlock a place B from a place A using a key C with a shape D, it is the case that B is open
+Once I unlock a place B from a place A using a key C with a shape D, it is not the case anymore that B is locked
+Once I move from a place A to a place B, it is the case that the robot is at B
+Once I move from a place A to a place B, it is not the case anymore that the robot is at A
+Once I pick up a key B at a place A, it is the case that holding B
+Once I pick up a key B at a place A, it is not the case anymore that B is at A and it is not the case anymore that the arm is empty
+Once I pick up a key B and drop a key C at a place A, it is the case that holding B and C is at A
+Once I pick up a key B and drop a key C at a place A, it is not the case anymore that holding C and it is not the case anymore that B is at A
+Once I put down a key B at a place A, it is the case that the arm is empty and B is at A
+Once I put down a key B at a place A, it is not the case anymore that holding B
+

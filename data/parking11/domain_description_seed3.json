@@ -1,0 +1,165 @@
+{
+    "action_mappings": {
+        "move-curb-to-curb": "move car {} from curb number {} to curb number {}",
+        "move-curb-to-car": "move car {} from curb number {} to behind car {}",
+        "move-car-to-curb": "move car {} from behind car {} to curb number {}",
+        "move-car-to-car": "move car {} from behind car {} to behind car {}"
+    },
+    "action_mappings_indef": {
+        "move-curb-to-curb": "move a car {} from curb number a {} to curb number a {}",
+        "move-curb-to-car": "move a car {} from curb number a {} to behind a car {}",
+        "move-car-to-curb": "move a car {} from behind a car {} to curb number a {}",
+        "move-car-to-car": "move a car {} from behind a car {} to behind a car {}"
+    },
+    "predicate_mappings": {
+        "at-curb": "{} is at the curb",
+        "at-curb-num": "{} is at curb number {}",
+        "behind-car": "{} is behind the car {}",
+        "car-clear": "{} is clear",
+        "curb-clear": "{} is clear",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "move-curb-to-curb": {
+            "annotation": "",
+            "parameter_types": {
+                "?car": "car",
+                "?curbsrc": "curb",
+                "?curbdest": "curb"
+            },
+            "pddl": "(move-curb-to-curb ?car ?curbsrc ?curbdest)",
+            "description": "move a car A from curb number a B to curb number a C",
+            "preconditions": [
+                "I can only move a car A from curb number a B to curb number a C if it is the case that A is clear and C is clear and A is at curb number B"
+            ],
+            "effects": [
+                "Once I move a car A from curb number a B to curb number a C, it is the case that B is clear and A is at curb number C",
+                "Once I move a car A from curb number a B to curb number a C, it is not the case anymore that C is clear and it is not the case anymore that A is at curb number B"
+            ]
+        },
+        "move-curb-to-car": {
+            "annotation": "",
+            "parameter_types": {
+                "?car": "car",
+                "?curbsrc": "curb",
+                "?cardest": "car"
+            },
+            "pddl": "(move-curb-to-car ?car ?curbsrc ?cardest)",
+            "description": "move a car A from curb number a B to behind a car C",
+            "preconditions": [
+                "I can only move a car A from curb number a B to behind a car C if it is the case that A is clear and C is clear and A is at curb number B and C is at the curb"
+            ],
+            "effects": [
+                "Once I move a car A from curb number a B to behind a car C, it is the case that B is clear and A is behind the car C",
+                "Once I move a car A from curb number a B to behind a car C, it is not the case anymore that C is clear and it is not the case anymore that A is at curb number B and it is not the case anymore that A is at the curb"
+            ]
+        },
+        "move-car-to-curb": {
+            "annotation": "",
+            "parameter_types": {
+                "?car": "car",
+                "?carsrc": "car",
+                "?curbdest": "curb"
+            },
+            "pddl": "(move-car-to-curb ?car ?carsrc ?curbdest)",
+            "description": "move a car A from behind a car B to curb number a C",
+            "preconditions": [
+                "I can only move a car A from behind a car B to curb number a C if it is the case that A is clear and C is clear and A is behind the car B"
+            ],
+            "effects": [
+                "Once I move a car A from behind a car B to curb number a C, it is the case that B is clear and A is at curb number C and A is at the curb",
+                "Once I move a car A from behind a car B to curb number a C, it is not the case anymore that C is clear and it is not the case anymore that A is behind the car B"
+            ]
+        },
+        "move-car-to-car": {
+            "annotation": "",
+            "parameter_types": {
+                "?car": "car",
+                "?carsrc": "car",
+                "?cardest": "car"
+            },
+            "pddl": "(move-car-to-car ?car ?carsrc ?cardest)",
+            "description": "move a car A from behind a car B to behind a car C",
+            "preconditions": [
+                "I can only move a car A from behind a car B to behind a car C if it is the case that A is clear and C is clear and A is behind the car B and C is at the curb"
+            ],
+            "effects": [
+                "Once I move a car A from behind a car B to behind a car C, it is the case that B is clear and A is behind the car C",
+                "Once I move a car A from behind a car B to behind a car C, it is not the case anymore that C is clear and it is not the case anymore that A is behind the car B"
+            ]
+        }
+    },
+    "predicates": {
+        "at-curb": {
+            "parameter_types": {
+                "?car": "car"
+            },
+            "pddl": "(at-curb ?car)"
+        },
+        "at-curb-num": {
+            "parameter_types": {
+                "?car": "car",
+                "?curb": "curb"
+            },
+            "pddl": "(at-curb-num ?car ?curb)"
+        },
+        "behind-car": {
+            "parameter_types": {
+                "?car": "car",
+                "?front-car": "car"
+            },
+            "pddl": "(behind-car ?car ?front-car)"
+        },
+        "car-clear": {
+            "parameter_types": {
+                "?car": "car"
+            },
+            "pddl": "(car-clear ?car)"
+        },
+        "curb-clear": {
+            "parameter_types": {
+                "?curb": "curb"
+            },
+            "pddl": "(curb-clear ?curb)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "move-curb-to-curb": "move car {?car} from curb number {?curbsrc} to curb number {?curbdest}",
+        "move-curb-to-car": "move car {?car} from curb number {?curbsrc} to behind car {?cardest}",
+        "move-car-to-curb": "move car {?car} from behind car {?carsrc} to curb number {?curbdest}",
+        "move-car-to-car": "move car {?car} from behind car {?carsrc} to behind car {?cardest}"
+    },
+    "predicate_nl_templates": {
+        "at-curb": "{?car} is at the curb",
+        "at-curb-num": "{?car} is at curb number {?curb}",
+        "behind-car": "{?car} is behind the car {?front-car}",
+        "car-clear": "{?car} is clear",
+        "curb-clear": "{?curb} is clear",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "move-curb-to-curb": "move a car {?car} from curb number a {?curbsrc} to curb number a {?curbdest}",
+        "move-curb-to-car": "move a car {?car} from curb number a {?curbsrc} to behind a car {?cardest}",
+        "move-car-to-curb": "move a car {?car} from behind a car {?carsrc} to curb number a {?curbdest}",
+        "move-car-to-car": "move a car {?car} from behind a car {?carsrc} to behind a car {?cardest}"
+    },
+    "type_hierarchy": [
+        "Everything that is a car or a curb is also a object"
+    ]
+}

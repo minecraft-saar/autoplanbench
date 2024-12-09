@@ -1,0 +1,39 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "bastion",
+        "frame_9_50",
+        "socket",
+        "roof_11",
+        "rain",
+        "screen",
+        "object_50_30",
+        "star_213",
+        "object_50",
+        "object_260",
+        "frame_9",
+        "kumquat",
+        "dress_red"
+    ],
+    "pos_examples": [
+        [
+            "Now, leave container dress_red with hand object_260 on the table.",
+            "(leave object_260 dress_red)"
+        ],
+        [
+            "Once you are done, please empty shot screen of beverage socket while hand object_50 holds shot screen.",
+            "(empty-shot object_50 frame_9 socket)"
+        ],
+        [
+            "First, pour ingredient bastion from shot screen held by hand object_50 into clean shaker roof_11 at level star_213 next to level kumquat and then empty shaker roof_11 containing cocktail rain held by hand object_50 from level kumquat to empty level star_213.",
+            "(pour-shot-to-clean-shaker screen bastion roof_11 object_50 star_213 kumquat)\n(empty-shaker object_50 roof_11 rain kumquat star_213)"
+        ],
+        [
+            "The next step is to clean shot frame_9_50 used by beverage socket with hand object_50 holding shot frame_9_50 and hand object_50_30 having an empty hand.",
+            "(clean-shot frame_9 socket object_50 frame_9_50)"
+        ]
+    ]
+}

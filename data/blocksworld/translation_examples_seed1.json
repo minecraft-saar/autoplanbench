@@ -1,0 +1,27 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat_8",
+        "kumquat",
+        "teddy",
+        "rain",
+        "dress_red"
+    ],
+    "pos_examples": [
+        [
+            "Now, unstack object teddy from object kumquat.",
+            "(unstack teddy kumquat)"
+        ],
+        [
+            "Once you are done, please put down object yew.",
+            "(put-down yew)"
+        ],
+        [
+            "First, stack object kumquat_8 on object rain and then pick up object dress_red.",
+            "(stack kumquat_8 rain)\n(pick-up dress_red)"
+        ]
+    ]
+}

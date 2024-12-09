@@ -1,0 +1,8 @@
+(feast achievement rice bacon manitoba alsace)
+(overcome abrasion learning baguette neptune vulcan)
+(overcome sciatica learning baguette mercury neptune)
+(drink chocolate baguette goias pennsylvania kentucky manitoba alsace)
+(feast learning baguette rice manitoba alsace)
+(succumb abrasion learning rice mercury neptune)
+(succumb sciatica learning rice neptune vulcan)
+; cost = 7 (unit cost)

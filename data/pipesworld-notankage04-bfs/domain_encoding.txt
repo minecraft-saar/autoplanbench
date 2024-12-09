@@ -1,0 +1,32 @@
+I can carry out the following actions:
+push start a pipe A with a batch-atom B from an area C to an area D using a batch-atom E and a product F and a product G
+push end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E
+pop start a pipe A from an area C to an area D with a batch-atom B, a batch-atom E, a product F, and a product G
+pop end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E
+push an unitary pipe A with a batch-atom B from an area C to an area D replacing a batch-atom E using a product F and a product G
+pop an unitary pipe A with a batch-atom B from an area D to an area C replacing a batch-atom E using a product F and a product G
+
+I have the following restrictions on my actions:
+I can only push start a pipe A with a batch-atom B from an area C to an area D using a batch-atom E and a product F and a product G if it is the case that A is normal and E is the first in A and connect C to D using A and B is on C and A is not unitary and B is a product of F and E is a product of G and F may interface with G
+I can only push end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E if it is the case that A is being push-updated and D is the last in A and connect B to C using A and A is not unitary and D follows E
+I can only pop start a pipe A from an area C to an area D with a batch-atom B, a batch-atom E, a product F, and a product G if it is the case that A is normal and E is the last in A and connect C to D using A and B is on D and A is not unitary and B is a product of F and E is a product of G and F may interface with G
+I can only pop end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E if it is the case that A is being pop-updated and D is the first in A and connect B to C using A and A is not unitary and E follows D
+I can only push an unitary pipe A with a batch-atom B from an area C to an area D replacing a batch-atom E using a product F and a product G if it is the case that E is the first in A and connect C to D using A and B is on C and A is unitary and B is a product of F and E is a product of G and F may interface with G
+I can only pop an unitary pipe A with a batch-atom B from an area D to an area C replacing a batch-atom E using a product F and a product G if it is the case that E is the last in A and connect C to D using A and B is on D and A is unitary and B is a product of F and E is a product of G and F may interface with G
+
+The actions have the following effects on the state:
+Once I push start a pipe A with a batch-atom B from an area C to an area D using a batch-atom E and a product F and a product G, it is the case that A is being push-updated and B is the first in A and E follows B
+Once I push start a pipe A with a batch-atom B from an area C to an area D using a batch-atom E and a product F and a product G, it is not the case anymore that A is normal and it is not the case anymore that E is the first in A and it is not the case anymore that B is on C
+Once I push end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E, it is the case that A is normal and E is the last in A and D is on C
+Once I push end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E, it is not the case anymore that A is being push-updated and it is not the case anymore that D follows E and it is not the case anymore that D is the last in A
+Once I pop start a pipe A from an area C to an area D with a batch-atom B, a batch-atom E, a product F, and a product G, it is the case that A is being pop-updated and B is the last in A and B follows E
+Once I pop start a pipe A from an area C to an area D with a batch-atom B, a batch-atom E, a product F, and a product G, it is not the case anymore that A is normal and it is not the case anymore that E is the last in A and it is not the case anymore that B is on D
+Once I pop end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E, it is the case that A is normal and E is the first in A and D is on B
+Once I pop end a pipe A from an area B to an area C with a batch-atom D and a batch-atom E, it is not the case anymore that A is being pop-updated and it is not the case anymore that E follows D and it is not the case anymore that D is the first in A
+Once I push an unitary pipe A with a batch-atom B from an area C to an area D replacing a batch-atom E using a product F and a product G, it is the case that B is the first in A and B is the last in A and E is on D
+Once I push an unitary pipe A with a batch-atom B from an area C to an area D replacing a batch-atom E using a product F and a product G, it is not the case anymore that E is the first in A and it is not the case anymore that E is the last in A and it is not the case anymore that B is on C
+Once I pop an unitary pipe A with a batch-atom B from an area D to an area C replacing a batch-atom E using a product F and a product G, it is the case that B is the last in A and B is the first in A and E is on C
+Once I pop an unitary pipe A with a batch-atom B from an area D to an area C replacing a batch-atom E using a product F and a product G, it is not the case anymore that E is the last in A and it is not the case anymore that E is the first in A and it is not the case anymore that B is on D
+
+
+Everything that is a pipe or a area or a product or a batch-atom is also a object

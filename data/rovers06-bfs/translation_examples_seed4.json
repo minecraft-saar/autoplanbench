@@ -1,0 +1,39 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "socket",
+        "kumquat_8",
+        "object_260",
+        "kumquat_99",
+        "fire",
+        "rain",
+        "teddy",
+        "dress_red",
+        "bastion",
+        "kumquat",
+        "roof_11",
+        "object_50",
+        "frame_9"
+    ],
+    "pos_examples": [
+        [
+            "Now, drop contents from store yew of rover socket.",
+            "(drop socket yew)"
+        ],
+        [
+            "Once you are done, please sample soil at waypoint kumquat using rover dress_red and store in store object_260.",
+            "(sample_soil dress_red object_260 kumquat)"
+        ],
+        [
+            "First, communicate rock data from rover object_50 at waypoint kumquat_8 to lander frame_9 at waypoint kumquat for waypoint kumquat_99 and then communicate image data from rover dress_red at waypoint kumquat to lander roof_11 at waypoint kumquat_8 for objective bastion in mode fire.",
+            "(communicate_rock_data object_50 frame_9 kumquat_99 kumquat_8 kumquat)\n(communicate_image_data dress_red roof_11 bastion fire kumquat kumquat_8)"
+        ],
+        [
+            "The next step is to calibrate camera rain on rover socket using objective teddy at waypoint kumquat_99.",
+            "(calibrate socket rain teddy kumquat_99)"
+        ]
+    ]
+}

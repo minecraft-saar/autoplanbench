@@ -1,0 +1,43 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "yew_53_66",
+        "socket",
+        "yew_48",
+        "frame_9",
+        "dress_red",
+        "yew_30_82",
+        "kumquat_8",
+        "star_213_43",
+        "kumquat",
+        "yew_53",
+        "yew_30",
+        "roof_11",
+        "yew_30_79",
+        "fire",
+        "star_213",
+        "screen",
+        "object_50"
+    ],
+    "pos_examples": [
+        [
+            "Now, saw board socket into medium part kumquat_8 using saw kumquat with awood screen, surface object_50, changing size from aboardsize yew to aboardsize yew_53 through aboardsize yew_53_66.",
+            "(do-saw-medium socket kumquat_8 kumquat screen object_50 yew yew_53_66 yew_53)"
+        ],
+        [
+            "Once you are done, please saw board socket into large part kumquat_8 using saw kumquat with awood screen, surface dress_red, changing size from aboardsize yew to aboardsize yew_30 through aboardsize yew_48 and aboardsize yew_30_82.",
+            "(do-saw-large socket kumquat_8 kumquat screen dress_red yew yew_30_82 yew_48 yew_30)"
+        ],
+        [
+            "First, load board socket into highspeed-saw fire and then saw board socket into small part kumquat_8 using saw kumquat with awood screen, surface dress_red, changing size from aboardsize yew_30 to aboardsize yew_30_79.",
+            "(load-highspeed-saw socket fire)\n(do-saw-small socket kumquat_8 kumquat screen dress_red yew_30 yew_30_79)"
+        ],
+        [
+            "The next step is to do grind on part kumquat_8 using grinder frame_9 to change surface from surface object_50 to verysmooth, color from acolour roof_11 to natural, and treatment from treatmentstatus star_213 to treatmentstatus star_213_43.",
+            "(do-grind kumquat_8 frame_9 object_50 roof_11 star_213 star_213_43)"
+        ]
+    ]
+}

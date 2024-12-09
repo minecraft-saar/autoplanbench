@@ -1,0 +1,41 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "teddy",
+        "socket_92",
+        "frame_9",
+        "socket_84_22",
+        "kumquat",
+        "kumquat_8",
+        "roof_11",
+        "socket",
+        "dress_red",
+        "frame_9_73",
+        "socket_84",
+        "star_213",
+        "frame_9_35",
+        "socket_94",
+        "rain",
+        "fire",
+        "object_50",
+        "bastion",
+        "screen"
+    ],
+    "pos_examples": [
+        [
+            "Now, load goods yew onto truck object_50 at market kumquat from level socket_94 to level frame_9_35 with level frame_9 next to level socket_94 and level frame_9_35 next to level socket_84.",
+            "(load yew object_50 kumquat frame_9 socket star_213 star_213)"
+        ],
+        [
+            "Once you are done, please drive truck bastion from place teddy to place fire.",
+            "(drive bastion teddy fire)"
+        ],
+        [
+            "First, unload goods rain from truck roof_11 at depot kumquat_8 from level frame_9 to level socket with level socket next to level frame_9 and level socket_84 next to level frame_9_73 and then buy goods dress_red with truck roof_11 at market screen from level star_213 to level socket_84 with level socket_84 next to level star_213 and level socket_84_22 next to level socket_92.",
+            "(unload rain roof_11 kumquat_8 frame_9_35 socket_94 frame_9 socket_94)\n(buy roof_11 dress_red screen socket_94 socket star_213 socket)"
+        ]
+    ]
+}

@@ -1,0 +1,210 @@
+{
+    "action_mappings": {
+        "turn_to": "apply the action \"turn_to\" to satellite {}, direction {} and direction {}",
+        "switch_on": "apply the action \"switch_on\" to instrument {} and satellite {}",
+        "switch_off": "apply the action \"switch_off\" to instrument {} and satellite {}",
+        "calibrate": "apply the action \"calibrate\" to satellite {}, instrument {} and direction {}",
+        "take_image": "apply the action \"take_image\" to satellite {}, direction {}, instrument {} and mode {}"
+    },
+    "action_mappings_indef": {
+        "turn_to": "apply the action \"turn_to\" to a satellite {}, a direction {} and a direction {}",
+        "switch_on": "apply the action \"switch_on\" to an instrument {} and a satellite {}",
+        "switch_off": "apply the action \"switch_off\" to an instrument {} and a satellite {}",
+        "calibrate": "apply the action \"calibrate\" to a satellite {}, an instrument {} and a direction {}",
+        "take_image": "apply the action \"take_image\" to a satellite {}, a direction {}, an instrument {} and a mode {}"
+    },
+    "predicate_mappings": {
+        "on_board": "{} and {} are in the relation \"on_board\"",
+        "supports": "{} and {} are in the relation \"supports\"",
+        "pointing": "{} and {} are in the relation \"pointing\"",
+        "power_avail": "{} is \"power_avail\"",
+        "power_on": "{} is \"power_on\"",
+        "calibrated": "{} is \"calibrated\"",
+        "have_image": "{} and {} are in the relation \"have_image\"",
+        "calibration_target": "{} and {} are in the relation \"calibration_target\"",
+        "=": "{} and {} are in the relation \"=\"",
+        "!=": "{} and {} are in the relation \"!=\""
+    },
+    "actions": {
+        "turn_to": {
+            "annotation": "",
+            "parameter_types": {
+                "?s": "satellite",
+                "?d_new": "direction",
+                "?d_prev": "direction"
+            },
+            "pddl": "(turn_to ?s ?d_new ?d_prev)",
+            "description": "apply the action \"turn_to\" to a satellite A, a direction B and a direction C",
+            "preconditions": [
+                "I can only apply the action \"turn_to\" to a satellite A, a direction B and a direction C if it is the case that A and C are in the relation \"pointing\""
+            ],
+            "effects": [
+                "Once I apply the action \"turn_to\" to a satellite A, a direction B and a direction C, it is the case that A and B are in the relation \"pointing\"",
+                "Once I apply the action \"turn_to\" to a satellite A, a direction B and a direction C, it is not the case anymore that A and C are in the relation \"pointing\""
+            ]
+        },
+        "switch_on": {
+            "annotation": "",
+            "parameter_types": {
+                "?i": "instrument",
+                "?s": "satellite"
+            },
+            "pddl": "(switch_on ?i ?s)",
+            "description": "apply the action \"switch_on\" to an instrument A and a satellite B",
+            "preconditions": [
+                "I can only apply the action \"switch_on\" to an instrument A and a satellite B if it is the case that A and B are in the relation \"on_board\" and B is \"power_avail\""
+            ],
+            "effects": [
+                "Once I apply the action \"switch_on\" to an instrument A and a satellite B, it is the case that A is \"power_on\"",
+                "Once I apply the action \"switch_on\" to an instrument A and a satellite B, it is not the case anymore that A is \"calibrated\" and it is not the case anymore that B is \"power_avail\""
+            ]
+        },
+        "switch_off": {
+            "annotation": "",
+            "parameter_types": {
+                "?i": "instrument",
+                "?s": "satellite"
+            },
+            "pddl": "(switch_off ?i ?s)",
+            "description": "apply the action \"switch_off\" to an instrument A and a satellite B",
+            "preconditions": [
+                "I can only apply the action \"switch_off\" to an instrument A and a satellite B if it is the case that A and B are in the relation \"on_board\" and A is \"power_on\""
+            ],
+            "effects": [
+                "Once I apply the action \"switch_off\" to an instrument A and a satellite B, it is the case that B is \"power_avail\"",
+                "Once I apply the action \"switch_off\" to an instrument A and a satellite B, it is not the case anymore that A is \"power_on\""
+            ]
+        },
+        "calibrate": {
+            "annotation": "",
+            "parameter_types": {
+                "?s": "satellite",
+                "?i": "instrument",
+                "?d": "direction"
+            },
+            "pddl": "(calibrate ?s ?i ?d)",
+            "description": "apply the action \"calibrate\" to a satellite A, an instrument B and a direction C",
+            "preconditions": [
+                "I can only apply the action \"calibrate\" to a satellite A, an instrument B and a direction C if it is the case that B and A are in the relation \"on_board\" and B and C are in the relation \"calibration_target\" and A and C are in the relation \"pointing\" and B is \"power_on\""
+            ],
+            "effects": [
+                "Once I apply the action \"calibrate\" to a satellite A, an instrument B and a direction C, it is the case that B is \"calibrated\""
+            ]
+        },
+        "take_image": {
+            "annotation": "",
+            "parameter_types": {
+                "?s": "satellite",
+                "?d": "direction",
+                "?i": "instrument",
+                "?m": "mode"
+            },
+            "pddl": "(take_image ?s ?d ?i ?m)",
+            "description": "apply the action \"take_image\" to a satellite A, a direction B, an instrument C and a mode D",
+            "preconditions": [
+                "I can only apply the action \"take_image\" to a satellite A, a direction B, an instrument C and a mode D if it is the case that C is \"calibrated\" and C and A are in the relation \"on_board\" and C and D are in the relation \"supports\" and C is \"power_on\" and A and B are in the relation \"pointing\""
+            ],
+            "effects": [
+                "Once I apply the action \"take_image\" to a satellite A, a direction B, an instrument C and a mode D, it is the case that B and D are in the relation \"have_image\""
+            ]
+        }
+    },
+    "predicates": {
+        "on_board": {
+            "parameter_types": {
+                "?i": "instrument",
+                "?s": "satellite"
+            },
+            "pddl": "(on_board ?i ?s)"
+        },
+        "supports": {
+            "parameter_types": {
+                "?i": "instrument",
+                "?m": "mode"
+            },
+            "pddl": "(supports ?i ?m)"
+        },
+        "pointing": {
+            "parameter_types": {
+                "?s": "satellite",
+                "?d": "direction"
+            },
+            "pddl": "(pointing ?s ?d)"
+        },
+        "power_avail": {
+            "parameter_types": {
+                "?s": "satellite"
+            },
+            "pddl": "(power_avail ?s)"
+        },
+        "power_on": {
+            "parameter_types": {
+                "?i": "instrument"
+            },
+            "pddl": "(power_on ?i)"
+        },
+        "calibrated": {
+            "parameter_types": {
+                "?i": "instrument"
+            },
+            "pddl": "(calibrated ?i)"
+        },
+        "have_image": {
+            "parameter_types": {
+                "?d": "direction",
+                "?m": "mode"
+            },
+            "pddl": "(have_image ?d ?m)"
+        },
+        "calibration_target": {
+            "parameter_types": {
+                "?i": "instrument",
+                "?d": "direction"
+            },
+            "pddl": "(calibration_target ?i ?d)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "turn_to": "apply the action \"turn_to\" to satellite {?s}, direction {?d_new} and direction {?d_prev}",
+        "switch_on": "apply the action \"switch_on\" to instrument {?i} and satellite {?s}",
+        "switch_off": "apply the action \"switch_off\" to instrument {?i} and satellite {?s}",
+        "calibrate": "apply the action \"calibrate\" to satellite {?s}, instrument {?i} and direction {?d}",
+        "take_image": "apply the action \"take_image\" to satellite {?s}, direction {?d}, instrument {?i} and mode {?m}"
+    },
+    "predicate_nl_templates": {
+        "on_board": "{?i} and {?s} are in the relation \"on_board\"",
+        "supports": "{?i} and {?m} are in the relation \"supports\"",
+        "pointing": "{?s} and {?d} are in the relation \"pointing\"",
+        "power_avail": "{?s} is \"power_avail\"",
+        "power_on": "{?i} is \"power_on\"",
+        "calibrated": "{?i} is \"calibrated\"",
+        "have_image": "{?d} and {?m} are in the relation \"have_image\"",
+        "calibration_target": "{?i} and {?d} are in the relation \"calibration_target\"",
+        "=": "{?x1} and {?x2} are in the relation \"=\"",
+        "!=": "{?x1} and {?x2} are in the relation \"!=\""
+    },
+    "action_nl_templates_indef": {
+        "turn_to": "apply the action \"turn_to\" to a satellite {?s}, a direction {?d_new} and a direction {?d_prev}",
+        "switch_on": "apply the action \"switch_on\" to an instrument {?i} and a satellite {?s}",
+        "switch_off": "apply the action \"switch_off\" to an instrument {?i} and a satellite {?s}",
+        "calibrate": "apply the action \"calibrate\" to a satellite {?s}, an instrument {?i} and a direction {?d}",
+        "take_image": "apply the action \"take_image\" to a satellite {?s}, a direction {?d}, an instrument {?i} and a mode {?m}"
+    },
+    "type_hierarchy": [
+        "Everything that is a satellite or a direction or a instrument or a mode is also a object"
+    ]
+}

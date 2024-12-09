@@ -1,0 +1,33 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "dress_red",
+        "bastion",
+        "object_260",
+        "fire",
+        "frame_9",
+        "star_213",
+        "roof_11"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"move\" to loc frame_9 and loc dress_red.",
+            "(move frame_9 dress_red)"
+        ],
+        [
+            "Once you are done, please apply the action \"pick-gold\" to loc yew.",
+            "(pick-gold yew)"
+        ],
+        [
+            "First, apply the action \"fire-laser\" to loc bastion and loc fire and then apply the action \"pickup-bomb\" to loc star_213.",
+            "(fire-laser bastion fire)\n(pickup-bomb star_213)"
+        ],
+        [
+            "The next step is to apply the action \"detonate-bomb\" to loc object_260 and loc roof_11.",
+            "(detonate-bomb object_260 roof_11)"
+        ]
+    ]
+}

@@ -1,0 +1,130 @@
+(define (problem freecell4-4)
+(:domain freecell)
+(:objects
+	object_21 object_2 object_9 object_25 
+	object_13 object_6 object_17 object_14 object_16 object_18 object_20
+	object_26
+	object_5
+	object_28
+	object_11
+	object_0
+	object_1
+	object_8
+	object_7
+	object_24
+	object_23
+	object_4
+	object_19
+	object_3
+	object_29
+	object_10
+	object_15
+	object_22
+	object_12
+	object_27
+	
+)
+(:init
+	(successor object_6 object_13)
+	(successor object_17 object_6)
+	(successor object_14 object_17)
+	(successor object_16 object_14)
+	(successor object_18 object_16)
+	(cellspace object_17)
+	(clear object_20)
+	(on object_20 object_0)
+	(on object_0 object_23)
+	(on object_23 object_10)
+	(bottomcol object_10)
+	(clear object_26)
+	(on object_26 object_1)
+	(on object_1 object_4)
+	(bottomcol object_4)
+	(clear object_5)
+	(on object_5 object_8)
+	(on object_8 object_19)
+	(bottomcol object_19)
+	(clear object_28)
+	(on object_28 object_7)
+	(on object_7 object_3)
+	(bottomcol object_3)
+	(clear object_11)
+	(on object_11 object_24)
+	(on object_24 object_29)
+	(bottomcol object_29)
+	(colspace object_13)
+	(value object_20 object_14)
+	(suit object_20 object_2)
+	(canstack object_20 object_28)
+	(canstack object_20 object_4)
+	(value object_26 object_17)
+	(suit object_26 object_21)
+	(canstack object_26 object_20)
+	(canstack object_26 object_0)
+	(value object_5 object_14)
+	(suit object_5 object_9)
+	(canstack object_5 object_29)
+	(canstack object_5 object_10)
+	(value object_28 object_16)
+	(suit object_28 object_21)
+	(value object_11 object_6)
+	(suit object_11 object_21)
+	(canstack object_11 object_3)
+	(canstack object_11 object_24)
+	(value object_0 object_14)
+	(suit object_0 object_25)
+	(canstack object_0 object_28)
+	(canstack object_0 object_4)
+	(value object_1 object_6)
+	(suit object_1 object_2)
+	(canstack object_1 object_26)
+	(canstack object_1 object_23)
+	(value object_8 object_6)
+	(suit object_8 object_25)
+	(canstack object_8 object_26)
+	(canstack object_8 object_23)
+	(value object_7 object_14)
+	(suit object_7 object_21)
+	(canstack object_7 object_29)
+	(canstack object_7 object_10)
+	(value object_24 object_17)
+	(suit object_24 object_25)
+	(canstack object_24 object_7)
+	(canstack object_24 object_5)
+	(value object_23 object_17)
+	(suit object_23 object_9)
+	(canstack object_23 object_20)
+	(canstack object_23 object_0)
+	(value object_4 object_16)
+	(suit object_4 object_9)
+	(value object_19 object_6)
+	(suit object_19 object_9)
+	(canstack object_19 object_3)
+	(canstack object_19 object_24)
+	(value object_3 object_17)
+	(suit object_3 object_2)
+	(canstack object_3 object_7)
+	(canstack object_3 object_5)
+	(value object_29 object_16)
+	(suit object_29 object_2)
+	(value object_10 object_16)
+	(suit object_10 object_25)
+	(home object_15)
+	(value object_15 object_13)
+	(suit object_15 object_21)
+	(home object_22)
+	(value object_22 object_13)
+	(suit object_22 object_2)
+	(home object_12)
+	(value object_12 object_13)
+	(suit object_12 object_9)
+	(home object_27)
+	(value object_27 object_13)
+	(suit object_27 object_25)
+)
+(:goal (and
+	(home object_28)
+	(home object_29)
+	(home object_4)
+	(home object_10)
+)))

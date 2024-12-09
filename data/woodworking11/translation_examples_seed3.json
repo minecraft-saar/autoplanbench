@@ -1,0 +1,39 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat",
+        "rain",
+        "kumquat_8_27_67_50",
+        "frame_9",
+        "kumquat_8_27",
+        "object_50",
+        "dress_red",
+        "kumquat_8",
+        "teddy",
+        "roof_11",
+        "star_213",
+        "kumquat_8_27_67",
+        "bastion"
+    ],
+    "pos_examples": [
+        [
+            "Now, cut board bastion into part rain using highspeed-saw object_50 with awood kumquat, surface roof_11, changing size from aboardsize kumquat_8 to aboardsize kumquat_8_27 through intermediate sizes aboardsize kumquat_8_27_67 and aboardsize kumquat_8_27_67_50.",
+            "(cut-board-large bastion rain object_50 kumquat roof_11 kumquat_8 kumquat_8_27_67_50 kumquat_8_27_67 kumquat_8_27)"
+        ],
+        [
+            "Once you are done, please cut board bastion into part rain using highspeed-saw dress_red with awood kumquat, surface roof_11, changing size from aboardsize kumquat_8_27 to aboardsize kumquat_8 through intermediate size aboardsize kumquat_8_27_67_50.",
+            "(cut-board-medium bastion rain dress_red kumquat roof_11 kumquat_8_27 kumquat_8_27_67_50 kumquat_8)"
+        ],
+        [
+            "First, do immersion varnish on part rain using immersion-varnisher star_213 to change color to acolour teddy with surface roof_11 and then unload board bastion from highspeed-saw dress_red.",
+            "(do-immersion-varnish rain star_213 teddy roof_11)\n(unload-highspeed-saw bastion dress_red)"
+        ],
+        [
+            "The next step is to do plane on part rain using planer frame_9 to change surface from surface roof_11 to smooth, color from acolour teddy to natural, and treatment from treatmentstatus yew to untreated.",
+            "(do-plane rain frame_9 roof_11 teddy yew)"
+        ]
+    ]
+}

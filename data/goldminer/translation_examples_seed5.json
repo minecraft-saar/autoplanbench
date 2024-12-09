@@ -1,0 +1,33 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat",
+        "object_50",
+        "object_260",
+        "roof_11",
+        "screen",
+        "bastion",
+        "fire"
+    ],
+    "pos_examples": [
+        [
+            "Now, move from loc screen to loc yew.",
+            "(move screen yew)"
+        ],
+        [
+            "Once you are done, please pick up laser at loc kumquat.",
+            "(pickup-laser kumquat)"
+        ],
+        [
+            "First, fire laser from loc object_260 to loc fire and then put down laser at loc bastion.",
+            "(fire-laser object_260 fire)\n(putdown-laser bastion)"
+        ],
+        [
+            "The next step is to detonate bomb at loc object_50 connected to loc roof_11.",
+            "(detonate-bomb object_50 roof_11)"
+        ]
+    ]
+}

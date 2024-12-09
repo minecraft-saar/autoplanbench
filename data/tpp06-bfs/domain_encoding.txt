@@ -1,0 +1,26 @@
+I can carry out the following actions:
+drive a truck A from a place B to a place C
+load a goods A onto a truck B at a market C from a level E to a level G with a level D next to a level E and a level G next to a level F
+unload a goods A from a truck B at a depot C from a level E to a level D with a level D next to a level E and a level G next to a level F
+buy a goods B with a truck A at a market C from a level E to a level D with a level D next to a level E and a level G next to a level F
+
+I have the following restrictions on my actions:
+I can only drive a truck A from a place B to a place C if it is the case that A is at B and B is connected to C
+I can only load a goods A onto a truck B at a market C from a level E to a level G with a level D next to a level E and a level G next to a level F if it is the case that B is at C and A is loaded onto B at F and A is ready to load onto C at E and E is next to D and G is next to F
+I can only unload a goods A from a truck B at a depot C from a level E to a level D with a level D next to a level E and a level G next to a level F if it is the case that B is at C and A is loaded onto B at E and A is stored at F and E is next to D and G is next to F
+I can only buy a goods B with a truck A at a market C from a level E to a level D with a level D next to a level E and a level G next to a level F if it is the case that A is at C and B is on sale for C at E and B is ready to load onto C at F and E is next to D and G is next to F
+
+The actions have the following effects on the state:
+Once I drive a truck A from a place B to a place C, it is the case that A is at C
+Once I drive a truck A from a place B to a place C, it is not the case anymore that A is at B
+Once I load a goods A onto a truck B at a market C from a level E to a level G with a level D next to a level E and a level G next to a level F, it is the case that A is loaded onto B at G and A is ready to load onto C at D
+Once I load a goods A onto a truck B at a market C from a level E to a level G with a level D next to a level E and a level G next to a level F, it is not the case anymore that A is loaded onto B at F and it is not the case anymore that A is ready to load onto C at E
+Once I unload a goods A from a truck B at a depot C from a level E to a level D with a level D next to a level E and a level G next to a level F, it is the case that A is loaded onto B at D and A is stored at G
+Once I unload a goods A from a truck B at a depot C from a level E to a level D with a level D next to a level E and a level G next to a level F, it is not the case anymore that A is loaded onto B at E and it is not the case anymore that A is stored at F
+Once I buy a goods B with a truck A at a market C from a level E to a level D with a level D next to a level E and a level G next to a level F, it is the case that B is on sale for C at D and B is ready to load onto C at G
+Once I buy a goods B with a truck A at a market C from a level E to a level D with a level D next to a level E and a level G next to a level F, it is not the case anymore that B is on sale for C at E and it is not the case anymore that B is ready to load onto C at F
+
+
+Everything that is a place or a locatable or a level is also a object
+Everything that is a depot or a market is also a place
+Everything that is a truck or a goods is also a locatable

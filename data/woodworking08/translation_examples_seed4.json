@@ -1,0 +1,41 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "roof_11",
+        "bastion",
+        "socket",
+        "kumquat",
+        "teddy",
+        "kumquat_8_98",
+        "object_50",
+        "fire",
+        "frame_9_21",
+        "kumquat_8",
+        "frame_9_75",
+        "dress_red",
+        "screen",
+        "frame_9_75_83",
+        "frame_9"
+    ],
+    "pos_examples": [
+        [
+            "Now, saw board bastion into large part kumquat using saw screen with awood socket, surface fire, changing size from aboardsize frame_9 to aboardsize frame_9_75 through aboardsize frame_9_21 and aboardsize frame_9_75_83.",
+            "(do-saw-large bastion kumquat screen socket fire frame_9 frame_9_75_83 frame_9_21 frame_9_75)"
+        ],
+        [
+            "Once you are done, please saw board bastion into medium part kumquat using saw screen with awood socket, surface fire, changing size from aboardsize frame_9_21 to aboardsize frame_9 through aboardsize frame_9_75.",
+            "(do-saw-medium bastion kumquat screen socket fire frame_9_21 frame_9_75 frame_9)"
+        ],
+        [
+            "First, do immersion varnish on part kumquat using immersion-varnisher roof_11 to change color to acolour dress_red with surface fire and then saw board bastion into small part kumquat using saw screen with awood socket, surface fire, changing size from aboardsize frame_9 to aboardsize frame_9_21.",
+            "(do-immersion-varnish kumquat roof_11 dress_red fire)\n(do-saw-small bastion kumquat screen socket fire frame_9 frame_9_21)"
+        ],
+        [
+            "The next step is to do grind on part kumquat using grinder teddy to change surface from surface fire to verysmooth, color from acolour object_50 to natural, and treatment from treatmentstatus kumquat_8 to treatmentstatus kumquat_8_98.",
+            "(do-grind kumquat teddy fire object_50 kumquat_8 kumquat_8_98)"
+        ]
+    ]
+}

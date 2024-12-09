@@ -1,0 +1,37 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "star_213",
+        "kumquat_8",
+        "bastion",
+        "rain",
+        "screen",
+        "fire",
+        "socket",
+        "object_260",
+        "teddy",
+        "frame_9",
+        "object_50"
+    ],
+    "pos_examples": [
+        [
+            "Now, take image of direction fire using satellite rain with instrument object_260 in mode yew.",
+            "(take_image rain fire object_260 yew)"
+        ],
+        [
+            "Once you are done, please turn satellite object_50 from direction kumquat_8 to direction socket.",
+            "(turn_to object_50 socket kumquat_8)"
+        ],
+        [
+            "First, switch on instrument star_213 on satellite screen and then calibrate satellite bastion with instrument teddy towards direction kumquat_8.",
+            "(switch_on star_213 screen)\n(calibrate bastion teddy kumquat_8)"
+        ],
+        [
+            "The next step is to switch off instrument frame_9 on satellite bastion.",
+            "(switch_off frame_9 bastion)"
+        ]
+    ]
+}

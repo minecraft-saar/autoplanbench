@@ -1,0 +1,37 @@
+I can carry out the following actions:
+move from a position A to a position B with height a numb C
+move up from a position A at height a numb B to a position C at height a numb D
+move down from a position A at height a numb B to a position C at height a numb D
+place block from a position A at height a numb C to a position B at height a numb D
+remove block from a position B at height a numb C to a position A at height a numb D
+create block at a position A
+destroy block at a position A
+
+I have the following restrictions on my actions:
+I can only move from a position A to a position B with height a numb C if it is the case that at A and A is a neighbor of B and A has a height of C and B has a height of C
+I can only move up from a position A at height a numb B to a position C at height a numb D if it is the case that at A and A is a neighbor of C and A has a height of B and C has a height of D and D is the successor of B
+I can only move down from a position A at height a numb B to a position C at height a numb D if it is the case that at A and A is a neighbor of C and A has a height of B and C has a height of D and B is the successor of D
+I can only place block from a position A at height a numb C to a position B at height a numb D if it is the case that at A and A is a neighbor of B and A has a height of C and B has a height of C and D is the successor of C and there is a block
+I can only place block from a position A at height a numb C to a position B at height a numb D if it is not the case that B is a depot
+I can only remove block from a position B at height a numb C to a position A at height a numb D if it is the case that at A and A is a neighbor of B and A has a height of D and B has a height of C and C is the successor of D
+I can only remove block from a position B at height a numb C to a position A at height a numb D if it is not the case that there is a block
+I can only create block at a position A if it is the case that at A and A is a depot
+I can only create block at a position A if it is not the case that there is a block
+I can only destroy block at a position A if it is the case that at A and there is a block and A is a depot
+
+The actions have the following effects on the state:
+Once I move from a position A to a position B with height a numb C, it is the case that at B
+Once I move from a position A to a position B with height a numb C, it is not the case anymore that at A
+Once I move up from a position A at height a numb B to a position C at height a numb D, it is the case that at C
+Once I move up from a position A at height a numb B to a position C at height a numb D, it is not the case anymore that at A
+Once I move down from a position A at height a numb B to a position C at height a numb D, it is the case that at C
+Once I move down from a position A at height a numb B to a position C at height a numb D, it is not the case anymore that at A
+Once I place block from a position A at height a numb C to a position B at height a numb D, it is the case that B has a height of D
+Once I place block from a position A at height a numb C to a position B at height a numb D, it is not the case anymore that B has a height of C and it is not the case anymore that there is a block
+Once I remove block from a position B at height a numb C to a position A at height a numb D, it is the case that B has a height of D and there is a block
+Once I remove block from a position B at height a numb C to a position A at height a numb D, it is not the case anymore that B has a height of C
+Once I create block at a position A, it is the case that there is a block
+Once I destroy block at a position A, it is not the case anymore that there is a block
+
+
+Everything that is a numb or a position is also a object

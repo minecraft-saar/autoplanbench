@@ -1,0 +1,32 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_260",
+        "object_50",
+        "kumquat",
+        "roof_11",
+        "screen",
+        "kumquat_8"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"pickup-bomb\" to loc kumquat_8.",
+            "(pickup-bomb kumquat_8)"
+        ],
+        [
+            "Once you are done, please apply the action \"move\" to loc roof_11 and loc object_260.",
+            "(move roof_11 object_260)"
+        ],
+        [
+            "First, apply the action \"putdown-laser\" to loc kumquat and then apply the action \"detonate-bomb\" to loc object_50 and loc screen.",
+            "(putdown-laser kumquat)\n(detonate-bomb object_50 screen)"
+        ],
+        [
+            "The next step is to apply the action \"pick-gold\" to loc yew.",
+            "(pick-gold yew)"
+        ]
+    ]
+}

@@ -1,0 +1,286 @@
+{
+    "action_mappings": {
+        "rewind-movie": "apply the action \"rewind-movie\"",
+        "reset-counter": "apply the action \"reset-counter\"",
+        "start-movie": "apply the action \"start-movie\"",
+        "undo-rewind": "apply the action \"undo-rewind\"",
+        "get-chips": "apply the action \"get-chips\" to object {}",
+        "get-dip": "apply the action \"get-dip\" to object {}",
+        "get-pop": "apply the action \"get-pop\" to object {}",
+        "get-cheese": "apply the action \"get-cheese\" to object {}",
+        "get-crackers": "apply the action \"get-crackers\" to object {}"
+    },
+    "action_mappings_indef": {
+        "rewind-movie": "apply the action \"rewind-movie\"",
+        "reset-counter": "apply the action \"reset-counter\"",
+        "start-movie": "apply the action \"start-movie\"",
+        "undo-rewind": "apply the action \"undo-rewind\"",
+        "get-chips": "apply the action \"get-chips\" to an object {}",
+        "get-dip": "apply the action \"get-dip\" to an object {}",
+        "get-pop": "apply the action \"get-pop\" to an object {}",
+        "get-cheese": "apply the action \"get-cheese\" to an object {}",
+        "get-crackers": "apply the action \"get-crackers\" to an object {}"
+    },
+    "predicate_mappings": {
+        "movie-rewound": "\"movie-rewound\"",
+        "counter-at-other-than-zero": "\"counter-at-other-than-zero\"",
+        "counter-at-zero": "\"counter-at-zero\"",
+        "have-chips": "\"have-chips\"",
+        "have-dip": "\"have-dip\"",
+        "have-pop": "\"have-pop\"",
+        "have-cheese": "\"have-cheese\"",
+        "have-crackers": "\"have-crackers\"",
+        "chips": "{} is \"chips\"",
+        "dip": "{} is \"dip\"",
+        "pop": "{} is \"pop\"",
+        "cheese": "{} is \"cheese\"",
+        "crackers": "{} is \"crackers\"",
+        "=": "{} and {} are in the relation \"=\"",
+        "!=": "{} and {} are in the relation \"!=\""
+    },
+    "actions": {
+        "rewind-movie": {
+            "annotation": "",
+            "parameter_types": {},
+            "pddl": "(rewind-movie)",
+            "description": "apply the action \"rewind-movie\"",
+            "preconditions": [
+                "I can only apply the action \"rewind-movie\" if it is the case that \"counter-at-other-than-zero\""
+            ],
+            "effects": [
+                "Once I apply the action \"rewind-movie\", it is the case that \"movie-rewound\""
+            ]
+        },
+        "reset-counter": {
+            "annotation": "",
+            "parameter_types": {},
+            "pddl": "(reset-counter)",
+            "description": "apply the action \"reset-counter\"",
+            "preconditions": [
+                "I can only apply the action \"reset-counter\" if it is the case that \"counter-at-other-than-zero\""
+            ],
+            "effects": [
+                "Once I apply the action \"reset-counter\", it is the case that \"counter-at-zero\"",
+                "Once I apply the action \"reset-counter\", it is not the case anymore that \"counter-at-other-than-zero\""
+            ]
+        },
+        "start-movie": {
+            "annotation": "",
+            "parameter_types": {},
+            "pddl": "(start-movie)",
+            "description": "apply the action \"start-movie\"",
+            "preconditions": [
+                "I can only apply the action \"start-movie\" if it is the case that \"counter-at-zero\""
+            ],
+            "effects": [
+                "Once I apply the action \"start-movie\", it is the case that \"counter-at-other-than-zero\"",
+                "Once I apply the action \"start-movie\", it is not the case anymore that \"counter-at-zero\""
+            ]
+        },
+        "undo-rewind": {
+            "annotation": "",
+            "parameter_types": {},
+            "pddl": "(undo-rewind)",
+            "description": "apply the action \"undo-rewind\"",
+            "preconditions": [
+                "I can only apply the action \"undo-rewind\" if it is the case that \"movie-rewound\""
+            ],
+            "effects": [
+                "Once I apply the action \"undo-rewind\", it is not the case anymore that \"movie-rewound\""
+            ]
+        },
+        "get-chips": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(get-chips ?x)",
+            "description": "apply the action \"get-chips\" to an object A",
+            "preconditions": [
+                "I can only apply the action \"get-chips\" to an object A if it is the case that A is \"chips\" and \"counter-at-zero\"",
+                "I can only apply the action \"get-chips\" to an object A if it is not the case that \"movie-rewound\""
+            ],
+            "effects": [
+                "Once I apply the action \"get-chips\" to an object A, it is the case that \"have-chips\""
+            ]
+        },
+        "get-dip": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(get-dip ?x)",
+            "description": "apply the action \"get-dip\" to an object A",
+            "preconditions": [
+                "I can only apply the action \"get-dip\" to an object A if it is the case that A is \"dip\" and \"counter-at-zero\"",
+                "I can only apply the action \"get-dip\" to an object A if it is not the case that \"movie-rewound\""
+            ],
+            "effects": [
+                "Once I apply the action \"get-dip\" to an object A, it is the case that \"have-dip\""
+            ]
+        },
+        "get-pop": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(get-pop ?x)",
+            "description": "apply the action \"get-pop\" to an object A",
+            "preconditions": [
+                "I can only apply the action \"get-pop\" to an object A if it is the case that A is \"pop\" and \"counter-at-zero\"",
+                "I can only apply the action \"get-pop\" to an object A if it is not the case that \"movie-rewound\""
+            ],
+            "effects": [
+                "Once I apply the action \"get-pop\" to an object A, it is the case that \"have-pop\""
+            ]
+        },
+        "get-cheese": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(get-cheese ?x)",
+            "description": "apply the action \"get-cheese\" to an object A",
+            "preconditions": [
+                "I can only apply the action \"get-cheese\" to an object A if it is the case that A is \"cheese\" and \"counter-at-zero\"",
+                "I can only apply the action \"get-cheese\" to an object A if it is not the case that \"movie-rewound\""
+            ],
+            "effects": [
+                "Once I apply the action \"get-cheese\" to an object A, it is the case that \"have-cheese\""
+            ]
+        },
+        "get-crackers": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(get-crackers ?x)",
+            "description": "apply the action \"get-crackers\" to an object A",
+            "preconditions": [
+                "I can only apply the action \"get-crackers\" to an object A if it is the case that A is \"crackers\" and \"counter-at-zero\"",
+                "I can only apply the action \"get-crackers\" to an object A if it is not the case that \"movie-rewound\""
+            ],
+            "effects": [
+                "Once I apply the action \"get-crackers\" to an object A, it is the case that \"have-crackers\""
+            ]
+        }
+    },
+    "predicates": {
+        "movie-rewound": {
+            "parameter_types": {},
+            "pddl": "(movie-rewound)"
+        },
+        "counter-at-other-than-zero": {
+            "parameter_types": {},
+            "pddl": "(counter-at-other-than-zero)"
+        },
+        "counter-at-zero": {
+            "parameter_types": {},
+            "pddl": "(counter-at-zero)"
+        },
+        "have-chips": {
+            "parameter_types": {},
+            "pddl": "(have-chips)"
+        },
+        "have-dip": {
+            "parameter_types": {},
+            "pddl": "(have-dip)"
+        },
+        "have-pop": {
+            "parameter_types": {},
+            "pddl": "(have-pop)"
+        },
+        "have-cheese": {
+            "parameter_types": {},
+            "pddl": "(have-cheese)"
+        },
+        "have-crackers": {
+            "parameter_types": {},
+            "pddl": "(have-crackers)"
+        },
+        "chips": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(chips ?x)"
+        },
+        "dip": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(dip ?x)"
+        },
+        "pop": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(pop ?x)"
+        },
+        "cheese": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(cheese ?x)"
+        },
+        "crackers": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(crackers ?x)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "rewind-movie": "apply the action \"rewind-movie\"",
+        "reset-counter": "apply the action \"reset-counter\"",
+        "start-movie": "apply the action \"start-movie\"",
+        "undo-rewind": "apply the action \"undo-rewind\"",
+        "get-chips": "apply the action \"get-chips\" to object {?x}",
+        "get-dip": "apply the action \"get-dip\" to object {?x}",
+        "get-pop": "apply the action \"get-pop\" to object {?x}",
+        "get-cheese": "apply the action \"get-cheese\" to object {?x}",
+        "get-crackers": "apply the action \"get-crackers\" to object {?x}"
+    },
+    "predicate_nl_templates": {
+        "movie-rewound": "\"movie-rewound\"",
+        "counter-at-other-than-zero": "\"counter-at-other-than-zero\"",
+        "counter-at-zero": "\"counter-at-zero\"",
+        "have-chips": "\"have-chips\"",
+        "have-dip": "\"have-dip\"",
+        "have-pop": "\"have-pop\"",
+        "have-cheese": "\"have-cheese\"",
+        "have-crackers": "\"have-crackers\"",
+        "chips": "{?x} is \"chips\"",
+        "dip": "{?x} is \"dip\"",
+        "pop": "{?x} is \"pop\"",
+        "cheese": "{?x} is \"cheese\"",
+        "crackers": "{?x} is \"crackers\"",
+        "=": "{?x1} and {?x2} are in the relation \"=\"",
+        "!=": "{?x1} and {?x2} are in the relation \"!=\""
+    },
+    "action_nl_templates_indef": {
+        "rewind-movie": "apply the action \"rewind-movie\"",
+        "reset-counter": "apply the action \"reset-counter\"",
+        "start-movie": "apply the action \"start-movie\"",
+        "undo-rewind": "apply the action \"undo-rewind\"",
+        "get-chips": "apply the action \"get-chips\" to an object {?x}",
+        "get-dip": "apply the action \"get-dip\" to an object {?x}",
+        "get-pop": "apply the action \"get-pop\" to an object {?x}",
+        "get-cheese": "apply the action \"get-cheese\" to an object {?x}",
+        "get-crackers": "apply the action \"get-crackers\" to an object {?x}"
+    },
+    "type_hierarchy": []
+}

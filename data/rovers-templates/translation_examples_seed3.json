@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "teddy_66",
+        "teddy",
+        "socket",
+        "kumquat_8",
+        "object_260",
+        "star_213",
+        "bastion",
+        "screen",
+        "object_50",
+        "teddy_66_70",
+        "roof_11",
+        "frame_9"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"calibrate\" to rover frame_9, camera star_213, objective object_260 and waypoint bastion.",
+            "(calibrate frame_9 star_213 object_260 bastion)"
+        ],
+        [
+            "Once you are done, please apply the action \"navigate\" to rover roof_11, waypoint teddy and waypoint bastion.",
+            "(navigate roof_11 teddy bastion)"
+        ],
+        [
+            "First, apply the action \"drop\" to rover frame_9 and store screen and then apply the action \"communicate_rock_data\" to rover roof_11, lander object_50, waypoint teddy, waypoint teddy_66 and waypoint teddy_66_70.",
+            "(drop frame_9 screen)\n(communicate_rock_data roof_11 object_50 teddy teddy_66 teddy_66_70)"
+        ],
+        [
+            "The next step is to apply the action \"communicate_image_data\" to rover frame_9, lander socket, objective yew, mode kumquat_8, waypoint teddy_66 and waypoint teddy_66_70.",
+            "(communicate_image_data frame_9 socket yew kumquat_8 teddy_66 teddy_66_70)"
+        ]
+    ]
+}

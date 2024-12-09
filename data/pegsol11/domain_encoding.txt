@@ -1,0 +1,20 @@
+I can carry out the following actions:
+perform jump-new-move from a location A over a location B to a location C
+continue jump from a location A over a location B to a location C
+end move at a location A
+
+I have the following restrictions on my actions:
+I can only perform jump-new-move from a location A over a location B to a location C if it is the case that the move has ended and A, B, and C are in line and A is occupied and B is occupied and C is free
+I can only continue jump from a location A over a location B to a location C if it is the case that the last visited location is A and A, B, and C are in line and A is occupied and B is occupied and C is free
+I can only end move at a location A if it is the case that the last visited location is A
+
+The actions have the following effects on the state:
+Once I perform jump-new-move from a location A over a location B to a location C, it is the case that A is free and B is free and C is occupied and the last visited location is C
+Once I perform jump-new-move from a location A over a location B to a location C, it is not the case anymore that the move has ended and it is not the case anymore that A is occupied and it is not the case anymore that B is occupied and it is not the case anymore that C is free
+Once I continue jump from a location A over a location B to a location C, it is the case that A is free and B is free and C is occupied and the last visited location is C
+Once I continue jump from a location A over a location B to a location C, it is not the case anymore that A is occupied and it is not the case anymore that B is occupied and it is not the case anymore that C is free and it is not the case anymore that the last visited location is A
+Once I end move at a location A, it is the case that the move has ended
+Once I end move at a location A, it is not the case anymore that the last visited location is A
+
+
+Everything that is a location is also a object

@@ -1,0 +1,33 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "teddy",
+        "fire",
+        "object_260",
+        "rain",
+        "screen",
+        "kumquat_8",
+        "star_213"
+    ],
+    "pos_examples": [
+        [
+            "Now, pick gold at loc screen.",
+            "(pick-gold screen)"
+        ],
+        [
+            "Once you are done, please move the robot from loc kumquat_8 to loc object_260.",
+            "(move kumquat_8 object_260)"
+        ],
+        [
+            "First, put down laser at loc rain and then detonate bomb at loc teddy to clear loc star_213.",
+            "(putdown-laser rain)\n(detonate-bomb teddy star_213)"
+        ],
+        [
+            "The next step is to pick up laser at loc fire.",
+            "(pickup-laser fire)"
+        ]
+    ]
+}

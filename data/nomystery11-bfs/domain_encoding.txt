@@ -1,0 +1,21 @@
+I can carry out the following actions:
+load a package A into a truck B at a location C
+unload a package A from a truck B at a location C
+drive a truck A from a location B to a location C with fuel cost a fuellevel E changing fuel level from a fuellevel F to a fuellevel D
+
+I have the following restrictions on my actions:
+I can only load a package A into a truck B at a location C if it is the case that B is at C and A is at C
+I can only unload a package A from a truck B at a location C if it is the case that B is at C and A is in B
+I can only drive a truck A from a location B to a location C with fuel cost a fuellevel E changing fuel level from a fuellevel F to a fuellevel D if it is the case that B is connected to C and the fuel cost from E to B is C and A has a fuel level of F and the sum of D and E is F and A is at B
+
+The actions have the following effects on the state:
+Once I load a package A into a truck B at a location C, it is the case that A is in B
+Once I load a package A into a truck B at a location C, it is not the case anymore that A is at C
+Once I unload a package A from a truck B at a location C, it is the case that A is at C
+Once I unload a package A from a truck B at a location C, it is not the case anymore that A is in B
+Once I drive a truck A from a location B to a location C with fuel cost a fuellevel E changing fuel level from a fuellevel F to a fuellevel D, it is the case that A is at C and A has a fuel level of D
+Once I drive a truck A from a location B to a location C with fuel cost a fuellevel E changing fuel level from a fuellevel F to a fuellevel D, it is not the case anymore that A is at B and it is not the case anymore that A has a fuel level of F
+
+
+Everything that is a location or a fuellevel or a locatable is also a object
+Everything that is a package or a truck is also a locatable

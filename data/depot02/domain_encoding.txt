@@ -1,0 +1,26 @@
+I can carry out the following actions:
+drive a truck A from a place B to a place C
+lift a crate B from a surface C at a place D using a hoist A
+drop a crate B onto a surface C at a place D using a hoist A
+load a crate B into a truck C at a place D using a hoist A
+unload a crate B from a truck C at a place D using a hoist A
+
+I have the following restrictions on my actions:
+I can only drive a truck A from a place B to a place C if it is the case that A is a truck and place B and place C and A is at B
+I can only lift a crate B from a surface C at a place D using a hoist A if it is the case that A is a hoist and B is a crate and C is a surface and place D and A is at D and A is available and B is at D and B is on C and B is clear
+I can only drop a crate B onto a surface C at a place D using a hoist A if it is the case that A is a hoist and B is a crate and C is a surface and place D and A is at D and C is at D and C is clear and A is lifting B
+I can only load a crate B into a truck C at a place D using a hoist A if it is the case that A is a hoist and B is a crate and C is a truck and place D and A is at D and C is at D and A is lifting B
+I can only unload a crate B from a truck C at a place D using a hoist A if it is the case that A is a hoist and B is a crate and C is a truck and place D and A is at D and C is at D and A is available and B is in C
+
+The actions have the following effects on the state:
+Once I drive a truck A from a place B to a place C, it is the case that A is at C
+Once I drive a truck A from a place B to a place C, it is not the case anymore that A is at B
+Once I lift a crate B from a surface C at a place D using a hoist A, it is the case that A is lifting B and C is clear
+Once I lift a crate B from a surface C at a place D using a hoist A, it is not the case anymore that B is at D and it is not the case anymore that B is clear and it is not the case anymore that A is available and it is not the case anymore that B is on C
+Once I drop a crate B onto a surface C at a place D using a hoist A, it is the case that A is available and B is at D and B is clear and B is on C
+Once I drop a crate B onto a surface C at a place D using a hoist A, it is not the case anymore that A is lifting B and it is not the case anymore that C is clear
+Once I load a crate B into a truck C at a place D using a hoist A, it is the case that B is in C and A is available
+Once I load a crate B into a truck C at a place D using a hoist A, it is not the case anymore that A is lifting B
+Once I unload a crate B from a truck C at a place D using a hoist A, it is the case that A is lifting B
+Once I unload a crate B from a truck C at a place D using a hoist A, it is not the case anymore that B is in C and it is not the case anymore that A is available
+

@@ -1,0 +1,42 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "teddy",
+        "object_50",
+        "kumquat_8",
+        "object_260",
+        "bastion",
+        "frame_9",
+        "socket",
+        "screen",
+        "bastion_82",
+        "kumquat",
+        "dress_red",
+        "rain",
+        "roof_11_74",
+        "star_213",
+        "fire",
+        "roof_11"
+    ],
+    "pos_examples": [
+        [
+            "Now, pop start pipe frame_9 from area dress_red to area yew with batch-atom bastion, batch-atom object_50, product socket, and product kumquat_8.",
+            "(pop-start frame_9 bastion dress_red yew object_50 socket kumquat_8)"
+        ],
+        [
+            "Once you are done, please push end pipe object_260 from area roof_11 to area kumquat with batch-atom rain and batch-atom screen.",
+            "(push-end object_260 roof_11 kumquat rain screen)"
+        ],
+        [
+            "First, pop unitary pipe teddy with batch-atom screen from area roof_11 to area roof_11_74 replacing batch-atom rain using product fire and product socket and then pop end pipe star_213 from area roof_11 to area kumquat with batch-atom rain and batch-atom bastion.",
+            "(pop-unitarypipe teddy screen roof_11_74 roof_11 rain fire socket)\n(pop-end star_213 roof_11 kumquat rain bastion)"
+        ],
+        [
+            "The next step is to push unitary pipe frame_9 with batch-atom bastion from area dress_red to area yew replacing batch-atom bastion_82 using product fire and product kumquat_8.",
+            "(push-unitarypipe frame_9 bastion dress_red yew bastion_82 fire kumquat_8)"
+        ]
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "screen",
+        "socket",
+        "object_50"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"get-pop\" to object screen.",
+            "(get-pop screen)"
+        ],
+        [
+            "Once you are done, please apply the action \"undo-rewind\".",
+            "(undo-rewind )"
+        ],
+        [
+            "First, apply the action \"get-dip\" to object object_50 and then apply the action \"rewind-movie\".",
+            "(get-dip object_50)\n(rewind-movie )"
+        ],
+        [
+            "The next step is to apply the action \"get-crackers\" to object socket.",
+            "(get-crackers socket)"
+        ]
+    ]
+}

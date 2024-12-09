@@ -1,0 +1,29 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "screen",
+        "roof_11",
+        "teddy"
+    ],
+    "pos_examples": [
+        [
+            "Now, get object roof_11 which is a dip.",
+            "(get-dip roof_11)"
+        ],
+        [
+            "Once you are done, please rewind the movie when the counter is at a time other than two hours.",
+            "(rewind-movie )"
+        ],
+        [
+            "First, get object teddy which is cheese and then rewind the movie when the counter is at two hours.",
+            "(get-cheese teddy)\n(rewind-movie-2 )"
+        ],
+        [
+            "The next step is to get object screen which is a pop.",
+            "(get-pop screen)"
+        ]
+    ]
+}

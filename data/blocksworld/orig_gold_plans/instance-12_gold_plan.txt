@@ -1,0 +1,5 @@
+(unstack b d)
+(stack b c)
+(pick-up d)
+(stack d a)
+; cost = 4 (unit cost)

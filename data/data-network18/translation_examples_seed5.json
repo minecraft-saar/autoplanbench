@@ -1,0 +1,41 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat_8",
+        "rain_93",
+        "object_50",
+        "rain_75",
+        "frame_9",
+        "dress_red",
+        "rain",
+        "star_213",
+        "roof_11",
+        "object_260",
+        "kumquat",
+        "screen",
+        "teddy",
+        "object_50_71",
+        "bastion"
+    ],
+    "pos_examples": [
+        [
+            "Now, send data object_260 from server kumquat to server roof_11 with size numbers screen, current usage numbers object_50, and updated usage numbers bastion within capacity limit numbers rain.",
+            "(send object_260 kumquat roof_11 screen rain object_50 bastion)"
+        ],
+        [
+            "Once you are done, please process data star_213 and data teddy using script kumquat_8 on server dress_red to produce data frame_9 with size numbers rain, current usage numbers object_50, and updated usage numbers rain_75 within capacity limit numbers object_50_71.",
+            "(process star_213 teddy frame_9 kumquat_8 dress_red rain object_50_71 object_50 rain_75)"
+        ],
+        [
+            "First, load data object_260 from server yew with size numbers rain, current usage numbers screen, and updated usage numbers bastion within capacity limit numbers rain_93 and then release data object_260 from server roof_11 reducing usage from numbers rain_93 to numbers rain_75 with data size numbers object_50.",
+            "(load object_260 yew rain rain_93 screen bastion)\n(release object_260 roof_11 object_50 rain_93 rain_75)"
+        ],
+        [
+            "The next step is to save data object_260 with size numbers object_50_71 on server roof_11.",
+            "(save object_260 object_50_71 roof_11)"
+        ]
+    ]
+}

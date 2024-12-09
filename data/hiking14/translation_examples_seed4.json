@@ -1,0 +1,40 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "dress_red_60",
+        "fire",
+        "star_213",
+        "screen",
+        "dress_red",
+        "object_260",
+        "kumquat",
+        "kumquat_8",
+        "socket",
+        "roof_11_31",
+        "teddy",
+        "object_50",
+        "roof_11",
+        "bastion"
+    ],
+    "pos_examples": [
+        [
+            "Now, walk together from place star_213 to place fire with person dress_red, person object_260, and couple kumquat_8 to tent object_50.",
+            "(walk_together object_50 fire dress_red star_213 object_260 kumquat_8)"
+        ],
+        [
+            "Once you are done, please put up tent kumquat at place roof_11 with person screen.",
+            "(put_up screen roof_11 kumquat)"
+        ],
+        [
+            "First, drive person object_260 with car socket from place fire to place star_213 and then drive person object_260 with car bastion and tent teddy from place star_213 to place fire.",
+            "(drive object_260 fire star_213 socket)\n(drive_tent object_260 star_213 fire bastion teddy)"
+        ],
+        [
+            "The next step is to drive person dress_red, car yew, tent kumquat, and person dress_red_60 from place roof_11 to place roof_11_31.",
+            "(drive_tent_passenger dress_red roof_11 roof_11_31 yew kumquat dress_red_60)"
+        ]
+    ]
+}

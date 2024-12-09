@@ -1,0 +1,236 @@
+{
+    "action_mappings": {
+        "move": "move from position {} to position {} with height numb {}",
+        "move-up": "move up from position {} at height numb {} to position {} at height numb {}",
+        "move-down": "move down from position {} at height numb {} to position {} at height numb {}",
+        "place-block": "place block from position {} at height numb {} to position {} at height numb {}",
+        "remove-block": "remove block from position {} at height numb {} to position {} at height numb {}",
+        "create-block": "create block at position {}",
+        "destroy-block": "destroy block at position {}"
+    },
+    "action_mappings_indef": {
+        "move": "move from a position {} to a position {} with height a numb {}",
+        "move-up": "move up from a position {} at height a numb {} to a position {} at height a numb {}",
+        "move-down": "move down from a position {} at height a numb {} to a position {} at height a numb {}",
+        "place-block": "place block from a position {} at height a numb {} to a position {} at height a numb {}",
+        "remove-block": "remove block from a position {} at height a numb {} to a position {} at height a numb {}",
+        "create-block": "create block at a position {}",
+        "destroy-block": "destroy block at a position {}"
+    },
+    "predicate_mappings": {
+        "height": "{} has a height of {}",
+        "at": "at {}",
+        "has-block": "there is a block",
+        "succ": "{} is the successor of {}",
+        "neighbor": "{} is a neighbor of {}",
+        "is-depot": "{} is a depot",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "move": {
+            "annotation": "",
+            "parameter_types": {
+                "?from": "position",
+                "?to": "position",
+                "?h": "numb"
+            },
+            "pddl": "(move ?from ?to ?h)",
+            "description": "move from a position A to a position B with height a numb C",
+            "preconditions": [
+                "I can only move from a position A to a position B with height a numb C if it is the case that at A and A is a neighbor of B and A has a height of C and B has a height of C"
+            ],
+            "effects": [
+                "Once I move from a position A to a position B with height a numb C, it is the case that at B",
+                "Once I move from a position A to a position B with height a numb C, it is not the case anymore that at A"
+            ]
+        },
+        "move-up": {
+            "annotation": "",
+            "parameter_types": {
+                "?from": "position",
+                "?hfrom": "numb",
+                "?to": "position",
+                "?hto": "numb"
+            },
+            "pddl": "(move-up ?from ?hfrom ?to ?hto)",
+            "description": "move up from a position A at height a numb B to a position C at height a numb D",
+            "preconditions": [
+                "I can only move up from a position A at height a numb B to a position C at height a numb D if it is the case that at A and A is a neighbor of C and A has a height of B and C has a height of D and D is the successor of B"
+            ],
+            "effects": [
+                "Once I move up from a position A at height a numb B to a position C at height a numb D, it is the case that at C",
+                "Once I move up from a position A at height a numb B to a position C at height a numb D, it is not the case anymore that at A"
+            ]
+        },
+        "move-down": {
+            "annotation": "",
+            "parameter_types": {
+                "?from": "position",
+                "?hfrom": "numb",
+                "?to": "position",
+                "?hto": "numb"
+            },
+            "pddl": "(move-down ?from ?hfrom ?to ?hto)",
+            "description": "move down from a position A at height a numb B to a position C at height a numb D",
+            "preconditions": [
+                "I can only move down from a position A at height a numb B to a position C at height a numb D if it is the case that at A and A is a neighbor of C and A has a height of B and C has a height of D and B is the successor of D"
+            ],
+            "effects": [
+                "Once I move down from a position A at height a numb B to a position C at height a numb D, it is the case that at C",
+                "Once I move down from a position A at height a numb B to a position C at height a numb D, it is not the case anymore that at A"
+            ]
+        },
+        "place-block": {
+            "annotation": "",
+            "parameter_types": {
+                "?rpos": "position",
+                "?bpos": "position",
+                "?hbefore": "numb",
+                "?hafter": "numb"
+            },
+            "pddl": "(place-block ?rpos ?bpos ?hbefore ?hafter)",
+            "description": "place block from a position A at height a numb C to a position B at height a numb D",
+            "preconditions": [
+                "I can only place block from a position A at height a numb C to a position B at height a numb D if it is the case that at A and A is a neighbor of B and A has a height of C and B has a height of C and D is the successor of C and there is a block",
+                "I can only place block from a position A at height a numb C to a position B at height a numb D if it is not the case that B is a depot"
+            ],
+            "effects": [
+                "Once I place block from a position A at height a numb C to a position B at height a numb D, it is the case that B has a height of D",
+                "Once I place block from a position A at height a numb C to a position B at height a numb D, it is not the case anymore that B has a height of C and it is not the case anymore that there is a block"
+            ]
+        },
+        "remove-block": {
+            "annotation": "",
+            "parameter_types": {
+                "?rpos": "position",
+                "?bpos": "position",
+                "?hbefore": "numb",
+                "?hafter": "numb"
+            },
+            "pddl": "(remove-block ?rpos ?bpos ?hbefore ?hafter)",
+            "description": "remove block from a position B at height a numb C to a position A at height a numb D",
+            "preconditions": [
+                "I can only remove block from a position B at height a numb C to a position A at height a numb D if it is the case that at A and A is a neighbor of B and A has a height of D and B has a height of C and C is the successor of D",
+                "I can only remove block from a position B at height a numb C to a position A at height a numb D if it is not the case that there is a block"
+            ],
+            "effects": [
+                "Once I remove block from a position B at height a numb C to a position A at height a numb D, it is the case that B has a height of D and there is a block",
+                "Once I remove block from a position B at height a numb C to a position A at height a numb D, it is not the case anymore that B has a height of C"
+            ]
+        },
+        "create-block": {
+            "annotation": "",
+            "parameter_types": {
+                "?p": "position"
+            },
+            "pddl": "(create-block ?p)",
+            "description": "create block at a position A",
+            "preconditions": [
+                "I can only create block at a position A if it is the case that at A and A is a depot",
+                "I can only create block at a position A if it is not the case that there is a block"
+            ],
+            "effects": [
+                "Once I create block at a position A, it is the case that there is a block"
+            ]
+        },
+        "destroy-block": {
+            "annotation": "",
+            "parameter_types": {
+                "?p": "position"
+            },
+            "pddl": "(destroy-block ?p)",
+            "description": "destroy block at a position A",
+            "preconditions": [
+                "I can only destroy block at a position A if it is the case that at A and there is a block and A is a depot"
+            ],
+            "effects": [
+                "Once I destroy block at a position A, it is not the case anymore that there is a block"
+            ]
+        }
+    },
+    "predicates": {
+        "height": {
+            "parameter_types": {
+                "?p": "position",
+                "?h": "numb"
+            },
+            "pddl": "(height ?p ?h)"
+        },
+        "at": {
+            "parameter_types": {
+                "?p": "position"
+            },
+            "pddl": "(at ?p)"
+        },
+        "has-block": {
+            "parameter_types": {},
+            "pddl": "(has-block)"
+        },
+        "succ": {
+            "parameter_types": {
+                "?n1": "numb",
+                "?n2": "numb"
+            },
+            "pddl": "(succ ?n1 ?n2)"
+        },
+        "neighbor": {
+            "parameter_types": {
+                "?p1": "position",
+                "?p2": "position"
+            },
+            "pddl": "(neighbor ?p1 ?p2)"
+        },
+        "is-depot": {
+            "parameter_types": {
+                "?p": "position"
+            },
+            "pddl": "(is-depot ?p)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "move": "move from position {?from} to position {?to} with height numb {?h}",
+        "move-up": "move up from position {?from} at height numb {?hfrom} to position {?to} at height numb {?hto}",
+        "move-down": "move down from position {?from} at height numb {?hfrom} to position {?to} at height numb {?hto}",
+        "place-block": "place block from position {?rpos} at height numb {?hbefore} to position {?bpos} at height numb {?hafter}",
+        "remove-block": "remove block from position {?bpos} at height numb {?hbefore} to position {?rpos} at height numb {?hafter}",
+        "create-block": "create block at position {?p}",
+        "destroy-block": "destroy block at position {?p}"
+    },
+    "predicate_nl_templates": {
+        "height": "{?p} has a height of {?h}",
+        "at": "at {?p}",
+        "has-block": "there is a block",
+        "succ": "{?n1} is the successor of {?n2}",
+        "neighbor": "{?p1} is a neighbor of {?p2}",
+        "is-depot": "{?p} is a depot",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "move": "move from a position {?from} to a position {?to} with height a numb {?h}",
+        "move-up": "move up from a position {?from} at height a numb {?hfrom} to a position {?to} at height a numb {?hto}",
+        "move-down": "move down from a position {?from} at height a numb {?hfrom} to a position {?to} at height a numb {?hto}",
+        "place-block": "place block from a position {?rpos} at height a numb {?hbefore} to a position {?bpos} at height a numb {?hafter}",
+        "remove-block": "remove block from a position {?bpos} at height a numb {?hbefore} to a position {?rpos} at height a numb {?hafter}",
+        "create-block": "create block at a position {?p}",
+        "destroy-block": "destroy block at a position {?p}"
+    },
+    "type_hierarchy": [
+        "Everything that is a numb or a position is also a object"
+    ]
+}

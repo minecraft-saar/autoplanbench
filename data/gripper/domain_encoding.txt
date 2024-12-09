@@ -1,0 +1,20 @@
+I can carry out the following actions:
+move a robot A from a room B to a room C
+pick an object B with a robot A using a gripper D in a room C
+drop an object B with a robot A using a gripper D in a room C
+
+I have the following restrictions on my actions:
+I can only move a robot A from a room B to a room C if it is the case that A is at B
+I can only pick an object B with a robot A using a gripper D in a room C if it is the case that B is at C and A is at C and A is free from D
+I can only drop an object B with a robot A using a gripper D in a room C if it is the case that A is carrying B to D and A is at C
+
+The actions have the following effects on the state:
+Once I move a robot A from a room B to a room C, it is the case that A is at C
+Once I move a robot A from a room B to a room C, it is not the case anymore that A is at B
+Once I pick an object B with a robot A using a gripper D in a room C, it is the case that A is carrying B to D
+Once I pick an object B with a robot A using a gripper D in a room C, it is not the case anymore that B is at C and it is not the case anymore that A is free from D
+Once I drop an object B with a robot A using a gripper D in a room C, it is the case that B is at C and A is free from D
+Once I drop an object B with a robot A using a gripper D in a room C, it is not the case anymore that A is carrying B to D
+
+
+Everything that is a room or a robot or a gripper is also a object

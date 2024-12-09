@@ -1,0 +1,39 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "rain",
+        "kumquat_8",
+        "object_260_85",
+        "roof_11",
+        "object_260_62_34",
+        "frame_9",
+        "teddy",
+        "dress_red",
+        "object_260",
+        "object_260_62",
+        "object_50",
+        "fire",
+        "object_260_62_34_45"
+    ],
+    "pos_examples": [
+        [
+            "Now, saw board teddy into medium part frame_9 using saw yew with awood rain, surface object_50, changing size from aboardsize object_260 to aboardsize object_260_62 through aboardsize object_260_62_34.",
+            "(do-saw-medium teddy frame_9 yew rain object_50 object_260 object_260_62_34 object_260_62)"
+        ],
+        [
+            "Once you are done, please cut board teddy into part frame_9 using highspeed-saw kumquat_8 with awood rain, surface dress_red, changing size from aboardsize object_260 to aboardsize object_260_62_34 via intermediate sizes aboardsize object_260_62_34_45 and aboardsize object_260_85.",
+            "(cut-board-large teddy frame_9 kumquat_8 rain dress_red object_260 object_260_85 object_260_62_34_45 object_260_62_34)"
+        ],
+        [
+            "First, do immersion varnish on part frame_9 using immersion-varnisher fire to change color to acolour roof_11 with surface dress_red and then saw board teddy into small part frame_9 using saw yew with awood rain, surface object_50, changing size from aboardsize object_260 to aboardsize object_260_62_34.",
+            "(do-immersion-varnish frame_9 fire roof_11 dress_red)\n(do-saw-small teddy frame_9 yew rain object_50 object_260 object_260_62_34)"
+        ],
+        [
+            "The next step is to unload board teddy from highspeed-saw kumquat_8.",
+            "(unload-highspeed-saw teddy kumquat_8)"
+        ]
+    ]
+}

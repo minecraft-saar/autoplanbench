@@ -1,0 +1,23 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "fire",
+        "socket",
+        "object_260",
+        "frame_9",
+        "kumquat"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"debark\" to object fire and object yew.",
+            "(debark fire yew)"
+        ],
+        [
+            "Once you are done, please apply the action \"sail\" to object frame_9 and object kumquat.",
+            "(sail frame_9 kumquat)"
+        ]
+    ]
+}

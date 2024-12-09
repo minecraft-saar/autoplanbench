@@ -1,0 +1,22 @@
+I can carry out the following actions:
+apply the action "pick-up" to an object A
+apply the action "put-down" to an object A
+apply the action "stack" to an object A and an object B
+apply the action "unstack" to an object A and an object B
+
+I have the following restrictions on my actions:
+I can only apply the action "pick-up" to an object A if it is the case that A is "clear" and A is "ontable" and "handempty"
+I can only apply the action "put-down" to an object A if it is the case that A is "holding"
+I can only apply the action "stack" to an object A and an object B if it is the case that B is "clear" and A is "holding"
+I can only apply the action "unstack" to an object A and an object B if it is the case that A and B are in the relation "on" and A is "clear" and "handempty"
+
+The actions have the following effects on the state:
+Once I apply the action "pick-up" to an object A, it is the case that A is "holding"
+Once I apply the action "pick-up" to an object A, it is not the case anymore that A is "clear" and it is not the case anymore that A is "ontable" and it is not the case anymore that "handempty"
+Once I apply the action "put-down" to an object A, it is the case that A is "clear" and "handempty" and A is "ontable"
+Once I apply the action "put-down" to an object A, it is not the case anymore that A is "holding"
+Once I apply the action "stack" to an object A and an object B, it is the case that "handempty" and A is "clear" and A and B are in the relation "on"
+Once I apply the action "stack" to an object A and an object B, it is not the case anymore that B is "clear" and it is not the case anymore that A is "holding"
+Once I apply the action "unstack" to an object A and an object B, it is the case that A is "holding" and B is "clear"
+Once I apply the action "unstack" to an object A and an object B, it is not the case anymore that A and B are in the relation "on" and it is not the case anymore that A is "clear" and it is not the case anymore that "handempty"
+

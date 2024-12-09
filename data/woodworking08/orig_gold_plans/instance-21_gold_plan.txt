@@ -1,0 +1,6 @@
+(do-plane p1 planer0 rough blue varnished)
+(do-saw-large b0 p2 saw0 oak smooth s4 s2 s3 s1)
+(do-saw-small b0 p0 saw0 oak smooth s4 s3)
+(do-immersion-varnish p0 immersion-varnisher0 natural smooth)
+(do-immersion-varnish p2 immersion-varnisher0 red smooth)
+; cost = 5 (unit cost)

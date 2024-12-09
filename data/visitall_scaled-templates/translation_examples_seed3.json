@@ -1,0 +1,16 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "screen",
+        "frame_9"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"move\" to place frame_9 and place screen.",
+            "(move frame_9 screen)"
+        ]
+    ]
+}

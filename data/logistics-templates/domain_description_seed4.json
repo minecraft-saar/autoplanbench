@@ -1,0 +1,239 @@
+{
+    "action_mappings": {
+        "load-truck": "apply the action \"load-truck\" to object {}, object {} and object {}",
+        "load-airplane": "apply the action \"load-airplane\" to object {}, object {} and object {}",
+        "unload-truck": "apply the action \"unload-truck\" to object {}, object {} and object {}",
+        "unload-airplane": "apply the action \"unload-airplane\" to object {}, object {} and object {}",
+        "drive-truck": "apply the action \"drive-truck\" to object {}, object {}, object {} and object {}",
+        "fly-airplane": "apply the action \"fly-airplane\" to object {}, object {} and object {}"
+    },
+    "action_mappings_indef": {
+        "load-truck": "apply the action \"load-truck\" to an object {}, an object {} and an object {}",
+        "load-airplane": "apply the action \"load-airplane\" to an object {}, an object {} and an object {}",
+        "unload-truck": "apply the action \"unload-truck\" to an object {}, an object {} and an object {}",
+        "unload-airplane": "apply the action \"unload-airplane\" to an object {}, an object {} and an object {}",
+        "drive-truck": "apply the action \"drive-truck\" to an object {}, an object {}, an object {} and an object {}",
+        "fly-airplane": "apply the action \"fly-airplane\" to an object {}, an object {} and an object {}"
+    },
+    "predicate_mappings": {
+        "obj": "{} is \"obj\"",
+        "truck": "{} is \"truck\"",
+        "location": "{} is \"location\"",
+        "airplane": "{} is \"airplane\"",
+        "city": "{} is \"city\"",
+        "airport": "{} is \"airport\"",
+        "at": "{} and {} are in the relation \"at\"",
+        "in": "{} and {} are in the relation \"in\"",
+        "in-city": "{} and {} are in the relation \"in-city\"",
+        "=": "{} and {} are in the relation \"=\"",
+        "!=": "{} and {} are in the relation \"!=\""
+    },
+    "actions": {
+        "load-truck": {
+            "annotation": "",
+            "parameter_types": {
+                "?obj": "object",
+                "?truck": "object",
+                "?loc": "object"
+            },
+            "pddl": "(load-truck ?obj ?truck ?loc)",
+            "description": "apply the action \"load-truck\" to an object A, an object B and an object C",
+            "preconditions": [
+                "I can only apply the action \"load-truck\" to an object A, an object B and an object C if it is the case that A is \"obj\" and B is \"truck\" and C is \"location\" and B and C are in the relation \"at\" and A and C are in the relation \"at\""
+            ],
+            "effects": [
+                "Once I apply the action \"load-truck\" to an object A, an object B and an object C, it is the case that A and B are in the relation \"in\"",
+                "Once I apply the action \"load-truck\" to an object A, an object B and an object C, it is not the case anymore that A and C are in the relation \"at\""
+            ]
+        },
+        "load-airplane": {
+            "annotation": "",
+            "parameter_types": {
+                "?obj": "object",
+                "?airplane": "object",
+                "?loc": "object"
+            },
+            "pddl": "(load-airplane ?obj ?airplane ?loc)",
+            "description": "apply the action \"load-airplane\" to an object A, an object B and an object C",
+            "preconditions": [
+                "I can only apply the action \"load-airplane\" to an object A, an object B and an object C if it is the case that A is \"obj\" and B is \"airplane\" and C is \"location\" and A and C are in the relation \"at\" and B and C are in the relation \"at\""
+            ],
+            "effects": [
+                "Once I apply the action \"load-airplane\" to an object A, an object B and an object C, it is the case that A and B are in the relation \"in\"",
+                "Once I apply the action \"load-airplane\" to an object A, an object B and an object C, it is not the case anymore that A and C are in the relation \"at\""
+            ]
+        },
+        "unload-truck": {
+            "annotation": "",
+            "parameter_types": {
+                "?obj": "object",
+                "?truck": "object",
+                "?loc": "object"
+            },
+            "pddl": "(unload-truck ?obj ?truck ?loc)",
+            "description": "apply the action \"unload-truck\" to an object A, an object B and an object C",
+            "preconditions": [
+                "I can only apply the action \"unload-truck\" to an object A, an object B and an object C if it is the case that A is \"obj\" and B is \"truck\" and C is \"location\" and B and C are in the relation \"at\" and A and B are in the relation \"in\""
+            ],
+            "effects": [
+                "Once I apply the action \"unload-truck\" to an object A, an object B and an object C, it is the case that A and C are in the relation \"at\"",
+                "Once I apply the action \"unload-truck\" to an object A, an object B and an object C, it is not the case anymore that A and B are in the relation \"in\""
+            ]
+        },
+        "unload-airplane": {
+            "annotation": "",
+            "parameter_types": {
+                "?obj": "object",
+                "?airplane": "object",
+                "?loc": "object"
+            },
+            "pddl": "(unload-airplane ?obj ?airplane ?loc)",
+            "description": "apply the action \"unload-airplane\" to an object A, an object B and an object C",
+            "preconditions": [
+                "I can only apply the action \"unload-airplane\" to an object A, an object B and an object C if it is the case that A is \"obj\" and B is \"airplane\" and C is \"location\" and A and B are in the relation \"in\" and B and C are in the relation \"at\""
+            ],
+            "effects": [
+                "Once I apply the action \"unload-airplane\" to an object A, an object B and an object C, it is the case that A and C are in the relation \"at\"",
+                "Once I apply the action \"unload-airplane\" to an object A, an object B and an object C, it is not the case anymore that A and B are in the relation \"in\""
+            ]
+        },
+        "drive-truck": {
+            "annotation": "",
+            "parameter_types": {
+                "?truck": "object",
+                "?loc-from": "object",
+                "?loc-to": "object",
+                "?city": "object"
+            },
+            "pddl": "(drive-truck ?truck ?loc-from ?loc-to ?city)",
+            "description": "apply the action \"drive-truck\" to an object A, an object B, an object C and an object D",
+            "preconditions": [
+                "I can only apply the action \"drive-truck\" to an object A, an object B, an object C and an object D if it is the case that A is \"truck\" and B is \"location\" and C is \"location\" and D is \"city\" and A and B are in the relation \"at\" and B and D are in the relation \"in-city\" and C and D are in the relation \"in-city\""
+            ],
+            "effects": [
+                "Once I apply the action \"drive-truck\" to an object A, an object B, an object C and an object D, it is the case that A and C are in the relation \"at\"",
+                "Once I apply the action \"drive-truck\" to an object A, an object B, an object C and an object D, it is not the case anymore that A and B are in the relation \"at\""
+            ]
+        },
+        "fly-airplane": {
+            "annotation": "",
+            "parameter_types": {
+                "?airplane": "object",
+                "?loc-from": "object",
+                "?loc-to": "object"
+            },
+            "pddl": "(fly-airplane ?airplane ?loc-from ?loc-to)",
+            "description": "apply the action \"fly-airplane\" to an object A, an object B and an object C",
+            "preconditions": [
+                "I can only apply the action \"fly-airplane\" to an object A, an object B and an object C if it is the case that A is \"airplane\" and B is \"airport\" and C is \"airport\" and A and B are in the relation \"at\""
+            ],
+            "effects": [
+                "Once I apply the action \"fly-airplane\" to an object A, an object B and an object C, it is the case that A and C are in the relation \"at\"",
+                "Once I apply the action \"fly-airplane\" to an object A, an object B and an object C, it is not the case anymore that A and B are in the relation \"at\""
+            ]
+        }
+    },
+    "predicates": {
+        "obj": {
+            "parameter_types": {
+                "?obj": "object"
+            },
+            "pddl": "(obj ?obj)"
+        },
+        "truck": {
+            "parameter_types": {
+                "?truck": "object"
+            },
+            "pddl": "(truck ?truck)"
+        },
+        "location": {
+            "parameter_types": {
+                "?loc": "object"
+            },
+            "pddl": "(location ?loc)"
+        },
+        "airplane": {
+            "parameter_types": {
+                "?airplane": "object"
+            },
+            "pddl": "(airplane ?airplane)"
+        },
+        "city": {
+            "parameter_types": {
+                "?city": "object"
+            },
+            "pddl": "(city ?city)"
+        },
+        "airport": {
+            "parameter_types": {
+                "?airport": "object"
+            },
+            "pddl": "(airport ?airport)"
+        },
+        "at": {
+            "parameter_types": {
+                "?obj": "object",
+                "?loc": "object"
+            },
+            "pddl": "(at ?obj ?loc)"
+        },
+        "in": {
+            "parameter_types": {
+                "?obj1": "object",
+                "?obj2": "object"
+            },
+            "pddl": "(in ?obj1 ?obj2)"
+        },
+        "in-city": {
+            "parameter_types": {
+                "?obj": "object",
+                "?city": "object"
+            },
+            "pddl": "(in-city ?obj ?city)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "load-truck": "apply the action \"load-truck\" to object {?obj}, object {?truck} and object {?loc}",
+        "load-airplane": "apply the action \"load-airplane\" to object {?obj}, object {?airplane} and object {?loc}",
+        "unload-truck": "apply the action \"unload-truck\" to object {?obj}, object {?truck} and object {?loc}",
+        "unload-airplane": "apply the action \"unload-airplane\" to object {?obj}, object {?airplane} and object {?loc}",
+        "drive-truck": "apply the action \"drive-truck\" to object {?truck}, object {?loc-from}, object {?loc-to} and object {?city}",
+        "fly-airplane": "apply the action \"fly-airplane\" to object {?airplane}, object {?loc-from} and object {?loc-to}"
+    },
+    "predicate_nl_templates": {
+        "obj": "{?obj} is \"obj\"",
+        "truck": "{?truck} is \"truck\"",
+        "location": "{?loc} is \"location\"",
+        "airplane": "{?airplane} is \"airplane\"",
+        "city": "{?city} is \"city\"",
+        "airport": "{?airport} is \"airport\"",
+        "at": "{?obj} and {?loc} are in the relation \"at\"",
+        "in": "{?obj1} and {?obj2} are in the relation \"in\"",
+        "in-city": "{?obj} and {?city} are in the relation \"in-city\"",
+        "=": "{?x1} and {?x2} are in the relation \"=\"",
+        "!=": "{?x1} and {?x2} are in the relation \"!=\""
+    },
+    "action_nl_templates_indef": {
+        "load-truck": "apply the action \"load-truck\" to an object {?obj}, an object {?truck} and an object {?loc}",
+        "load-airplane": "apply the action \"load-airplane\" to an object {?obj}, an object {?airplane} and an object {?loc}",
+        "unload-truck": "apply the action \"unload-truck\" to an object {?obj}, an object {?truck} and an object {?loc}",
+        "unload-airplane": "apply the action \"unload-airplane\" to an object {?obj}, an object {?airplane} and an object {?loc}",
+        "drive-truck": "apply the action \"drive-truck\" to an object {?truck}, an object {?loc-from}, an object {?loc-to} and an object {?city}",
+        "fly-airplane": "apply the action \"fly-airplane\" to an object {?airplane}, an object {?loc-from} and an object {?loc-to}"
+    },
+    "type_hierarchy": []
+}

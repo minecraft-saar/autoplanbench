@@ -1,0 +1,286 @@
+{
+    "action_mappings": {
+        "rewind-movie": "rewind the movie",
+        "reset-counter": "reset the counter",
+        "start-movie": "start the movie",
+        "undo-rewind": "undo the rewind of the movie",
+        "get-chips": "get chips {}",
+        "get-dip": "get dip {}",
+        "get-pop": "get popped {}",
+        "get-cheese": "get cheese {}",
+        "get-crackers": "get crackers {}"
+    },
+    "action_mappings_indef": {
+        "rewind-movie": "rewind the movie",
+        "reset-counter": "reset the counter",
+        "start-movie": "start the movie",
+        "undo-rewind": "undo the rewind of the movie",
+        "get-chips": "get a chips {}",
+        "get-dip": "get a dip {}",
+        "get-pop": "get a popped {}",
+        "get-cheese": "get a cheese {}",
+        "get-crackers": "get a crackers {}"
+    },
+    "predicate_mappings": {
+        "movie-rewound": "the movie is rewound",
+        "counter-at-other-than-zero": "the counter is at other than zero",
+        "counter-at-zero": "the counter is at zero",
+        "have-chips": "have chips",
+        "have-dip": "have dip",
+        "have-pop": "have pop",
+        "have-cheese": "have cheese",
+        "have-crackers": "have crackers",
+        "chips": "{} is chips",
+        "dip": "{} is dip",
+        "pop": "{} is popped",
+        "cheese": "{} is cheese",
+        "crackers": "{} is crackers",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "rewind-movie": {
+            "annotation": "",
+            "parameter_types": {},
+            "pddl": "(rewind-movie)",
+            "description": "rewind the movie",
+            "preconditions": [
+                "I can only rewind the movie if it is the case that the counter is at other than zero"
+            ],
+            "effects": [
+                "Once I rewind the movie, it is the case that the movie is rewound"
+            ]
+        },
+        "reset-counter": {
+            "annotation": "",
+            "parameter_types": {},
+            "pddl": "(reset-counter)",
+            "description": "reset the counter",
+            "preconditions": [
+                "I can only reset the counter if it is the case that the counter is at other than zero"
+            ],
+            "effects": [
+                "Once I reset the counter, it is the case that the counter is at zero",
+                "Once I reset the counter, it is not the case anymore that the counter is at other than zero"
+            ]
+        },
+        "start-movie": {
+            "annotation": "",
+            "parameter_types": {},
+            "pddl": "(start-movie)",
+            "description": "start the movie",
+            "preconditions": [
+                "I can only start the movie if it is the case that the counter is at zero"
+            ],
+            "effects": [
+                "Once I start the movie, it is the case that the counter is at other than zero",
+                "Once I start the movie, it is not the case anymore that the counter is at zero"
+            ]
+        },
+        "undo-rewind": {
+            "annotation": "",
+            "parameter_types": {},
+            "pddl": "(undo-rewind)",
+            "description": "undo the rewind of the movie",
+            "preconditions": [
+                "I can only undo the rewind of the movie if it is the case that the movie is rewound"
+            ],
+            "effects": [
+                "Once I undo the rewind of the movie, it is not the case anymore that the movie is rewound"
+            ]
+        },
+        "get-chips": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(get-chips ?x)",
+            "description": "get a chips A",
+            "preconditions": [
+                "I can only get a chips A if it is the case that A is chips and the counter is at zero",
+                "I can only get a chips A if it is not the case that the movie is rewound"
+            ],
+            "effects": [
+                "Once I get a chips A, it is the case that have chips"
+            ]
+        },
+        "get-dip": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(get-dip ?x)",
+            "description": "get a dip A",
+            "preconditions": [
+                "I can only get a dip A if it is the case that A is dip and the counter is at zero",
+                "I can only get a dip A if it is not the case that the movie is rewound"
+            ],
+            "effects": [
+                "Once I get a dip A, it is the case that have dip"
+            ]
+        },
+        "get-pop": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(get-pop ?x)",
+            "description": "get a popped A",
+            "preconditions": [
+                "I can only get a popped A if it is the case that A is popped and the counter is at zero",
+                "I can only get a popped A if it is not the case that the movie is rewound"
+            ],
+            "effects": [
+                "Once I get a popped A, it is the case that have pop"
+            ]
+        },
+        "get-cheese": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(get-cheese ?x)",
+            "description": "get a cheese A",
+            "preconditions": [
+                "I can only get a cheese A if it is the case that A is cheese and the counter is at zero",
+                "I can only get a cheese A if it is not the case that the movie is rewound"
+            ],
+            "effects": [
+                "Once I get a cheese A, it is the case that have cheese"
+            ]
+        },
+        "get-crackers": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(get-crackers ?x)",
+            "description": "get a crackers A",
+            "preconditions": [
+                "I can only get a crackers A if it is the case that A is crackers and the counter is at zero",
+                "I can only get a crackers A if it is not the case that the movie is rewound"
+            ],
+            "effects": [
+                "Once I get a crackers A, it is the case that have crackers"
+            ]
+        }
+    },
+    "predicates": {
+        "movie-rewound": {
+            "parameter_types": {},
+            "pddl": "(movie-rewound)"
+        },
+        "counter-at-other-than-zero": {
+            "parameter_types": {},
+            "pddl": "(counter-at-other-than-zero)"
+        },
+        "counter-at-zero": {
+            "parameter_types": {},
+            "pddl": "(counter-at-zero)"
+        },
+        "have-chips": {
+            "parameter_types": {},
+            "pddl": "(have-chips)"
+        },
+        "have-dip": {
+            "parameter_types": {},
+            "pddl": "(have-dip)"
+        },
+        "have-pop": {
+            "parameter_types": {},
+            "pddl": "(have-pop)"
+        },
+        "have-cheese": {
+            "parameter_types": {},
+            "pddl": "(have-cheese)"
+        },
+        "have-crackers": {
+            "parameter_types": {},
+            "pddl": "(have-crackers)"
+        },
+        "chips": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(chips ?x)"
+        },
+        "dip": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(dip ?x)"
+        },
+        "pop": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(pop ?x)"
+        },
+        "cheese": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(cheese ?x)"
+        },
+        "crackers": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(crackers ?x)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "rewind-movie": "rewind the movie",
+        "reset-counter": "reset the counter",
+        "start-movie": "start the movie",
+        "undo-rewind": "undo the rewind of the movie",
+        "get-chips": "get chips {?x}",
+        "get-dip": "get dip {?x}",
+        "get-pop": "get popped {?x}",
+        "get-cheese": "get cheese {?x}",
+        "get-crackers": "get crackers {?x}"
+    },
+    "predicate_nl_templates": {
+        "movie-rewound": "the movie is rewound",
+        "counter-at-other-than-zero": "the counter is at other than zero",
+        "counter-at-zero": "the counter is at zero",
+        "have-chips": "have chips",
+        "have-dip": "have dip",
+        "have-pop": "have pop",
+        "have-cheese": "have cheese",
+        "have-crackers": "have crackers",
+        "chips": "{?x} is chips",
+        "dip": "{?x} is dip",
+        "pop": "{?x} is popped",
+        "cheese": "{?x} is cheese",
+        "crackers": "{?x} is crackers",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "rewind-movie": "rewind the movie",
+        "reset-counter": "reset the counter",
+        "start-movie": "start the movie",
+        "undo-rewind": "undo the rewind of the movie",
+        "get-chips": "get a chips {?x}",
+        "get-dip": "get a dip {?x}",
+        "get-pop": "get a popped {?x}",
+        "get-cheese": "get a cheese {?x}",
+        "get-crackers": "get a crackers {?x}"
+    },
+    "type_hierarchy": []
+}

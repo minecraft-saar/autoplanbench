@@ -1,0 +1,7 @@
+(begin-cut object_1 object_0)
+(end-cut-1 object_0 object_3)
+(end-cut-2 object_1 object_3)
+(begin-transverse-splice object_3 object_2)
+(end-inverse-splice-1a object_0 object_3)
+(end-inverse-splice-2 object_0 object_2)
+; cost = 6 (unit cost)

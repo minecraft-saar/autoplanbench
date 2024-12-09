@@ -1,0 +1,235 @@
+{
+    "action_mappings": {
+        "overcome": "overcome pain {} with pleasure {} by using food {} from planet {} orbiting planet {}",
+        "feast": "feast with pleasure {} on food {} and food {} moving from location {} to location {}",
+        "succumb": "succumb to pleasure {} with pain {} craving food {} transitioning harmony from object {} to object {}",
+        "drink": "drink from object {} in object {} to object {} and from object {} in object {} to object {} with object {} attacking object {} and object {} attacking object {}"
+    },
+    "action_mappings_indef": {
+        "overcome": "overcome a pain {} with a pleasure {} by using a food {} from a planet {} orbiting a planet {}",
+        "feast": "feast with a pleasure {} on a food {} and a food {} moving from a location {} to a location {}",
+        "succumb": "succumb to a pleasure {} with a pain {} craving a food {} transitioning harmony from an object {} to an object {}",
+        "drink": "drink from an object {} in an object {} to an object {} and from an object {} in an object {} to an object {} with an object {} attacking an object {} and an object {} attacking an object {}"
+    },
+    "predicate_mappings": {
+        "province": "{} is a province",
+        "planet": "{} is a planet",
+        "food": "{} is food",
+        "pleasure": "{} is a pleasure",
+        "pain": "{} is a pain",
+        "eats": "{} eats {}",
+        "craves": "{} craves {}",
+        "fears": "{} fears {}",
+        "locale": "{} is located in {}",
+        "harmony": "{} is in harmony with {}",
+        "attacks": "{} attacks {}",
+        "orbits": "{} orbits {}",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "overcome": {
+            "annotation": "",
+            "parameter_types": {
+                "?c": "object",
+                "?v": "object",
+                "?n": "object",
+                "?s1": "object",
+                "?s2": "object"
+            },
+            "pddl": "(overcome ?c ?v ?n ?s1 ?s2)",
+            "description": "overcome a pain A with a pleasure B by using a food C from a planet D orbiting a planet E",
+            "preconditions": [
+                "I can only overcome a pain A with a pleasure B by using a food C from a planet D orbiting a planet E if it is the case that A is a pain and B is a pleasure and A craves C and B craves C and C is food and B is in harmony with E and E is a planet and D orbits E and D is a planet"
+            ],
+            "effects": [
+                "Once I overcome a pain A with a pleasure B by using a food C from a planet D orbiting a planet E, it is the case that A fears B and B is in harmony with D",
+                "Once I overcome a pain A with a pleasure B by using a food C from a planet D orbiting a planet E, it is not the case anymore that A craves C and it is not the case anymore that B is in harmony with E"
+            ]
+        },
+        "feast": {
+            "annotation": "",
+            "parameter_types": {
+                "?v": "object",
+                "?n1": "object",
+                "?n2": "object",
+                "?l1": "object",
+                "?l2": "object"
+            },
+            "pddl": "(feast ?v ?n1 ?n2 ?l1 ?l2)",
+            "description": "feast with a pleasure A on a food B and a food C moving from a location E to a location D",
+            "preconditions": [
+                "I can only feast with a pleasure A on a food B and a food C moving from a location E to a location D if it is the case that A craves B and B is food and A is a pleasure and B eats C and C is food and B is located in E and D attacks E"
+            ],
+            "effects": [
+                "Once I feast with a pleasure A on a food B and a food C moving from a location E to a location D, it is the case that A craves C and B is located in D",
+                "Once I feast with a pleasure A on a food B and a food C moving from a location E to a location D, it is not the case anymore that A craves B and it is not the case anymore that B is located in E"
+            ]
+        },
+        "succumb": {
+            "annotation": "",
+            "parameter_types": {
+                "?c": "object",
+                "?v": "object",
+                "?n": "object",
+                "?s1": "object",
+                "?s2": "object"
+            },
+            "pddl": "(succumb ?c ?v ?n ?s1 ?s2)",
+            "description": "succumb to a pleasure B with a pain A craving a food C transitioning harmony from an object D to an object E",
+            "preconditions": [
+                "I can only succumb to a pleasure B with a pain A craving a food C transitioning harmony from an object D to an object E if it is the case that A fears B and A is a pain and B is a pleasure and B craves C and C is food and B is in harmony with D and D orbits E"
+            ],
+            "effects": [
+                "Once I succumb to a pleasure B with a pain A craving a food C transitioning harmony from an object D to an object E, it is the case that A craves C and B is in harmony with E",
+                "Once I succumb to a pleasure B with a pain A craving a food C transitioning harmony from an object D to an object E, it is not the case anymore that A fears B and it is not the case anymore that B is in harmony with D"
+            ]
+        },
+        "drink": {
+            "annotation": "",
+            "parameter_types": {
+                "?n1": "object",
+                "?n2": "object",
+                "?l11": "object",
+                "?l12": "object",
+                "?l13": "object",
+                "?l21": "object",
+                "?l22": "object"
+            },
+            "pddl": "(drink ?n1 ?n2 ?l11 ?l12 ?l13 ?l21 ?l22)",
+            "description": "drink from an object A in an object C to an object D and from an object B in an object F to an object G with an object E attacking an object D and an object F attacking an object G",
+            "preconditions": [
+                "I can only drink from an object A in an object C to an object D and from an object B in an object F to an object G with an object E attacking an object D and an object F attacking an object G if it is the case that A is located in C and D attacks C and E attacks D and B is located in F and F attacks G",
+                "I can only drink from an object A in an object C to an object D and from an object B in an object F to an object G with an object E attacking an object D and an object F attacking an object G if it is not the case that A is equal to B"
+            ],
+            "effects": [
+                "Once I drink from an object A in an object C to an object D and from an object B in an object F to an object G with an object E attacking an object D and an object F attacking an object G, it is the case that A is located in D and B is located in G",
+                "Once I drink from an object A in an object C to an object D and from an object B in an object F to an object G with an object E attacking an object D and an object F attacking an object G, it is not the case anymore that A is located in C and it is not the case anymore that B is located in F"
+            ]
+        }
+    },
+    "predicates": {
+        "province": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(province ?x)"
+        },
+        "planet": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(planet ?x)"
+        },
+        "food": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(food ?x)"
+        },
+        "pleasure": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(pleasure ?x)"
+        },
+        "pain": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(pain ?x)"
+        },
+        "eats": {
+            "parameter_types": {
+                "?n1": "object",
+                "?n2": "object"
+            },
+            "pddl": "(eats ?n1 ?n2)"
+        },
+        "craves": {
+            "parameter_types": {
+                "?v": "object",
+                "?n": "object"
+            },
+            "pddl": "(craves ?v ?n)"
+        },
+        "fears": {
+            "parameter_types": {
+                "?c": "object",
+                "?v": "object"
+            },
+            "pddl": "(fears ?c ?v)"
+        },
+        "locale": {
+            "parameter_types": {
+                "?n": "object",
+                "?a": "object"
+            },
+            "pddl": "(locale ?n ?a)"
+        },
+        "harmony": {
+            "parameter_types": {
+                "?v": "object",
+                "?s": "object"
+            },
+            "pddl": "(harmony ?v ?s)"
+        },
+        "attacks": {
+            "parameter_types": {
+                "?i": "object",
+                "?j": "object"
+            },
+            "pddl": "(attacks ?i ?j)"
+        },
+        "orbits": {
+            "parameter_types": {
+                "?i": "object",
+                "?j": "object"
+            },
+            "pddl": "(orbits ?i ?j)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "overcome": "overcome pain {?c} with pleasure {?v} by using food {?n} from planet {?s1} orbiting planet {?s2}",
+        "feast": "feast with pleasure {?v} on food {?n1} and food {?n2} moving from location {?l2} to location {?l1}",
+        "succumb": "succumb to pleasure {?v} with pain {?c} craving food {?n} transitioning harmony from object {?s1} to object {?s2}",
+        "drink": "drink from object {?n1} in object {?l11} to object {?l12} and from object {?n2} in object {?l21} to object {?l22} with object {?l13} attacking object {?l12} and object {?l21} attacking object {?l22}"
+    },
+    "predicate_nl_templates": {
+        "province": "{?x} is a province",
+        "planet": "{?x} is a planet",
+        "food": "{?x} is food",
+        "pleasure": "{?x} is a pleasure",
+        "pain": "{?x} is a pain",
+        "eats": "{?n1} eats {?n2}",
+        "craves": "{?v} craves {?n}",
+        "fears": "{?c} fears {?v}",
+        "locale": "{?n} is located in {?a}",
+        "harmony": "{?v} is in harmony with {?s}",
+        "attacks": "{?i} attacks {?j}",
+        "orbits": "{?i} orbits {?j}",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "overcome": "overcome a pain {?c} with a pleasure {?v} by using a food {?n} from a planet {?s1} orbiting a planet {?s2}",
+        "feast": "feast with a pleasure {?v} on a food {?n1} and a food {?n2} moving from a location {?l2} to a location {?l1}",
+        "succumb": "succumb to a pleasure {?v} with a pain {?c} craving a food {?n} transitioning harmony from an object {?s1} to an object {?s2}",
+        "drink": "drink from an object {?n1} in an object {?l11} to an object {?l12} and from an object {?n2} in an object {?l21} to an object {?l22} with an object {?l13} attacking an object {?l12} and an object {?l21} attacking an object {?l22}"
+    },
+    "type_hierarchy": []
+}

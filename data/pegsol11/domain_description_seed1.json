@@ -1,0 +1,140 @@
+{
+    "action_mappings": {
+        "jump-new-move": "jump from location {} over location {} to location {}",
+        "jump-continue-move": "continue jump from location {} over location {} to location {}",
+        "end-move": "end move at location {}"
+    },
+    "action_mappings_indef": {
+        "jump-new-move": "jump from a location {} over a location {} to a location {}",
+        "jump-continue-move": "continue jump from a location {} over a location {} to a location {}",
+        "end-move": "end move at a location {}"
+    },
+    "predicate_mappings": {
+        "in-line": "{}, {}, and {} are in line",
+        "occupied": "{} is occupied",
+        "free": "{} is free",
+        "move-ended": "the move has ended",
+        "last-visited": "the last visited location is {}",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "jump-new-move": {
+            "annotation": "",
+            "parameter_types": {
+                "?from": "location",
+                "?over": "location",
+                "?to": "location"
+            },
+            "pddl": "(jump-new-move ?from ?over ?to)",
+            "description": "jump from a location A over a location B to a location C",
+            "preconditions": [
+                "I can only jump from a location A over a location B to a location C if it is the case that the move has ended and A, B, and C are in line and A is occupied and B is occupied and C is free"
+            ],
+            "effects": [
+                "Once I jump from a location A over a location B to a location C, it is the case that A is free and B is free and C is occupied and the last visited location is C",
+                "Once I jump from a location A over a location B to a location C, it is not the case anymore that the move has ended and it is not the case anymore that A is occupied and it is not the case anymore that B is occupied and it is not the case anymore that C is free"
+            ]
+        },
+        "jump-continue-move": {
+            "annotation": "",
+            "parameter_types": {
+                "?from": "location",
+                "?over": "location",
+                "?to": "location"
+            },
+            "pddl": "(jump-continue-move ?from ?over ?to)",
+            "description": "continue jump from a location A over a location B to a location C",
+            "preconditions": [
+                "I can only continue jump from a location A over a location B to a location C if it is the case that the last visited location is A and A, B, and C are in line and A is occupied and B is occupied and C is free"
+            ],
+            "effects": [
+                "Once I continue jump from a location A over a location B to a location C, it is the case that A is free and B is free and C is occupied and the last visited location is C",
+                "Once I continue jump from a location A over a location B to a location C, it is not the case anymore that A is occupied and it is not the case anymore that B is occupied and it is not the case anymore that C is free and it is not the case anymore that the last visited location is A"
+            ]
+        },
+        "end-move": {
+            "annotation": "",
+            "parameter_types": {
+                "?loc": "location"
+            },
+            "pddl": "(end-move ?loc)",
+            "description": "end move at a location A",
+            "preconditions": [
+                "I can only end move at a location A if it is the case that the last visited location is A"
+            ],
+            "effects": [
+                "Once I end move at a location A, it is the case that the move has ended",
+                "Once I end move at a location A, it is not the case anymore that the last visited location is A"
+            ]
+        }
+    },
+    "predicates": {
+        "in-line": {
+            "parameter_types": {
+                "?x": "location",
+                "?y": "location",
+                "?z": "location"
+            },
+            "pddl": "(in-line ?x ?y ?z)"
+        },
+        "occupied": {
+            "parameter_types": {
+                "?l": "location"
+            },
+            "pddl": "(occupied ?l)"
+        },
+        "free": {
+            "parameter_types": {
+                "?l": "location"
+            },
+            "pddl": "(free ?l)"
+        },
+        "move-ended": {
+            "parameter_types": {},
+            "pddl": "(move-ended)"
+        },
+        "last-visited": {
+            "parameter_types": {
+                "?l": "location"
+            },
+            "pddl": "(last-visited ?l)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "jump-new-move": "jump from location {?from} over location {?over} to location {?to}",
+        "jump-continue-move": "continue jump from location {?from} over location {?over} to location {?to}",
+        "end-move": "end move at location {?loc}"
+    },
+    "predicate_nl_templates": {
+        "in-line": "{?x}, {?y}, and {?z} are in line",
+        "occupied": "{?l} is occupied",
+        "free": "{?l} is free",
+        "move-ended": "the move has ended",
+        "last-visited": "the last visited location is {?l}",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "jump-new-move": "jump from a location {?from} over a location {?over} to a location {?to}",
+        "jump-continue-move": "continue jump from a location {?from} over a location {?over} to a location {?to}",
+        "end-move": "end move at a location {?loc}"
+    },
+    "type_hierarchy": [
+        "Everything that is a location is also a object"
+    ]
+}

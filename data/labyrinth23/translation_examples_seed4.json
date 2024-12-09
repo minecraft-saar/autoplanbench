@@ -1,0 +1,41 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "dress_red",
+        "bastion",
+        "socket",
+        "roof_11_47",
+        "roof_11_25",
+        "object_50",
+        "screen",
+        "rain",
+        "yew_59",
+        "yew_59_21",
+        "roof_11_47_44",
+        "object_50_59",
+        "roof_11",
+        "kumquat",
+        "kumquat_8"
+    ],
+    "pos_examples": [
+        [
+            "Now, move card card object_50 north from position yew_59, yew to position yew_59, kumquat with next card card rain at position yew_59, roof_11_47.",
+            "(move-card-north object_50 roof_11 yew kumquat roof_11 dress_red)"
+        ],
+        [
+            "Once you are done, please start moving card card bastion east from position yew_59, roof_11_47 and set next moving card to card screen at position roof_11_25, roof_11_47.",
+            "(start-move-card-east bastion yew_59 roof_11 screen roof_11_25)"
+        ],
+        [
+            "First, move west from object_50, kumquat, dress_red, socket to rain, yew_59, yew_59_21, kumquat_8 and then leave card object_50 at position roof_11_47, yew.",
+            "(move-west object_50 kumquat dress_red socket rain yew_59 yew_59_21 kumquat_8)\n(leave object_50 roof_11_47 yew)"
+        ],
+        [
+            "The next step is to move card card object_50 east from position roof_11, yew_59_21 to position dress_red, yew_59_21 and set next moving card to card object_50_59 at position roof_11_47_44, yew_59_21.",
+            "(move-card-east object_50 roof_11 kumquat roof_11_47 object_50_59 dress_red)"
+        ]
+    ]
+}

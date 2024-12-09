@@ -1,0 +1,264 @@
+{
+    "action_mappings": {
+        "move": "move the robot from loc {} to loc {}",
+        "pickup-laser": "pick up the laser at loc {}",
+        "pickup-bomb": "pick up the bomb at loc {}",
+        "putdown-laser": "put down the laser at loc {}",
+        "detonate-bomb": "detonate the bomb at loc {} connected to loc {}",
+        "fire-laser": "fire the laser from loc {} to loc {}",
+        "pick-gold": "pick gold at loc {}"
+    },
+    "action_mappings_indef": {
+        "move": "move the robot from a loc {} to a loc {}",
+        "pickup-laser": "pick up the laser at a loc {}",
+        "pickup-bomb": "pick up the bomb at a loc {}",
+        "putdown-laser": "put down the laser at a loc {}",
+        "detonate-bomb": "detonate the bomb at a loc {} connected to a loc {}",
+        "fire-laser": "fire the laser from a loc {} to a loc {}",
+        "pick-gold": "pick gold at a loc {}"
+    },
+    "predicate_mappings": {
+        "robot-at": "the robot is at {}",
+        "bomb-at": "the bomb is at {}",
+        "laser-at": "the laser is at {}",
+        "soft-rock-at": "the soft rock is at {}",
+        "hard-rock-at": "the hard rock is at {}",
+        "gold-at": "the gold is at {}",
+        "arm-empty": "the arm is empty",
+        "holds-bomb": "holding a bomb",
+        "holds-laser": "holding a laser",
+        "holds-gold": "holding gold",
+        "clear": "{} is clear",
+        "connected": "{} is connected to {}",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "move": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "loc",
+                "?y": "loc"
+            },
+            "pddl": "(move ?x ?y)",
+            "description": "move the robot from a loc A to a loc B",
+            "preconditions": [
+                "I can only move the robot from a loc A to a loc B if it is the case that the robot is at A and A is connected to B and B is clear"
+            ],
+            "effects": [
+                "Once I move the robot from a loc A to a loc B, it is the case that the robot is at B",
+                "Once I move the robot from a loc A to a loc B, it is not the case anymore that the robot is at A"
+            ]
+        },
+        "pickup-laser": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(pickup-laser ?x)",
+            "description": "pick up the laser at a loc A",
+            "preconditions": [
+                "I can only pick up the laser at a loc A if it is the case that the robot is at A and the laser is at A and the arm is empty"
+            ],
+            "effects": [
+                "Once I pick up the laser at a loc A, it is the case that holding a laser",
+                "Once I pick up the laser at a loc A, it is not the case anymore that the arm is empty and it is not the case anymore that the laser is at A"
+            ]
+        },
+        "pickup-bomb": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(pickup-bomb ?x)",
+            "description": "pick up the bomb at a loc A",
+            "preconditions": [
+                "I can only pick up the bomb at a loc A if it is the case that the robot is at A and the bomb is at A and the arm is empty"
+            ],
+            "effects": [
+                "Once I pick up the bomb at a loc A, it is the case that holding a bomb",
+                "Once I pick up the bomb at a loc A, it is not the case anymore that the arm is empty"
+            ]
+        },
+        "putdown-laser": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(putdown-laser ?x)",
+            "description": "put down the laser at a loc A",
+            "preconditions": [
+                "I can only put down the laser at a loc A if it is the case that the robot is at A and holding a laser"
+            ],
+            "effects": [
+                "Once I put down the laser at a loc A, it is the case that the arm is empty and the laser is at A",
+                "Once I put down the laser at a loc A, it is not the case anymore that holding a laser"
+            ]
+        },
+        "detonate-bomb": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "loc",
+                "?y": "loc"
+            },
+            "pddl": "(detonate-bomb ?x ?y)",
+            "description": "detonate the bomb at a loc A connected to a loc B",
+            "preconditions": [
+                "I can only detonate the bomb at a loc A connected to a loc B if it is the case that the robot is at A and holding a bomb and A is connected to B and the soft rock is at B"
+            ],
+            "effects": [
+                "Once I detonate the bomb at a loc A connected to a loc B, it is the case that the arm is empty and B is clear",
+                "Once I detonate the bomb at a loc A connected to a loc B, it is not the case anymore that holding a bomb and it is not the case anymore that the soft rock is at B"
+            ]
+        },
+        "fire-laser": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "loc",
+                "?y": "loc"
+            },
+            "pddl": "(fire-laser ?x ?y)",
+            "description": "fire the laser from a loc A to a loc B",
+            "preconditions": [
+                "I can only fire the laser from a loc A to a loc B if it is the case that the robot is at A and holding a laser and A is connected to B"
+            ],
+            "effects": [
+                "Once I fire the laser from a loc A to a loc B, it is the case that B is clear",
+                "Once I fire the laser from a loc A to a loc B, it is not the case anymore that the soft rock is at B and it is not the case anymore that the gold is at B and it is not the case anymore that the hard rock is at B"
+            ]
+        },
+        "pick-gold": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(pick-gold ?x)",
+            "description": "pick gold at a loc A",
+            "preconditions": [
+                "I can only pick gold at a loc A if it is the case that the robot is at A and the arm is empty and the gold is at A"
+            ],
+            "effects": [
+                "Once I pick gold at a loc A, it is the case that holding gold",
+                "Once I pick gold at a loc A, it is not the case anymore that the arm is empty"
+            ]
+        }
+    },
+    "predicates": {
+        "robot-at": {
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(robot-at ?x)"
+        },
+        "bomb-at": {
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(bomb-at ?x)"
+        },
+        "laser-at": {
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(laser-at ?x)"
+        },
+        "soft-rock-at": {
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(soft-rock-at ?x)"
+        },
+        "hard-rock-at": {
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(hard-rock-at ?x)"
+        },
+        "gold-at": {
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(gold-at ?x)"
+        },
+        "arm-empty": {
+            "parameter_types": {},
+            "pddl": "(arm-empty)"
+        },
+        "holds-bomb": {
+            "parameter_types": {},
+            "pddl": "(holds-bomb)"
+        },
+        "holds-laser": {
+            "parameter_types": {},
+            "pddl": "(holds-laser)"
+        },
+        "holds-gold": {
+            "parameter_types": {},
+            "pddl": "(holds-gold)"
+        },
+        "clear": {
+            "parameter_types": {
+                "?x": "loc"
+            },
+            "pddl": "(clear ?x)"
+        },
+        "connected": {
+            "parameter_types": {
+                "?x": "loc",
+                "?y": "loc"
+            },
+            "pddl": "(connected ?x ?y)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "move": "move the robot from loc {?x} to loc {?y}",
+        "pickup-laser": "pick up the laser at loc {?x}",
+        "pickup-bomb": "pick up the bomb at loc {?x}",
+        "putdown-laser": "put down the laser at loc {?x}",
+        "detonate-bomb": "detonate the bomb at loc {?x} connected to loc {?y}",
+        "fire-laser": "fire the laser from loc {?x} to loc {?y}",
+        "pick-gold": "pick gold at loc {?x}"
+    },
+    "predicate_nl_templates": {
+        "robot-at": "the robot is at {?x}",
+        "bomb-at": "the bomb is at {?x}",
+        "laser-at": "the laser is at {?x}",
+        "soft-rock-at": "the soft rock is at {?x}",
+        "hard-rock-at": "the hard rock is at {?x}",
+        "gold-at": "the gold is at {?x}",
+        "arm-empty": "the arm is empty",
+        "holds-bomb": "holding a bomb",
+        "holds-laser": "holding a laser",
+        "holds-gold": "holding gold",
+        "clear": "{?x} is clear",
+        "connected": "{?x} is connected to {?y}",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "move": "move the robot from a loc {?x} to a loc {?y}",
+        "pickup-laser": "pick up the laser at a loc {?x}",
+        "pickup-bomb": "pick up the bomb at a loc {?x}",
+        "putdown-laser": "put down the laser at a loc {?x}",
+        "detonate-bomb": "detonate the bomb at a loc {?x} connected to a loc {?y}",
+        "fire-laser": "fire the laser from a loc {?x} to a loc {?y}",
+        "pick-gold": "pick gold at a loc {?x}"
+    },
+    "type_hierarchy": [
+        "Everything that is a loc is also a object"
+    ]
+}

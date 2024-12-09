@@ -1,0 +1,7 @@
+(get-cheese object_12)
+(get-dip object_4)
+(get-pop object_7)
+(start-movie )
+(rewind-movie )
+(reset-counter )
+; cost = 6 (unit cost)

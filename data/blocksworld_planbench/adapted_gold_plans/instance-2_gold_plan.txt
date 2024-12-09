@@ -1,0 +1,4 @@
+(unstack yellow_block orange_block)
+(put-down yellow_block)
+(pick-up orange_block)
+(stack orange_block red_block)

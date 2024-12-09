@@ -1,0 +1,24 @@
+{
+  "prefixes": {"input": "Input:", "output": "Output:", "wrong": "Wrong output:"},
+  "example_objs": [
+    "package_23",
+    "airplane_44",
+    "location_12_0",
+    "truck_221",
+    "location_10_10",
+    "location_31_0",
+    "city_22",
+    "truck_44",
+    "city_65",
+    "airplane_44",
+    "airport_54",
+    "airport_55"
+
+  ],
+  "pos_examples": [
+      ["Load the package_23 into the airplane_44 at the location_12_0.", "(load-airplane package_23 airplane_44 location_12_0)"],
+      ["Once you are done, please drive the truck_221 from the location_10_10 to the location_31_0 in the city_22.", "(drive-truck truck_221 location_10_10 location_31_0 city_22)"],
+      ["First, fly the airplane_44 from the airport_54 to the airport_55 and then load the package_23 into the truck_221 at the location_10_10.", "(fly-airplane airplane_44 airport_54 airport_55)\n(load-truck package_23 truck_221 location_10_10)"],
+    ["The next step is to unload the package_23 from the truck_44 at the location_31_0.", "(unload-truck package_23 truck_44 location_31_0)"]
+    ]
+}

@@ -1,0 +1,36 @@
+I can carry out the following actions:
+apply the action "move" to a loc A and a loc B
+apply the action "pickup-laser" to a loc A
+apply the action "pickup-bomb" to a loc A
+apply the action "putdown-laser" to a loc A
+apply the action "detonate-bomb" to a loc A and a loc B
+apply the action "fire-laser" to a loc A and a loc B
+apply the action "pick-gold" to a loc A
+
+I have the following restrictions on my actions:
+I can only apply the action "move" to a loc A and a loc B if it is the case that A is "robot-at" and A and B are in the relation "connected" and B is "clear"
+I can only apply the action "pickup-laser" to a loc A if it is the case that A is "robot-at" and A is "laser-at" and "arm-empty"
+I can only apply the action "pickup-bomb" to a loc A if it is the case that A is "robot-at" and A is "bomb-at" and "arm-empty"
+I can only apply the action "putdown-laser" to a loc A if it is the case that A is "robot-at" and "holds-laser"
+I can only apply the action "detonate-bomb" to a loc A and a loc B if it is the case that A is "robot-at" and "holds-bomb" and A and B are in the relation "connected" and B is "soft-rock-at"
+I can only apply the action "fire-laser" to a loc A and a loc B if it is the case that A is "robot-at" and "holds-laser" and A and B are in the relation "connected"
+I can only apply the action "pick-gold" to a loc A if it is the case that A is "robot-at" and "arm-empty" and A is "gold-at"
+
+The actions have the following effects on the state:
+Once I apply the action "move" to a loc A and a loc B, it is the case that B is "robot-at"
+Once I apply the action "move" to a loc A and a loc B, it is not the case anymore that A is "robot-at"
+Once I apply the action "pickup-laser" to a loc A, it is the case that "holds-laser"
+Once I apply the action "pickup-laser" to a loc A, it is not the case anymore that "arm-empty" and it is not the case anymore that A is "laser-at"
+Once I apply the action "pickup-bomb" to a loc A, it is the case that "holds-bomb"
+Once I apply the action "pickup-bomb" to a loc A, it is not the case anymore that "arm-empty"
+Once I apply the action "putdown-laser" to a loc A, it is the case that "arm-empty" and A is "laser-at"
+Once I apply the action "putdown-laser" to a loc A, it is not the case anymore that "holds-laser"
+Once I apply the action "detonate-bomb" to a loc A and a loc B, it is the case that "arm-empty" and B is "clear"
+Once I apply the action "detonate-bomb" to a loc A and a loc B, it is not the case anymore that "holds-bomb" and it is not the case anymore that B is "soft-rock-at"
+Once I apply the action "fire-laser" to a loc A and a loc B, it is the case that B is "clear"
+Once I apply the action "fire-laser" to a loc A and a loc B, it is not the case anymore that B is "soft-rock-at" and it is not the case anymore that B is "gold-at" and it is not the case anymore that B is "hard-rock-at"
+Once I apply the action "pick-gold" to a loc A, it is the case that "holds-gold"
+Once I apply the action "pick-gold" to a loc A, it is not the case anymore that "arm-empty"
+
+
+Everything that is a loc is also a object

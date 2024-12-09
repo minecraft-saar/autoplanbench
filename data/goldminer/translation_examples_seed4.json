@@ -1,0 +1,33 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "dress_red",
+        "object_260",
+        "kumquat",
+        "object_50",
+        "socket",
+        "roof_11",
+        "rain"
+    ],
+    "pos_examples": [
+        [
+            "Now, pick up laser at loc object_50.",
+            "(pickup-laser object_50)"
+        ],
+        [
+            "Once you are done, please detonate bomb at loc socket to clear loc dress_red.",
+            "(detonate-bomb socket dress_red)"
+        ],
+        [
+            "First, put down laser at loc kumquat and then fire laser from loc roof_11 to loc rain.",
+            "(putdown-laser kumquat)\n(fire-laser roof_11 rain)"
+        ],
+        [
+            "The next step is to pick gold at loc object_260.",
+            "(pick-gold object_260)"
+        ]
+    ]
+}

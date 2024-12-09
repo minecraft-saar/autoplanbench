@@ -1,0 +1,40 @@
+I can carry out the following actions:
+rewind the movie
+reset the counter
+start the movie
+undo the rewind of the movie
+get a chips A
+get a dip A
+get a popped A
+get a cheese A
+get a crackers A
+
+I have the following restrictions on my actions:
+I can only rewind the movie if it is the case that the counter is at other than zero
+I can only reset the counter if it is the case that the counter is at other than zero
+I can only start the movie if it is the case that the counter is at zero
+I can only undo the rewind of the movie if it is the case that the movie is rewound
+I can only get a chips A if it is the case that A is chips and the counter is at zero
+I can only get a chips A if it is not the case that the movie is rewound
+I can only get a dip A if it is the case that A is dip and the counter is at zero
+I can only get a dip A if it is not the case that the movie is rewound
+I can only get a popped A if it is the case that A is popped and the counter is at zero
+I can only get a popped A if it is not the case that the movie is rewound
+I can only get a cheese A if it is the case that A is cheese and the counter is at zero
+I can only get a cheese A if it is not the case that the movie is rewound
+I can only get a crackers A if it is the case that A is crackers and the counter is at zero
+I can only get a crackers A if it is not the case that the movie is rewound
+
+The actions have the following effects on the state:
+Once I rewind the movie, it is the case that the movie is rewound
+Once I reset the counter, it is the case that the counter is at zero
+Once I reset the counter, it is not the case anymore that the counter is at other than zero
+Once I start the movie, it is the case that the counter is at other than zero
+Once I start the movie, it is not the case anymore that the counter is at zero
+Once I undo the rewind of the movie, it is not the case anymore that the movie is rewound
+Once I get a chips A, it is the case that have chips
+Once I get a dip A, it is the case that have dip
+Once I get a popped A, it is the case that have pop
+Once I get a cheese A, it is the case that have cheese
+Once I get a crackers A, it is the case that have crackers
+

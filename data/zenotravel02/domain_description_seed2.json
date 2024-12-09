@@ -1,0 +1,216 @@
+{
+    "action_mappings": {
+        "board": "board person {} onto aircraft {} in city {}",
+        "debark": "debark person {} from aircraft {} in city {}",
+        "fly": "fly aircraft {} from city {} to city {} with fuel level changing from fuel level {} to fuel level {}",
+        "zoom": "zoom aircraft {} from city {} to city {} with fuel level changing from fuel level {} to fuel level {} through fuel level {}",
+        "refuel": "refuel aircraft {} at city {} changing fuel level from fuel level {} to fuel level {}"
+    },
+    "action_mappings_indef": {
+        "board": "board a person {} onto an aircraft {} in a city {}",
+        "debark": "debark a person {} from an aircraft {} in a city {}",
+        "fly": "fly an aircraft {} from a city {} to a city {} with fuel level changing from a fuel level {} to a fuel level {}",
+        "zoom": "zoom an aircraft {} from a city {} to a city {} with fuel level changing from a fuel level {} to a fuel level {} through a fuel level {}",
+        "refuel": "refuel an aircraft {} at a city {} changing fuel level from a fuel level {} to a fuel level {}"
+    },
+    "predicate_mappings": {
+        "at": "{} is at {}",
+        "in": "{} is in {}",
+        "fuel-level": "the fuel level of {} is {}",
+        "next": "{} is next to {}",
+        "aircraft": "{} is an aircraft",
+        "person": "{} is a person",
+        "city": "{} is a city",
+        "flevel": "{} is a fuel level",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "board": {
+            "annotation": "",
+            "parameter_types": {
+                "?p": "object",
+                "?a": "object",
+                "?c": "object"
+            },
+            "pddl": "(board ?p ?a ?c)",
+            "description": "board a person A onto an aircraft B in a city C",
+            "preconditions": [
+                "I can only board a person A onto an aircraft B in a city C if it is the case that A is a person and B is an aircraft and C is a city and A is at C and B is at C"
+            ],
+            "effects": [
+                "Once I board a person A onto an aircraft B in a city C, it is the case that A is in B",
+                "Once I board a person A onto an aircraft B in a city C, it is not the case anymore that A is at C"
+            ]
+        },
+        "debark": {
+            "annotation": "",
+            "parameter_types": {
+                "?p": "object",
+                "?a": "object",
+                "?c": "object"
+            },
+            "pddl": "(debark ?p ?a ?c)",
+            "description": "debark a person A from an aircraft B in a city C",
+            "preconditions": [
+                "I can only debark a person A from an aircraft B in a city C if it is the case that A is a person and B is an aircraft and C is a city and A is in B and B is at C"
+            ],
+            "effects": [
+                "Once I debark a person A from an aircraft B in a city C, it is the case that A is at C",
+                "Once I debark a person A from an aircraft B in a city C, it is not the case anymore that A is in B"
+            ]
+        },
+        "fly": {
+            "annotation": "",
+            "parameter_types": {
+                "?a": "object",
+                "?c1": "object",
+                "?c2": "object",
+                "?l1": "object",
+                "?l2": "object"
+            },
+            "pddl": "(fly ?a ?c1 ?c2 ?l1 ?l2)",
+            "description": "fly an aircraft A from a city B to a city C with fuel level changing from a fuel level D to a fuel level E",
+            "preconditions": [
+                "I can only fly an aircraft A from a city B to a city C with fuel level changing from a fuel level D to a fuel level E if it is the case that A is an aircraft and B is a city and C is a city and D is a fuel level and E is a fuel level and A is at B and the fuel level of A is D and D is next to E"
+            ],
+            "effects": [
+                "Once I fly an aircraft A from a city B to a city C with fuel level changing from a fuel level D to a fuel level E, it is the case that A is at C and the fuel level of A is E",
+                "Once I fly an aircraft A from a city B to a city C with fuel level changing from a fuel level D to a fuel level E, it is not the case anymore that A is at B and it is not the case anymore that the fuel level of A is D"
+            ]
+        },
+        "zoom": {
+            "annotation": "",
+            "parameter_types": {
+                "?a": "object",
+                "?c1": "object",
+                "?c2": "object",
+                "?l1": "object",
+                "?l2": "object",
+                "?l3": "object"
+            },
+            "pddl": "(zoom ?a ?c1 ?c2 ?l1 ?l2 ?l3)",
+            "description": "zoom an aircraft A from a city B to a city C with fuel level changing from a fuel level D to a fuel level F through a fuel level E",
+            "preconditions": [
+                "I can only zoom an aircraft A from a city B to a city C with fuel level changing from a fuel level D to a fuel level F through a fuel level E if it is the case that A is an aircraft and B is a city and C is a city and D is a fuel level and E is a fuel level and F is a fuel level and A is at B and the fuel level of A is D and D is next to E and E is next to F"
+            ],
+            "effects": [
+                "Once I zoom an aircraft A from a city B to a city C with fuel level changing from a fuel level D to a fuel level F through a fuel level E, it is the case that A is at C and the fuel level of A is F",
+                "Once I zoom an aircraft A from a city B to a city C with fuel level changing from a fuel level D to a fuel level F through a fuel level E, it is not the case anymore that A is at B and it is not the case anymore that the fuel level of A is D"
+            ]
+        },
+        "refuel": {
+            "annotation": "",
+            "parameter_types": {
+                "?a": "object",
+                "?c": "object",
+                "?l": "object",
+                "?l1": "object"
+            },
+            "pddl": "(refuel ?a ?c ?l ?l1)",
+            "description": "refuel an aircraft A at a city B changing fuel level from a fuel level C to a fuel level D",
+            "preconditions": [
+                "I can only refuel an aircraft A at a city B changing fuel level from a fuel level C to a fuel level D if it is the case that A is an aircraft and B is a city and C is a fuel level and D is a fuel level and the fuel level of A is C and D is next to C and A is at B"
+            ],
+            "effects": [
+                "Once I refuel an aircraft A at a city B changing fuel level from a fuel level C to a fuel level D, it is the case that the fuel level of A is D",
+                "Once I refuel an aircraft A at a city B changing fuel level from a fuel level C to a fuel level D, it is not the case anymore that the fuel level of A is C"
+            ]
+        }
+    },
+    "predicates": {
+        "at": {
+            "parameter_types": {
+                "?x": "object",
+                "?c": "object"
+            },
+            "pddl": "(at ?x ?c)"
+        },
+        "in": {
+            "parameter_types": {
+                "?p": "object",
+                "?a": "object"
+            },
+            "pddl": "(in ?p ?a)"
+        },
+        "fuel-level": {
+            "parameter_types": {
+                "?a": "object",
+                "?l": "object"
+            },
+            "pddl": "(fuel-level ?a ?l)"
+        },
+        "next": {
+            "parameter_types": {
+                "?l1": "object",
+                "?l2": "object"
+            },
+            "pddl": "(next ?l1 ?l2)"
+        },
+        "aircraft": {
+            "parameter_types": {
+                "?p": "object"
+            },
+            "pddl": "(aircraft ?p)"
+        },
+        "person": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(person ?x)"
+        },
+        "city": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(city ?x)"
+        },
+        "flevel": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(flevel ?x)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "board": "board person {?p} onto aircraft {?a} in city {?c}",
+        "debark": "debark person {?p} from aircraft {?a} in city {?c}",
+        "fly": "fly aircraft {?a} from city {?c1} to city {?c2} with fuel level changing from fuel level {?l1} to fuel level {?l2}",
+        "zoom": "zoom aircraft {?a} from city {?c1} to city {?c2} with fuel level changing from fuel level {?l1} to fuel level {?l3} through fuel level {?l2}",
+        "refuel": "refuel aircraft {?a} at city {?c} changing fuel level from fuel level {?l} to fuel level {?l1}"
+    },
+    "predicate_nl_templates": {
+        "at": "{?x} is at {?c}",
+        "in": "{?p} is in {?a}",
+        "fuel-level": "the fuel level of {?a} is {?l}",
+        "next": "{?l2} is next to {?l1}",
+        "aircraft": "{?p} is an aircraft",
+        "person": "{?x} is a person",
+        "city": "{?x} is a city",
+        "flevel": "{?x} is a fuel level",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "board": "board a person {?p} onto an aircraft {?a} in a city {?c}",
+        "debark": "debark a person {?p} from an aircraft {?a} in a city {?c}",
+        "fly": "fly an aircraft {?a} from a city {?c1} to a city {?c2} with fuel level changing from a fuel level {?l1} to a fuel level {?l2}",
+        "zoom": "zoom an aircraft {?a} from a city {?c1} to a city {?c2} with fuel level changing from a fuel level {?l1} to a fuel level {?l3} through a fuel level {?l2}",
+        "refuel": "refuel an aircraft {?a} at a city {?c} changing fuel level from a fuel level {?l} to a fuel level {?l1}"
+    },
+    "type_hierarchy": []
+}

@@ -1,0 +1,41 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "roof_11",
+        "yew_59_42_82",
+        "kumquat",
+        "teddy_81",
+        "fire",
+        "socket",
+        "star_213",
+        "yew_59",
+        "object_260",
+        "teddy",
+        "kumquat_8",
+        "rain",
+        "bastion",
+        "yew_35",
+        "yew_59_42"
+    ],
+    "pos_examples": [
+        [
+            "Now, cut board socket into part object_260 using highspeed-saw fire with awood star_213, surface bastion, changing size from aboardsize yew to aboardsize yew_59 via intermediate sizes aboardsize yew_59_42 and aboardsize yew_59_42_82.",
+            "(cut-board-large socket object_260 fire star_213 bastion yew yew_59_42_82 yew_59_42 yew_59)"
+        ],
+        [
+            "Once you are done, please saw board socket into medium part object_260 using saw roof_11 with awood star_213, surface bastion, changing size from aboardsize yew to aboardsize yew_59 through aboardsize yew_35.",
+            "(do-saw-medium socket object_260 roof_11 star_213 bastion yew yew_35 yew_59)"
+        ],
+        [
+            "First, unload board socket from highspeed-saw fire and then do grind on part object_260 using grinder rain to change surface from surface bastion to verysmooth, color from acolour kumquat to natural, and treatment from treatmentstatus teddy to treatmentstatus teddy_81.",
+            "(unload-highspeed-saw socket fire)\n(do-grind object_260 rain bastion kumquat teddy teddy_81)"
+        ],
+        [
+            "The next step is to do glaze on part object_260 using glazer kumquat_8 to change color to acolour kumquat.",
+            "(do-glaze object_260 kumquat_8 kumquat)"
+        ]
+    ]
+}

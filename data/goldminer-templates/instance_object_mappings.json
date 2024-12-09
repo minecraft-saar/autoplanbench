@@ -1,0 +1,221 @@
+{
+    "instance-19.pddl": {
+        "f0-0f": "loc_5",
+        "f0-1f": "loc_1",
+        "f1-0f": "loc_7",
+        "f1-1f": "loc_9",
+        "f2-0f": "loc_3",
+        "f2-1f": "loc_6",
+        "f3-0f": "loc_2",
+        "f3-1f": "loc_4",
+        "f4-0f": "loc_8",
+        "f4-1f": "loc_0"
+    },
+    "instance-1.pddl": {
+        "f0-0f": "loc_3",
+        "f0-1f": "loc_2",
+        "f1-0f": "loc_0",
+        "f1-1f": "loc_1"
+    },
+    "instance-23.pddl": {
+        "f0-0f": "loc_6",
+        "f0-1f": "loc_5",
+        "f1-0f": "loc_0",
+        "f1-1f": "loc_1",
+        "f2-0f": "loc_3",
+        "f2-1f": "loc_4",
+        "f3-0f": "loc_2",
+        "f3-1f": "loc_7"
+    },
+    "instance-15.pddl": {
+        "f0-0f": "loc_4",
+        "f1-0f": "loc_5",
+        "f2-0f": "loc_2",
+        "f3-0f": "loc_3",
+        "f4-0f": "loc_1",
+        "f5-0f": "loc_0"
+    },
+    "instance-14.pddl": {
+        "f0-0f": "loc_3",
+        "f1-0f": "loc_0",
+        "f2-0f": "loc_1",
+        "f3-0f": "loc_2",
+        "f4-0f": "loc_5",
+        "f5-0f": "loc_4"
+    },
+    "instance-13.pddl": {
+        "f0-0f": "loc_1",
+        "f1-0f": "loc_3",
+        "f2-0f": "loc_5",
+        "f3-0f": "loc_0",
+        "f4-0f": "loc_4",
+        "f5-0f": "loc_2"
+    },
+    "instance-7.pddl": {
+        "f0-0f": "loc_2",
+        "f0-1f": "loc_3",
+        "f0-2f": "loc_1",
+        "f1-0f": "loc_4",
+        "f1-1f": "loc_0",
+        "f1-2f": "loc_5"
+    },
+    "instance-24.pddl": {
+        "f0-0f": "loc_2",
+        "f0-1f": "loc_5",
+        "f1-0f": "loc_1",
+        "f1-1f": "loc_4",
+        "f2-0f": "loc_0",
+        "f2-1f": "loc_6",
+        "f3-0f": "loc_7",
+        "f3-1f": "loc_3"
+    },
+    "instance-6.pddl": {
+        "f0-0f": "loc_4",
+        "f0-1f": "loc_0",
+        "f0-2f": "loc_1",
+        "f1-0f": "loc_3",
+        "f1-1f": "loc_5",
+        "f1-2f": "loc_2"
+    },
+    "instance-12.pddl": {
+        "f0-0f": "loc_2",
+        "f0-1f": "loc_11",
+        "f0-2f": "loc_3",
+        "f0-3f": "loc_4",
+        "f1-0f": "loc_5",
+        "f1-1f": "loc_1",
+        "f1-2f": "loc_6",
+        "f1-3f": "loc_9",
+        "f2-0f": "loc_0",
+        "f2-1f": "loc_8",
+        "f2-2f": "loc_7",
+        "f2-3f": "loc_10"
+    },
+    "instance-9.pddl": {
+        "f0-0f": "loc_8",
+        "f0-1f": "loc_3",
+        "f0-2f": "loc_9",
+        "f0-3f": "loc_5",
+        "f1-0f": "loc_11",
+        "f1-1f": "loc_0",
+        "f1-2f": "loc_2",
+        "f1-3f": "loc_10",
+        "f2-0f": "loc_4",
+        "f2-1f": "loc_1",
+        "f2-2f": "loc_6",
+        "f2-3f": "loc_7"
+    },
+    "instance-11.pddl": {
+        "f0-0f": "loc_3",
+        "f0-1f": "loc_11",
+        "f0-2f": "loc_0",
+        "f0-3f": "loc_4",
+        "f1-0f": "loc_6",
+        "f1-1f": "loc_8",
+        "f1-2f": "loc_1",
+        "f1-3f": "loc_9",
+        "f2-0f": "loc_10",
+        "f2-1f": "loc_5",
+        "f2-2f": "loc_7",
+        "f2-3f": "loc_2"
+    },
+    "instance-5.pddl": {
+        "f0-0f": "loc_7",
+        "f0-1f": "loc_5",
+        "f0-2f": "loc_4",
+        "f1-0f": "loc_6",
+        "f1-1f": "loc_3",
+        "f1-2f": "loc_1",
+        "f2-0f": "loc_8",
+        "f2-1f": "loc_2",
+        "f2-2f": "loc_0"
+    },
+    "instance-4.pddl": {
+        "f0-0f": "loc_3",
+        "f0-1f": "loc_8",
+        "f0-2f": "loc_2",
+        "f1-0f": "loc_6",
+        "f1-1f": "loc_4",
+        "f1-2f": "loc_0",
+        "f2-0f": "loc_1",
+        "f2-1f": "loc_5",
+        "f2-2f": "loc_7"
+    },
+    "instance-10.pddl": {
+        "f0-0f": "loc_0",
+        "f0-1f": "loc_8",
+        "f0-2f": "loc_3",
+        "f0-3f": "loc_4",
+        "f1-0f": "loc_5",
+        "f1-1f": "loc_9",
+        "f1-2f": "loc_10",
+        "f1-3f": "loc_2",
+        "f2-0f": "loc_1",
+        "f2-1f": "loc_7",
+        "f2-2f": "loc_11",
+        "f2-3f": "loc_6"
+    },
+    "instance-8.pddl": {
+        "f0-0f": "loc_0",
+        "f0-1f": "loc_3",
+        "f0-2f": "loc_4",
+        "f1-0f": "loc_2",
+        "f1-1f": "loc_5",
+        "f1-2f": "loc_1"
+    },
+    "instance-21.pddl": {
+        "f0-0f": "loc_3",
+        "f0-1f": "loc_5",
+        "f0-2f": "loc_4",
+        "f0-3f": "loc_7",
+        "f1-0f": "loc_6",
+        "f1-1f": "loc_1",
+        "f1-2f": "loc_2",
+        "f1-3f": "loc_0"
+    },
+    "instance-3.pddl": {
+        "f0-0f": "loc_3",
+        "f0-1f": "loc_6",
+        "f0-2f": "loc_7",
+        "f1-0f": "loc_4",
+        "f1-1f": "loc_1",
+        "f1-2f": "loc_0",
+        "f2-0f": "loc_8",
+        "f2-1f": "loc_2",
+        "f2-2f": "loc_5"
+    },
+    "instance-17.pddl": {
+        "f0-0f": "loc_3",
+        "f0-1f": "loc_1",
+        "f1-0f": "loc_8",
+        "f1-1f": "loc_7",
+        "f2-0f": "loc_9",
+        "f2-1f": "loc_4",
+        "f3-0f": "loc_2",
+        "f3-1f": "loc_0",
+        "f4-0f": "loc_6",
+        "f4-1f": "loc_5"
+    },
+    "instance-2.pddl": {
+        "f0-0f": "loc_3",
+        "f0-1f": "loc_1",
+        "f1-0f": "loc_0",
+        "f1-1f": "loc_2"
+    },
+    "instance-20.pddl": {
+        "f0-0f": "loc_6",
+        "f0-1f": "loc_5",
+        "f0-2f": "loc_4",
+        "f0-3f": "loc_0",
+        "f1-0f": "loc_3",
+        "f1-1f": "loc_2",
+        "f1-2f": "loc_7",
+        "f1-3f": "loc_1"
+    },
+    "instance-0.pddl": {
+        "f0-0f": "loc_0",
+        "f0-1f": "loc_3",
+        "f1-0f": "loc_1",
+        "f1-1f": "loc_2"
+    }
+}

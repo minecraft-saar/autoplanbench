@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "frame_9",
+        "bastion",
+        "screen",
+        "kumquat_8",
+        "roof_11",
+        "rain",
+        "star_213",
+        "kumquat",
+        "object_50",
+        "dress_red",
+        "object_260",
+        "teddy"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"turn_to\" to satellite yew, direction screen and direction bastion.",
+            "(turn_to yew screen bastion)"
+        ],
+        [
+            "Once you are done, please apply the action \"switch_off\" to instrument star_213 and satellite dress_red.",
+            "(switch_off star_213 dress_red)"
+        ],
+        [
+            "First, apply the action \"take_image\" to satellite roof_11, direction rain, instrument teddy and mode kumquat_8 and then apply the action \"calibrate\" to satellite kumquat, instrument frame_9 and direction object_50.",
+            "(take_image roof_11 rain teddy kumquat_8)\n(calibrate kumquat frame_9 object_50)"
+        ],
+        [
+            "The next step is to apply the action \"switch_on\" to instrument object_260 and satellite roof_11.",
+            "(switch_on object_260 roof_11)"
+        ]
+    ]
+}

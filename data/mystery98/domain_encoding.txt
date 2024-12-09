@@ -1,0 +1,18 @@
+I can carry out the following actions:
+overcome a pain A with a pleasure B by using a food C from a planet D orbiting a planet E
+feast a pleasure A on a food B that eats a food C in a location E attacked by a location D
+succumb a pain A to a pleasure B that craves a food C in harmony with an object D orbiting an object E
+
+I have the following restrictions on my actions:
+I can only overcome a pain A with a pleasure B by using a food C from a planet D orbiting a planet E if it is the case that A is a pain and B is a pleasure and A craves C and B craves C and C is food and B is in harmony with E and E is a planet and D orbits E and D is a planet
+I can only feast a pleasure A on a food B that eats a food C in a location E attacked by a location D if it is the case that A craves B and B is food and A is a pleasure and B eats C and C is food and B is located in E and D attacks E
+I can only succumb a pain A to a pleasure B that craves a food C in harmony with an object D orbiting an object E if it is the case that A fears B and A is a pain and B is a pleasure and B craves C and C is food and B is in harmony with D and D orbits E
+
+The actions have the following effects on the state:
+Once I overcome a pain A with a pleasure B by using a food C from a planet D orbiting a planet E, it is the case that A fears B and B is in harmony with D
+Once I overcome a pain A with a pleasure B by using a food C from a planet D orbiting a planet E, it is not the case anymore that A craves C and it is not the case anymore that B is in harmony with E
+Once I feast a pleasure A on a food B that eats a food C in a location E attacked by a location D, it is the case that A craves C and B is located in D
+Once I feast a pleasure A on a food B that eats a food C in a location E attacked by a location D, it is not the case anymore that A craves B and it is not the case anymore that B is located in E
+Once I succumb a pain A to a pleasure B that craves a food C in harmony with an object D orbiting an object E, it is the case that A craves C and B is in harmony with E
+Once I succumb a pain A to a pleasure B that craves a food C in harmony with an object D orbiting an object E, it is not the case anymore that A fears B and it is not the case anymore that B is in harmony with D
+

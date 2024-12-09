@@ -1,0 +1,7 @@
+(move loc_7 loc_5)
+(pickup-bomb loc_5)
+(move loc_5 loc_7)
+(detonate-bomb loc_7 loc_9)
+(move loc_7 loc_9)
+(pick-gold loc_9)
+; cost = 6 (unit cost)

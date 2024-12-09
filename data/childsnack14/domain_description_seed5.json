@@ -1,0 +1,273 @@
+{
+    "action_mappings": {
+        "make_sandwich_no_gluten": "make no gluten sandwich {} using no gluten bread-portion {} and no gluten content-portion {}",
+        "make_sandwich": "make sandwich {} using bread-portion {} and content-portion {}",
+        "put_on_tray": "put sandwich {} on tray {}",
+        "serve_sandwich_no_gluten": "serve no gluten sandwich {} to child {} at place {} from tray {}",
+        "serve_sandwich": "serve sandwich {} to child {} at place {} from tray {}",
+        "move_tray": "move tray {} from place {} to place {}"
+    },
+    "action_mappings_indef": {
+        "make_sandwich_no_gluten": "make a no gluten sandwich {} using a no gluten bread-portion {} and a no gluten content-portion {}",
+        "make_sandwich": "make a sandwich {} using a bread-portion {} and a content-portion {}",
+        "put_on_tray": "put a sandwich {} on a tray {}",
+        "serve_sandwich_no_gluten": "serve a no gluten sandwich {} to a child {} at a place {} from a tray {}",
+        "serve_sandwich": "serve a sandwich {} to a child {} at a place {} from a tray {}",
+        "move_tray": "move a tray {} from a place {} to a place {}"
+    },
+    "predicate_mappings": {
+        "at_kitchen_bread": "{} is at the kitchen bread",
+        "at_kitchen_content": "{} is at the kitchen content",
+        "at_kitchen_sandwich": "{} is at the kitchen sandwich",
+        "no_gluten_bread": "{} is no gluten bread",
+        "no_gluten_content": "{} has no gluten content",
+        "ontray": "{} is on the tray {}",
+        "no_gluten_sandwich": "{} is a no gluten sandwich",
+        "allergic_gluten": "{} is allergic to gluten",
+        "not_allergic_gluten": "{} is not allergic to gluten",
+        "served": "{} is served",
+        "waiting": "{} is waiting for {}",
+        "at": "{} is at {}",
+        "notexist": "{} does not exist",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "make_sandwich_no_gluten": {
+            "annotation": "",
+            "parameter_types": {
+                "?s": "sandwich",
+                "?b": "bread-portion",
+                "?c": "content-portion"
+            },
+            "pddl": "(make_sandwich_no_gluten ?s ?b ?c)",
+            "description": "make a no gluten sandwich A using a no gluten bread-portion B and a no gluten content-portion C",
+            "preconditions": [
+                "I can only make a no gluten sandwich A using a no gluten bread-portion B and a no gluten content-portion C if it is the case that B is at the kitchen bread and C is at the kitchen content and B is no gluten bread and C has no gluten content and A does not exist"
+            ],
+            "effects": [
+                "Once I make a no gluten sandwich A using a no gluten bread-portion B and a no gluten content-portion C, it is the case that A is at the kitchen sandwich and A is a no gluten sandwich",
+                "Once I make a no gluten sandwich A using a no gluten bread-portion B and a no gluten content-portion C, it is not the case anymore that B is at the kitchen bread and it is not the case anymore that C is at the kitchen content and it is not the case anymore that A does not exist"
+            ]
+        },
+        "make_sandwich": {
+            "annotation": "",
+            "parameter_types": {
+                "?s": "sandwich",
+                "?b": "bread-portion",
+                "?c": "content-portion"
+            },
+            "pddl": "(make_sandwich ?s ?b ?c)",
+            "description": "make a sandwich A using a bread-portion B and a content-portion C",
+            "preconditions": [
+                "I can only make a sandwich A using a bread-portion B and a content-portion C if it is the case that B is at the kitchen bread and C is at the kitchen content and A does not exist"
+            ],
+            "effects": [
+                "Once I make a sandwich A using a bread-portion B and a content-portion C, it is the case that A is at the kitchen sandwich",
+                "Once I make a sandwich A using a bread-portion B and a content-portion C, it is not the case anymore that B is at the kitchen bread and it is not the case anymore that C is at the kitchen content and it is not the case anymore that A does not exist"
+            ]
+        },
+        "put_on_tray": {
+            "annotation": "",
+            "parameter_types": {
+                "?s": "sandwich",
+                "?t": "tray"
+            },
+            "pddl": "(put_on_tray ?s ?t)",
+            "description": "put a sandwich A on a tray B",
+            "preconditions": [
+                "I can only put a sandwich A on a tray B if it is the case that A is at the kitchen sandwich and B is at kitchen"
+            ],
+            "effects": [
+                "Once I put a sandwich A on a tray B, it is the case that A is on the tray B",
+                "Once I put a sandwich A on a tray B, it is not the case anymore that A is at the kitchen sandwich"
+            ]
+        },
+        "serve_sandwich_no_gluten": {
+            "annotation": "",
+            "parameter_types": {
+                "?s": "sandwich",
+                "?c": "child",
+                "?t": "tray",
+                "?p": "place"
+            },
+            "pddl": "(serve_sandwich_no_gluten ?s ?c ?t ?p)",
+            "description": "serve a no gluten sandwich A to a child B at a place D from a tray C",
+            "preconditions": [
+                "I can only serve a no gluten sandwich A to a child B at a place D from a tray C if it is the case that B is allergic to gluten and A is on the tray C and B is waiting for D and A is a no gluten sandwich and C is at D"
+            ],
+            "effects": [
+                "Once I serve a no gluten sandwich A to a child B at a place D from a tray C, it is the case that B is served",
+                "Once I serve a no gluten sandwich A to a child B at a place D from a tray C, it is not the case anymore that A is on the tray C"
+            ]
+        },
+        "serve_sandwich": {
+            "annotation": "",
+            "parameter_types": {
+                "?s": "sandwich",
+                "?c": "child",
+                "?t": "tray",
+                "?p": "place"
+            },
+            "pddl": "(serve_sandwich ?s ?c ?t ?p)",
+            "description": "serve a sandwich A to a child B at a place D from a tray C",
+            "preconditions": [
+                "I can only serve a sandwich A to a child B at a place D from a tray C if it is the case that B is not allergic to gluten and B is waiting for D and A is on the tray C and C is at D"
+            ],
+            "effects": [
+                "Once I serve a sandwich A to a child B at a place D from a tray C, it is the case that B is served",
+                "Once I serve a sandwich A to a child B at a place D from a tray C, it is not the case anymore that A is on the tray C"
+            ]
+        },
+        "move_tray": {
+            "annotation": "",
+            "parameter_types": {
+                "?t": "tray",
+                "?p1": "place",
+                "?p2": "place"
+            },
+            "pddl": "(move_tray ?t ?p1 ?p2)",
+            "description": "move a tray A from a place B to a place C",
+            "preconditions": [
+                "I can only move a tray A from a place B to a place C if it is the case that A is at B"
+            ],
+            "effects": [
+                "Once I move a tray A from a place B to a place C, it is the case that A is at C",
+                "Once I move a tray A from a place B to a place C, it is not the case anymore that A is at B"
+            ]
+        }
+    },
+    "predicates": {
+        "at_kitchen_bread": {
+            "parameter_types": {
+                "?b": "bread-portion"
+            },
+            "pddl": "(at_kitchen_bread ?b)"
+        },
+        "at_kitchen_content": {
+            "parameter_types": {
+                "?c": "content-portion"
+            },
+            "pddl": "(at_kitchen_content ?c)"
+        },
+        "at_kitchen_sandwich": {
+            "parameter_types": {
+                "?s": "sandwich"
+            },
+            "pddl": "(at_kitchen_sandwich ?s)"
+        },
+        "no_gluten_bread": {
+            "parameter_types": {
+                "?b": "bread-portion"
+            },
+            "pddl": "(no_gluten_bread ?b)"
+        },
+        "no_gluten_content": {
+            "parameter_types": {
+                "?c": "content-portion"
+            },
+            "pddl": "(no_gluten_content ?c)"
+        },
+        "ontray": {
+            "parameter_types": {
+                "?s": "sandwich",
+                "?t": "tray"
+            },
+            "pddl": "(ontray ?s ?t)"
+        },
+        "no_gluten_sandwich": {
+            "parameter_types": {
+                "?s": "sandwich"
+            },
+            "pddl": "(no_gluten_sandwich ?s)"
+        },
+        "allergic_gluten": {
+            "parameter_types": {
+                "?c": "child"
+            },
+            "pddl": "(allergic_gluten ?c)"
+        },
+        "not_allergic_gluten": {
+            "parameter_types": {
+                "?c": "child"
+            },
+            "pddl": "(not_allergic_gluten ?c)"
+        },
+        "served": {
+            "parameter_types": {
+                "?c": "child"
+            },
+            "pddl": "(served ?c)"
+        },
+        "waiting": {
+            "parameter_types": {
+                "?c": "child",
+                "?p": "place"
+            },
+            "pddl": "(waiting ?c ?p)"
+        },
+        "at": {
+            "parameter_types": {
+                "?t": "tray",
+                "?p": "place"
+            },
+            "pddl": "(at ?t ?p)"
+        },
+        "notexist": {
+            "parameter_types": {
+                "?s": "sandwich"
+            },
+            "pddl": "(notexist ?s)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "make_sandwich_no_gluten": "make no gluten sandwich {?s} using no gluten bread-portion {?b} and no gluten content-portion {?c}",
+        "make_sandwich": "make sandwich {?s} using bread-portion {?b} and content-portion {?c}",
+        "put_on_tray": "put sandwich {?s} on tray {?t}",
+        "serve_sandwich_no_gluten": "serve no gluten sandwich {?s} to child {?c} at place {?p} from tray {?t}",
+        "serve_sandwich": "serve sandwich {?s} to child {?c} at place {?p} from tray {?t}",
+        "move_tray": "move tray {?t} from place {?p1} to place {?p2}"
+    },
+    "predicate_nl_templates": {
+        "at_kitchen_bread": "{?b} is at the kitchen bread",
+        "at_kitchen_content": "{?c} is at the kitchen content",
+        "at_kitchen_sandwich": "{?s} is at the kitchen sandwich",
+        "no_gluten_bread": "{?b} is no gluten bread",
+        "no_gluten_content": "{?c} has no gluten content",
+        "ontray": "{?s} is on the tray {?t}",
+        "no_gluten_sandwich": "{?s} is a no gluten sandwich",
+        "allergic_gluten": "{?c} is allergic to gluten",
+        "not_allergic_gluten": "{?c} is not allergic to gluten",
+        "served": "{?c} is served",
+        "waiting": "{?c} is waiting for {?p}",
+        "at": "{?t} is at {?p}",
+        "notexist": "{?s} does not exist",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "make_sandwich_no_gluten": "make a no gluten sandwich {?s} using a no gluten bread-portion {?b} and a no gluten content-portion {?c}",
+        "make_sandwich": "make a sandwich {?s} using a bread-portion {?b} and a content-portion {?c}",
+        "put_on_tray": "put a sandwich {?s} on a tray {?t}",
+        "serve_sandwich_no_gluten": "serve a no gluten sandwich {?s} to a child {?c} at a place {?p} from a tray {?t}",
+        "serve_sandwich": "serve a sandwich {?s} to a child {?c} at a place {?p} from a tray {?t}",
+        "move_tray": "move a tray {?t} from a place {?p1} to a place {?p2}"
+    },
+    "type_hierarchy": [
+        "Everything that is a child or a bread-portion or a content-portion or a sandwich or a tray or a place is also a object"
+    ]
+}

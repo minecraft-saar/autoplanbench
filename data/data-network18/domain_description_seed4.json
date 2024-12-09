@@ -1,0 +1,245 @@
+{
+    "action_mappings": {
+        "release": "release data {} from server {} reducing usage from numbers {} to numbers {} with data size numbers {}",
+        "save": "save data {} with size numbers {} on server {}",
+        "load": "load data {} from server {} with size numbers {}, current usage numbers {}, and updated usage numbers {} within capacity limit numbers {}",
+        "send": "send data {} from server {} to server {} with size numbers {}, current usage numbers {}, and updated usage numbers {} within capacity limit numbers {}",
+        "process": "process data {} and data {} using script {} on server {} to produce data {} with size numbers {}, current usage numbers {}, and updated usage numbers {} within capacity limit numbers {}"
+    },
+    "action_mappings_indef": {
+        "release": "release a data {} from a server {} reducing usage from a numbers {} to a numbers {} with data size a numbers {}",
+        "save": "save a data {} with size a numbers {} on a server {}",
+        "load": "load a data {} from a server {} with size a numbers {}, current usage a numbers {}, and updated usage a numbers {} within capacity limit a numbers {}",
+        "send": "send a data {} from a server {} to a server {} with size a numbers {}, current usage a numbers {}, and updated usage a numbers {} within capacity limit a numbers {}",
+        "process": "process a data {} and a data {} using a script {} on a server {} to produce a data {} with size a numbers {}, current usage a numbers {}, and updated usage a numbers {} within capacity limit a numbers {}"
+    },
+    "predicate_mappings": {
+        "script-io": "the script {} takes inputs {} and {} and produces output {}",
+        "connected": "{} is connected to {}",
+        "data-size": "the data size of {} is {}",
+        "capacity": "the capacity of {} is {}",
+        "sum": "the sum of {} and {} is {}",
+        "less-equal": "{} is less than or equal to {}",
+        "saved": "{} is saved by {}",
+        "cached": "{} is cached by {}",
+        "usage": "{} has a usage of {}",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "release": {
+            "annotation": "",
+            "parameter_types": {
+                "?d": "data",
+                "?s": "server",
+                "?size": "numbers",
+                "?before": "numbers",
+                "?after": "numbers"
+            },
+            "pddl": "(release ?d ?s ?size ?before ?after)",
+            "description": "release a data A from a server B reducing usage from a numbers D to a numbers E with data size a numbers C",
+            "preconditions": [
+                "I can only release a data A from a server B reducing usage from a numbers D to a numbers E with data size a numbers C if it is the case that the data size of A is C and the sum of E and C is D and A is cached by B and B has a usage of D"
+            ],
+            "effects": [
+                "Once I release a data A from a server B reducing usage from a numbers D to a numbers E with data size a numbers C, it is the case that B has a usage of E",
+                "Once I release a data A from a server B reducing usage from a numbers D to a numbers E with data size a numbers C, it is not the case anymore that A is cached by B and it is not the case anymore that B has a usage of D"
+            ]
+        },
+        "save": {
+            "annotation": "",
+            "parameter_types": {
+                "?d": "data",
+                "?size": "numbers",
+                "?s": "server"
+            },
+            "pddl": "(save ?d ?size ?s)",
+            "description": "save a data A with size a numbers B on a server C",
+            "preconditions": [
+                "I can only save a data A with size a numbers B on a server C if it is the case that the data size of A is B and A is cached by C"
+            ],
+            "effects": [
+                "Once I save a data A with size a numbers B on a server C, it is the case that A is saved by C"
+            ]
+        },
+        "load": {
+            "annotation": "",
+            "parameter_types": {
+                "?d": "data",
+                "?s": "server",
+                "?size": "numbers",
+                "?limit": "numbers",
+                "?before": "numbers",
+                "?after": "numbers"
+            },
+            "pddl": "(load ?d ?s ?size ?limit ?before ?after)",
+            "description": "load a data A from a server B with size a numbers C, current usage a numbers E, and updated usage a numbers F within capacity limit a numbers D",
+            "preconditions": [
+                "I can only load a data A from a server B with size a numbers C, current usage a numbers E, and updated usage a numbers F within capacity limit a numbers D if it is the case that the data size of A is C and the capacity of B is D and the sum of E and C is F and F is less than or equal to D and A is saved by B and B has a usage of E",
+                "I can only load a data A from a server B with size a numbers C, current usage a numbers E, and updated usage a numbers F within capacity limit a numbers D if it is not the case that A is cached by B"
+            ],
+            "effects": [
+                "Once I load a data A from a server B with size a numbers C, current usage a numbers E, and updated usage a numbers F within capacity limit a numbers D, it is the case that A is cached by B and B has a usage of F",
+                "Once I load a data A from a server B with size a numbers C, current usage a numbers E, and updated usage a numbers F within capacity limit a numbers D, it is not the case anymore that B has a usage of E"
+            ]
+        },
+        "send": {
+            "annotation": "",
+            "parameter_types": {
+                "?d": "data",
+                "?from": "server",
+                "?to": "server",
+                "?size": "numbers",
+                "?limit": "numbers",
+                "?before": "numbers",
+                "?after": "numbers"
+            },
+            "pddl": "(send ?d ?from ?to ?size ?limit ?before ?after)",
+            "description": "send a data A from a server B to a server C with size a numbers D, current usage a numbers F, and updated usage a numbers G within capacity limit a numbers E",
+            "preconditions": [
+                "I can only send a data A from a server B to a server C with size a numbers D, current usage a numbers F, and updated usage a numbers G within capacity limit a numbers E if it is the case that B is connected to C and the data size of A is D and the capacity of C is E and the sum of F and D is G and G is less than or equal to E and A is cached by B and C has a usage of F",
+                "I can only send a data A from a server B to a server C with size a numbers D, current usage a numbers F, and updated usage a numbers G within capacity limit a numbers E if it is not the case that A is cached by C"
+            ],
+            "effects": [
+                "Once I send a data A from a server B to a server C with size a numbers D, current usage a numbers F, and updated usage a numbers G within capacity limit a numbers E, it is the case that A is cached by C and C has a usage of G",
+                "Once I send a data A from a server B to a server C with size a numbers D, current usage a numbers F, and updated usage a numbers G within capacity limit a numbers E, it is not the case anymore that C has a usage of F"
+            ]
+        },
+        "process": {
+            "annotation": "",
+            "parameter_types": {
+                "?in1": "data",
+                "?in2": "data",
+                "?out": "data",
+                "?sc": "script",
+                "?s": "server",
+                "?size": "numbers",
+                "?limit": "numbers",
+                "?before": "numbers",
+                "?after": "numbers"
+            },
+            "pddl": "(process ?in1 ?in2 ?out ?sc ?s ?size ?limit ?before ?after)",
+            "description": "process a data A and a data B using a script D on a server E to produce a data C with size a numbers F, current usage a numbers H, and updated usage a numbers I within capacity limit a numbers G",
+            "preconditions": [
+                "I can only process a data A and a data B using a script D on a server E to produce a data C with size a numbers F, current usage a numbers H, and updated usage a numbers I within capacity limit a numbers G if it is the case that the script D takes inputs A and B and produces output C and the data size of C is F and the capacity of E is G and the sum of H and F is I and I is less than or equal to G and A is cached by E and B is cached by E and E has a usage of H",
+                "I can only process a data A and a data B using a script D on a server E to produce a data C with size a numbers F, current usage a numbers H, and updated usage a numbers I within capacity limit a numbers G if it is not the case that C is cached by E"
+            ],
+            "effects": [
+                "Once I process a data A and a data B using a script D on a server E to produce a data C with size a numbers F, current usage a numbers H, and updated usage a numbers I within capacity limit a numbers G, it is the case that C is cached by E and E has a usage of I",
+                "Once I process a data A and a data B using a script D on a server E to produce a data C with size a numbers F, current usage a numbers H, and updated usage a numbers I within capacity limit a numbers G, it is not the case anymore that E has a usage of H"
+            ]
+        }
+    },
+    "predicates": {
+        "script-io": {
+            "parameter_types": {
+                "?s": "script",
+                "?in1": "data",
+                "?in2": "data",
+                "?out": "data"
+            },
+            "pddl": "(script-io ?s ?in1 ?in2 ?out)"
+        },
+        "connected": {
+            "parameter_types": {
+                "?from": "server",
+                "?to": "server"
+            },
+            "pddl": "(connected ?from ?to)"
+        },
+        "data-size": {
+            "parameter_types": {
+                "?d": "data",
+                "?n": "numbers"
+            },
+            "pddl": "(data-size ?d ?n)"
+        },
+        "capacity": {
+            "parameter_types": {
+                "?s": "server",
+                "?n": "numbers"
+            },
+            "pddl": "(capacity ?s ?n)"
+        },
+        "sum": {
+            "parameter_types": {
+                "?n1": "numbers",
+                "?n2": "numbers",
+                "?sum": "numbers"
+            },
+            "pddl": "(sum ?n1 ?n2 ?sum)"
+        },
+        "less-equal": {
+            "parameter_types": {
+                "?n1": "numbers",
+                "?n2": "numbers"
+            },
+            "pddl": "(less-equal ?n1 ?n2)"
+        },
+        "saved": {
+            "parameter_types": {
+                "?d": "data",
+                "?s": "server"
+            },
+            "pddl": "(saved ?d ?s)"
+        },
+        "cached": {
+            "parameter_types": {
+                "?d": "data",
+                "?s": "server"
+            },
+            "pddl": "(cached ?d ?s)"
+        },
+        "usage": {
+            "parameter_types": {
+                "?s": "server",
+                "?n": "numbers"
+            },
+            "pddl": "(usage ?s ?n)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "release": "release data {?d} from server {?s} reducing usage from numbers {?before} to numbers {?after} with data size numbers {?size}",
+        "save": "save data {?d} with size numbers {?size} on server {?s}",
+        "load": "load data {?d} from server {?s} with size numbers {?size}, current usage numbers {?before}, and updated usage numbers {?after} within capacity limit numbers {?limit}",
+        "send": "send data {?d} from server {?from} to server {?to} with size numbers {?size}, current usage numbers {?before}, and updated usage numbers {?after} within capacity limit numbers {?limit}",
+        "process": "process data {?in1} and data {?in2} using script {?sc} on server {?s} to produce data {?out} with size numbers {?size}, current usage numbers {?before}, and updated usage numbers {?after} within capacity limit numbers {?limit}"
+    },
+    "predicate_nl_templates": {
+        "script-io": "the script {?s} takes inputs {?in1} and {?in2} and produces output {?out}",
+        "connected": "{?from} is connected to {?to}",
+        "data-size": "the data size of {?d} is {?n}",
+        "capacity": "the capacity of {?s} is {?n}",
+        "sum": "the sum of {?n1} and {?n2} is {?sum}",
+        "less-equal": "{?n1} is less than or equal to {?n2}",
+        "saved": "{?d} is saved by {?s}",
+        "cached": "{?d} is cached by {?s}",
+        "usage": "{?s} has a usage of {?n}",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "release": "release a data {?d} from a server {?s} reducing usage from a numbers {?before} to a numbers {?after} with data size a numbers {?size}",
+        "save": "save a data {?d} with size a numbers {?size} on a server {?s}",
+        "load": "load a data {?d} from a server {?s} with size a numbers {?size}, current usage a numbers {?before}, and updated usage a numbers {?after} within capacity limit a numbers {?limit}",
+        "send": "send a data {?d} from a server {?from} to a server {?to} with size a numbers {?size}, current usage a numbers {?before}, and updated usage a numbers {?after} within capacity limit a numbers {?limit}",
+        "process": "process a data {?in1} and a data {?in2} using a script {?sc} on a server {?s} to produce a data {?out} with size a numbers {?size}, current usage a numbers {?before}, and updated usage a numbers {?after} within capacity limit a numbers {?limit}"
+    },
+    "type_hierarchy": [
+        "Everything that is a data or a script or a server or a numbers is also a object"
+    ]
+}

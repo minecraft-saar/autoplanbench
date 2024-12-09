@@ -1,0 +1,36 @@
+I can carry out the following actions:
+move the robot from a loc A to a loc B
+pick up the laser at a loc A
+pick up the bomb at a loc A
+put down the laser at a loc A
+detonate the bomb at a loc A connected to a loc B
+fire the laser at a loc A connected to a loc B
+pick gold at a loc A
+
+I have the following restrictions on my actions:
+I can only move the robot from a loc A to a loc B if it is the case that the robot is at A and A is connected to B and B is clear
+I can only pick up the laser at a loc A if it is the case that the robot is at A and the laser is at A and the arm is empty
+I can only pick up the bomb at a loc A if it is the case that the robot is at A and the bomb is at A and the arm is empty
+I can only put down the laser at a loc A if it is the case that the robot is at A and holding a laser
+I can only detonate the bomb at a loc A connected to a loc B if it is the case that the robot is at A and holding a bomb and A is connected to B and the soft rock is at B
+I can only fire the laser at a loc A connected to a loc B if it is the case that the robot is at A and holding a laser and A is connected to B
+I can only pick gold at a loc A if it is the case that the robot is at A and the arm is empty and the gold is at A
+
+The actions have the following effects on the state:
+Once I move the robot from a loc A to a loc B, it is the case that the robot is at B
+Once I move the robot from a loc A to a loc B, it is not the case anymore that the robot is at A
+Once I pick up the laser at a loc A, it is the case that holding a laser
+Once I pick up the laser at a loc A, it is not the case anymore that the arm is empty and it is not the case anymore that the laser is at A
+Once I pick up the bomb at a loc A, it is the case that holding a bomb
+Once I pick up the bomb at a loc A, it is not the case anymore that the arm is empty
+Once I put down the laser at a loc A, it is the case that the arm is empty and the laser is at A
+Once I put down the laser at a loc A, it is not the case anymore that holding a laser
+Once I detonate the bomb at a loc A connected to a loc B, it is the case that the arm is empty and B is clear
+Once I detonate the bomb at a loc A connected to a loc B, it is not the case anymore that holding a bomb and it is not the case anymore that the soft rock is at B
+Once I fire the laser at a loc A connected to a loc B, it is the case that B is clear
+Once I fire the laser at a loc A connected to a loc B, it is not the case anymore that the soft rock is at B and it is not the case anymore that the gold is at B and it is not the case anymore that the hard rock is at B
+Once I pick gold at a loc A, it is the case that holding gold
+Once I pick gold at a loc A, it is not the case anymore that the arm is empty
+
+
+Everything that is a loc is also a object

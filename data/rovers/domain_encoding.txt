@@ -1,0 +1,43 @@
+I can carry out the following actions:
+navigate a rover A from a waypoint B to a waypoint C
+sample soil at a waypoint C with a rover A storing in a store B
+sample rock at a waypoint C with a rover A storing in a store B
+drop contents of a store B from a rover A
+calibrate a rover A with a camera B on an objective C at a waypoint D
+take image with a rover A at a waypoint B of an objective C using a camera D in a mode E
+communicate soil data from a rover A at a waypoint D to a lander B at a waypoint E with data from a waypoint C
+communicate rock data from a rover A at a waypoint D to a lander B at a waypoint E with data from a waypoint C
+communicate image data from a rover A at a waypoint E to a lander B at a waypoint F with image of an objective C in a mode D
+
+I have the following restrictions on my actions:
+I can only navigate a rover A from a waypoint B to a waypoint C if it is the case that A can traverse from B to C and A is available and A is at B and B is visible to C
+I can only sample soil at a waypoint C with a rover A storing in a store B if it is the case that A is at C and C is at the soil sample and A is equipped for soil analysis and B is the store of A and B is empty
+I can only sample rock at a waypoint C with a rover A storing in a store B if it is the case that A is at C and C is at the rock sample and A is equipped for rock analysis and B is the store of A and B is empty
+I can only drop contents of a store B from a rover A if it is the case that B is the store of A and B is full
+I can only calibrate a rover A with a camera B on an objective C at a waypoint D if it is the case that A is equipped for imaging and B is the calibration target of C and A is at D and C is visible from D and B is on board A
+I can only take image with a rover A at a waypoint B of an objective C using a camera D in a mode E if it is the case that D is calibrated to A and D is on board A and A is equipped for imaging and D supports E and C is visible from B and A is at B
+I can only communicate soil data from a rover A at a waypoint D to a lander B at a waypoint E with data from a waypoint C if it is the case that A is at D and B is at the lander E and A has soil analysis C and D is visible to E and A is available and the channel B is free
+I can only communicate rock data from a rover A at a waypoint D to a lander B at a waypoint E with data from a waypoint C if it is the case that A is at D and B is at the lander E and A has rock analysis C and D is visible to E and A is available and the channel B is free
+I can only communicate image data from a rover A at a waypoint E to a lander B at a waypoint F with image of an objective C in a mode D if it is the case that A is at E and B is at the lander F and A has an image of C in D and E is visible to F and A is available and the channel B is free
+
+The actions have the following effects on the state:
+Once I navigate a rover A from a waypoint B to a waypoint C, it is the case that A is at C
+Once I navigate a rover A from a waypoint B to a waypoint C, it is not the case anymore that A is at B
+Once I sample soil at a waypoint C with a rover A storing in a store B, it is the case that B is full and A has soil analysis C
+Once I sample soil at a waypoint C with a rover A storing in a store B, it is not the case anymore that B is empty and it is not the case anymore that C is at the soil sample
+Once I sample rock at a waypoint C with a rover A storing in a store B, it is the case that B is full and A has rock analysis C
+Once I sample rock at a waypoint C with a rover A storing in a store B, it is not the case anymore that B is empty and it is not the case anymore that C is at the rock sample
+Once I drop contents of a store B from a rover A, it is the case that B is empty
+Once I drop contents of a store B from a rover A, it is not the case anymore that B is full
+Once I calibrate a rover A with a camera B on an objective C at a waypoint D, it is the case that B is calibrated to A
+Once I take image with a rover A at a waypoint B of an objective C using a camera D in a mode E, it is the case that A has an image of C in E
+Once I take image with a rover A at a waypoint B of an objective C using a camera D in a mode E, it is not the case anymore that D is calibrated to A
+Once I communicate soil data from a rover A at a waypoint D to a lander B at a waypoint E with data from a waypoint C, it is the case that the channel B is free and C communicated soil data and A is available
+Once I communicate soil data from a rover A at a waypoint D to a lander B at a waypoint E with data from a waypoint C, it is not the case anymore that A is available and it is not the case anymore that the channel B is free
+Once I communicate rock data from a rover A at a waypoint D to a lander B at a waypoint E with data from a waypoint C, it is the case that the channel B is free and C communicated rock data and A is available
+Once I communicate rock data from a rover A at a waypoint D to a lander B at a waypoint E with data from a waypoint C, it is not the case anymore that A is available and it is not the case anymore that the channel B is free
+Once I communicate image data from a rover A at a waypoint E to a lander B at a waypoint F with image of an objective C in a mode D, it is the case that the channel B is free and C communicated image data to D and A is available
+Once I communicate image data from a rover A at a waypoint E to a lander B at a waypoint F with image of an objective C in a mode D, it is not the case anymore that A is available and it is not the case anymore that the channel B is free
+
+
+Everything that is a rover or a waypoint or a store or a camera or a mode or a lander or a objective is also a object

@@ -1,0 +1,57 @@
+I can carry out the following actions:
+grasp a container B with a hand A
+leave a container B with a hand A on the table
+fill a shot A with an ingredient B using a dispenser E while a hand C holds a shot A and a hand D is empty
+refill a shot A with an ingredient B using a dispenser E while a hand C holds a shot A and a hand D is empty
+empty a shot B of a beverage C while a hand A holds a shot B
+clean a shot A used by a beverage B while a hand C holds a shot A and a hand D is empty
+pour an ingredient B from a shot A into clean a shaker C using a hand D while moving from a level E to a level F
+pour an ingredient B from a shot A into used a shaker C using a hand D while moving from a level E to a level F
+empty a shaker B of a cocktail C using a hand A while moving from a level D to empty a level E
+clean a shaker C using a hand A while a hand B is empty
+shake a cocktail A using a shaker D held by a hand E while a hand F is empty, with an ingredient B and an ingredient C
+pour a beverage A from a shaker D held by a hand C into a shot B at a level E, moving shaker to a level F
+
+I have the following restrictions on my actions:
+I can only grasp a container B with a hand A if it is the case that B is on the table and the hand A is empty
+I can only leave a container B with a hand A on the table if it is the case that A is holding B
+I can only fill a shot A with an ingredient B using a dispenser E while a hand C holds a shot A and a hand D is empty if it is the case that C is holding A and the hand D is empty and E dispenses B and A is empty and A is clean
+I can only refill a shot A with an ingredient B using a dispenser E while a hand C holds a shot A and a hand D is empty if it is the case that C is holding A and the hand D is empty and E dispenses B and A is empty and A is used by B
+I can only empty a shot B of a beverage C while a hand A holds a shot B if it is the case that A is holding B and B contains C
+I can only clean a shot A used by a beverage B while a hand C holds a shot A and a hand D is empty if it is the case that C is holding A and the hand D is empty and A is empty and A is used by B
+I can only pour an ingredient B from a shot A into clean a shaker C using a hand D while moving from a level E to a level F if it is the case that D is holding A and A contains B and C is empty and C is clean and the shaker C is at level E and F is next to E
+I can only pour an ingredient B from a shot A into used a shaker C using a hand D while moving from a level E to a level F if it is the case that D is holding A and A contains B and C is unshaken and the shaker C is at level E and F is next to E
+I can only empty a shaker B of a cocktail C using a hand A while moving from a level D to empty a level E if it is the case that A is holding B and B contains C and B is shaken and the shaker B is at level D and the shaker B is at empty level E
+I can only clean a shaker C using a hand A while a hand B is empty if it is the case that A is holding C and the hand B is empty and C is empty
+I can only shake a cocktail A using a shaker D held by a hand E while a hand F is empty, with an ingredient B and an ingredient C if it is the case that E is holding D and the hand F is empty and D contains B and D contains C and B is part of the cocktail A and C is another part of the cocktail A and D is unshaken
+I can only pour a beverage A from a shaker D held by a hand C into a shot B at a level E, moving shaker to a level F if it is the case that C is holding D and D is shaken and B is empty and B is clean and D contains A and the shaker D is at level E and E is next to F
+
+The actions have the following effects on the state:
+Once I grasp a container B with a hand A, it is the case that A is holding B
+Once I grasp a container B with a hand A, it is not the case anymore that B is on the table and it is not the case anymore that the hand A is empty
+Once I leave a container B with a hand A on the table, it is the case that the hand A is empty and B is on the table
+Once I leave a container B with a hand A on the table, it is not the case anymore that A is holding B
+Once I fill a shot A with an ingredient B using a dispenser E while a hand C holds a shot A and a hand D is empty, it is the case that A contains B and A is used by B
+Once I fill a shot A with an ingredient B using a dispenser E while a hand C holds a shot A and a hand D is empty, it is not the case anymore that A is empty and it is not the case anymore that A is clean
+Once I refill a shot A with an ingredient B using a dispenser E while a hand C holds a shot A and a hand D is empty, it is the case that A contains B
+Once I refill a shot A with an ingredient B using a dispenser E while a hand C holds a shot A and a hand D is empty, it is not the case anymore that A is empty
+Once I empty a shot B of a beverage C while a hand A holds a shot B, it is the case that B is empty
+Once I empty a shot B of a beverage C while a hand A holds a shot B, it is not the case anymore that B contains C
+Once I clean a shot A used by a beverage B while a hand C holds a shot A and a hand D is empty, it is the case that A is clean
+Once I clean a shot A used by a beverage B while a hand C holds a shot A and a hand D is empty, it is not the case anymore that A is used by B
+Once I pour an ingredient B from a shot A into clean a shaker C using a hand D while moving from a level E to a level F, it is the case that A is empty and C contains B and C is unshaken and the shaker C is at level F
+Once I pour an ingredient B from a shot A into clean a shaker C using a hand D while moving from a level E to a level F, it is not the case anymore that A contains B and it is not the case anymore that C is empty and it is not the case anymore that C is clean and it is not the case anymore that the shaker C is at level E
+Once I pour an ingredient B from a shot A into used a shaker C using a hand D while moving from a level E to a level F, it is the case that C contains B and A is empty and the shaker C is at level F
+Once I pour an ingredient B from a shot A into used a shaker C using a hand D while moving from a level E to a level F, it is not the case anymore that A contains B and it is not the case anymore that the shaker C is at level E
+Once I empty a shaker B of a cocktail C using a hand A while moving from a level D to empty a level E, it is the case that the shaker B is at level E and B is empty
+Once I empty a shaker B of a cocktail C using a hand A while moving from a level D to empty a level E, it is not the case anymore that B is shaken and it is not the case anymore that the shaker B is at level D and it is not the case anymore that B contains C
+Once I clean a shaker C using a hand A while a hand B is empty, it is the case that C is clean
+Once I shake a cocktail A using a shaker D held by a hand E while a hand F is empty, with an ingredient B and an ingredient C, it is the case that D is shaken and D contains A
+Once I shake a cocktail A using a shaker D held by a hand E while a hand F is empty, with an ingredient B and an ingredient C, it is not the case anymore that D is unshaken and it is not the case anymore that D contains B and it is not the case anymore that D contains C
+Once I pour a beverage A from a shaker D held by a hand C into a shot B at a level E, moving shaker to a level F, it is the case that B contains A and the shaker D is at level F
+Once I pour a beverage A from a shaker D held by a hand C into a shot B at a level E, moving shaker to a level F, it is not the case anymore that B is clean and it is not the case anymore that B is empty and it is not the case anymore that the shaker D is at level E
+
+
+Everything that is a hand or a level or a beverage or a dispenser or a container is also a object
+Everything that is a ingredient or a cocktail is also a beverage
+Everything that is a shot or a shaker is also a container

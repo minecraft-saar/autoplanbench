@@ -1,0 +1,43 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_260",
+        "kumquat_8",
+        "teddy",
+        "rain",
+        "bastion_47",
+        "socket",
+        "object_50",
+        "screen",
+        "screen_96",
+        "dress_red_26",
+        "bastion",
+        "kumquat",
+        "dress_red",
+        "frame_9",
+        "roof_11",
+        "star_213",
+        "fire"
+    ],
+    "pos_examples": [
+        [
+            "Now, move object socket from object yew to new column object kumquat_8 with column space object object_260 and new cell space object kumquat.",
+            "(newcolfromfreecell socket object_260 kumquat_8 yew kumquat)"
+        ],
+        [
+            "Once you are done, please send object bastion from object rain to object roof_11 in the cell space object dress_red.",
+            "(sendtofree bastion rain dress_red roof_11)"
+        ],
+        [
+            "First, move object star_213 from object frame_9 to object object_50 and then send object fire to home with previous card object teddy and suit object screen and value object screen_96 and home card object rain with home card value object dress_red.",
+            "(move star_213 frame_9 object_50)\n(sendtohome fire teddy screen screen_96 rain dress_red)"
+        ],
+        [
+            "The next step is to move object object_260 from free cell to home with suit object roof_11 and value object object_50 and home card object bastion with home card value object dress_red from cell space object dress_red_26 to new cell space object bastion_47.",
+            "(homefromfreecell object_260 roof_11 object_50 bastion dress_red dress_red_26 bastion_47)"
+        ]
+    ]
+}

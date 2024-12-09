@@ -1,0 +1,2 @@
+(move place_0 place_1)
+; cost = 1 (unit cost)

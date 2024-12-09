@@ -1,0 +1,6 @@
+(do-plane part_0 planer_0 rough acolour_1 varnished)
+(do-saw-large board_0 part_1 saw_0 awood_1 smooth aboardsize_4 aboardsize_1 aboardsize_2 aboardsize_3)
+(do-saw-small board_0 part_2 saw_0 awood_1 smooth aboardsize_4 aboardsize_2)
+(do-immersion-varnish part_2 immersion-varnisher_0 natural smooth)
+(do-immersion-varnish part_1 immersion-varnisher_0 acolour_0 smooth)
+; cost = 5 (unit cost)

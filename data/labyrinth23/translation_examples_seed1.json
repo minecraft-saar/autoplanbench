@@ -1,0 +1,42 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "screen",
+        "bastion_69",
+        "object_50",
+        "rain",
+        "object_50_42",
+        "frame_9",
+        "socket",
+        "rain_29_72",
+        "bastion_69_64",
+        "object_260",
+        "star_213",
+        "object_50_37",
+        "bastion",
+        "fire",
+        "rain_29",
+        "teddy"
+    ],
+    "pos_examples": [
+        [
+            "Now, move card card star_213 south from position bastion_69, object_50 to position bastion_69, bastion with next card card frame_9 at position bastion_69, object_50_37.",
+            "(move-card-south star_213 screen object_50 bastion screen rain)"
+        ],
+        [
+            "Once you are done, please start moving card card object_260 east from position object_50_37, rain with next card card teddy at position bastion, rain.",
+            "(start-move-card-east object_260 object_50_37 object_50 teddy bastion)"
+        ],
+        [
+            "First, move east from object_260, bastion_69, bastion_69_64, fire to star_213, rain, rain_29, socket and then leave card teddy at position object_50_37, bastion_69.",
+            "(move-east object_260 bastion_69 bastion_69_64 fire star_213 rain rain_29 socket)\n(leave teddy object_50_37 bastion_69)"
+        ],
+        [
+            "The next step is to move card card teddy north from position object_50_42, object_50 to position object_50_42, bastion_69_64 with next card card star_213 at position object_50_42, bastion.",
+            "(move-card-north teddy rain_29 object_50 bastion_69_64 rain_29 rain_29_72)"
+        ]
+    ]
+}

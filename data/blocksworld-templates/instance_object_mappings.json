@@ -1,0 +1,134 @@
+{
+    "instance-1.pddl": {
+        "a": "object_2",
+        "b": "object_1",
+        "c": "object_0",
+        "d": "object_3"
+    },
+    "instance-18.pddl": {
+        "a": "object_3",
+        "b": "object_0",
+        "c": "object_2",
+        "d": "object_1"
+    },
+    "instance-14.pddl": {
+        "a": "object_1",
+        "b": "object_3",
+        "c": "object_2",
+        "d": "object_0"
+    },
+    "instance-15.pddl": {
+        "a": "object_3",
+        "b": "object_2",
+        "c": "object_1",
+        "d": "object_0"
+    },
+    "instance-19.pddl": {
+        "a": "object_0",
+        "b": "object_2",
+        "c": "object_1",
+        "d": "object_3"
+    },
+    "instance-13.pddl": {
+        "a": "object_3",
+        "b": "object_1",
+        "c": "object_0",
+        "d": "object_2"
+    },
+    "instance-7.pddl": {
+        "a": "object_1",
+        "b": "object_2",
+        "c": "object_0",
+        "d": "object_3"
+    },
+    "instance-6.pddl": {
+        "a": "object_0",
+        "b": "object_3",
+        "c": "object_2",
+        "d": "object_1"
+    },
+    "instance-12.pddl": {
+        "a": "object_0",
+        "b": "object_3",
+        "c": "object_2",
+        "d": "object_1"
+    },
+    "instance-9.pddl": {
+        "a": "object_0",
+        "b": "object_1",
+        "c": "object_3",
+        "d": "object_2"
+    },
+    "instance-11.pddl": {
+        "a": "object_3",
+        "b": "object_2",
+        "c": "object_1",
+        "d": "object_0"
+    },
+    "instance-5.pddl": {
+        "a": "object_3",
+        "b": "object_2",
+        "c": "object_1",
+        "d": "object_0"
+    },
+    "instance-4.pddl": {
+        "a": "object_2",
+        "b": "object_3",
+        "c": "object_1",
+        "d": "object_0"
+    },
+    "instance-10.pddl": {
+        "a": "object_3",
+        "b": "object_1",
+        "c": "object_2",
+        "d": "object_0"
+    },
+    "instance-8.pddl": {
+        "a": "object_0",
+        "b": "object_3",
+        "c": "object_1",
+        "d": "object_2"
+    },
+    "instance-21.pddl": {
+        "a": "object_2",
+        "b": "object_1",
+        "c": "object_3",
+        "d": "object_0"
+    },
+    "instance-3.pddl": {
+        "a": "object_3",
+        "b": "object_2",
+        "c": "object_0",
+        "d": "object_1"
+    },
+    "instance-17.pddl": {
+        "a": "object_2",
+        "b": "object_0",
+        "c": "object_3",
+        "d": "object_1"
+    },
+    "instance-16.pddl": {
+        "a": "object_1",
+        "b": "object_0",
+        "c": "object_2",
+        "d": "object_3"
+    },
+    "instance-2.pddl": {
+        "a": "object_0",
+        "b": "object_2",
+        "c": "object_1",
+        "d": "object_3"
+    },
+    "instance-20.pddl": {
+        "a": "object_1",
+        "b": "object_2",
+        "c": "object_3",
+        "d": "object_0"
+    },
+    "instance-0.pddl": {
+        "a": "object_2",
+        "b": "object_3",
+        "c": "object_1",
+        "d": "object_0"
+    }
+}

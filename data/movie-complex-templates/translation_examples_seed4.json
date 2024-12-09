@@ -1,0 +1,29 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "bastion",
+        "socket",
+        "screen"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"get-crackers\" to object bastion.",
+            "(get-crackers bastion)"
+        ],
+        [
+            "Once you are done, please apply the action \"rewind-movie\".",
+            "(rewind-movie )"
+        ],
+        [
+            "First, apply the action \"get-chips\" to object socket and then apply the action \"reset-counter\".",
+            "(get-chips socket)\n(reset-counter )"
+        ],
+        [
+            "The next step is to apply the action \"get-cheese\" to object screen.",
+            "(get-cheese screen)"
+        ]
+    ]
+}

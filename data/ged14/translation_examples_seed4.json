@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "fire",
+        "roof_11",
+        "rain",
+        "socket",
+        "dress_red",
+        "bastion",
+        "screen",
+        "object_50",
+        "kumquat",
+        "kumquat_8",
+        "star_213",
+        "teddy"
+    ],
+    "pos_examples": [
+        [
+            "Now, continue splicing with object kumquat and object dress_red where object dress_red is at splice point 1.",
+            "(continue-splice-2 kumquat socket)"
+        ],
+        [
+            "Once you are done, please reset 1 for object teddy.",
+            "(reset-1 teddy)"
+        ],
+        [
+            "First, continue splicing with object roof_11 and object fire where object roof_11 is first in the sequence and then invert single gene b for object screen.",
+            "(continue-splice-1 bastion fire)\n(invert-single-gene-b screen)"
+        ],
+        [
+            "The next step is to end splicing with object kumquat_8 and object object_50 where object object_50 is at splice point 1 and object kumquat_8 is both the first and last in the sequence.",
+            "(end-splice-1 star_213 rain)"
+        ]
+    ]
+}

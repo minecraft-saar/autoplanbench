@@ -1,0 +1,44 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat_8",
+        "frame_9",
+        "socket",
+        "frame_9_22",
+        "roof_11",
+        "star_213",
+        "bastion",
+        "fire",
+        "rain_52",
+        "rain",
+        "object_50",
+        "dress_red",
+        "roof_11_20",
+        "teddy",
+        "object_50_79",
+        "object_260",
+        "screen",
+        "kumquat"
+    ],
+    "pos_examples": [
+        [
+            "Now, pop batch-atom yew from unitary pipe fire from area rain to area object_50 replacing batch-atom kumquat with product conditions product star_213 and product teddy.",
+            "(pop-unitarypipe fire yew object_50 rain kumquat star_213 teddy)"
+        ],
+        [
+            "Once you are done, please push end pipe kumquat_8 from area screen to area bastion with batch-atom roof_11 and batch-atom dress_red.",
+            "(push-end kumquat_8 screen bastion roof_11 dress_red)"
+        ],
+        [
+            "First, push batch-atom kumquat through unitary pipe socket from area object_50 to area object_50_79 replacing batch-atom yew with product conditions product frame_9 and product object_260 and then pop end pipe fire from area rain to area rain_52 with batch-atom roof_11 and batch-atom roof_11_20.",
+            "(push-unitarypipe socket kumquat object_50 object_50_79 yew frame_9 object_260)\n(pop-end fire rain rain_52 roof_11 roof_11_20)"
+        ],
+        [
+            "The next step is to pop start pipe kumquat_8 from area rain_52 to area rain with batch-atom roof_11_20, batch-atom yew, product frame_9, and product frame_9_22.",
+            "(pop-start kumquat_8 roof_11_20 rain_52 rain yew frame_9 frame_9_22)"
+        ]
+    ]
+}

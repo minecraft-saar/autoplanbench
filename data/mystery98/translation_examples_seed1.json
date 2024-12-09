@@ -1,0 +1,33 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat_8",
+        "bastion",
+        "star_213",
+        "object_50",
+        "socket",
+        "fire",
+        "roof_11",
+        "screen",
+        "frame_9",
+        "rain",
+        "object_50_53",
+        "kumquat",
+        "object_260",
+        "teddy",
+        "dress_red"
+    ],
+    "pos_examples": [
+        [
+            "Now, feast when object object_260 craves food dress_red and food dress_red eats food yew at object roof_11, moving object dress_red to object frame_9.",
+            "(feast object_260 bastion kumquat bastion yew)"
+        ],
+        [
+            "Once you are done, please succumb object rain to object socket craving object screen in harmony with object teddy orbiting object kumquat_8.",
+            "(succumb rain socket screen teddy kumquat_8)"
+        ]
+    ]
+}

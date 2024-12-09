@@ -1,0 +1,270 @@
+{
+    "action_mappings": {
+        "rewind-movie-2": "rewind the movie when the counter is at two hours",
+        "rewind-movie": "rewind the movie when the counter is at a time other than two hours",
+        "reset-counter": "reset the counter to zero",
+        "get-chips": "get object {} which are chips",
+        "get-dip": "get object {} which is a dip",
+        "get-pop": "get object {} which is a pop",
+        "get-cheese": "get object {} which is cheese",
+        "get-crackers": "get object {} which are crackers"
+    },
+    "action_mappings_indef": {
+        "rewind-movie-2": "rewind the movie when the counter is at two hours",
+        "rewind-movie": "rewind the movie when the counter is at a time other than two hours",
+        "reset-counter": "reset the counter to zero",
+        "get-chips": "get an object {} which are chips",
+        "get-dip": "get an object {} which is a dip",
+        "get-pop": "get an object {} which is a pop",
+        "get-cheese": "get an object {} which is cheese",
+        "get-crackers": "get an object {} which are crackers"
+    },
+    "predicate_mappings": {
+        "movie-rewound": "the movie is rewound",
+        "counter-at-two-hours": "the counter is at two hours",
+        "counter-at-other-than-two-hours": "the counter is at a time other than two hours",
+        "counter-at-zero": "the counter is at zero",
+        "have-chips": "there are chips",
+        "have-dip": "there is dip",
+        "have-pop": "there is pop",
+        "have-cheese": "there is cheese",
+        "have-crackers": "there are crackers",
+        "chips": "{} are chips",
+        "dip": "{} is a dip",
+        "pop": "{} is a pop",
+        "cheese": "{} is cheese",
+        "crackers": "{} is crackers",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "rewind-movie-2": {
+            "annotation": "",
+            "parameter_types": {},
+            "pddl": "(rewind-movie-2)",
+            "description": "rewind the movie when the counter is at two hours",
+            "preconditions": [
+                "I can only rewind the movie when the counter is at two hours if it is the case that the counter is at two hours"
+            ],
+            "effects": [
+                "Once I rewind the movie when the counter is at two hours, it is the case that the movie is rewound"
+            ]
+        },
+        "rewind-movie": {
+            "annotation": "",
+            "parameter_types": {},
+            "pddl": "(rewind-movie)",
+            "description": "rewind the movie when the counter is at a time other than two hours",
+            "preconditions": [
+                "I can only rewind the movie when the counter is at a time other than two hours if it is the case that the counter is at a time other than two hours"
+            ],
+            "effects": [
+                "Once I rewind the movie when the counter is at a time other than two hours, it is the case that the movie is rewound",
+                "Once I rewind the movie when the counter is at a time other than two hours, it is not the case anymore that the counter is at zero"
+            ]
+        },
+        "reset-counter": {
+            "annotation": "",
+            "parameter_types": {},
+            "pddl": "(reset-counter)",
+            "description": "reset the counter to zero",
+            "preconditions": [
+                "I can always reset the counter to zero."
+            ],
+            "effects": [
+                "Once I reset the counter to zero, it is the case that the counter is at zero"
+            ]
+        },
+        "get-chips": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(get-chips ?x)",
+            "description": "get an object A which are chips",
+            "preconditions": [
+                "I can only get an object A which are chips if it is the case that A are chips"
+            ],
+            "effects": [
+                "Once I get an object A which are chips, it is the case that there are chips"
+            ]
+        },
+        "get-dip": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(get-dip ?x)",
+            "description": "get an object A which is a dip",
+            "preconditions": [
+                "I can only get an object A which is a dip if it is the case that A is a dip"
+            ],
+            "effects": [
+                "Once I get an object A which is a dip, it is the case that there is dip"
+            ]
+        },
+        "get-pop": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(get-pop ?x)",
+            "description": "get an object A which is a pop",
+            "preconditions": [
+                "I can only get an object A which is a pop if it is the case that A is a pop"
+            ],
+            "effects": [
+                "Once I get an object A which is a pop, it is the case that there is pop"
+            ]
+        },
+        "get-cheese": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(get-cheese ?x)",
+            "description": "get an object A which is cheese",
+            "preconditions": [
+                "I can only get an object A which is cheese if it is the case that A is cheese"
+            ],
+            "effects": [
+                "Once I get an object A which is cheese, it is the case that there is cheese"
+            ]
+        },
+        "get-crackers": {
+            "annotation": "",
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(get-crackers ?x)",
+            "description": "get an object A which are crackers",
+            "preconditions": [
+                "I can only get an object A which are crackers if it is the case that A is crackers"
+            ],
+            "effects": [
+                "Once I get an object A which are crackers, it is the case that there are crackers"
+            ]
+        }
+    },
+    "predicates": {
+        "movie-rewound": {
+            "parameter_types": {},
+            "pddl": "(movie-rewound)"
+        },
+        "counter-at-two-hours": {
+            "parameter_types": {},
+            "pddl": "(counter-at-two-hours)"
+        },
+        "counter-at-other-than-two-hours": {
+            "parameter_types": {},
+            "pddl": "(counter-at-other-than-two-hours)"
+        },
+        "counter-at-zero": {
+            "parameter_types": {},
+            "pddl": "(counter-at-zero)"
+        },
+        "have-chips": {
+            "parameter_types": {},
+            "pddl": "(have-chips)"
+        },
+        "have-dip": {
+            "parameter_types": {},
+            "pddl": "(have-dip)"
+        },
+        "have-pop": {
+            "parameter_types": {},
+            "pddl": "(have-pop)"
+        },
+        "have-cheese": {
+            "parameter_types": {},
+            "pddl": "(have-cheese)"
+        },
+        "have-crackers": {
+            "parameter_types": {},
+            "pddl": "(have-crackers)"
+        },
+        "chips": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(chips ?x)"
+        },
+        "dip": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(dip ?x)"
+        },
+        "pop": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(pop ?x)"
+        },
+        "cheese": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(cheese ?x)"
+        },
+        "crackers": {
+            "parameter_types": {
+                "?x": "object"
+            },
+            "pddl": "(crackers ?x)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "rewind-movie-2": "rewind the movie when the counter is at two hours",
+        "rewind-movie": "rewind the movie when the counter is at a time other than two hours",
+        "reset-counter": "reset the counter to zero",
+        "get-chips": "get object {?x} which are chips",
+        "get-dip": "get object {?x} which is a dip",
+        "get-pop": "get object {?x} which is a pop",
+        "get-cheese": "get object {?x} which is cheese",
+        "get-crackers": "get object {?x} which are crackers"
+    },
+    "predicate_nl_templates": {
+        "movie-rewound": "the movie is rewound",
+        "counter-at-two-hours": "the counter is at two hours",
+        "counter-at-other-than-two-hours": "the counter is at a time other than two hours",
+        "counter-at-zero": "the counter is at zero",
+        "have-chips": "there are chips",
+        "have-dip": "there is dip",
+        "have-pop": "there is pop",
+        "have-cheese": "there is cheese",
+        "have-crackers": "there are crackers",
+        "chips": "{?x} are chips",
+        "dip": "{?x} is a dip",
+        "pop": "{?x} is a pop",
+        "cheese": "{?x} is cheese",
+        "crackers": "{?x} is crackers",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "rewind-movie-2": "rewind the movie when the counter is at two hours",
+        "rewind-movie": "rewind the movie when the counter is at a time other than two hours",
+        "reset-counter": "reset the counter to zero",
+        "get-chips": "get an object {?x} which are chips",
+        "get-dip": "get an object {?x} which is a dip",
+        "get-pop": "get an object {?x} which is a pop",
+        "get-cheese": "get an object {?x} which is cheese",
+        "get-crackers": "get an object {?x} which are crackers"
+    },
+    "type_hierarchy": []
+}

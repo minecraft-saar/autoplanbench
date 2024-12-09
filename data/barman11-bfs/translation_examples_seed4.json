@@ -1,0 +1,40 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat",
+        "star_213",
+        "kumquat_8",
+        "bastion",
+        "fire",
+        "bastion_49",
+        "frame_9",
+        "bastion_38",
+        "roof_11",
+        "screen",
+        "teddy",
+        "object_260",
+        "object_50",
+        "rain"
+    ],
+    "pos_examples": [
+        [
+            "Now, shake cocktail roof_11 using shaker rain held by hand bastion with assistance from hand kumquat_8 containing ingredient kumquat and ingredient star_213.",
+            "(shake roof_11 kumquat star_213 rain bastion kumquat_8)"
+        ],
+        [
+            "Once you are done, please empty shot object_260 of beverage screen using hand bastion.",
+            "(empty-shot bastion object_260 screen)"
+        ],
+        [
+            "First, grasp container teddy with hand bastion and then refill shot object_50 with ingredient kumquat using dispenser fire with hand bastion and hand bastion_49.",
+            "(grasp bastion teddy)\n(refill-shot object_50 kumquat bastion bastion_49 fire)"
+        ],
+        [
+            "The next step is to clean shot object_260 of beverage frame_9 using hand bastion while hand bastion_38 is empty.",
+            "(clean-shot object_260 frame_9 bastion bastion_38)"
+        ]
+    ]
+}

@@ -1,0 +1,93 @@
+I can carry out the following actions:
+move west from a A, a B, a C, a D to a E, a F, a G, a H
+move east from a A, a B, a C, a D to a E, a F, a G, a H
+move north from a A, a B, a C, a D to a E, a F, a G, a H
+move south from a A, a B, a C, a D to a E, a F, a G, a H
+start moving card a card A west from position a B, a C to next card a card D at position a E
+move card a card A west from position a B, a C to position a F, a C with next card a card D at position a E
+stop moving card a card A west from position a B, a C to position a D, a C and set new headtail card to a card E
+start moving card a card A east from position a B, a C and set next moving card to a card D at position a E, a C
+move card a card A east from position a B, a C to position a F, a C and set next moving card to a card D at position a E, a C
+stop moving card a card A east from position a B, a C to position a D, a C and set new headtail card to a card E at position a B, a C
+start moving card a card A north from position a B, a C with next card a card D at position a B, a E
+move card a card A north from position a B, a C to position a B, a F with next card a card D at position a B, a E
+stop moving card a card A north from position a B, a C to position a B, a D with new headtail card a card E
+start moving card a card A south from position a B, a C with next moving card a card D at position a B, a E
+move card a card A south from position a B, a C to position a B, a F with next moving card a card D at position a B, a E
+stop moving card a card A south from position a B, a C to position a B, a D and set new headtail card to a card E
+leave a card A at position a B, a C
+
+I have the following restrictions on my actions:
+I can only move west from a A, a B, a C, a D to a E, a F, a G, a H if it is the case that D is equal to w and the robot is at A and the card A is at position B, C and the card E is at position F, G and B is next to F and C is equal to G
+I can only move west from a A, a B, a C, a D to a E, a F, a G, a H if it is not the case that the cards are moving and it is not the case that D is equal to H and it is not the case that A is blocked by D and it is not the case that E is blocked by H
+I can only move east from a A, a B, a C, a D to a E, a F, a G, a H if it is the case that D is equal to e and the robot is at A and the card A is at position B, C and the card E is at position F, G and F is next to B and C is equal to G
+I can only move east from a A, a B, a C, a D to a E, a F, a G, a H if it is not the case that the cards are moving and it is not the case that D is equal to H and it is not the case that A is blocked by D and it is not the case that E is blocked by H
+I can only move north from a A, a B, a C, a D to a E, a F, a G, a H if it is the case that D is equal to n and the robot is at A and the card A is at position B, C and the card E is at position F, G and C is next to G and B is equal to F
+I can only move north from a A, a B, a C, a D to a E, a F, a G, a H if it is not the case that the cards are moving and it is not the case that D is equal to H and it is not the case that A is blocked by D and it is not the case that E is blocked by H
+I can only move south from a A, a B, a C, a D to a E, a F, a G, a H if it is the case that D is equal to s and the robot is at A and the card A is at position B, C and the card E is at position F, G and G is next to C and B is equal to F
+I can only move south from a A, a B, a C, a D to a E, a F, a G, a H if it is not the case that the cards are moving and it is not the case that D is equal to H and it is not the case that A is blocked by D and it is not the case that E is blocked by H
+I can only start moving card a card A west from position a B, a C to next card a card D at position a E if it is the case that the card A is at position B, C and B is the minimum position and the card D is at position E, C and E is next to B
+I can only start moving card a card A west from position a B, a C to next card a card D at position a E if it is not the case that the cards are moving and it is not the case that the cards are moving west and it is not the case that the robot is at A
+I can only move card a card A west from position a B, a C to position a F, a C with next card a card D at position a E if it is the case that the cards are moving and the cards are moving west and the next moving card is A and the card A is at position B, C and the card D is at position E, C and B is next to F and E is next to B
+I can only move card a card A west from position a B, a C to position a F, a C with next card a card D at position a E if it is not the case that the robot is at A
+I can only stop moving card a card A west from position a B, a C to position a D, a C and set new headtail card to a card E if it is the case that the cards are moving and the cards are moving west and the next moving card is A and the card A is at position B, C and B is next to D and B is the maximum position and the new headtail card is E
+I can only stop moving card a card A west from position a B, a C to position a D, a C and set new headtail card to a card E if it is not the case that the robot is at A
+I can only start moving card a card A east from position a B, a C and set next moving card to a card D at position a E, a C if it is the case that the card A is at position B, C and B is the maximum position and the card D is at position E, C and B is next to E
+I can only start moving card a card A east from position a B, a C and set next moving card to a card D at position a E, a C if it is not the case that the cards are moving and it is not the case that the cards are moving east and it is not the case that the robot is at A
+I can only move card a card A east from position a B, a C to position a F, a C and set next moving card to a card D at position a E, a C if it is the case that the cards are moving and the cards are moving east and the next moving card is A and the card A is at position B, C and the card D is at position E, C and F is next to B and B is next to E
+I can only move card a card A east from position a B, a C to position a F, a C and set next moving card to a card D at position a E, a C if it is not the case that the robot is at A
+I can only stop moving card a card A east from position a B, a C to position a D, a C and set new headtail card to a card E at position a B, a C if it is the case that the cards are moving and the cards are moving east and the next moving card is A and the card A is at position B, C and D is next to B and B is the minimum position and the new headtail card is E
+I can only stop moving card a card A east from position a B, a C to position a D, a C and set new headtail card to a card E at position a B, a C if it is not the case that the robot is at A
+I can only start moving card a card A north from position a B, a C with next card a card D at position a B, a E if it is the case that the card A is at position B, C and C is the minimum position and the card D is at position B, E and E is next to C
+I can only start moving card a card A north from position a B, a C with next card a card D at position a B, a E if it is not the case that the cards are moving and it is not the case that the cards are moving north and it is not the case that the robot is at A
+I can only move card a card A north from position a B, a C to position a B, a F with next card a card D at position a B, a E if it is the case that the cards are moving and the cards are moving north and the next moving card is A and the card A is at position B, C and the card D is at position B, E and C is next to F and E is next to C
+I can only move card a card A north from position a B, a C to position a B, a F with next card a card D at position a B, a E if it is not the case that the robot is at A
+I can only stop moving card a card A north from position a B, a C to position a B, a D with new headtail card a card E if it is the case that the cards are moving and the cards are moving north and the next moving card is A and the card A is at position B, C and C is next to D and C is the maximum position and the new headtail card is E
+I can only stop moving card a card A north from position a B, a C to position a B, a D with new headtail card a card E if it is not the case that the robot is at A
+I can only start moving card a card A south from position a B, a C with next moving card a card D at position a B, a E if it is the case that the card A is at position B, C and C is the maximum position and the card D is at position B, E and C is next to E
+I can only start moving card a card A south from position a B, a C with next moving card a card D at position a B, a E if it is not the case that the cards are moving and it is not the case that the cards are moving south and it is not the case that the robot is at A
+I can only move card a card A south from position a B, a C to position a B, a F with next moving card a card D at position a B, a E if it is the case that the cards are moving and the cards are moving south and the next moving card is A and the card A is at position B, C and the card D is at position B, E and F is next to C and C is next to E
+I can only move card a card A south from position a B, a C to position a B, a F with next moving card a card D at position a B, a E if it is not the case that the robot is at A
+I can only stop moving card a card A south from position a B, a C to position a B, a D and set new headtail card to a card E if it is the case that the cards are moving and the cards are moving south and the next moving card is A and the card A is at position B, C and D is next to C and C is the minimum position and the new headtail card is E
+I can only stop moving card a card A south from position a B, a C to position a B, a D and set new headtail card to a card E if it is not the case that the robot is at A
+I can only leave a card A at position a B, a C if it is the case that the robot is at A and the card A is at position B, C and B is the maximum position and C is the maximum position
+I can only leave a card A at position a B, a C if it is not the case that the cards are moving and it is not the case that A is blocked by s
+
+The actions have the following effects on the state:
+Once I move west from a A, a B, a C, a D to a E, a F, a G, a H, it is the case that the robot is at E
+Once I move west from a A, a B, a C, a D to a E, a F, a G, a H, it is not the case anymore that the robot is at A
+Once I move east from a A, a B, a C, a D to a E, a F, a G, a H, it is the case that the robot is at E
+Once I move east from a A, a B, a C, a D to a E, a F, a G, a H, it is not the case anymore that the robot is at A
+Once I move north from a A, a B, a C, a D to a E, a F, a G, a H, it is the case that the robot is at E
+Once I move north from a A, a B, a C, a D to a E, a F, a G, a H, it is not the case anymore that the robot is at A
+Once I move south from a A, a B, a C, a D to a E, a F, a G, a H, it is the case that the robot is at E
+Once I move south from a A, a B, a C, a D to a E, a F, a G, a H, it is not the case anymore that the robot is at A
+Once I start moving card a card A west from position a B, a C to next card a card D at position a E, it is the case that the cards are moving and the cards are moving west and the new headtail card is A and the next moving card is D
+Once I start moving card a card A west from position a B, a C to next card a card D at position a E, it is not the case anymore that the card A is at position B, C
+Once I move card a card A west from position a B, a C to position a F, a C with next card a card D at position a E, it is the case that the cards are moving and the cards are moving west and the card A is at position F, C and the next moving card is D
+Once I move card a card A west from position a B, a C to position a F, a C with next card a card D at position a E, it is not the case anymore that the card A is at position B, C and it is not the case anymore that the next moving card is A
+Once I stop moving card a card A west from position a B, a C to position a D, a C and set new headtail card to a card E, it is the case that the card A is at position D, C and the card E is at position B, C
+Once I stop moving card a card A west from position a B, a C to position a D, a C and set new headtail card to a card E, it is not the case anymore that the cards are moving and it is not the case anymore that the cards are moving west and it is not the case anymore that the card A is at position B, C and it is not the case anymore that the new headtail card is E and it is not the case anymore that the next moving card is A
+Once I start moving card a card A east from position a B, a C and set next moving card to a card D at position a E, a C, it is the case that the cards are moving and the cards are moving east and the new headtail card is A and the next moving card is D
+Once I start moving card a card A east from position a B, a C and set next moving card to a card D at position a E, a C, it is not the case anymore that the card A is at position B, C
+Once I move card a card A east from position a B, a C to position a F, a C and set next moving card to a card D at position a E, a C, it is the case that the cards are moving and the cards are moving east and the card A is at position F, C and the next moving card is D
+Once I move card a card A east from position a B, a C to position a F, a C and set next moving card to a card D at position a E, a C, it is not the case anymore that the card A is at position B, C and it is not the case anymore that the next moving card is A
+Once I stop moving card a card A east from position a B, a C to position a D, a C and set new headtail card to a card E at position a B, a C, it is the case that the card A is at position D, C and the card E is at position B, C
+Once I stop moving card a card A east from position a B, a C to position a D, a C and set new headtail card to a card E at position a B, a C, it is not the case anymore that the cards are moving and it is not the case anymore that the cards are moving east and it is not the case anymore that the card A is at position B, C and it is not the case anymore that the new headtail card is E and it is not the case anymore that the next moving card is A
+Once I start moving card a card A north from position a B, a C with next card a card D at position a B, a E, it is the case that the cards are moving and the cards are moving north and the new headtail card is A and the next moving card is D
+Once I start moving card a card A north from position a B, a C with next card a card D at position a B, a E, it is not the case anymore that the card A is at position B, C
+Once I move card a card A north from position a B, a C to position a B, a F with next card a card D at position a B, a E, it is the case that the cards are moving and the cards are moving north and the card A is at position B, F and the next moving card is D
+Once I move card a card A north from position a B, a C to position a B, a F with next card a card D at position a B, a E, it is not the case anymore that the card A is at position B, C and it is not the case anymore that the next moving card is A
+Once I stop moving card a card A north from position a B, a C to position a B, a D with new headtail card a card E, it is the case that the card A is at position B, D and the card E is at position B, C
+Once I stop moving card a card A north from position a B, a C to position a B, a D with new headtail card a card E, it is not the case anymore that the cards are moving and it is not the case anymore that the cards are moving north and it is not the case anymore that the card A is at position B, C and it is not the case anymore that the new headtail card is E and it is not the case anymore that the next moving card is A
+Once I start moving card a card A south from position a B, a C with next moving card a card D at position a B, a E, it is the case that the cards are moving and the cards are moving south and the new headtail card is A and the next moving card is D
+Once I start moving card a card A south from position a B, a C with next moving card a card D at position a B, a E, it is not the case anymore that the card A is at position B, C
+Once I move card a card A south from position a B, a C to position a B, a F with next moving card a card D at position a B, a E, it is the case that the cards are moving and the cards are moving south and the card A is at position B, F and the next moving card is D
+Once I move card a card A south from position a B, a C to position a B, a F with next moving card a card D at position a B, a E, it is not the case anymore that the card A is at position B, C and it is not the case anymore that the next moving card is A
+Once I stop moving card a card A south from position a B, a C to position a B, a D and set new headtail card to a card E, it is the case that the card A is at position B, D and the card E is at position B, C
+Once I stop moving card a card A south from position a B, a C to position a B, a D and set new headtail card to a card E, it is not the case anymore that the cards are moving and it is not the case anymore that the cards are moving south and it is not the case anymore that the card A is at position B, C and it is not the case anymore that the new headtail card is E and it is not the case anymore that the next moving card is A
+Once I leave a card A at position a B, a C, it is the case that it is on the left
+
+
+Everything that is a card or a direction or a gridpos is also a object
+Everything that is a directionv or a directionh is also a direction

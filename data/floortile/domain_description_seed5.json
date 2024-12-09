@@ -1,0 +1,275 @@
+{
+    "action_mappings": {
+        "change-color": "change color of robot {} from color {} to color {}",
+        "paint-up": "paint tile {} with color {} using robot {} at tile {}",
+        "paint-down": "paint tile {} with color {} using robot {} at tile {}",
+        "up": "move robot {} from tile {} to tile {}",
+        "down": "move robot {} from tile {} down to tile {}",
+        "right": "move robot {} from tile {} to the right to tile {}",
+        "left": "move robot {} from tile {} to the left to tile {}"
+    },
+    "action_mappings_indef": {
+        "change-color": "change color of a robot {} from a color {} to a color {}",
+        "paint-up": "paint a tile {} with a color {} using a robot {} at a tile {}",
+        "paint-down": "paint a tile {} with a color {} using a robot {} at a tile {}",
+        "up": "move a robot {} from a tile {} to a tile {}",
+        "down": "move a robot {} from a tile {} down to a tile {}",
+        "right": "move a robot {} from a tile {} to the right to a tile {}",
+        "left": "move a robot {} from a tile {} to the left to a tile {}"
+    },
+    "predicate_mappings": {
+        "robot-at": "{} is at {}",
+        "up": "{} is up {}",
+        "down": "{} is down {}",
+        "right": "{} is to the right of {}",
+        "left": "{} is to the left of {}",
+        "clear": "{} is clear",
+        "painted": "{} is painted {}",
+        "robot-has": "{} has {}",
+        "available-color": "{} is an available color",
+        "free-color": "{} is a free color",
+        "=": "{} is equal to {}",
+        "!=": "{} is not equal to {}"
+    },
+    "actions": {
+        "change-color": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "robot",
+                "?c": "color",
+                "?c2": "color"
+            },
+            "pddl": "(change-color ?r ?c ?c2)",
+            "description": "change color of a robot A from a color B to a color C",
+            "preconditions": [
+                "I can only change color of a robot A from a color B to a color C if it is the case that A has B and C is an available color"
+            ],
+            "effects": [
+                "Once I change color of a robot A from a color B to a color C, it is the case that A has C",
+                "Once I change color of a robot A from a color B to a color C, it is not the case anymore that A has B"
+            ]
+        },
+        "paint-up": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "robot",
+                "?y": "tile",
+                "?x": "tile",
+                "?c": "color"
+            },
+            "pddl": "(paint-up ?r ?y ?x ?c)",
+            "description": "paint a tile B with a color D using a robot A at a tile C",
+            "preconditions": [
+                "I can only paint a tile B with a color D using a robot A at a tile C if it is the case that A has D and A is at C and B is up C and B is clear"
+            ],
+            "effects": [
+                "Once I paint a tile B with a color D using a robot A at a tile C, it is the case that B is painted D",
+                "Once I paint a tile B with a color D using a robot A at a tile C, it is not the case anymore that B is clear"
+            ]
+        },
+        "paint-down": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "robot",
+                "?y": "tile",
+                "?x": "tile",
+                "?c": "color"
+            },
+            "pddl": "(paint-down ?r ?y ?x ?c)",
+            "description": "paint a tile B with a color D using a robot A at a tile C",
+            "preconditions": [
+                "I can only paint a tile B with a color D using a robot A at a tile C if it is the case that A has D and A is at C and B is down C and B is clear"
+            ],
+            "effects": [
+                "Once I paint a tile B with a color D using a robot A at a tile C, it is the case that B is painted D",
+                "Once I paint a tile B with a color D using a robot A at a tile C, it is not the case anymore that B is clear"
+            ]
+        },
+        "up": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "robot",
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(up ?r ?x ?y)",
+            "description": "move a robot A from a tile B to a tile C",
+            "preconditions": [
+                "I can only move a robot A from a tile B to a tile C if it is the case that A is at B and C is up B and C is clear"
+            ],
+            "effects": [
+                "Once I move a robot A from a tile B to a tile C, it is the case that A is at C and B is clear",
+                "Once I move a robot A from a tile B to a tile C, it is not the case anymore that A is at B and it is not the case anymore that C is clear"
+            ]
+        },
+        "down": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "robot",
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(down ?r ?x ?y)",
+            "description": "move a robot A from a tile B down to a tile C",
+            "preconditions": [
+                "I can only move a robot A from a tile B down to a tile C if it is the case that A is at B and C is down B and C is clear"
+            ],
+            "effects": [
+                "Once I move a robot A from a tile B down to a tile C, it is the case that A is at C and B is clear",
+                "Once I move a robot A from a tile B down to a tile C, it is not the case anymore that A is at B and it is not the case anymore that C is clear"
+            ]
+        },
+        "right": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "robot",
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(right ?r ?x ?y)",
+            "description": "move a robot A from a tile B to the right to a tile C",
+            "preconditions": [
+                "I can only move a robot A from a tile B to the right to a tile C if it is the case that A is at B and C is to the right of B and C is clear"
+            ],
+            "effects": [
+                "Once I move a robot A from a tile B to the right to a tile C, it is the case that A is at C and B is clear",
+                "Once I move a robot A from a tile B to the right to a tile C, it is not the case anymore that A is at B and it is not the case anymore that C is clear"
+            ]
+        },
+        "left": {
+            "annotation": "",
+            "parameter_types": {
+                "?r": "robot",
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(left ?r ?x ?y)",
+            "description": "move a robot A from a tile B to the left to a tile C",
+            "preconditions": [
+                "I can only move a robot A from a tile B to the left to a tile C if it is the case that A is at B and C is to the left of B and C is clear"
+            ],
+            "effects": [
+                "Once I move a robot A from a tile B to the left to a tile C, it is the case that A is at C and B is clear",
+                "Once I move a robot A from a tile B to the left to a tile C, it is not the case anymore that A is at B and it is not the case anymore that C is clear"
+            ]
+        }
+    },
+    "predicates": {
+        "robot-at": {
+            "parameter_types": {
+                "?r": "robot",
+                "?x": "tile"
+            },
+            "pddl": "(robot-at ?r ?x)"
+        },
+        "up": {
+            "parameter_types": {
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(up ?x ?y)"
+        },
+        "down": {
+            "parameter_types": {
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(down ?x ?y)"
+        },
+        "right": {
+            "parameter_types": {
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(right ?x ?y)"
+        },
+        "left": {
+            "parameter_types": {
+                "?x": "tile",
+                "?y": "tile"
+            },
+            "pddl": "(left ?x ?y)"
+        },
+        "clear": {
+            "parameter_types": {
+                "?x": "tile"
+            },
+            "pddl": "(clear ?x)"
+        },
+        "painted": {
+            "parameter_types": {
+                "?x": "tile",
+                "?c": "color"
+            },
+            "pddl": "(painted ?x ?c)"
+        },
+        "robot-has": {
+            "parameter_types": {
+                "?r": "robot",
+                "?c": "color"
+            },
+            "pddl": "(robot-has ?r ?c)"
+        },
+        "available-color": {
+            "parameter_types": {
+                "?c": "color"
+            },
+            "pddl": "(available-color ?c)"
+        },
+        "free-color": {
+            "parameter_types": {
+                "?r": "robot"
+            },
+            "pddl": "(free-color ?r)"
+        },
+        "=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(= ?x1 ?x2)"
+        },
+        "!=": {
+            "parameter_types": {
+                "?x1": "object",
+                "?x2": "object"
+            },
+            "pddl": "(!= ?x1 ?x2)"
+        }
+    },
+    "action_nl_templates": {
+        "change-color": "change color of robot {?r} from color {?c} to color {?c2}",
+        "paint-up": "paint tile {?y} with color {?c} using robot {?r} at tile {?x}",
+        "paint-down": "paint tile {?y} with color {?c} using robot {?r} at tile {?x}",
+        "up": "move robot {?r} from tile {?x} to tile {?y}",
+        "down": "move robot {?r} from tile {?x} down to tile {?y}",
+        "right": "move robot {?r} from tile {?x} to the right to tile {?y}",
+        "left": "move robot {?r} from tile {?x} to the left to tile {?y}"
+    },
+    "predicate_nl_templates": {
+        "robot-at": "{?r} is at {?x}",
+        "up": "{?x} is up {?y}",
+        "down": "{?x} is down {?y}",
+        "right": "{?x} is to the right of {?y}",
+        "left": "{?x} is to the left of {?y}",
+        "clear": "{?x} is clear",
+        "painted": "{?x} is painted {?c}",
+        "robot-has": "{?r} has {?c}",
+        "available-color": "{?c} is an available color",
+        "free-color": "{?r} is a free color",
+        "=": "{?x1} is equal to {?x2}",
+        "!=": "{?x1} is not equal to {?x2}"
+    },
+    "action_nl_templates_indef": {
+        "change-color": "change color of a robot {?r} from a color {?c} to a color {?c2}",
+        "paint-up": "paint a tile {?y} with a color {?c} using a robot {?r} at a tile {?x}",
+        "paint-down": "paint a tile {?y} with a color {?c} using a robot {?r} at a tile {?x}",
+        "up": "move a robot {?r} from a tile {?x} to a tile {?y}",
+        "down": "move a robot {?r} from a tile {?x} down to a tile {?y}",
+        "right": "move a robot {?r} from a tile {?x} to the right to a tile {?y}",
+        "left": "move a robot {?r} from a tile {?x} to the left to a tile {?y}"
+    },
+    "type_hierarchy": [
+        "Everything that is a robot or a tile or a color is also a object"
+    ]
+}

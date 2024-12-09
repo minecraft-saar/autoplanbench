@@ -1,0 +1,6 @@
+(analyze-4 segment_2 segment_3 segment_0 segment_1 car_2 car_1 car_3 car_0)
+(analyze-4 segment_2 segment_3 segment_0 segment_1 car_1 car_3 car_0 car_2)
+(analyze-4 segment_2 segment_3 segment_0 segment_1 car_3 car_0 car_2 car_1)
+(analyze-4 segment_2 segment_3 segment_0 segment_1 car_0 car_2 car_1 car_3)
+(analyze-4 segment_2 segment_3 segment_0 segment_1 car_2 car_1 car_3 car_0)
+; cost = 5 (unit cost)

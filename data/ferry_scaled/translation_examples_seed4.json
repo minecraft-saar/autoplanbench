@@ -1,0 +1,24 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "object_260",
+        "star_213",
+        "bastion",
+        "object_50",
+        "socket",
+        "fire"
+    ],
+    "pos_examples": [
+        [
+            "Now, debark car socket at location object_260.",
+            "(debark socket object_260)"
+        ],
+        [
+            "Once you are done, please board car fire at location star_213.",
+            "(board fire star_213)"
+        ]
+    ]
+}

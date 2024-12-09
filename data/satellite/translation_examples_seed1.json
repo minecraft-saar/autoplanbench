@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "frame_9",
+        "socket",
+        "bastion",
+        "screen",
+        "object_50",
+        "star_213",
+        "kumquat_8",
+        "rain",
+        "fire",
+        "object_260",
+        "dress_red",
+        "teddy"
+    ],
+    "pos_examples": [
+        [
+            "Now, turn satellite frame_9 from direction socket to direction fire.",
+            "(turn_to frame_9 fire socket)"
+        ],
+        [
+            "Once you are done, please take image of direction kumquat_8 using satellite star_213 with instrument object_50 in mode dress_red.",
+            "(take_image star_213 kumquat_8 object_50 dress_red)"
+        ],
+        [
+            "First, switch off instrument bastion on satellite teddy and then calibrate satellite object_260 with instrument rain towards direction socket.",
+            "(switch_off bastion teddy)\n(calibrate object_260 rain socket)"
+        ],
+        [
+            "The next step is to switch on instrument screen on satellite star_213.",
+            "(switch_on screen star_213)"
+        ]
+    ]
+}

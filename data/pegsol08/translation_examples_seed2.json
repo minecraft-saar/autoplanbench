@@ -1,0 +1,24 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "kumquat_8",
+        "roof_11",
+        "frame_9",
+        "kumquat",
+        "dress_red",
+        "rain"
+    ],
+    "pos_examples": [
+        [
+            "Now, end move at location rain.",
+            "(end-move rain)"
+        ],
+        [
+            "Once you are done, please perform jump-new-move from location yew over location kumquat to location roof_11.",
+            "(jump-new-move yew kumquat roof_11)"
+        ]
+    ]
+}

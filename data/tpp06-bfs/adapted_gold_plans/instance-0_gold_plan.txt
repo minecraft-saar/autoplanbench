@@ -1,0 +1,6 @@
+(drive truck_0 depot_0 market_0)
+(buy truck_0 goods_0 market_0 level_1 level_0 level_1 level_0)
+(load goods_0 truck_0 market_0 level_1 level_0 level_1 level_0)
+(drive truck_0 market_0 depot_0)
+(unload goods_0 truck_0 depot_0 level_1 level_0 level_1 level_0)
+; cost = 5 (unit cost)

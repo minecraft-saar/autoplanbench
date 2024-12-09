@@ -1,0 +1,38 @@
+{
+    "prefixes": {
+        "input": "Input:",
+        "output": "Output:"
+    },
+    "example_objs": [
+        "bastion",
+        "star_213",
+        "socket",
+        "frame_9",
+        "rain",
+        "fire",
+        "kumquat",
+        "object_260",
+        "object_50",
+        "screen",
+        "object_260_64",
+        "yew_47"
+    ],
+    "pos_examples": [
+        [
+            "Now, apply the action \"communicate_soil_data\" to rover fire, lander object_50, waypoint yew, waypoint object_260 and waypoint object_260_64.",
+            "(communicate_soil_data fire object_50 yew object_260 object_260_64)"
+        ],
+        [
+            "Once you are done, please apply the action \"drop\" to rover screen and store frame_9.",
+            "(drop screen frame_9)"
+        ],
+        [
+            "First, apply the action \"calibrate\" to rover fire, camera bastion, objective star_213 and waypoint object_260_64 and then apply the action \"navigate\" to rover fire, waypoint yew and waypoint object_260.",
+            "(calibrate fire bastion star_213 object_260_64)\n(navigate fire yew object_260)"
+        ],
+        [
+            "The next step is to apply the action \"communicate_image_data\" to rover fire, lander socket, objective rain, mode kumquat, waypoint yew and waypoint yew_47.",
+            "(communicate_image_data fire socket rain kumquat yew yew_47)"
+        ]
+    ]
+}

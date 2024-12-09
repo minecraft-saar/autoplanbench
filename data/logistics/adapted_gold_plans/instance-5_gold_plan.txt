@@ -1,0 +1,5 @@
+(fly-airplane object_2 object_8 object_5)
+(load-airplane object_7 object_2 object_5)
+(fly-airplane object_2 object_5 object_8)
+(unload-airplane object_7 object_2 object_8)
+; cost = 4 (unit cost)

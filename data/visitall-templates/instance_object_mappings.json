@@ -1,0 +1,182 @@
+{
+    "instance-1.pddl": {
+        "loc-x0-y0": "place_2",
+        "loc-x0-y1": "place_1",
+        "loc-x1-y0": "place_0",
+        "loc-x1-y1": "place_3"
+    },
+    "instance-23.pddl": {
+        "loc-x0-y0": "place_2",
+        "loc-x0-y1": "place_3",
+        "loc-x0-y2": "place_4",
+        "loc-x0-y3": "place_1",
+        "loc-x1-y1": "place_0",
+        "loc-x1-y2": "place_5"
+    },
+    "instance-42.pddl": {
+        "loc-x0-y0": "place_3",
+        "loc-x1-y0": "place_2",
+        "loc-x2-y0": "place_0",
+        "loc-x3-y0": "place_5",
+        "loc-x4-y0": "place_1",
+        "loc-x5-y0": "place_4"
+    },
+    "instance-38.pddl": {
+        "loc-x0-y0": "place_0",
+        "loc-x0-y1": "place_1",
+        "loc-x0-y2": "place_4",
+        "loc-x1-y0": "place_5",
+        "loc-x1-y1": "place_2",
+        "loc-x1-y2": "place_3"
+    },
+    "instance-43.pddl": {
+        "loc-x0-y0": "place_1",
+        "loc-x1-y0": "place_3",
+        "loc-x2-y0": "place_2",
+        "loc-x3-y0": "place_5",
+        "loc-x4-y0": "place_0",
+        "loc-x5-y0": "place_4"
+    },
+    "instance-18.pddl": {
+        "loc-x0-y0": "place_0",
+        "loc-x1-y0": "place_3",
+        "loc-x2-y0": "place_2",
+        "loc-x3-y0": "place_1",
+        "loc-x4-y0": "place_4",
+        "loc-x5-y0": "place_5"
+    },
+    "instance-48.pddl": {
+        "loc-x0-y0": "place_2",
+        "loc-x0-y1": "place_0",
+        "loc-x0-y3": "place_4",
+        "loc-x1-y1": "place_1",
+        "loc-x1-y2": "place_3",
+        "loc-x1-y3": "place_5"
+    },
+    "instance-33.pddl": {
+        "loc-x0-y1": "place_6",
+        "loc-x0-y2": "place_0",
+        "loc-x0-y3": "place_1",
+        "loc-x1-y0": "place_5",
+        "loc-x1-y1": "place_2",
+        "loc-x1-y2": "place_3",
+        "loc-x1-y3": "place_4"
+    },
+    "instance-25.pddl": {
+        "loc-x0-y0": "place_5",
+        "loc-x1-y0": "place_0",
+        "loc-x1-y1": "place_4",
+        "loc-x2-y0": "place_2",
+        "loc-x2-y1": "place_1",
+        "loc-x2-y2": "place_3"
+    },
+    "instance-6.pddl": {
+        "loc-x0-y1": "place_0",
+        "loc-x0-y2": "place_1",
+        "loc-x0-y3": "place_5",
+        "loc-x1-y0": "place_6",
+        "loc-x1-y1": "place_3",
+        "loc-x1-y2": "place_4",
+        "loc-x1-y3": "place_2"
+    },
+    "instance-32.pddl": {
+        "loc-x0-y0": "place_3",
+        "loc-x0-y1": "place_2",
+        "loc-x0-y2": "place_1",
+        "loc-x0-y3": "place_6",
+        "loc-x1-y1": "place_0",
+        "loc-x1-y2": "place_4",
+        "loc-x1-y3": "place_5"
+    },
+    "instance-49.pddl": {
+        "loc-x0-y2": "place_5",
+        "loc-x1-y0": "place_0",
+        "loc-x1-y1": "place_2",
+        "loc-x1-y2": "place_3",
+        "loc-x2-y0": "place_1",
+        "loc-x2-y1": "place_4"
+    },
+    "instance-45.pddl": {
+        "loc-x0-y0": "place_0",
+        "loc-x0-y1": "place_5",
+        "loc-x0-y2": "place_3",
+        "loc-x1-y0": "place_1",
+        "loc-x1-y1": "place_2",
+        "loc-x1-y2": "place_4"
+    },
+    "instance-12.pddl": {
+        "loc-x0-y0": "place_2",
+        "loc-x0-y1": "place_5",
+        "loc-x0-y2": "place_3",
+        "loc-x1-y0": "place_1",
+        "loc-x1-y1": "place_0",
+        "loc-x1-y2": "place_4"
+    },
+    "instance-11.pddl": {
+        "loc-x0-y0": "place_1",
+        "loc-x0-y1": "place_0",
+        "loc-x1-y1": "place_3",
+        "loc-x1-y2": "place_2"
+    },
+    "instance-50.pddl": {
+        "loc-x0-y0": "place_2",
+        "loc-x0-y1": "place_0",
+        "loc-x1-y0": "place_1",
+        "loc-x1-y2": "place_3",
+        "loc-x2-y0": "place_4",
+        "loc-x2-y2": "place_5"
+    },
+    "instance-4.pddl": {
+        "loc-x0-y1": "place_7",
+        "loc-x0-y3": "place_4",
+        "loc-x1-y0": "place_2",
+        "loc-x1-y1": "place_3",
+        "loc-x1-y2": "place_6",
+        "loc-x1-y3": "place_0",
+        "loc-x2-y0": "place_1",
+        "loc-x2-y1": "place_5"
+    },
+    "instance-47.pddl": {
+        "loc-x0-y1": "place_3",
+        "loc-x0-y2": "place_4",
+        "loc-x0-y3": "place_2",
+        "loc-x1-y1": "place_0",
+        "loc-x1-y2": "place_1",
+        "loc-x1-y3": "place_5"
+    },
+    "instance-17.pddl": {
+        "loc-x0-y0": "place_5",
+        "loc-x1-y0": "place_0",
+        "loc-x2-y0": "place_4",
+        "loc-x3-y0": "place_2",
+        "loc-x4-y0": "place_1",
+        "loc-x5-y0": "place_3"
+    },
+    "instance-41.pddl": {
+        "loc-x0-y2": "place_1",
+        "loc-x1-y0": "place_8",
+        "loc-x1-y1": "place_6",
+        "loc-x1-y2": "place_7",
+        "loc-x2-y0": "place_9",
+        "loc-x2-y1": "place_4",
+        "loc-x2-y2": "place_10",
+        "loc-x3-y0": "place_0",
+        "loc-x3-y1": "place_5",
+        "loc-x4-y1": "place_2",
+        "loc-x4-y2": "place_3"
+    },
+    "instance-36.pddl": {
+        "loc-x0-y0": "place_0",
+        "loc-x1-y0": "place_2",
+        "loc-x1-y1": "place_1",
+        "loc-x1-y2": "place_3"
+    },
+    "instance-0.pddl": {
+        "loc-x0-y0": "place_0",
+        "loc-x0-y1": "place_2",
+        "loc-x0-y2": "place_1",
+        "loc-x1-y0": "place_4",
+        "loc-x1-y1": "place_3",
+        "loc-x1-y2": "place_5"
+    }
+}
