@@ -1,0 +1,69 @@
+{
+    "llm_config": {
+        "plan": {
+            "model_name": "openai_chat",
+            "model_path": "gpt-4o",
+            "examples_chat": true,
+            "prompt_file": "./llm_planning/prompt_templates/planning_template_interactive.txt",
+            "temp": 0,
+            "max_tokens": null,
+            "max_history": null,
+            "caching": "default",
+            "seed": "[int]",
+            "api_key": "[key]"
+        },
+        "translate": {
+            "model_name": "openai_chat",
+            "model_path": "gpt-4o",
+            "examples_chat": true,
+            "prompt_file": "./llm_planning/prompt_templates/translation_template.txt",
+            "examples_file": "./data/{domain_name}/translation_examples_seed{seed}.json",
+            "temp": 0,
+            "max_tokens": 750,
+            "max_history": 0,
+            "caching": "default",
+            "api_key": "[key]",
+            "seed": "[int]"
+        }
+    },
+    "task_nums": [
+        3,
+        2,
+        16,
+        14,
+        18,
+        20,
+        10,
+        11,
+        17,
+        15,
+        9,
+        21,
+        7,
+        13,
+        8,
+        6,
+        4,
+        12,
+        19,
+        5
+    ],
+    "domain_dir": "data/{domain_name}",
+    "planning_approach": "act",
+    "encoding_type": "automatic",
+    "translation_neural": true,
+    "incremental": true,
+    "thoughts": false,
+    "positive_feedback": "full",
+    "negative_feedback": "full",
+    "subgoal_feedback": false,
+    "provide_state": false,
+    "not_finished_feedback": true,
+    "log_history": false,
+    "run_config": {
+        "steps": null,
+        "break_limit": 10,
+        "break_limit_reached_goal": 1,
+        "directory": "{domain_name}_act_seed{seed}"
+    }
+}

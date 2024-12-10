@@ -1,0 +1,18 @@
+{
+  "data_to_eval": [
+    {
+      "generated_plans_path": "./output_files/{output_dir}",
+      "summarized": false,
+      "evaluation_results_file": "./evaluation_results/{output_dir}.csv",
+      "gold_plan_dir": "./data/{domain_name}/adapted_gold_plans",
+      "is_complete_plan": null
+    },
+    {
+      "generated_plans_path": "./output_files/{output_dir}",
+      "summarized": true,
+      "evaluation_results_file": "./evaluation_results/{output_dir}_summarized.csv",
+      "gold_plan_dir": "./data/{domain_name}/adapted_gold_plans",
+      "is_complete_plan": null
+    }
+  ]
+}
