@@ -37,7 +37,7 @@ This Readme contains the information needed to run the main parts of the project
   - This code has only been tested under Linux.
   - It should work on MacOS as well provided the VAL can be compiled successfully
 - an OpenAI account 
-  - (it is theoretically also possible to run other models such as llama or vicuna. However, we 1) did not test these models on the tasks and cannot tell whether they successfully generate the formats required based on the prompts and few-shot examples from the current repository and 2) there have been several updates to required dependencies since this was set up which cause problems. See the [Wiki](https://github.com/coli-saar/autoplanbench/wiki/Adding-support-for-additional-LLM-types) for details on how to add support for other LLM models)
+  - (it is theoretically also possible to run other models such as llama or vicuna. However, we 1) did not test these models on the tasks and cannot tell whether they successfully generate the formats required based on the prompts and few-shot examples from the current repository and 2) there have been several updates to required dependencies since this was set up which cause problems. See the [Wiki]([https://github.com/coli-saar/autoplanbench/wiki/Adding-support-for-additional-LLM-types](https://github.com/minecraft-saar/autoplanbench/wiki/Support-for-additional-LLM-types)) for details on how to add support for other LLM models)
 
 ## How to set up Autoplanbench
 
