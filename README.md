@@ -109,7 +109,7 @@ The resulting directory tree will look like this:
 
 **NOTE:**
 The `DATA_DIR` and `ORIG_INST_FOLDER` variables in
-[utils/paths.py](https://github.com/coli-saar/autoplanbench/blob/main/utils/paths.py)
+[utils/paths.py](https://github.com/minecraft-saar/autoplanbench/blob/main/utils/paths.py)
 can be changed if another data directory or another name for the subfolder
 with the problem instances is used. Alternatively different directories can
 be specified when running `run_autoplanbench.py`
@@ -177,7 +177,7 @@ python create_steps_commands.py --version planning --mode both --domains blocksw
 
 ### Running individual steps
 
-For information on how to run individual steps, refer to the [Wiki](https://github.com/coli-saar/autoplanbench/wiki/Running-individual-steps).
+For information on how to run individual steps, refer to the [Wiki](https://github.com/minecraft-saar/autoplanbench/wiki/Running-individual-steps).
 
 ### Output Files
 
@@ -193,4 +193,4 @@ files will be saved to the directory `evaluation_results` per default.
 For each configuration of domain, approach and seed, two files will be saved:
 One .csv file with the individual results per instance, and one .csv file
 containing a summary with a number of metrics. For a detailed description,
-please refer to the [Wiki](https://github.com/coli-saar/autoplanbench/wiki/Evaluation-metrics).
+please refer to the [Wiki](https://github.com/minecraft-saar/autoplanbench/wiki/Evaluation-Metrics).
