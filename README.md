@@ -37,7 +37,7 @@ This Readme contains the information needed to run the main parts of the project
   - This code has only been tested under Linux.
   - It should work on MacOS as well provided the VAL can be compiled successfully
 - an OpenAI account 
-  - (it is theoretically also possible to run other models such as llama or vicuna. However, we 1) did not test these models on the tasks and cannot tell whether they successfully generate the formats required based on the prompts and few-shot examples from the current repository and 2) there have been several updates to required dependencies since this was set up which cause problems. See the [Wiki](https://github.com/coli-saar/autoplanbench/wiki/Adding-support-for-additional-LLM-types) for details on how to add support for other LLM models)
+  - (it is theoretically also possible to run other models such as llama or vicuna. However, we 1) did not test these models on the tasks and cannot tell whether they successfully generate the formats required based on the prompts and few-shot examples from the current repository and 2) there have been several updates to required dependencies since this was set up which cause problems. See the [Wiki]([https://github.com/coli-saar/autoplanbench/wiki/Adding-support-for-additional-LLM-types](https://github.com/minecraft-saar/autoplanbench/wiki/Support-for-additional-LLM-types)) for details on how to add support for other LLM models)
 
 ## How to set up Autoplanbench
 
@@ -109,7 +109,7 @@ The resulting directory tree will look like this:
 
 **NOTE:**
 The `DATA_DIR` and `ORIG_INST_FOLDER` variables in
-[utils/paths.py](https://github.com/coli-saar/autoplanbench/blob/main/utils/paths.py)
+[utils/paths.py](https://github.com/minecraft-saar/autoplanbench/blob/main/utils/paths.py)
 can be changed if another data directory or another name for the subfolder
 with the problem instances is used. Alternatively different directories can
 be specified when running `run_autoplanbench.py`
@@ -177,7 +177,7 @@ python create_steps_commands.py --version planning --mode both --domains blocksw
 
 ### Running individual steps
 
-For information on how to run individual steps, refer to the [Wiki](https://github.com/coli-saar/autoplanbench/wiki/Running-individual-steps).
+For information on how to run individual steps, refer to the [Wiki](https://github.com/minecraft-saar/autoplanbench/wiki/Running-individual-steps).
 
 ### Output Files
 
@@ -193,4 +193,4 @@ files will be saved to the directory `evaluation_results` per default.
 For each configuration of domain, approach and seed, two files will be saved:
 One .csv file with the individual results per instance, and one .csv file
 containing a summary with a number of metrics. For a detailed description,
-please refer to the [Wiki](https://github.com/coli-saar/autoplanbench/wiki/Evaluation-metrics).
+please refer to the [Wiki](https://github.com/minecraft-saar/autoplanbench/wiki/Evaluation-Metrics).
