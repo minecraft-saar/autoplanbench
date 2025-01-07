@@ -10,14 +10,14 @@ Additionally, we make our complete dataset available, consisting of NL conversio
 * latest version of the dataset
 * containing the same 12 domains as APB 1.0 plus a large number of IPC datasets 
 * NL versions generated using OpenAI's GPT-4o model between Aug-Nov, 24 
-* corresponds to the newest version of the paper that will soon be made publicly available 
+* corresponds to the newest version of the paper: [Automating the Generation of Prompts for LLM-based Action Choice in PDDL Planning](https://arxiv.org/abs/2311.09830) 
 * current respository corresponds to the latest version of the data and paper
 
 **APB 1.0**
 * first version of the dataset
 * comprising 12 domains and not including IPC datasets
 * NL versions generated using OpenAI's GPT-4 model between Nov, 23 and March, 24
-* used for the experiments in the first version of the paper([AutoPlanBench: Automatically generating benchmarks for LLM planners from PDDL](https://arxiv.org/abs/2311.09830)) and the (slightly extended) version presented at the  [Workshop on Bridging the Gap Between AI Planning and Reinforcement Learning](https://prl-theworkshop.github.io/prl2024-icaps/) (PRL) at ICAPS 2024 (see the [Website](https://coli-saar.github.io/autoplanbench) or the Workshop website for the paper)
+* used for the experiments in the first version of the paper([AutoPlanBench: Automatically generating benchmarks for LLM planners from PDDL](https://arxiv.org/abs/2311.09830v2)) and the (slightly extended) version presented at the  [Workshop on Bridging the Gap Between AI Planning and Reinforcement Learning](https://prl-theworkshop.github.io/prl2024-icaps/) (PRL) at ICAPS 2024 (see the [Website](https://coli-saar.github.io/autoplanbench) or the Workshop website for the paper)
 * code is available [here](https://github.com/minecraft-saar/autoplanbench/releases/tag/v1.0)
 
 The code in this repository is made available under the Apache 2.0 license. <br>

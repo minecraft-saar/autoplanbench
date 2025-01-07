@@ -1,3 +1,6 @@
+.idea/
+.DS_Store
+
 set_env.py
 setup_experiments_files_old.py
 llm_planning/create_sh_script_few_shot.py
@@ -8,11 +11,8 @@ pddl_processing/rewrite_descriptions.py
 pddl_processing/naming_manipulations
 autoplanbench.egg-info
 batching
-data
-configs
 llm_caches
 generate_sh_scripts
-evaluation_results
 explorative_analysis
 output_files
 temp_files
