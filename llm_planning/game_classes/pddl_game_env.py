@@ -1,6 +1,6 @@
 import os
 import re
-from typing import Tuple, List
+from typing import Tuple, List, Union
 from stanza import Pipeline
 from llm_planning.raw_pddl_input.raw_pddl_env import RawPDDLEnvironment
 
@@ -16,7 +16,7 @@ class PDDLWorldEnvironment(RawPDDLEnvironment):
                  domain_nl: dict,
                  instance_file: str,
                  domain_file: str,
-                 nlp_processor: Pipeline):
+                 nlp_processor: Union[Pipeline, None]):
 
         super().__init__(instance_file=instance_file, domain_file=domain_file)
 
@@ -98,12 +98,12 @@ class PDDLWorldEnvironment(RawPDDLEnvironment):
         with open(self.tmp_action_file, 'w') as plan_file:
             plan_file.write(action_instr)
 
-        # need an instance file that hast the current state as the initial state
+        # need an instance file that has the current state as the initial state
         self.create_tmp_instance()
 
         # need run VAL validate -v self.domain_file self.instance_file plan
         val = os.environ.get('VAL')
-        cmd = f'{val} -v {self.domain_file} {self.tmp_instance_file} {self.tmp_action_file}'
+        cmd = f'{val}/validate -v {self.domain_file} {self.tmp_instance_file} {self.tmp_action_file}'
         self.last_val_response = os.popen(cmd).read()
 
         # store output somehow and parse it

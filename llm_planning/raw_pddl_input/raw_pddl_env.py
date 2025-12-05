@@ -57,7 +57,7 @@ class RawPDDLEnvironment:
 
         # need run VAL validate -v self.domain_file self.instance_file plan
         val = os.environ.get('VAL')
-        cmd = f'{val} -v {self.domain_file} {self.instance_file} {self.tmp_action_file}'
+        cmd = f'{val}/validate -v {self.domain_file} {self.instance_file} {self.tmp_action_file}'
         self.last_val_response = os.popen(cmd).read()
 
         # store output somehow and parse it
@@ -74,24 +74,7 @@ class RawPDDLEnvironment:
 
         return goal_feedback
 
-
-    def split_problem_file_old(self, instance_file):
-
-        with open(instance_file, 'r') as pf:
-            problem_text = pf.read()
-        problem_text = problem_text.strip()
-        pref, definition = problem_text.split('(:objects')
-        problem_def, goal_def = definition.split('(:goal')
-
-        problem_def = f'(:objects {problem_def}'
-        problem_def = problem_def.strip()
-
-        goal_def = f'(:goal {goal_def}'
-        goal_def = goal_def.strip()
-        if goal_def[-1] == ')':
-            goal_def = goal_def[:-1]
-
-        return problem_def, goal_def
+    # -------------------------- Setting things up -----------------------------
 
     def split_problem_file(self, instance_file):
 
@@ -228,6 +211,52 @@ class RawPDDLEnvironment:
                 tmp_file.write(line)
 
 
+    def step(self, action_instr: str):
+        # ----- Functionalities to deal with inputs VAL cannot deal with for this domain ------
+
+        checked_action = self.pre_check_action(action_instr=action_instr)
+        if checked_action != action_instr:
+            return checked_action, False, self.completed
+
+        if len(self.problem.language.sorts) > 1:
+            type_checked_action = self.check_type_constraints(action_instr=action_instr)
+            if type_checked_action != action_instr:
+                return type_checked_action, False, self.completed
+
+        # ----- Everything that can be done with VAL ----- #
+
+        # need to write it into a temporary file as a unary plan
+        with open(self.tmp_action_file, 'w') as plan_file:
+            plan_file.write(action_instr)
+
+        # need an instance file that hast the current state as the initial state
+        self.create_tmp_instance()
+
+        # need run VAL validate -v self.domain_file self.instance_file plan
+        val = os.environ.get('VAL')
+        cmd = f'{val}/validate -v {self.domain_file} {self.tmp_instance_file} {self.tmp_action_file}'
+        self.last_val_response = os.popen(cmd).read()
+
+        # store output somehow and parse it
+        reached_goal, executable, effects, advice_goal, advice_precond = self.parse_val_output(self.last_val_response)
+
+        if reached_goal:
+            self.completed = True
+
+        if executable:
+            assert len(effects) > 0
+            self.update_current_state(effects)
+            feedback = self.get_feedback_successful(action_instr)
+
+        else:
+            assert len(advice_precond) > 0
+            feedback = self.get_feedback_unsat(advice_precond)
+
+        if not reached_goal and executable:
+            self.goal_feedback = self.get_feedback_unsat(advice_goal)
+
+        return feedback, executable, reached_goal
+
     def pre_check_action(self, action_instr: str):
         """
 
@@ -263,75 +292,6 @@ class RawPDDLEnvironment:
         else:
             return action_instr
 
-
-    def update_current_state(self, effects: list):
-        """
-
-        :param effects:
-        :return:
-        """
-        for effect in effects:
-            effect_type = effect.split(' ')[0]
-            fact = effect.split(' ')[1:]
-            fact = ' '.join(fact)
-            if effect_type == 'Deleting':
-                #assert fact in self.facts_current_state
-                count_pred = self.facts_current_state.count(fact)
-                for _ in range(count_pred):
-                    self.facts_current_state.remove(fact)
-
-            elif effect_type == 'Adding':
-                self.facts_current_state.append(fact)
-            else:
-                print(f'Warning: unknown type of effect action {effect_type}')
-
-
-    def step(self, action_instr: str):
-        # ----- Functionalities to deal with inputs VAL cannot deal with for this domain ------
-
-        checked_action = self.pre_check_action(action_instr=action_instr)
-        if checked_action != action_instr:
-            return checked_action, False, self.completed
-
-        if len(self.problem.language.sorts) > 1:
-            type_checked_action = self.check_type_constraints(action_instr=action_instr)
-            if type_checked_action != action_instr:
-                return type_checked_action, False, self.completed
-
-        # ----- Everything that can be done with VAL ----- #
-
-        # need to write it into a temporary file as a unary plan
-        with open(self.tmp_action_file, 'w') as plan_file:
-            plan_file.write(action_instr)
-
-        # need an instance file that hast the current state as the initial state
-        self.create_tmp_instance()
-
-        # need run VAL validate -v self.domain_file self.instance_file plan
-        val = os.environ.get('VAL')
-        cmd = f'{val} -v {self.domain_file} {self.instance_file} {self.tmp_action_file}'
-        self.last_val_response = os.popen(cmd).read()
-
-        # store output somehow and parse it
-        reached_goal, executable, effects, advice_goal, advice_precond = self.parse_val_output(self.last_val_response)
-
-        if reached_goal:
-            self.completed = True
-
-        if executable:
-            assert len(effects) > 0
-            print(effects)
-            self.update_current_state(effects)
-            feedback = self.get_feedback_successful(action_instr)
-
-        else:
-            assert len(advice_precond) > 0
-            feedback = self.get_feedback_unsat(advice_precond)
-
-        if not reached_goal and executable:
-            self.goal_feedback = self.get_feedback_unsat(advice_goal)
-
-        return feedback, executable, reached_goal
 
 
     def get_feedback_successful(self, action: str) -> str:
@@ -480,6 +440,26 @@ class RawPDDLEnvironment:
 
         return pred_name, object_names
 
+    def update_current_state(self, effects: list):
+        """
+
+        :param effects:
+        :return:
+        """
+        for effect in effects:
+            effect_type = effect.split(' ')[0]
+            fact = effect.split(' ')[1:]
+            fact = ' '.join(fact)
+            if effect_type == 'Deleting':
+                #assert fact in self.facts_current_state
+                count_pred = self.facts_current_state.count(fact)
+                for _ in range(count_pred):
+                    self.facts_current_state.remove(fact)
+
+            elif effect_type == 'Adding':
+                self.facts_current_state.append(fact)
+            else:
+                print(f'Warning: unknown type of effect action {effect_type}')
 
     def get_problem(self, instance, domain: str):
         """
@@ -602,4 +582,5 @@ class RawPDDLEnvironment:
             return feedback
         else:
             return action_instr
+
 

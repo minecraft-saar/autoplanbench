@@ -175,9 +175,29 @@ Run planning for the same configuration:
 python create_steps_commands.py --version planning --mode both --domains blocksworld --seeds 1 2 3 --api-key-id key1
 ```
 
+
 ### Running individual steps
 
-For information on how to run individual steps, refer to the [Wiki](https://github.com/minecraft-saar/autoplanbench/wiki/Running-individual-steps).
+For information on how to run individual steps separately, refer to the [Wiki](https://github.com/coli-saar/autoplanbench/wiki/Running-individual-steps).
+
+**Generating only NL descriptions**<br>
+
+Rund the domain setup as explained above then use the following functions to generate the NL descriptions: 
+
+Functions to generate the NL domain description, NL descriptions of a specific PDDL problem or a plan
+
+`python utils/run_save_descriptions.py --type domain --out [output_path] --d-nl [nl_domain] -t [template_file]`
+
+`python utils/run_save_descriptions.py --type instance --out [output_path] --d-nl [nl_domain] -d [pddl_domain] --prob [pddl_problem] --plan [pddl_plan] --out-plan [output_path_plan]`
+
+* `type`: "domain" if NL description for the domain and "instance" if the domain description for a problem (and plan) should be created
+* `output_path`: path to the output file
+* `nl_domain`: path to the .json file with the generated nl descriptions
+* `template_file`: file to the jinja template for the domain description, defaults to _utils.paths.DOMAIN_DESCRIPTION_TEMPLATE_
+* `pddl_domain`: path to the pddl domain file
+* `pddl_problem`: path to the pddl problem file for which the NL descriptions is generated
+* `pddl_plan`: optional; if provided also generates NL plan
+* `output_path_plan`: path for output file if plan is converted
 
 ### Output Files
 
