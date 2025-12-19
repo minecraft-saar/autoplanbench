@@ -1,8 +1,9 @@
 # AutoPlanBench
 
 This repository contains the code for AutoPlanBench, a tool to convert PDDL domains and problems into natural language and to run different LLM action choiche mechanisms (both plan generation and action policy) on them.
-
 Additionally, we make our complete dataset available, consisting of NL conversions for a large set of IPC datasets and some additional domains. 
+
+The code and data belongs to the ICAPS'25 paper [Automating the Generation of Prompts for LLM-based Action Choice in PDDL Planning](https://ojs.aaai.org/index.php/ICAPS/article/view/36126)
 
 **Note:** There exist two main versions of this code and the dataset. (See also the [dataset readme](https://github.com/minecraft-saar/autoplanbench/tree/main/autoplanbench_dataset#autoplanbench-dataset) ).
 
@@ -10,7 +11,7 @@ Additionally, we make our complete dataset available, consisting of NL conversio
 * latest version of the dataset
 * containing the same 12 domains as APB 1.0 plus a large number of IPC datasets 
 * NL versions generated using OpenAI's GPT-4o model between Aug-Nov, 24 
-* corresponds to the newest version of the paper: [Automating the Generation of Prompts for LLM-based Action Choice in PDDL Planning](https://arxiv.org/abs/2311.09830) 
+* corresponds to the newest version of the paper: [Automating the Generation of Prompts for LLM-based Action Choice in PDDL Planning](https://ojs.aaai.org/index.php/ICAPS/article/view/36126)
 * current respository corresponds to the latest version of the data and paper
 
 **APB 1.0**
