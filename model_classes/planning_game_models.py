@@ -5,10 +5,16 @@ from typing import List, Tuple, Union
 from abc import ABC, abstractmethod
 from pathlib import Path
 from utils.paths import get_cache_dir
-from .llm_models import LLMModel
-from .vicuna_models import VicunaModel
-from .openai_models import OpenAIComplModel, OpenAIChatModel
+from .llm_base_class import LLMModel
+# from .vicuna_models import VicunaModel
+# from .openai_models import OpenAIComplModel, OpenAIChatModel
 from .openai_batch_model import OpenAIChatBatch
+from .llm_classes.deepseek  import DeepSeekReasonModel
+from .llm_classes.ollama_models import OllamaModel
+# from .llm_classes.ollama_openaiAPI_llm import OLlamaChatModel
+from .llm_classes.openai_models_sampling import OpenAIChatModelSampling
+from .llm_classes.openai_models import OpenAIChatModel
+from .llm_classes.sglang_models import SGLangModel, SGLangThinking
 # from .llama_model import LlamaModel
 
 
@@ -18,16 +24,18 @@ class PlanningModel:
     def __init__(self, model_type: str, model_param: dict, examples_dict: dict, init_prompt: str):
         """
 
-        :param model_type:
-        :param model_param:
-        :param examples_dict:
+        :param model_type: name of the model to use
+        :param model_param: dictionary with the parameters for the model
+                            required keys: 'model_path', 'max_tokens', 'temperature', 'max_history'
+                            optional_keys: "caching", "seed"
+        :param examples_dict: 
         :param init_prompt:
         """
         self.model_param = model_param
         self.examples_dict = examples_dict
         self.init_prompt = init_prompt
         self.examples_chat: bool = self.model_param.get('examples_chat', False)
-        self.model: LLMModel = create_llm_model(model_type, model_param)
+        self.model: LLMModel = create_llm_model(model_type, model_param) 
         self.initialize_model()
 
     def initialize_model(self):
@@ -36,10 +44,14 @@ class PlanningModel:
         adding few-shot examples if specified
         :return:
         """
-        self.model.init_model(self.init_prompt)
+        # examples_chat may not exist in model_param and so self.examples_chat may be False
+
+        # self.model.init_model(self.init_prompt)
         if self.examples_chat:
             examples = self.get_list_examples()
             self.add_few_shot_dialogue_style(examples)
+            self.model.init_model(self.init_prompt, examples)
+
 
     def add_few_shot_dialogue_style(self, examples: List[dict]):
         """
@@ -84,12 +96,13 @@ class PlanningModel:
     def generate(self, user_message, assert_cache: bool = False):
         if not self.examples_chat:
             user_message = self.create_input_format_example(user_message)
-        output = self.model.generate(user_message, assert_cache)
+        # output = self.model.generate(user_message, assert_cache) # what is assert_cache
+        output = self.model.generate(user_message)
         return output
 
 
     def create_input_format_example(self, user_message: str) -> str:
-        """
+        """self.model.init_model(self.init_prompt)
         Puts the user_message into the format that matches the few-shot examples if any provided
         e.g. f'Original: {user_message}\nOutput:'
         :param user_message:
@@ -115,9 +128,11 @@ class TranslationModel:
     def __init__(self, model_type: str, model_param: dict, examples_dict: dict, init_prompt: str):
         """
 
-        :param model_type:
-        :param model_param:
-        :param examples_dict:
+        :param model_type: name of the model to use
+        :param model_param: dictionary with the parameters for the model
+                            required keys: 'model_path', 'max_tokens', 'temperature', 'max_history'
+                            optional_keys: "caching", "seed"
+        :param examples_dict: 
         :param init_prompt:
         """
         self.model_param = model_param
@@ -130,13 +145,17 @@ class TranslationModel:
 
     def initialize_model(self):
         """
-
+        Initializes the model by creating the initial prompt, initializing self.model with it and
+        adding few-shot examples if specified
         :return:
         """
-        self.model.init_model(self.init_prompt)
+        # examples_chat may not exist in model_param and so self.examples_chat may be False
+        
+        # self.model.init_model(self.init_prompt)
         if self.examples_chat:
             examples = self.get_list_examples()
             self.add_few_shot_dialogue_style(examples)
+            self.model.init_model(self.init_prompt, examples)
 
 
     def add_few_shot_dialogue_style(self, examples: List[dict]):
@@ -204,67 +223,111 @@ class TranslationModel:
 
 
 
-def create_llm_model(model_type: str, model_param: dict) -> LLMModel:
+# def create_llm_model(model_type: str, model_param: dict) -> LLMModel:
+#     """
+#     Creates different kinds of llm models of the subclasses of LLMModel (in llm_models.py)
+#     :param model_type: the name of the model to use
+#     :param model_param: dictionary with the parameters for the model
+#                         required keys: 'model_path', 'max_tokens', 'temp', 'max_history'
+#                         if vicuna model additionally: 'cuda_n', 'load_method'
+#                         optional_keys: "caching", "seed"
+#     :return:
+#     """
+#     model_path = model_param['model_path']
+
+#     model_input_param = copy.deepcopy(model_param)
+#     try:
+#         model_input_param.pop('examples_chat')
+#     except KeyError:
+#         pass
+
+#     try:
+#         model_input_param.pop('prompt_file')
+#     except KeyError:
+#         pass
+
+#     try:
+#         model_input_param.pop('examples_file')
+#     except KeyError:
+#         pass
+
+#     try:
+#         batching = model_input_param.pop('batching')
+#     except KeyError:
+#         batching = False
+
+#     try:
+#         cache_sub_dir = model_input_param.pop('caching')
+#     except KeyError:
+#         cache_sub_dir = 'default'
+
+#     if cache_sub_dir is None:
+#         cache_dir = get_cache_dir(None, None)
+#     elif cache_sub_dir == 'default':
+#         cache_dir = get_cache_dir(model_subdir_name=f'{model_type}_{model_path}',
+#                                   exp_subdir_name=None)
+#     else:
+#         cache_dir = get_cache_dir(model_subdir_name=f'{model_type}_{model_path}',
+#                                   exp_subdir_name=cache_sub_dir)
+
+#     model_input_param['cache_directory'] = cache_dir
+
+#     if model_type == 'openai_chat' and batching:
+#         model = OpenAIChatBatch(**model_input_param)
+#     elif model_type == 'openai_chat':
+#         model = OpenAIChatModel(**model_input_param)
+#     elif model_type == 'openai_comp':
+#         model = OpenAIComplModel(**model_input_param)
+#     # TODO:
+#     #elif model_type == 'llama_hf':
+#     #    model = LlamaModel(**model_input_param)
+
+#     elif model_type in ['vicuna', 'vicuna-x-gpt']:
+#         model = VicunaModel(**model_input_param)
+#     else:
+#         raise NotImplementedError
+
+#     return model
+
+def create_llm_model(model_type: str,
+                     model_param: dict,
+                     cache_sub_dir: Union[None, str] = 'default') -> LLMModel:
     """
     Creates different kinds of llm models of the subclasses of LLMModel (in llm_models.py)
     :param model_type: the name of the model to use
     :param model_param: dictionary with the parameters for the model
-                        required keys: 'model_path', 'max_tokens', 'temp', 'max_history'
+                        required keys: 'model_path', 'max_tokens', 'temperature', 'max_history'
                         if vicuna model additionally: 'cuda_n', 'load_method'
                         optional_keys: "caching", "seed"
+    :param cache_sub_dir:
     :return:
     """
     model_path = model_param['model_path']
 
     model_input_param = copy.deepcopy(model_param)
-    try:
-        model_input_param.pop('examples_chat')
-    except KeyError:
-        pass
-
-    try:
-        model_input_param.pop('prompt_file')
-    except KeyError:
-        pass
-
-    try:
-        model_input_param.pop('examples_file')
-    except KeyError:
-        pass
-
-    try:
-        batching = model_input_param.pop('batching')
-    except KeyError:
-        batching = False
-
-    try:
-        cache_sub_dir = model_input_param.pop('caching')
-    except KeyError:
-        cache_sub_dir = 'default'
 
     if cache_sub_dir is None:
         cache_dir = get_cache_dir(None, None)
-    elif cache_sub_dir == 'default':
-        cache_dir = get_cache_dir(model_subdir_name=f'{model_type}_{model_path}',
-                                  exp_subdir_name=None)
     else:
         cache_dir = get_cache_dir(model_subdir_name=f'{model_type}_{model_path}',
                                   exp_subdir_name=cache_sub_dir)
 
     model_input_param['cache_directory'] = cache_dir
 
-    if model_type == 'openai_chat' and batching:
-        model = OpenAIChatBatch(**model_input_param)
-    elif model_type == 'openai_chat':
-        model = OpenAIChatModel(**model_input_param)
-    elif model_type == 'openai_comp':
-        model = OpenAIComplModel(**model_input_param)
-    # TODO:
-    #elif model_type == 'llama_hf':
-    #    model = LlamaModel(**model_input_param)
+    if model_type == 'openai_chat':
+        if 'n' in model_input_param.keys():
+            model = OpenAIChatModelSampling(**model_input_param)
+        else:
+            model = OpenAIChatModel(**model_input_param)
 
-    elif model_type in ['vicuna', 'vicuna-x-gpt']:
-        model = VicunaModel(**model_input_param)
+    elif model_type == 'ollama':
+        model = OllamaModel(**model_input_param)
+    elif model_type == 'sglang':
+        model = SGLangModel(**model_input_param)
+    elif model_type == 'sglang_think':
+        model = SGLangThinking(**model_input_param)
+    elif model_type == 'deepseek-reasoner':
+        model = DeepSeekReasonModel(**model_input_param)
     else:
         raise NotImplementedError
 

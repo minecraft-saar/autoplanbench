@@ -1,7 +1,9 @@
 .idea/
 .DS_Store
+.venv/
 
 set_env.py
+pyproject.toml
 setup_experiments_files_old.py
 llm_planning/create_sh_script_few_shot.py
 llm_planning/run_few_shot_creation.sh

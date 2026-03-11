@@ -1,49 +1,58 @@
-from typing import List, Union
+import copy
+from typing import List, Union, Tuple
 from openai import OpenAI
-from model_classes.llm_models import LLMModel
+from diskcache import Cache
+from ..llm_base_class import LLMModel
 from openai.types.chat import ChatCompletion
+from utils.set_env import set_env_vars
 
 
-class OpenAIChatModel(LLMModel):
+class OpenAIChatModelSampling(LLMModel):
 
     def __init__(self,
-                 model_name: str,
                  model_path: str,
-                 max_tokens: int,
-                 temp: float,
-                 max_history: Union[int, None],
-                 cache_directory: Union[str, None] = None,
+                 max_history: Union[int, None] = None,
+                 temperature: float = 0.0,
+                 cache_directory: Union[str, None] = 'default',
+                 max_tokens: Union[None, int] = None,
                  seed: Union[int, None] = None,
-                 logprobs: Union[bool, None] = True,
-                 api_key: Union[None, str]=None):
+                 logprobs: bool = True,
+                 additional_openai_parameters: Union[dict, None] = None,
+                 openai_credentials: Union[dict, None] = None,
+                 n: Union[int, None] = None):
         """
 
-        :param model_name: the general name of the model to identify the correct LLMModel subclass, e.g. openai_chat
-        :param model_path: the path to the model weights if using local weights
-                           or the original name of the model for using Huggingface or OpenAI models
+        :param model_path: the name of the open AI model
         :param max_tokens: maximum number of output tokens
-        :param temp: temperature
-        :param max_history: maximum length of the dialogue history at each point of the interaction (only for chat models)
+        :param temperature: temperature
+        :param max_history: maximum length of the dialogue history at each point of the interaction
                             e.g. if max_history = 5 then the dialogue history that the model gets as input always consists
                             of the system prompt + the 5 last interactions, where an interaction is both the input and output
                             i.e. the length of the dialogue history is always 1 + 2 * max_history
+                    set to None to keep the complete history
         :param cache_directory:
+        :param seed:
+        :param logprobs:
+        :param additional_openai_parameters:
+        :param openai_credentials:
         """
-
-        super().__init__(model_name=model_name, model_path=model_path, max_tokens=max_tokens,
-                         temp=temp, max_history=max_history, cache_directory=cache_directory, seed=seed)
-        self.api_key = api_key
+        set_env_vars()
+        super().__init__(model_type='openai_chat', model_path=model_path, max_tokens=max_tokens, temp=temperature,
+                         max_history=max_history, cache_directory=cache_directory, seed=seed)
         self.logprobs = logprobs
-        self.client = self.create_client()
+        self.n = n
+        self.client = self.create_client(openai_credentials)
 
-    def create_client(self):
-        if self.api_key is None:
-            client = OpenAI()
+        self.additional_api_parameters = additional_openai_parameters if additional_openai_parameters else dict()
+
+    def create_client(self, credentials: Union[dict, None]):
+        if credentials:
+            client = OpenAI(**credentials)
         else:
-            client = OpenAI(api_key=self.api_key)
+            client = OpenAI()
         return client
 
-    def init_model(self, init_prompt: str):
+    def init_model(self, init_prompt: str, examples: List[dict]):
         self.initial_prompt = init_prompt
         if not init_prompt:
             self.initial_history = []
@@ -54,6 +63,31 @@ class OpenAIChatModel(LLMModel):
         self.role_user = "user"
         self.role_assistant = "assistant"
 
+        self.add_examples(examples)
+
+    def convert_example_format(self, examples: List[dict]):
+        """
+
+        :param examples:
+        :return:
+        """
+        formatted_examples = []
+
+        for example in examples:
+            if 'user' in example.keys() and 'assistant' in example.keys():
+                input = example['user']
+                output = example['assistant']
+            elif 'input' in example.keys() and 'output' in example.keys():
+                input = example['input']
+                output = example['output']
+            else:
+                raise ValueError
+
+            formatted_examples.append({"role": "user", "content": input})
+            formatted_examples.append({"role": "assistant", "content": output})
+
+        return formatted_examples
+
     def add_examples(self, examples: List[dict]) -> None:
         """
         Add the examples from the input list to the dialogue history
@@ -61,7 +95,9 @@ class OpenAIChatModel(LLMModel):
                         {'role': 'user', 'content': content} or {'role': 'assistant', 'content': content}
         :return:
         """
-        for example in examples:
+        formatted_examples = self.convert_example_format(examples=examples)
+
+        for example in formatted_examples:
             role_type = example['role']
             if role_type == 'user':
                 role = self.role_user
@@ -75,17 +111,66 @@ class OpenAIChatModel(LLMModel):
         self.initial_history = self.history.copy()
 
     def _generate(self, prompt: str):
-        assert self.seed is not None
 
+        api_parameters = copy.deepcopy(self.additional_api_parameters)
+        api_parameters['model'] = self.model_path
+        api_parameters['messages'] = self.history
+        api_parameters['temperature'] = self.temperature
+        api_parameters['logprobs'] = self.logprobs
+        api_parameters['n'] = self.n
         if self.seed:
-            output = self.client.chat.completions.create(model=self.model_path, messages=self.history, temperature=self.temp, max_tokens=self.max_tokens, seed=self.seed, logprobs=self.logprobs)
-        else:
-            output = self.client.chat.completions.create(model=self.model_path, messages=self.history, temperature=self.temp,
-             max_tokens=self.max_tokens, logprobs=self.logprobs)
+            api_parameters['seed'] = self.seed
+        if self.max_tokens:
+            api_parameters['max_tokens'] = self.max_tokens
+
+        output = self.client.chat.completions.create(**api_parameters)
 
         output = self.convert_completion_response(completion=output)
 
         return output
+
+    def generate(self, user_message: str) -> Tuple[list, str]:
+        """
+        Takes care of
+        - adding the user_message to the dialogue history
+        - generating a reply by calling self._generate()
+        - adding response to the dialogue history
+        - updating dialogue history to not exceed max_history by calling self.update_history_length
+        :param user_message:
+        :return: actual model response and the source (i.e. cache or generated)
+        """
+        prompt = self.prepare_for_generation(user_message)
+        response_source = 'generated'
+        if self.temperature == 0 and self.cache:
+            cache_query = self.create_cache_query(prompt=prompt)
+            with Cache(directory=self.cache) as cache:
+                if cache_query in cache:
+                    print('Retrieved from cache')
+                    response = cache[cache_query]
+                    response_source = 'cache'
+                else:
+                    try:
+                        response = self._generate(prompt)
+                    except Exception as e:
+                        print(prompt)
+                        raise e
+                    cache[cache_query] = response
+
+        else:
+            try:
+                response = self._generate(prompt)
+            except Exception as e:
+                print(prompt)
+                raise e
+
+        actual_response = self.clean_up_from_generation(model_response=response,
+                                                        response_source=response_source)
+
+        self.update_history_length()  # make sure history is not exceeding the max_history length
+
+        self.n_calls += 1
+
+        return actual_response, response_source
 
     def update_token_counts(self, usage_dict: dict):
         """
@@ -122,7 +207,7 @@ class OpenAIChatModel(LLMModel):
 
         return user_message
 
-    def clean_up_from_generation(self, model_response: dict, response_source: Union[str, None] = None) -> str:
+    def clean_up_from_generation(self, model_response: dict, response_source: Union[str, None] = None) -> list:
         """
         extract the part of interest from the model response,
             e.g. get the "message" from the object returned by the OpenAI API
@@ -135,16 +220,19 @@ class OpenAIChatModel(LLMModel):
         """
 
         # text part of the response
-        text_output = model_response['choices'][0]['message']['content']
+        text_outputs = []
+        for response in model_response['choices']:
+            text_outputs.append(response['message']['content'])
+        #text_output = model_response['choices'][0]['message']['content']
 
         # add the generated response to the history
-        self.history.append({"role": self.role_assistant, "content": text_output})
-        self.full_history_w_source.append({"role": self.role_assistant, "content": text_output, "source": response_source})
+        #self.history.append({"role": self.role_assistant, "content": text_output})
+        #self.full_history_w_source.append({"role": self.role_assistant, "content": text_output, "source": response_source})
 
         # update token counts
-        self.update_token_counts(model_response['usage'])
+        #self.update_token_counts(model_response['usage'])
 
-        return text_output
+        return text_outputs
 
     def convert_completion_response(self, completion: ChatCompletion) -> dict:
         """
@@ -184,86 +272,3 @@ class OpenAIChatModel(LLMModel):
             dict_response['choices'].append(current_choice)
 
         return dict_response
-
-
-
-class OpenAIComplModel(LLMModel):
-
-    def __init__(self,
-                 model_name: str,
-                 model_path: str,
-                 max_tokens: int,
-                 temp: float,
-                 max_history: Union[int, None],
-                 cache_directory: Union[str, None] = None,
-                 seed: Union[int, None] = None,
-                 logprobs: Union[bool, None] = True):
-        """
-
-        :param model_name:
-        :param model_path:
-        :param max_tokens:
-        :param temp:
-        :param max_history:
-        :param cache_directory:
-        """
-        print(f'Warning: Completion model type is no longer maintained and uses old caching method!!')
-        super().__init__(model_name=model_name, model_path=model_path, max_tokens=max_tokens,
-                         temp=temp, max_history=max_history, cache_directory=cache_directory,
-                         seed=seed)
-        self.logprobs = logprobs
-        self.client = self.create_client()
-
-        if max_history > 0:
-            print(f'Warning: Completion model has no chat history.')
-
-    def create_client(self):
-        client = OpenAI()
-        return client
-
-    def init_model(self, init_prompt: str):
-        self.initial_prompt = init_prompt
-
-    def update_init_prompt(self, new_init_prompt: str):
-        self.initial_prompt = new_init_prompt
-
-    def add_examples(self, examples: List[dict]):
-        print(f'Warning: Not possible to add chat-like examples for completion model.')
-
-    def get_history(self) -> List[dict]:
-        return self.history
-
-    def get_initial_history(self):
-        return [{'system': self.initial_prompt}]
-
-    def reset_history(self):
-        pass
-
-    def update_history(self, new_history: List[dict]):
-        pass
-
-
-    def _generate(self, prompt: str):
-        if self.seed:
-            output = self.client.chat.completions.create(model=self.model_path, messages=prompt, temperature=self.temp, max_tokens=self.max_tokens, seed=self.seed)
-        else:
-            output = self.client.chat.completions.create(model=self.model_path, messages=prompt, temperature=self.temp,
-                                              max_tokens=self.max_tokens)
-        response = output['choices'][0]['text']
-        return response
-
-
-    def create_cache_query(self, prompt: str):
-        # as there is no history, simply return the prompt as it is
-        return prompt
-
-    def prepare_for_generation(self, user_message) -> str:
-
-        prompt = self.initial_prompt + '\n\n' + user_message
-
-        return prompt
-
-    def clean_up_from_generation(self, model_response, response_source: Union[str, None] = None) -> str:
-        # no history and no further formatting so simply return the input
-        return model_response
-
