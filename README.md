@@ -1,10 +1,24 @@
-# AutoPlanBench
+# PDDL2NL / AutoPlanBench
 
-This repository contains the code for AutoPlanBench, a tool to convert PDDL domains and problems into natural language and to run different LLM action choiche mechanisms (both plan generation and action policy) on them.
+This repository contains the code for PDDL2NL (aka AutoPlanBench), a tool to convert PDDL domains and problems into natural language and to run different LLM action choiche mechanisms (both plan generation and action policy) on them.
 Additionally, we make our complete dataset available, consisting of NL conversions for a large set of IPC datasets and some additional domains. 
 
 The code and data belongs to the ICAPS'25 paper [Automating the Generation of Prompts for LLM-based Action Choice in PDDL Planning](https://ojs.aaai.org/index.php/ICAPS/article/view/36126)
 
+This Readme contains the information needed to run the main experiments of the project. More detailed information about the different options and configurations, the prompts, evaluation and additional scripts can be found in the [Wiki](https://github.com/minecraft-saar/autoplanbench/wiki). <br>
+In particular, more information on how to run individual steps separately is availble in the [Wiki: Running individual steps](https://github.com/minecraft-saar/autoplanbench/wiki/Running-individual-steps).
+
+
+<center>
+    <img src="images/autoplanbench.svg" width="40%" />
+</center>
+
+* [Versions of the datasets/code]()
+* [How to set up AutoPlanBench]()
+* [Running Experiments]()
+
+
+## Versions
 **Note:** There exist two main versions of this code and the dataset. (See also the [dataset readme](https://github.com/minecraft-saar/autoplanbench/tree/main/autoplanbench_dataset#autoplanbench-dataset) ).
 
 **APB 2.0**
@@ -24,15 +38,8 @@ The code and data belongs to the ICAPS'25 paper [Automating the Generation of Pr
 The code in this repository is made available under the Apache 2.0 license. <br>
 The [datasets](https://github.com/minecraft-saar/autoplanbench/tree/main/autoplanbench_dataset) are composed of domain files from different original sources and problems generated using the corresponding generators as well as the datasets from the IPC competitions. For the individual licenses check the respective licenses of the original software/data. 
 
-### Overview
-
-<center>
-    <img src="images/autoplanbench.svg" width="40%" />
-</center>
-
-This Readme contains the information needed to run the main parts of the project. More detailed information about the different options and configurations, the prompts, evaluation and additional scripts can be found in the [Wiki](https://github.com/minecraft-saar/autoplanbench/wiki).
-
-## Prerequisites
+## How to set up Autoplanbench
+### Prerequisites
 
 - Linux 
   - This code has only been tested under Linux.
@@ -40,7 +47,7 @@ This Readme contains the information needed to run the main parts of the project
 - an OpenAI account 
   - (it is theoretically also possible to run other models such as llama or vicuna. However, we 1) did not test these models on the tasks and cannot tell whether they successfully generate the formats required based on the prompts and few-shot examples from the current repository and 2) there have been several updates to required dependencies since this was set up which cause problems. See the [Wiki]([https://github.com/coli-saar/autoplanbench/wiki/Adding-support-for-additional-LLM-types](https://github.com/minecraft-saar/autoplanbench/wiki/Support-for-additional-LLM-types)) for details on how to add support for other LLM models)
 
-## How to set up Autoplanbench
+### Setting Up Code Base
 
 1. Clone the repository, `cd` into the project directory
 2. Install pytorch
@@ -175,30 +182,6 @@ Run planning for the same configuration:
 ```
 python create_steps_commands.py --version planning --mode both --domains blocksworld --seeds 1 2 3 --api-key-id key1
 ```
-
-
-### Running individual steps
-
-For information on how to run individual steps separately, refer to the [Wiki](https://github.com/coli-saar/autoplanbench/wiki/Running-individual-steps).
-
-**Generating only NL descriptions**<br>
-
-Rund the domain setup as explained above then use the following functions to generate the NL descriptions: 
-
-Functions to generate the NL domain description, NL descriptions of a specific PDDL problem or a plan
-
-`python utils/run_save_descriptions.py --type domain --out [output_path] --d-nl [nl_domain] -t [template_file]`
-
-`python utils/run_save_descriptions.py --type instance --out [output_path] --d-nl [nl_domain] -d [pddl_domain] --prob [pddl_problem] --plan [pddl_plan] --out-plan [output_path_plan]`
-
-* `type`: "domain" if NL description for the domain and "instance" if the domain description for a problem (and plan) should be created
-* `output_path`: path to the output file
-* `nl_domain`: path to the .json file with the generated nl descriptions
-* `template_file`: file to the jinja template for the domain description, defaults to _utils.paths.DOMAIN_DESCRIPTION_TEMPLATE_
-* `pddl_domain`: path to the pddl domain file
-* `pddl_problem`: path to the pddl problem file for which the NL descriptions is generated
-* `pddl_plan`: optional; if provided also generates NL plan
-* `output_path_plan`: path for output file if plan is converted
 
 ### Output Files
 
