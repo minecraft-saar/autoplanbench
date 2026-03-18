@@ -5,17 +5,14 @@ Additionally, we make our complete dataset available, consisting of NL conversio
 
 The code and data belongs to the ICAPS'25 paper [Automating the Generation of Prompts for LLM-based Action Choice in PDDL Planning](https://ojs.aaai.org/index.php/ICAPS/article/view/36126)
 
-This Readme contains the information needed to run the main experiments of the project. More detailed information about the different options and configurations, the prompts, evaluation and additional scripts can be found in the [Wiki](https://github.com/minecraft-saar/autoplanbench/wiki). <br>
+This Readme contains the information needed to run the main experiments of the project. 
+* [Versions of the datasets/code](https://github.com/minecraft-saar/autoplanbench#versions)
+* [How to set up AutoPlanBench](https://github.com/minecraft-saar/autoplanbench#how-to-set-up-autoplanbench)
+* [Running Experiments](https://github.com/minecraft-saar/autoplanbench#running-experiments)
+
+More detailed information about the different options and configurations, the prompts, evaluation and additional scripts can be found in the [Wiki](https://github.com/minecraft-saar/autoplanbench/wiki). <br>
 In particular, more information on how to run individual steps separately is availble in the [Wiki: Running individual steps](https://github.com/minecraft-saar/autoplanbench/wiki/Running-individual-steps).
 
-
-<center>
-    <img src="images/autoplanbench.svg" width="40%" />
-</center>
-
-* [Versions of the datasets/code]()
-* [How to set up AutoPlanBench]()
-* [Running Experiments]()
 
 
 ## Versions
