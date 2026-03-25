@@ -148,7 +148,7 @@ class LLMModel(ABC):
         """
         return self.initial_prompt
 
-    def generate(self, user_message: str) -> Tuple[str, str]:
+    def generate(self, user_message: str) -> str:
         """
         Takes care of
         - adding the user_message to the dialogue history
@@ -199,7 +199,7 @@ class LLMModel(ABC):
 
         self.n_calls += 1
 
-        return actual_response, response_source
+        return actual_response
 
 
     @abstractmethod
