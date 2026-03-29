@@ -1,6 +1,7 @@
-from typing import List, Union
+from typing import List, Union, Tuple
 from abc import ABC, abstractmethod
 from diskcache import Cache
+from copy import deepcopy
 
 """
 Abstract class for LLMs that can be used as plan model and translation model in the planning games
@@ -10,19 +11,21 @@ Note:
 - if using Conversation templates, the dialogue history is also not stored in self.history but in the conversation object
 """
 
+
 class LLMModel(ABC):
 
     def __init__(self,
-                 model_name: str,
+                 model_type: str,
                  model_path: str,
                  max_tokens: int,
                  temp: float,
                  max_history: Union[int, None],
+                 reasoning_model: bool = False,
                  cache_directory: Union[str, None] = None,
                  seed: Union[int, None] = None):
         """
 
-        :param model_name: the general name of the model to identify the correct LLMModel subclass, e.g. openai_chat
+        :param model_type: the general name of the model to identify the correct LLMModel subclass, e.g. openai_chat
         :param model_path: the path to the model weights if using local weights
                            or the original name of the model for using Huggingface or OpenAI models
         :param max_tokens: maximum number of output tokens
@@ -34,10 +37,10 @@ class LLMModel(ABC):
         :param seed: seed value for inference or None
         """
 
-        self.model_name = model_name
+        self.model_type = model_type
         self.model_path = model_path
         self.max_tokens = max_tokens
-        self.temp = temp
+        self.temperature = temp
         self.max_history = max_history
 
         self.cache = cache_directory
@@ -60,8 +63,12 @@ class LLMModel(ABC):
         self.max_output_tokens = 0
         self.max_total_tokens = 0
 
+        self.n_calls = 0  # number of calls of the generate method
+
+        self.reasoning_model = reasoning_model
+
     @abstractmethod
-    def init_model(self, init_prompt: str):
+    def init_model(self, init_prompt: str, examples: List[dict]):
         """
         initialize a model with the initial prompt
         should take care of setting
@@ -69,7 +76,9 @@ class LLMModel(ABC):
         - self.role_user
         - self.role_assistant
         - initializing self.initial_history
+        - adding the few-shot examples
         :param init_prompt: initial prompt
+        :param examples: list of
         :return:
         """
         pass
@@ -99,11 +108,12 @@ class LLMModel(ABC):
 
     def get_history(self) -> List[dict]:
         """
-        Returns the current dialogue history in the following format:
+        Returns (a copy of) the current dialogue history in the following format:
         [{"role": "system", "content": initial_prompt}, {"role": role, "content": content}, ...]
         :return:
         """
-        return self.history
+        history = deepcopy(self.history)
+        return history
 
     def get_initial_history(self) -> List[dict]:
         """
@@ -138,7 +148,7 @@ class LLMModel(ABC):
         """
         return self.initial_prompt
 
-    def generate(self, user_message: str, assert_cache: bool = False) -> str:
+    def generate(self, user_message: str) -> str:
         """
         Takes care of
         - adding the user_message to the dialogue history
@@ -146,32 +156,48 @@ class LLMModel(ABC):
         - adding response to the dialogue history
         - updating dialogue history to not exceed max_history by calling self.update_history_length
         :param user_message:
-        :return:
+        :return: actual model response and the source (i.e. cache or generated)
         """
         prompt = self.prepare_for_generation(user_message)
         response_source = 'generated'
-        if self.temp == 0 and self.cache:
+        if self.temperature == 0 and self.cache:
+
             cache_query = self.create_cache_query(prompt=prompt)
             with Cache(directory=self.cache) as cache:
-                if assert_cache:
-                    if not cache_query in cache:
-                        print(cache_query)
-                    assert cache_query in cache
                 if cache_query in cache:
                     print('Retrieved from cache')
                     response = cache[cache_query]
                     response_source = 'cache'
+                    #print(response['model'])
+
                 else:
-                    response = self._generate(prompt)
+                    try:
+                        response = self._generate(prompt)
+                    except Exception as e:
+                        print(prompt)
+                        raise e
                     cache[cache_query] = response
 
         else:
-            response = self._generate(prompt)
+            try:
+                response = self._generate(prompt)
+            except Exception as e:
+                print(prompt)
+                raise e
+
+        if self.reasoning_model:
+            last_reasoning = response['choices'][0]['message']['reasoning_content']
+            if response_source == 'generated':
+                assert self.last_reasoning == last_reasoning
+            else:
+                self.last_reasoning = last_reasoning
 
         actual_response = self.clean_up_from_generation(model_response=response,
                                                         response_source=response_source)
 
         self.update_history_length()  # make sure history is not exceeding the max_history length
+
+        self.n_calls += 1
 
         return actual_response
 
@@ -206,7 +232,6 @@ class LLMModel(ABC):
         """
         pass
 
-
     def update_history_length(self):
         """
         Reduce the dialogue history such it includes only
@@ -225,3 +250,4 @@ class LLMModel(ABC):
             self.reset_history()
         else:
             pass        # then there still less entries in the history than max_history
+
